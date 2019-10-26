@@ -11,7 +11,7 @@ authors="RakSrinaNa"
 	version="${file.jarVersion}"
 	displayName="Falling Tree"
 	updateJSONURL="https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.14.4/update.json"
-	description='''Allow you to edit signs without breaking them.'''
+	description='''Cut trees in one cut'''
 
 [[dependencies.falling_tree]]
     modId="forge"
