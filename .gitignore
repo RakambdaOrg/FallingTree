@@ -1,0 +1,12 @@
+*.zip
+*.iml
+
+.gradle
+.idea
+build
+eclipse
+/run-client
+/run-server
+
+version.properties
+secrets.properties
