@@ -17,7 +17,10 @@ plugins {
 
 buildProperties {
     secrets {
-        using project.file('secrets.properties')
+        using(file('secrets.properties')).or(System.getenv()).or([
+                "curseforge_api_key": "N/A",
+                "github_token"      : "N/A"
+        ])
     }
 }
 
@@ -122,10 +125,10 @@ curseforge {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
         addGameVersion "${project.mc_version}"
-        changelog = getAllChangeLog()
+        changelog = getLatestChangeLog()
         releaseType = 'release'
-        mainArtifact jar
-        relations {
+        mainArtifact(jar) {
+            displayName = "${project.archivesBaseName}-${project.mc_version}-${project.version}"
         }
     }
     options {
@@ -138,13 +141,12 @@ githubRelease {
     owner = "RakSrinaNa"
     repo = project.repoName
     token = buildProperties.secrets['github_token'].string
-    tagName = getVersion()
-    releaseName = getVersion()
+    tagName = "${project.mc_version}-${versionInfo['version_short']}"
+    releaseName = "${project.mc_version}-${project.version}"
     targetCommitish = "${project.mc_version}"
     body {
-        getLatestChangeLog()
+        return getLatestChangeLog()
     }
-    releaseAssets = files(jar.archivePath)
 }
 
 artifacts {
