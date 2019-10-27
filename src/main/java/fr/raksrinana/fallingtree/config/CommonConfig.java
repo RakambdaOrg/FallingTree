@@ -25,7 +25,7 @@ public class CommonConfig{
 		whitelistedTools = builder.comment("List of tools that can be used to chop down a tree").defineList("tools_whitelisted", Lists.newArrayList("minecraft:wooden_axe", "minecraft:golden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:diamond_axe"), Objects::nonNull);
 		ignoreDurabilityLoss = builder.comment("Ignore the durability loss of breaking all the logs. If set to true, no harm will be done to the tool").define("ignore_durability", false);
 		maxTreeSize = builder.comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.").defineInRange("max_log_count", 100, 1, Integer.MAX_VALUE);
-		preserveTools = builder.comment("When set to true, when a tree is broken and the tool is about to break we will just break one block and not the whole tree.").define("preserve-tools", false);
+		preserveTools = builder.comment("When set to true, when a tree is broken and the tool is about to break we will just break one block and not the whole tree.").define("preserve_tools", false);
 	}
 	
 	public Stream<Block> getWhitelistedLogs(){
