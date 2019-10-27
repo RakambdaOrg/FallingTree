@@ -1,3 +1,7 @@
+## [1.0.3] - 2019-10-27
+
+- Modified field in the config to use underscores.
+
 ## [1.0.2] - 2019-10-27
 
 - Added the option to preserve tools, this time working(#1)
