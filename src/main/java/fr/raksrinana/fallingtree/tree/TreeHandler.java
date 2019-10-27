@@ -1,11 +1,8 @@
 package fr.raksrinana.fallingtree.tree;
 
-import com.google.common.collect.ImmutableMap;
 import fr.raksrinana.fallingtree.FallingTree;
 import fr.raksrinana.fallingtree.config.Config;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
 public class TreeHandler{
 	public static boolean isTreeBlock(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
 		final Block block = world.getBlockState(blockPos).getBlock();
-		return Config.SERVER.getWhitelistedLogs().anyMatch(log -> log.equals(block));
+		return Config.COMMON.getWhitelistedLogs().anyMatch(log -> log.equals(block));
 	}
 	
 	@Nonnull
@@ -68,7 +65,7 @@ public class TreeHandler{
 	
 	public static void destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
 		tree.getLogs().forEach(logBlock -> {
-			if(!Config.SERVER.ignoreDurabilityLoss.get() && tree.getWorld() instanceof World){
+			if(!Config.COMMON.ignoreDurabilityLoss.get() && tree.getWorld() instanceof World){
 				tool.onBlockDestroyed((World) tree.getWorld(), tree.getWorld().getBlockState(logBlock), logBlock, player);
 			}
 			tree.getWorld().destroyBlock(logBlock, true);
@@ -77,6 +74,6 @@ public class TreeHandler{
 	
 	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
 		final ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-		return Config.SERVER.getWhitelistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
+		return Config.COMMON.getWhitelistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
 	}
 }

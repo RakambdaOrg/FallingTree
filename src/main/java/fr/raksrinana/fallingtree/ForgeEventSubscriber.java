@@ -20,11 +20,11 @@ public final class ForgeEventSubscriber{
 		if(!event.isCanceled() && !event.getWorld().isRemote()){
 			if(!event.getPlayer().abilities.isCreativeMode && !event.getPlayer().isSneaking() && TreeHandler.canPlayerBreakTree(event.getPlayer())){
 				TreeHandler.getTree(event.getWorld(), event.getPos()).ifPresent(tree -> {
-					if(Config.SERVER.maxTreeSize.get() >= tree.getLogCount()){
+					if(Config.COMMON.maxTreeSize.get() >= tree.getLogCount()){
 						ItemStack tool = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
 						int toolUsesLeft = tool.getMaxDamage() - tool.getDamage();
-						if(Config.SERVER.ignoreDurabilityLoss.get() || !tool.isDamageable() || (Config.SERVER.preserveTools.get() && tree.getLogCount() <= toolUsesLeft)){
-							if(Config.SERVER.ignoreDurabilityLoss.get() || !Config.SERVER.preserveTools.get() || tree.getLogCount() < toolUsesLeft){
+						if(Config.COMMON.ignoreDurabilityLoss.get() || !tool.isDamageable() || (Config.COMMON.preserveTools.get() && tree.getLogCount() <= toolUsesLeft)){
+							if(Config.COMMON.ignoreDurabilityLoss.get() || !Config.COMMON.preserveTools.get() || tree.getLogCount() < toolUsesLeft){
 								TreeHandler.destroy(tree, event.getPlayer(), tool);
 							}
 						}

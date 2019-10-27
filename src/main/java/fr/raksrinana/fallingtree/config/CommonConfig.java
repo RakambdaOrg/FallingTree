@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class ServerConfig{
+public class CommonConfig{
 	public final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLogs;
 	public final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedTools;
 	public final ForgeConfigSpec.BooleanValue ignoreDurabilityLoss;
@@ -19,7 +19,7 @@ public class ServerConfig{
 	public final ForgeConfigSpec.IntValue maxTreeSize;
 	
 	
-	public ServerConfig(ForgeConfigSpec.Builder builder){
+	public CommonConfig(ForgeConfigSpec.Builder builder){
 		builder.comment("Falling Tree configuration");
 		whitelistedLogs = builder.comment("List of blocks considered as logs and will be destroyed all at once").defineList("logs_whitelisted", Lists.newArrayList("minecraft:acacia_log", "minecraft:birch_log", "minecraft:dark_oak_log", "minecraft:jungle_log", "minecraft:oak_log", "minecraft:spruce_log"), Objects::nonNull);
 		whitelistedTools = builder.comment("List of tools that can be used to chop down a tree").defineList("tools_whitelisted", Lists.newArrayList("minecraft:wooden_axe", "minecraft:golden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:diamond_axe"), Objects::nonNull);
@@ -29,11 +29,11 @@ public class ServerConfig{
 	}
 	
 	public Stream<Block> getWhitelistedLogs(){
-		return whitelistedLogs.get().stream().map(ServerConfig::getBlock).filter(Objects::nonNull);
+		return whitelistedLogs.get().stream().map(CommonConfig::getBlock).filter(Objects::nonNull);
 	}
 	
 	public Stream<Item> getWhitelistedTools(){
-		return whitelistedTools.get().stream().map(ServerConfig::getItem).filter(Objects::nonNull);
+		return whitelistedTools.get().stream().map(CommonConfig::getItem).filter(Objects::nonNull);
 	}
 	
 	@Nullable
