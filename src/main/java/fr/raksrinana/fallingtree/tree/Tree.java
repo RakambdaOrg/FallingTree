@@ -5,6 +5,7 @@ import net.minecraft.world.IWorld;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -17,7 +18,7 @@ public class Tree{
 	public Tree(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
 		this.world = world;
 		this.hitPos = blockPos;
-		this.logs = new HashSet<>();
+		this.logs = new LinkedHashSet<>();
 	}
 	
 	public void addLog(@Nullable BlockPos blockPos){

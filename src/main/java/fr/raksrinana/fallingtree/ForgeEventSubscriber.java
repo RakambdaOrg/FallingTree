@@ -4,6 +4,7 @@ import fr.raksrinana.fallingtree.config.Config;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,13 +22,12 @@ public final class ForgeEventSubscriber{
 			if(!event.getPlayer().abilities.isCreativeMode && !event.getPlayer().isSneaking() && TreeHandler.canPlayerBreakTree(event.getPlayer())){
 				TreeHandler.getTree(event.getWorld(), event.getPos()).ifPresent(tree -> {
 					if(Config.COMMON.maxTreeSize.get() >= tree.getLogCount()){
-						ItemStack tool = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
-						int toolUsesLeft = tool.getMaxDamage() - tool.getDamage();
-						if(Config.COMMON.ignoreDurabilityLoss.get() || !tool.isDamageable() || (Config.COMMON.preserveTools.get() && tree.getLogCount() <= toolUsesLeft)){
-							if(Config.COMMON.ignoreDurabilityLoss.get() || !Config.COMMON.preserveTools.get() || tree.getLogCount() < toolUsesLeft){
-								TreeHandler.destroy(tree, event.getPlayer(), tool);
-							}
+						if(TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
+							event.setCanceled(true);
 						}
+					}
+					else{
+						event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.maxTreeSize.get()));
 					}
 				});
 			}

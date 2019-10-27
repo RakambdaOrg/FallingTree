@@ -63,13 +63,20 @@ public class TreeHandler{
 		return world.getBlockState(blockPos).getBlock().equals(logBlock);
 	}
 	
-	public static void destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
-		tree.getLogs().forEach(logBlock -> {
+	public static boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
+		int toolUsesLeft = (!tool.isDamageable() || Config.COMMON.ignoreDurabilityLoss.get()) ? Integer.MAX_VALUE : tool.getMaxDamage() - tool.getDamage();
+		if(Config.COMMON.preserveTools.get()){
+			toolUsesLeft--;
+		}
+		if(toolUsesLeft < 1)
+			return false;
+		tree.getLogs().limit(toolUsesLeft).forEachOrdered(logBlock -> {
 			if(!Config.COMMON.ignoreDurabilityLoss.get() && tree.getWorld() instanceof World){
 				tool.onBlockDestroyed((World) tree.getWorld(), tree.getWorld().getBlockState(logBlock), logBlock, player);
 			}
 			tree.getWorld().destroyBlock(logBlock, true);
 		});
+		return true;
 	}
 	
 	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
