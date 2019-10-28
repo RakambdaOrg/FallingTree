@@ -1,1 +1,1 @@
-- Modified field in the config to use underscores.
+- Added the option to require sneaking to break a whole tree.
