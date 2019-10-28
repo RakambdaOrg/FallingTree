@@ -19,7 +19,7 @@ public final class ForgeEventSubscriber{
 	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
 		if(!event.isCanceled() && !event.getWorld().isRemote()){
-			if(isPlayerInRightState(event.getPlayer()) && (!event.getPlayer().isSneaking()) && TreeHandler.canPlayerBreakTree(event.getPlayer())){
+			if(isPlayerInRightState(event.getPlayer())){
 				TreeHandler.getTree(event.getWorld(), event.getPos()).ifPresent(tree -> {
 					if(Config.COMMON.maxTreeSize.get() >= tree.getLogCount()){
 						if(TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
