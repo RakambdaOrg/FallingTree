@@ -31,7 +31,6 @@ public class TreeHandler{
 		Tree tree = new Tree(world, blockPos);
 		toAnalyzePos.add(blockPos);
 		while(!toAnalyzePos.isEmpty()){
-			FallingTree.LOGGER.debug("To analyze: {}", toAnalyzePos.size());
 			BlockPos analyzingPos = toAnalyzePos.remove();
 			tree.addLog(analyzingPos);
 			analyzedPos.add(analyzingPos);
