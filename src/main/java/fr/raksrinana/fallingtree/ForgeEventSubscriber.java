@@ -2,7 +2,7 @@ package fr.raksrinana.fallingtree;
 
 import fr.raksrinana.fallingtree.config.Config;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -19,7 +19,7 @@ public final class ForgeEventSubscriber{
 	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
 		if(!event.isCanceled() && !event.getWorld().isRemote()){
-			if(!event.getPlayer().abilities.isCreativeMode && !event.getPlayer().isSneaking() && TreeHandler.canPlayerBreakTree(event.getPlayer())){
+			if(isPlayerInRightState(event.getPlayer()) && (!event.getPlayer().isSneaking()) && TreeHandler.canPlayerBreakTree(event.getPlayer())){
 				TreeHandler.getTree(event.getWorld(), event.getPos()).ifPresent(tree -> {
 					if(Config.COMMON.maxTreeSize.get() >= tree.getLogCount()){
 						if(TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
@@ -32,5 +32,15 @@ public final class ForgeEventSubscriber{
 				});
 			}
 		}
+	}
+	
+	private static boolean isPlayerInRightState(PlayerEntity player){
+		if(player.abilities.isCreativeMode){
+			return false;
+		}
+		if(Config.COMMON.reverseSneaking.get() != player.isSneaking()){
+			return false;
+		}
+		return TreeHandler.canPlayerBreakTree(player);
 	}
 }
