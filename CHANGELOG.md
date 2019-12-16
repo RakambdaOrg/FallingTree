@@ -1,3 +1,10 @@
+## [1.14.4-1.1.0] - 2019-12-16
+- Automatically support all logs by default (now use the blacklist if you want to exclude some logs)
+- Automatically support all axes by default (now use the blacklist if you want to exclude some tools)
+
+## [1.14.4-1.0.4] - 2019-10-28
+- Added the option to require sneaking to break a whole tree.
+
 ## [1.14.4-1.0.3] - 2019-10-27
 - Modified field in the config to use underscores.
 

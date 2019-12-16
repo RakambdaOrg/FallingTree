@@ -1,14 +1,17 @@
 package fr.raksrinana.fallingtree.tree;
 
-import fr.raksrinana.fallingtree.FallingTree;
 import fr.raksrinana.fallingtree.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
@@ -17,7 +20,12 @@ import java.util.stream.Collectors;
 public class TreeHandler{
 	public static boolean isTreeBlock(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
 		final Block block = world.getBlockState(blockPos).getBlock();
-		return Config.COMMON.getWhitelistedLogs().anyMatch(log -> log.equals(block));
+		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS) || Config.COMMON.getWhitelistedLogs().anyMatch(log -> log.equals(block));
+		if(isWhitelistedBlock){
+			final boolean isBlacklistedBlock = Config.COMMON.getBlacklistedLogs().anyMatch(log -> log.equals(block));
+			return !isBlacklistedBlock;
+		}
+		return false;
 	}
 	
 	@Nonnull
@@ -67,8 +75,9 @@ public class TreeHandler{
 		if(Config.COMMON.preserveTools.get()){
 			toolUsesLeft--;
 		}
-		if(toolUsesLeft < 1)
+		if(toolUsesLeft < 1){
 			return false;
+		}
 		tree.getLogs().limit(toolUsesLeft).forEachOrdered(logBlock -> {
 			if(!Config.COMMON.ignoreDurabilityLoss.get() && tree.getWorld() instanceof World){
 				tool.onBlockDestroyed((World) tree.getWorld(), tree.getWorld().getBlockState(logBlock), logBlock, player);
@@ -80,6 +89,11 @@ public class TreeHandler{
 	
 	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
 		final ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-		return Config.COMMON.getWhitelistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
+		final boolean isWhitelistedTool = heldItem.getItem() instanceof AxeItem || Config.COMMON.getWhitelistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
+		if(isWhitelistedTool){
+			final boolean isBlacklistedTool = Config.COMMON.getBlacklistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
+			return !isBlacklistedTool;
+		}
+		return false;
 	}
 }
