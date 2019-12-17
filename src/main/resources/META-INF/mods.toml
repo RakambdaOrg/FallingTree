@@ -10,18 +10,18 @@ authors="RakSrinaNa"
 	modId="falling_tree"
 	version="${file.jarVersion}"
 	displayName="Falling Tree"
-	updateJSONURL="https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.15/update.json"
+	updateJSONURL="https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.15.1/update.json"
 	description='''Cut trees in one cut'''
 
 [[dependencies.falling_tree]]
     modId="forge"
     mandatory=true
-    versionRange="[29.0.0,)"
+    versionRange="[30.0.0,)"
     ordering="NONE"
 	side="BOTH"
 [[dependencies.falling_tree]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15]"
+    versionRange="[1.15.1]"
     ordering="NONE"
     side="BOTH"
