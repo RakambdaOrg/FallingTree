@@ -8,14 +8,10 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventSubscriber{
-	public static final Logger LOGGER = LogManager.getLogger(FallingTree.MOD_NAME);
-	
 	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
 		if(!event.isCanceled() && !event.getWorld().isRemote()){
@@ -38,7 +34,7 @@ public final class ForgeEventSubscriber{
 		if(player.abilities.isCreativeMode){
 			return false;
 		}
-		if(Config.COMMON.reverseSneaking.get() != player.isSneaking()){
+		if(Config.COMMON.reverseSneaking.get() != player.func_225608_bj_()){
 			return false;
 		}
 		return TreeHandler.canPlayerBreakTree(player);

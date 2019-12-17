@@ -1,20 +1,2 @@
-## [1.14.4-1.1.0] - 2019-12-16
-- Automatically support all logs by default (now use the blacklist if you want to exclude some logs)
-- Automatically support all axes by default (now use the blacklist if you want to exclude some tools)
-
-## [1.14.4-1.0.4] - 2019-10-28
-- Added the option to require sneaking to break a whole tree.
-
-## [1.14.4-1.0.3] - 2019-10-27
-- Modified field in the config to use underscores.
-
-## [1.14.4-1.0.2] - 2019-10-27
-- Added the option to preserve tools, this time working(#1)
-- Added a notification to the player when the tree is too big.
-- Modified the order the tree is broken to break logs closer to the hit point first.
-
-## [1.14.4-1.0.1] - 2019-10-27
-- Added the option to preserve tools (#1)
-
-## [1.14.4-1.0.0] - 2019-10-26
-- Initial release
+## [1.15-2.0.0] - 2019-12-17
+- Port to 1.15

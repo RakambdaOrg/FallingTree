@@ -16,8 +16,8 @@ import javax.annotation.Nonnull;
 public class FallingTree{
 	public static final String MOD_ID = "falling_tree";
 	public static final String MOD_NAME = "Falling Tree";
-	public static final String VERSION = "1.1.0";
-	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+	public static final String VERSION = "2.0.0";
+	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 	
 	public FallingTree(){
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
@@ -25,7 +25,7 @@ public class FallingTree{
 	
 	@Nonnull
 	public static String getVersion(){
-		 return ModList.get().getModContainerById(MOD_ID).map(ModContainer::getModInfo).map(IModInfo::getVersion).map(ArtifactVersion::toString).orElse("NONE");
+		return ModList.get().getModContainerById(MOD_ID).map(ModContainer::getModInfo).map(IModInfo::getVersion).map(ArtifactVersion::toString).orElse("NONE");
 	}
 	
 	public static boolean isDevBuild(){
