@@ -1,1 +1,1 @@
-- Port to 1.15.1
+- Add an option in the config to instantly break leaves (defaults to false).

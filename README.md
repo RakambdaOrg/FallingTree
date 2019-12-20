@@ -13,3 +13,4 @@ Several options are available in the config file:
 - max\_log\_count: The maximum number of log a tree can be mad of (if more the mod won't apply).
 - preserve_tools: If this option is enabled your tool won't be broken by chopping down a big tree, it'll instead be left with 1 of durability.
 - reverse_sneaking: If this option is enabled you'll need to sneak in order to break the whole tree.
+- break_leaves: If this is set to true, leaves will despawn instantly when a tree is broken (even if not cut in one shot).
