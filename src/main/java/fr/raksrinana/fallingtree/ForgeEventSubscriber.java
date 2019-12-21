@@ -57,7 +57,7 @@ public final class ForgeEventSubscriber{
 				if(state.ticksRandomly()){
 					IWorld world = event.getWorld();
 					if(world instanceof ServerWorld){
-						block.func_225542_b_(state, (ServerWorld) world, pos, new Random());
+						block.func_225542_b_(state, (ServerWorld) world, pos, world.getRandom());
 					}
 				}
 			}
