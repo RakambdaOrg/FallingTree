@@ -41,7 +41,7 @@ public final class ForgeEventSubscriber{
 		if(player.abilities.isCreativeMode){
 			return false;
 		}
-		if(Config.COMMON.reverseSneaking.get() != player.func_225608_bj_()){
+		if(Config.COMMON.reverseSneaking.get() != player.isCrouching()){
 			return false;
 		}
 		return TreeHandler.canPlayerBreakTree(player);
