@@ -1,1 +1,1 @@
-- Add an option in the config to instantly break leaves (defaults to false).
+- Fix #3: Leaves won't break when `break_leaves = true` and a tree grows naturally
