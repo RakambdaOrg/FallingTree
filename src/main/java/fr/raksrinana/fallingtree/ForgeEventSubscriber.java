@@ -65,13 +65,6 @@ public final class ForgeEventSubscriber{
 					}
 				}
 			}
-			// if(block.isIn(BlockTags.LEAVES)){
-			// 	if(state.ticksRandomly()){
-			// 		if(world instanceof ServerWorld){
-			// 			block.func_225542_b_(state, (ServerWorld) world, pos, world.getRandom());
-			// 		}
-			// 	}
-			// }
 		}
 	}
 }
