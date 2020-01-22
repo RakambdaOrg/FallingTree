@@ -60,7 +60,7 @@ public final class ForgeEventSubscriber{
 					if(world.isBlockLoaded(neighborPos)){
 						BlockState neighborState = event.getWorld().getBlockState(neighborPos);
 						if(BlockTags.LEAVES.contains(neighborState.getBlock())){
-							neighborState.getBlock().func_225542_b_(neighborState, (ServerWorld) world, neighborPos, world.getRandom());
+							neighborState.getBlock().randomTick(neighborState, (ServerWorld) world, neighborPos, world.getRandom());
 						}
 					}
 				}
