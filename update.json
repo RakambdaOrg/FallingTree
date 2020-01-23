@@ -1,13 +1,8 @@
 {
     "homepage": "https://github.com/RakSrinaNa/FallingTree",
-    "changelog": "https://github.com/RakSrinaNa/FallingTree/blob/1.15.1/CHANGELOG.md",
-    "1.15.1": {
-        "2.0.2": "https://github.com/RakSrinaNa/FallingTree/blob/1.15.1/CHANGELOG.md",
-        "2.0.1": "https://github.com/RakSrinaNa/FallingTree/blob/1.15.1/CHANGELOG.md",
-        "2.0.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.15.1/CHANGELOG.md"
+    "changelog": "https://github.com/RakSrinaNa/FallingTree/blob/1.15.2/CHANGELOG.md",
+    "1.15.2": {
     },
     "promos": {
-        "1.15.1-latest": "2.0.2",
-        "1.15.1-recommended": "2.0.2"
     }
 }

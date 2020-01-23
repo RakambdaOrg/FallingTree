@@ -1,1 +1,1 @@
-- Fix #3: Leaves won't break when `break_leaves = true` and a tree grows naturally
+- Port to 1.15.2
