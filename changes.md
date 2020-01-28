@@ -1,1 +1,1 @@
-- Added an option to force destroy leaves withing a certain radius. This will be applied from one of the top most log blocks and will destroy all leaves within it (including leaves that shouldn't despawn because another tree is too close, or because they've been placed by a player).
+- Use mutable BlockPos when checking tree to improve a bit performances.

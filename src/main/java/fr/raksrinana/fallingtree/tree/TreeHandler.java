@@ -51,12 +51,13 @@ public class TreeHandler{
 	@Nonnull
 	private static Collection<BlockPos> neighborLogs(@Nonnull IWorld world, @Nonnull Block logBlock, @Nonnull BlockPos blockPos, @Nonnull Collection<BlockPos> analyzedPos){
 		List<BlockPos> neighborLogs = new LinkedList<>();
+		final BlockPos.Mutable checkPos = new BlockPos.Mutable();
 		for(int x = -1; x <= 1; x++){
 			for(int z = -1; z <= 1; z++){
 				for(int y = -1; y <= 1; y++){
-					BlockPos pos = blockPos.add(x, y, z);
-					if(!analyzedPos.contains(pos) && isSameLog(world, pos, logBlock)){
-						neighborLogs.add(blockPos.add(x, y, z));
+					checkPos.setPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
+					if(!analyzedPos.contains(checkPos) && isSameLog(world, checkPos, logBlock)){
+						neighborLogs.add(checkPos.toImmutable());
 					}
 				}
 			}
