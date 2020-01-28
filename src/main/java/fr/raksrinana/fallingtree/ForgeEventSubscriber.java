@@ -38,7 +38,7 @@ public final class ForgeEventSubscriber{
 	}
 	
 	private static boolean isPlayerInRightState(PlayerEntity player){
-		if(player.abilities.isCreativeMode){
+		if(player.abilities.isCreativeMode && !FallingTree.isDevBuild()){
 			return false;
 		}
 		if(Config.COMMON.reverseSneaking.get() != player.isCrouching()){

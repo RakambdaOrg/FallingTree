@@ -4,10 +4,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Tree{
@@ -42,7 +39,7 @@ public class Tree{
 	}
 	
 	@Nonnull
-	public Stream<BlockPos> getLogs(){
-		return this.logs.stream();
+	public Collection<BlockPos> getLogs(){
+		return this.logs;
 	}
 }
