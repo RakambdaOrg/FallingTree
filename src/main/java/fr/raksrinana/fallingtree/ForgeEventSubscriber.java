@@ -2,19 +2,29 @@ package fr.raksrinana.fallingtree;
 
 import fr.raksrinana.fallingtree.config.Config;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventSubscriber{
-	public static final Logger LOGGER = LogManager.getLogger(FallingTree.MOD_NAME);
+	private static Collection<LeavesBlockToBreak> leavesToRemove = new ConcurrentLinkedQueue<>();
 	
 	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
@@ -35,12 +45,53 @@ public final class ForgeEventSubscriber{
 	}
 	
 	private static boolean isPlayerInRightState(PlayerEntity player){
-		if(player.abilities.isCreativeMode){
+		if(player.abilities.isCreativeMode && !FallingTree.isDevBuild()){
 			return false;
 		}
 		if(Config.COMMON.reverseSneaking.get() != player.isSneaking()){
 			return false;
 		}
 		return TreeHandler.canPlayerBreakTree(player);
+	}
+	
+	@SubscribeEvent
+	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
+		if(Config.COMMON.breakLeaves.get() && !event.getWorld().isRemote()){
+			World world = (World) event.getWorld();
+			BlockState eventState = event.getState();
+			Block eventBlock = eventState.getBlock();
+			BlockPos eventPos = event.getPos();
+			if(eventBlock.isAir(eventState, world, eventPos)){
+				for(Direction facing : event.getNotifiedSides()){
+					BlockPos neighborPos = eventPos.offset(facing);
+					if(world.isBlockLoaded(neighborPos)){
+						BlockState neighborState = event.getWorld().getBlockState(neighborPos);
+						if(BlockTags.LEAVES.contains(neighborState.getBlock())){
+							leavesToRemove.add(new LeavesBlockToBreak((World) world, neighborPos));
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onServerTick(TickEvent.ServerTickEvent event){
+		if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END){
+			Iterator<LeavesBlockToBreak> iterator = leavesToRemove.iterator();
+			while(iterator.hasNext()){
+				LeavesBlockToBreak leavesBlockToBreak = iterator.next();
+				iterator.remove();
+				Optional.ofNullable(leavesBlockToBreak.getWorld()).ifPresent(world -> {
+					if(world.isBlockLoaded(leavesBlockToBreak.getBlockPos())){
+						BlockState state = world.getBlockState(leavesBlockToBreak.getBlockPos());
+						if(BlockTags.LEAVES.contains(state.getBlock())){
+							state.tick(world, leavesBlockToBreak.getBlockPos(), world.getRandom());
+							state.randomTick(world, leavesBlockToBreak.getBlockPos(), world.getRandom());
+						}
+					}
+				});
+			}
+		}
 	}
 }

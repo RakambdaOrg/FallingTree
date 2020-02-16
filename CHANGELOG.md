@@ -1,3 +1,8 @@
+## [1.14.4-2.0.3] - 2020-02-16
+- Backport 1.15 features
+  - Add an option in the config to instantly break leaves (defaults to false).
+  - Added an option to force destroy leaves withing a certain radius. This will be applied from one of the top most log blocks and will destroy all leaves within it (including leaves that shouldn't despawn because another tree is too close, or because they've been placed by a player).
+
 ## [1.14.4-1.1.0] - 2019-12-16
 - Automatically support all logs by default (now use the blacklist if you want to exclude some logs)
 - Automatically support all axes by default (now use the blacklist if you want to exclude some tools)

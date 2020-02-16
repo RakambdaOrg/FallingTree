@@ -2,16 +2,15 @@ package fr.raksrinana.fallingtree.tree;
 
 import fr.raksrinana.fallingtree.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.Tags;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
@@ -36,7 +35,7 @@ public class TreeHandler{
 		Queue<BlockPos> toAnalyzePos = new LinkedList<>();
 		Set<BlockPos> analyzedPos = new HashSet<>();
 		Block logBlock = world.getBlockState(blockPos).getBlock();
-		Tree tree = new Tree(world, blockPos);
+		Tree tree = new Tree((World) world, blockPos);
 		toAnalyzePos.add(blockPos);
 		while(!toAnalyzePos.isEmpty()){
 			BlockPos analyzingPos = toAnalyzePos.remove();
@@ -52,12 +51,13 @@ public class TreeHandler{
 	@Nonnull
 	private static Collection<BlockPos> neighborLogs(@Nonnull IWorld world, @Nonnull Block logBlock, @Nonnull BlockPos blockPos, @Nonnull Collection<BlockPos> analyzedPos){
 		List<BlockPos> neighborLogs = new LinkedList<>();
+		final BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
 		for(int x = -1; x <= 1; x++){
 			for(int z = -1; z <= 1; z++){
 				for(int y = -1; y <= 1; y++){
-					BlockPos pos = blockPos.add(x, y, z);
-					if(!analyzedPos.contains(pos) && isSameLog(world, pos, logBlock)){
-						neighborLogs.add(blockPos.add(x, y, z));
+					checkPos.setPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
+					if(!analyzedPos.contains(checkPos) && isSameLog(world, checkPos, logBlock)){
+						neighborLogs.add(checkPos.toImmutable());
 					}
 				}
 			}
@@ -78,12 +78,32 @@ public class TreeHandler{
 		if(toolUsesLeft < 1){
 			return false;
 		}
-		tree.getLogs().limit(toolUsesLeft).forEachOrdered(logBlock -> {
+		final boolean isFullyBroken = Config.COMMON.ignoreDurabilityLoss.get() || (tool.getMaxDamage() - tool.getDamage()) >= tree.getLogCount();
+		tree.getLogs().stream().limit(toolUsesLeft).forEachOrdered(logBlock -> {
 			if(!Config.COMMON.ignoreDurabilityLoss.get() && tree.getWorld() instanceof World){
 				tool.onBlockDestroyed((World) tree.getWorld(), tree.getWorld().getBlockState(logBlock), logBlock, player);
 			}
 			tree.getWorld().destroyBlock(logBlock, true);
 		});
+		if(isFullyBroken){
+			final int radius = Config.COMMON.forceBreakLeavesRadius.get();
+			if(radius > 0){
+				tree.getLogs().stream().max(Comparator.comparingInt(BlockPos::getY)).ifPresent(topLog -> {
+					BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
+					for(int dx = -radius; dx < radius; dx++){
+						for(int dy = -radius; dy < radius; dy++){
+							for(int dz = -radius; dz < radius; dz++){
+								checkPos.setPos(topLog.getX() + dx, topLog.getY() + dy, topLog.getZ() + dz);
+								final BlockState checkState = tree.getWorld().getBlockState(checkPos);
+								if(BlockTags.LEAVES.contains(checkState.getBlock())){
+									tree.getWorld().destroyBlock(checkPos, true);
+								}
+							}
+						}
+					}
+				});
+			}
+		}
 		return true;
 	}
 	

@@ -19,7 +19,9 @@ public class CommonConfig{
 	public final ForgeConfigSpec.BooleanValue ignoreDurabilityLoss;
 	public final ForgeConfigSpec.BooleanValue preserveTools;
 	public final ForgeConfigSpec.BooleanValue reverseSneaking;
+	public final ForgeConfigSpec.BooleanValue breakLeaves;
 	public final ForgeConfigSpec.IntValue maxTreeSize;
+	public final ForgeConfigSpec.IntValue forceBreakLeavesRadius;
 	
 	
 	public CommonConfig(ForgeConfigSpec.Builder builder){
@@ -32,6 +34,8 @@ public class CommonConfig{
 		maxTreeSize = builder.comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.").defineInRange("max_log_count", 100, 1, Integer.MAX_VALUE);
 		preserveTools = builder.comment("When set to true, when a tree is broken and the tool is about to break we will just break one block and not the whole tree.").define("preserve_tools", false);
 		reverseSneaking = builder.comment("When set to true, a tree will only be chopped down if the player is sneaking").define("reverse_sneaking", false);
+		breakLeaves = builder.comment("When set to true, leaves that should naturally break will be broken instantly").define("break_leaves", false);
+		forceBreakLeavesRadius = builder.comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed. The radius is applied from one of the top most log blocks. break_leaves must be activated for this to take effect.").defineInRange("force_break_leaves_radius", 0, 0, 10);
 	}
 	
 	public Stream<Block> getWhitelistedLogs(){
