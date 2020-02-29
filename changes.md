@@ -1,1 +1,1 @@
-- Use mutable BlockPos when checking tree to improve a bit performances.
+- Delay breaking leaves by a few ticks making (fixes #6)
