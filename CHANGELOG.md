@@ -1,3 +1,7 @@
+## [1.15.2-2.1.0] - 2020-03-08
+- Refactor configuration by using categories thus making it a bit clearer than having everything stacked up at the same place. (/!\ You may have to redo your configuration if you changed values so back up the configuration before updating in order to copy values after)
+- Break leaves without sound when using force breaking leaves (the option with the radius) to avoid breaking your ears (#7)
+
 ## [1.15.2-2.0.4] - 2020-02-29
 - Delay breaking leaves by a few ticks making (fixes #6)
 
