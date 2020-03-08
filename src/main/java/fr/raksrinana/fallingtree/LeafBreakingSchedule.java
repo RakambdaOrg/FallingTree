@@ -4,12 +4,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import java.util.Objects;
 
-public class ScheduledLeafBreak{
+public class LeafBreakingSchedule{
 	private final ServerWorld world;
 	private final BlockPos blockPos;
 	private int remainingTicks;
 	
-	public ScheduledLeafBreak(ServerWorld world, BlockPos blockPos, int remainingTicks){
+	public LeafBreakingSchedule(ServerWorld world, BlockPos blockPos, int remainingTicks){
 		this.world = world;
 		this.blockPos = blockPos;
 		this.remainingTicks = remainingTicks;
@@ -36,10 +36,10 @@ public class ScheduledLeafBreak{
 		if(this == o){
 			return true;
 		}
-		if(!(o instanceof ScheduledLeafBreak)){
+		if(!(o instanceof LeafBreakingSchedule)){
 			return false;
 		}
-		ScheduledLeafBreak that = (ScheduledLeafBreak) o;
+		LeafBreakingSchedule that = (LeafBreakingSchedule) o;
 		return Objects.equals(getWorld(), that.getWorld()) && Objects.equals(getBlockPos(), that.getBlockPos());
 	}
 	

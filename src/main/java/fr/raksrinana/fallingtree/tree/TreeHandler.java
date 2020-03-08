@@ -17,18 +17,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TreeHandler{
-	public static boolean isTreeBlock(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
-		final Block block = world.getBlockState(blockPos).getBlock();
-		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS) || Config.COMMON.getWhitelistedLogs().anyMatch(log -> log.equals(block));
-		if(isWhitelistedBlock){
-			final boolean isBlacklistedBlock = Config.COMMON.getBlacklistedLogs().anyMatch(log -> log.equals(block));
-			return !isBlacklistedBlock;
-		}
-		return false;
-	}
-	
 	@Nonnull
-	public static Optional<Tree> getTree(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
+	public static Optional<Tree> getTree(@Nonnull World world, @Nonnull BlockPos blockPos){
 		if(!isTreeBlock(world, blockPos)){
 			return Optional.empty();
 		}
@@ -71,22 +61,23 @@ public class TreeHandler{
 	}
 	
 	public static boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
-		int toolUsesLeft = (!tool.isDamageable() || Config.COMMON.ignoreDurabilityLoss.get()) ? Integer.MAX_VALUE : tool.getMaxDamage() - tool.getDamage();
-		if(Config.COMMON.preserveTools.get()){
+		final World world = tree.getWorld();
+		int toolUsesLeft = (!tool.isDamageable() || Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss()) ? Integer.MAX_VALUE : tool.getMaxDamage() - tool.getDamage();
+		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			toolUsesLeft--;
 		}
 		if(toolUsesLeft < 1){
 			return false;
 		}
-		final boolean isFullyBroken = Config.COMMON.ignoreDurabilityLoss.get() || (tool.getMaxDamage() - tool.getDamage()) >= tree.getLogCount();
+		final boolean isFullyBroken = Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss() || (tool.getMaxDamage() - tool.getDamage()) >= tree.getLogCount();
 		tree.getLogs().stream().limit(toolUsesLeft).forEachOrdered(logBlock -> {
-			if(!Config.COMMON.ignoreDurabilityLoss.get() && tree.getWorld() instanceof World){
-				tool.onBlockDestroyed((World) tree.getWorld(), tree.getWorld().getBlockState(logBlock), logBlock, player);
+			if(!Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss()){
+				tool.onBlockDestroyed(world, world.getBlockState(logBlock), logBlock, player);
 			}
-			tree.getWorld().destroyBlock(logBlock, true);
+			world.destroyBlock(logBlock, true);
 		});
 		if(isFullyBroken){
-			final int radius = Config.COMMON.forceBreakLeavesRadius.get();
+			final int radius = Config.COMMON.getTreesConfiguration().getLavesBreakingForceRadius();
 			if(radius > 0){
 				tree.getLogs().stream().max(Comparator.comparingInt(BlockPos::getY)).ifPresent(topLog -> {
 					BlockPos.Mutable checkPos = new BlockPos.Mutable();
@@ -109,9 +100,9 @@ public class TreeHandler{
 	
 	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
 		final ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-		final boolean isWhitelistedTool = heldItem.getItem() instanceof AxeItem || Config.COMMON.getWhitelistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
+		final boolean isWhitelistedTool = heldItem.getItem() instanceof AxeItem || Config.COMMON.getToolsConfiguration().getWhitelisted().anyMatch(tool -> tool.equals(heldItem.getItem()));
 		if(isWhitelistedTool){
-			final boolean isBlacklistedTool = Config.COMMON.getBlacklistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
+			final boolean isBlacklistedTool = Config.COMMON.getToolsConfiguration().getBlacklisted().anyMatch(tool -> tool.equals(heldItem.getItem()));
 			return !isBlacklistedTool;
 		}
 		return false;

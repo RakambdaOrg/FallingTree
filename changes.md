@@ -1,1 +1,1 @@
-- Delay breaking leaves by a few ticks making (fixes #6)
+- Refactor configuration by using categories thus making it a bit clearer than having everything stacked up at the same place. (/!\ You may have to redo your configuration if you changed values so back up the configuration before updating in order to copy values after)
