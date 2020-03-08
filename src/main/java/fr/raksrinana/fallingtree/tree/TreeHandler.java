@@ -38,6 +38,16 @@ public class TreeHandler{
 		return Optional.of(tree);
 	}
 	
+	public static boolean isTreeBlock(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
+		final Block block = world.getBlockState(blockPos).getBlock();
+		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS) || Config.COMMON.getTreesConfiguration().getWhitelistedLogs().anyMatch(log -> log.equals(block));
+		if(isWhitelistedBlock){
+			final boolean isBlacklistedBlock = Config.COMMON.getTreesConfiguration().getBlacklistedLogs().anyMatch(log -> log.equals(block));
+			return !isBlacklistedBlock;
+		}
+		return false;
+	}
+	
 	@Nonnull
 	private static Collection<BlockPos> neighborLogs(@Nonnull IWorld world, @Nonnull Block logBlock, @Nonnull BlockPos blockPos, @Nonnull Collection<BlockPos> analyzedPos){
 		List<BlockPos> neighborLogs = new LinkedList<>();
@@ -85,9 +95,11 @@ public class TreeHandler{
 						for(int dy = -radius; dy < radius; dy++){
 							for(int dz = -radius; dz < radius; dz++){
 								checkPos.setPos(topLog.getX() + dx, topLog.getY() + dy, topLog.getZ() + dz);
-								final BlockState checkState = tree.getWorld().getBlockState(checkPos);
-								if(BlockTags.LEAVES.contains(checkState.getBlock())){
-									tree.getWorld().destroyBlock(checkPos, true);
+								final BlockState checkState = world.getBlockState(checkPos);
+								final Block checkBlock = checkState.getBlock();
+								if(BlockTags.LEAVES.contains(checkBlock)){
+									Block.spawnDrops(checkState, world, checkPos);
+									world.removeBlock(checkPos, false);
 								}
 							}
 						}
