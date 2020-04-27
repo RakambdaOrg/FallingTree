@@ -1,2 +1,1 @@
-- Refactor configuration by using categories thus making it a bit clearer than having everything stacked up at the same place. (/!\ You may have to redo your configuration if you changed values so back up the configuration before updating in order to copy values after)
-- Break leaves without sound when using force breaking leaves (the option with the radius) to avoid breaking your ears (#7)
+- Backport to 1.12.2

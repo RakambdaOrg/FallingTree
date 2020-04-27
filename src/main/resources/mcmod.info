@@ -1,0 +1,14 @@
+[{
+  "modid": "falling_tree",
+  "name": "Falling Tree",
+  "description": "Cut trees in one cut",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://www.curseforge.com/minecraft/mc-mods/falling-tree",
+  "updateUrl": "https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.12.2/update.json",
+  "authorList": ["RakSrinaNa"],
+  "credits": "",
+  "logoFile": "logo.png",
+  "screenshots": [],
+  "dependencies": []
+}]

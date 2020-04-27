@@ -1,27 +1,21 @@
 package fr.raksrinana.fallingtree.config;
 
+import fr.raksrinana.fallingtree.FallingTree;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import javax.annotation.Nullable;
 
+@Config(modid = FallingTree.MOD_ID)
 public class CommonConfig{
-	private final TreeConfiguration trees;
-	private final ToolConfiguration tools;
-	private final ForgeConfigSpec.BooleanValue reverseSneaking;
-	
-	public CommonConfig(ForgeConfigSpec.Builder builder){
-		builder.comment("Falling Tree configuration");
-		builder.push("trees");
-		trees = new TreeConfiguration(builder);
-		builder.pop();
-		builder.push("tools");
-		tools = new ToolConfiguration(builder);
-		builder.pop();
-		reverseSneaking = builder.comment("When set to true, a tree will only be chopped down if the player is sneaking").define("reverse_sneaking", false);
-	}
+	@Config.Name("reverse_sneaking")
+	@Config.Comment("When set to true, a tree will only be chopped down if the player is sneaking")
+	public static boolean reverseSneaking = false;
 	
 	@Nullable
 	public static Block getBlock(String name){
@@ -43,15 +37,16 @@ public class CommonConfig{
 		}
 	}
 	
-	public ToolConfiguration getToolsConfiguration(){
-		return this.tools;
-	}
-	
-	public TreeConfiguration getTreesConfiguration(){
-		return this.trees;
-	}
-	
 	public boolean isReverseSneaking(){
-		return this.reverseSneaking.get();
+		return reverseSneaking;
+	}
+	
+	@Mod.EventBusSubscriber(modid = FallingTree.MOD_ID)
+	private static class Handler{
+		public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event){
+			if(event.getModID().equals(FallingTree.MOD_ID)){
+				ConfigManager.sync(FallingTree.MOD_ID, Config.Type.INSTANCE);
+			}
+		}
 	}
 }

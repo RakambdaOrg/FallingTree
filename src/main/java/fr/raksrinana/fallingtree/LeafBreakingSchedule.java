@@ -1,15 +1,15 @@
 package fr.raksrinana.fallingtree;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.WorldServer;
 import java.util.Objects;
 
 public class LeafBreakingSchedule{
-	private final ServerWorld world;
+	private final WorldServer world;
 	private final BlockPos blockPos;
 	private int remainingTicks;
 	
-	public LeafBreakingSchedule(ServerWorld world, BlockPos blockPos, int remainingTicks){
+	public LeafBreakingSchedule(WorldServer world, BlockPos blockPos, int remainingTicks){
 		this.world = world;
 		this.blockPos = blockPos;
 		this.remainingTicks = remainingTicks;
@@ -27,7 +27,7 @@ public class LeafBreakingSchedule{
 		return blockPos;
 	}
 	
-	public ServerWorld getWorld(){
+	public WorldServer getWorld(){
 		return world;
 	}
 	
