@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -72,21 +73,25 @@ public class TreeHandler{
 	
 	public static boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
 		final World world = tree.getWorld();
-		int toolUsesLeft = (!tool.isDamageable() || Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss()) ? Integer.MAX_VALUE : tool.getMaxDamage() - tool.getDamage();
+		final boolean noToolLoss = (!tool.isDamageable() || Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss());
+		final int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
+		int toolUsesLeft = noToolLoss ? Integer.MAX_VALUE : ((tool.getMaxDamage() - tool.getDamage()) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			toolUsesLeft--;
 		}
 		if(toolUsesLeft < 1){
 			return false;
 		}
-		final boolean isFullyBroken = Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss() || (tool.getMaxDamage() - tool.getDamage()) >= tree.getLogCount();
+		final boolean isTreeFullyBroken = noToolLoss || toolUsesLeft >= tree.getLogCount();
 		tree.getLogs().stream().limit(toolUsesLeft).forEachOrdered(logBlock -> {
+			final BlockState logState = world.getBlockState(logBlock);
 			if(!Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss()){
-				tool.onBlockDestroyed(world, world.getBlockState(logBlock), logBlock, player);
+				tool.damageItem(damageMultiplicand, player, (entity) -> {});
 			}
+			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
 			world.destroyBlock(logBlock, true);
 		});
-		if(isFullyBroken){
+		if(isTreeFullyBroken){
 			final int radius = Config.COMMON.getTreesConfiguration().getLavesBreakingForceRadius();
 			if(radius > 0){
 				tree.getLogs().stream().max(Comparator.comparingInt(BlockPos::getY)).ifPresent(topLog -> {
