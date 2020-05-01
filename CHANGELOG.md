@@ -1,3 +1,6 @@
+## [1.15.2-2.1.2] - 2020-05-01
+- Apply silk touch effect (useful if whitelisting mushrooms for example).
+
 ## [1.15.2-2.1.1] - 2020-04-29
 - Add new configuration `tools > damage_multiplicand` to control how much damage the tools take (#9).
 

@@ -1,1 +1,1 @@
-- Add new configuration `tools > damage_multiplicand` to control how much damage the tools take (#9).
+- Apply silk touch effect (useful if whitelisting mushrooms for example).

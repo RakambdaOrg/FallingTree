@@ -89,7 +89,8 @@ public class TreeHandler{
 				tool.damageItem(damageMultiplicand, player, (entity) -> {});
 			}
 			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
-			world.destroyBlock(logBlock, true);
+			logState.getBlock().harvestBlock(world, player, logBlock, logState, world.getTileEntity(logBlock), tool);
+			world.destroyBlock(logBlock, false);
 		});
 		if(isTreeFullyBroken){
 			final int radius = Config.COMMON.getTreesConfiguration().getLavesBreakingForceRadius();
