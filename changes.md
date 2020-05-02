@@ -1,1 +1,1 @@
-- Apply silk touch effect (useful if whitelisting mushrooms for example).
+- Add whitelist/blacklist for leaves.

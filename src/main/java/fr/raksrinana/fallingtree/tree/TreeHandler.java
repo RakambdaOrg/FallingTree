@@ -4,11 +4,8 @@ import fr.raksrinana.fallingtree.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -16,16 +13,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
+import static fr.raksrinana.fallingtree.FallingTreeUtils.isLeafBlock;
+import static fr.raksrinana.fallingtree.FallingTreeUtils.isTreeBlock;
 
 public class TreeHandler{
 	@Nonnull
 	public static Optional<Tree> getTree(@Nonnull World world, @Nonnull BlockPos blockPos){
-		if(!isTreeBlock(world, blockPos)){
+		Block logBlock = world.getBlockState(blockPos).getBlock();
+		if(!isTreeBlock(logBlock)){
 			return Optional.empty();
 		}
 		Queue<BlockPos> toAnalyzePos = new LinkedList<>();
 		Set<BlockPos> analyzedPos = new HashSet<>();
-		Block logBlock = world.getBlockState(blockPos).getBlock();
 		Tree tree = new Tree(world, blockPos);
 		toAnalyzePos.add(blockPos);
 		while(!toAnalyzePos.isEmpty()){
@@ -37,16 +36,6 @@ public class TreeHandler{
 			toAnalyzePos.addAll(nearbyPos.stream().filter(pos -> !toAnalyzePos.contains(pos)).collect(Collectors.toList()));
 		}
 		return Optional.of(tree);
-	}
-	
-	public static boolean isTreeBlock(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
-		final Block block = world.getBlockState(blockPos).getBlock();
-		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS) || Config.COMMON.getTreesConfiguration().getWhitelistedLogs().anyMatch(log -> log.equals(block));
-		if(isWhitelistedBlock){
-			final boolean isBlacklistedBlock = Config.COMMON.getTreesConfiguration().getBlacklistedLogs().anyMatch(log -> log.equals(block));
-			return !isBlacklistedBlock;
-		}
-		return false;
 	}
 	
 	@Nonnull
@@ -103,7 +92,7 @@ public class TreeHandler{
 								checkPos.setPos(topLog.getX() + dx, topLog.getY() + dy, topLog.getZ() + dz);
 								final BlockState checkState = world.getBlockState(checkPos);
 								final Block checkBlock = checkState.getBlock();
-								if(BlockTags.LEAVES.contains(checkBlock)){
+								if(isLeafBlock(checkBlock)){
 									Block.spawnDrops(checkState, world, checkPos);
 									world.removeBlock(checkPos, false);
 								}
@@ -114,15 +103,5 @@ public class TreeHandler{
 			}
 		}
 		return true;
-	}
-	
-	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
-		final ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-		final boolean isWhitelistedTool = heldItem.getItem() instanceof AxeItem || Config.COMMON.getToolsConfiguration().getWhitelisted().anyMatch(tool -> tool.equals(heldItem.getItem()));
-		if(isWhitelistedTool){
-			final boolean isBlacklistedTool = Config.COMMON.getToolsConfiguration().getBlacklisted().anyMatch(tool -> tool.equals(heldItem.getItem()));
-			return !isBlacklistedTool;
-		}
-		return false;
 	}
 }

@@ -1,3 +1,6 @@
+## [1.15.2-2.1.3] - 2020-05-02
+- Add whitelist/blacklist for leaves.
+
 ## [1.15.2-2.1.2] - 2020-05-01
 - Apply silk touch effect (useful if whitelisting mushrooms for example).
 

@@ -6,7 +6,6 @@ import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +20,8 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nonnull;
 import java.util.Iterator;
 import java.util.Set;
+import static fr.raksrinana.fallingtree.FallingTreeUtils.canPlayerBreakTree;
+import static fr.raksrinana.fallingtree.FallingTreeUtils.isLeafBlock;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventSubscriber{
@@ -51,7 +52,7 @@ public final class ForgeEventSubscriber{
 		if(Config.COMMON.isReverseSneaking() != player.isCrouching()){
 			return false;
 		}
-		return TreeHandler.canPlayerBreakTree(player);
+		return canPlayerBreakTree(player);
 	}
 	
 	@SubscribeEvent
@@ -66,7 +67,7 @@ public final class ForgeEventSubscriber{
 					BlockPos neighborPos = eventPos.offset(facing);
 					if(world.isBlockLoaded(neighborPos)){
 						BlockState neighborState = event.getWorld().getBlockState(neighborPos);
-						if(BlockTags.LEAVES.contains(neighborState.getBlock())){
+						if(isLeafBlock(neighborState.getBlock())){
 							scheduledLeavesBreaking.add(new LeafBreakingSchedule(world, neighborPos, 4));
 						}
 					}
@@ -86,7 +87,7 @@ public final class ForgeEventSubscriber{
 					if(world.isBlockLoaded(leafBreakingSchedule.getBlockPos())){
 						BlockState state = world.getBlockState(leafBreakingSchedule.getBlockPos());
 						Block block = state.getBlock();
-						if(BlockTags.LEAVES.contains(block)){
+						if(isLeafBlock(block)){
 							block.randomTick(state, world, leafBreakingSchedule.getBlockPos(), world.getRandom());
 						}
 						else{
