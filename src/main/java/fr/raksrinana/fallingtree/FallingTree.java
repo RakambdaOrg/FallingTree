@@ -15,8 +15,6 @@ import javax.annotation.Nonnull;
 @Mod(FallingTree.MOD_ID)
 public class FallingTree{
 	public static final String MOD_ID = "falling_tree";
-	public static final String MOD_NAME = "Falling Tree";
-	public static final String VERSION = "2.1.3";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 	
 	public FallingTree(){

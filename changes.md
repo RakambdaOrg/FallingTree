@@ -1,1 +1,1 @@
-- Add whitelist/blacklist for leaves.
+- Do not cancel event so other mods can see it. Project MMO should now gather stats about the broken log (#11).

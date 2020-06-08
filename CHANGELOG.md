@@ -1,3 +1,6 @@
+## [1.15.2-2.1.4] - 2020-06-08
+- Do not cancel event so other mods can see it. Project MMO should now gather stats about the broken log (#11).
+
 ## [1.15.2-2.1.3] - 2020-05-02
 - Add whitelist/blacklist for leaves.
 

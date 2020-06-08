@@ -48,11 +48,6 @@ javadoc {
 }
 
 archivesBaseName = project.archivesBaseName
-def versionInfo = getModVersion()
-System.out.println(versionInfo)
-version = "${versionInfo['version']}"
-def build_num = getBuildNumber()
-
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
@@ -95,7 +90,7 @@ jar {
                     "Specification-Vendor"    : "RakSrinaNa",
                     "Specification-Version"   : "0.2",
                     "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : "${version}",
+                    "Implementation-Version"  : project.version,
                     "Implementation-Vendor"   : "RakSrinaNa",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
     }
@@ -142,7 +137,7 @@ githubRelease {
     repo = project.repoName
     token = buildProperties.secrets['github_token'].string
     tagName = "${project.mc_version}-${project.version}"
-    releaseName = "${project.mc_version}-${versionInfo['version_short']}"
+    releaseName = "${project.mc_version}-${project.version}"
     targetCommitish = "${project.mc_version}"
     body {
         return getLatestChangeLog()
@@ -161,122 +156,6 @@ artifacts {
     }
 }
 
-// Version stuff
-
-def getModVersion() {
-    try {
-        return getGitVersion()
-    } catch (Exception ex) {
-        System.out.println("Git version failed, falling back to old method")
-        return getVersion('VERSION', getModFile())
-    }
-}
-
-def getGitVersion() {
-    // Call git command
-    def outStream = new ByteArrayOutputStream()
-    def result = exec {
-        executable = 'git'
-        args = ['describe', '--long']
-        standardOutput = outStream
-    }
-
-    def fullVersion = outStream.toString().trim()
-    def matcher = fullVersion =~ /(\d+).(\d+).(\d+)-(.*)/
-
-    def maj = matcher[0][1]
-    def min = matcher[0][2]
-    def rev = matcher[0][3]
-    def bn = getBuildNumber()
-
-    return makeVersionMap(maj, min, rev, bn, matcher[0][4])
-}
-
-static def makeVersionMap(maj, min, rev, bn, githash) {
-    def out = [:]
-    out['build.major.number'] = maj.toString()
-    out['build.minor.number'] = min.toString()
-    out['build.revision.number'] = rev.toString()
-    out['build.githash'] = githash
-    out['build.number'] = bn.toString()
-    out['version_short'] = "${maj}.${min}.${rev}".toString()
-    out['version'] = "${maj}.${min}.${rev}+${bn}".toString()
-    return out
-}
-
-// Modified old version getter
-def getVersion(String type, String mod_file) {
-    String maj = '0'
-    String min = '0'
-    String rev = '0'
-    String bn = getBuildNumber()
-
-    File file = file(mod_file)
-    def prefix = ~/^(?:public|protected|private) static final String $type = ".*$/
-    file.eachLine { String s ->
-        s = s.trim()
-        if (s ==~ prefix || prefix.matcher(s).matches()) {
-            String[] bits = s.split("=")
-            String interesting = bits[1].trim()
-            interesting = interesting.substring(1, interesting.length() - 2)
-            String[] pts = interesting.trim().split("\\.")
-
-            maj = pts[0] ?: '0'
-            min = pts[1] ?: '0'
-            rev = pts[2] ?: '0'
-        }
-    }
-
-    return makeVersionMap(maj, min, rev, bn, 'unknown')
-}
-
-// Used by old getVersion
-String getModFile() {
-    String path = ''
-    FileTree tree = fileTree(dir: 'src/main/java')
-    tree.include '**/*.java'
-    tree.visit { element ->
-        if (element.file.isFile()) {
-            element.file.eachLine { String s ->
-                s = s.trim()
-                if (s.startsWith('@Mod(')) {
-                    path = "src/main/java/$element.relativePath"
-                }
-            }
-        }
-    }
-    return path
-}
-
-// Build number tracking
-
-String getBuildNumber() {
-    def versionFile = file('version.properties')
-    if (versionFile.canRead()) {
-        Properties versionProps = new Properties()
-        versionProps.load(new FileInputStream(versionFile))
-        return versionProps['build_num'].toString()
-    }
-    return "1"
-}
-
-task incrementBuild {
-    doFirst {
-        def versionFile = file('version.properties')
-        if (versionFile.canRead()) {
-            Properties versionProps = new Properties()
-            versionProps.load(new FileInputStream(versionFile))
-            def num = versionProps['build_num'].toInteger() + 1
-            println("incrementing BuildNumber to: " + num)
-            versionProps['build_num'] = num.toString()
-            versionProps.store(versionFile.newWriter(), null)
-        } else {
-            println("version.properties file not found! Ignoring.")
-        }
-    }
-}
-build.finalizedBy incrementBuild // only increment on successful builds
-
 // Update JSON management
 
 import groovy.json.JsonOutput
@@ -287,7 +166,7 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 def writeUpdateJson() {
-    def version = getModVersion()['version_short']
+    def version = project.version
     def slurper = new JsonSlurper()
     def file = new File('update.json')
     def json = slurper.parse(file)
@@ -340,10 +219,10 @@ void moveOldLog() {
     if (new_log_file.exists()) {
         if (!old_log_file.exists())
             old_log_file.createNewFile()
-        def version = getModVersion()
+        def version = project.version
         def dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         def currDate = LocalDate.now()
-        def combined = "## [${project.mc_version}-${version['version_short']}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
+        def combined = "## [${project.mc_version}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
         old_log_file.setText(combined)
     }
 }

@@ -33,9 +33,7 @@ public final class ForgeEventSubscriber{
 			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
 				TreeHandler.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
 					if(Config.COMMON.getTreesConfiguration().getMaxSize() >= tree.getLogCount()){
-						if(TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
-							event.setCanceled(true);
-						}
+						TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND));
 					}
 					else{
 						event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()));
