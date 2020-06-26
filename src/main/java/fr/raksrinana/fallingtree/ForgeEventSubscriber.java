@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -36,7 +37,7 @@ public final class ForgeEventSubscriber{
 						TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND));
 					}
 					else{
-						event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()));
+						event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()), Util.field_240973_b_);
 					}
 				});
 			}

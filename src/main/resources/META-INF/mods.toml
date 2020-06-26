@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[32,)"
 issueTrackerURL="https://github.com/RakSrinaNa/FallingTree/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/falling-tree"
 logoFile="logo.png"
@@ -16,12 +16,12 @@ authors="RakSrinaNa"
 [[dependencies.falling_tree]]
     modId="forge"
     mandatory=true
-    versionRange="[31.0.0,)"
+    versionRange="[32.0.0,)"
     ordering="NONE"
 	side="BOTH"
 [[dependencies.falling_tree]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]"
+    versionRange="[1.16.1]"
     ordering="NONE"
     side="BOTH"
