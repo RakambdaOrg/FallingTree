@@ -23,7 +23,7 @@ public class TreeConfiguration{
 		whitelistedLeaves = builder.comment("Additional list of blocks (those marked with the leaves tag will already be whitelisted) considered as leaves").defineList("logs_whitelisted", Lists.newArrayList(), Objects::nonNull);
 		blacklistedLeaves = builder.comment("List of blocks that should not be considered as leaves (this wins over the whitelist)").defineList("logs_blacklisted", Lists.newArrayList(), Objects::nonNull);
 		maxSize = builder.comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.").defineInRange("logs_max_count", 100, 1, Integer.MAX_VALUE);
-		lavesBreaking = builder.comment("When set to true, leaves that should naturally break will be broken instantly").define("leaves_breaking", false);
+		lavesBreaking = builder.comment("When set to true, leaves that should naturally break will be broken instantly").define("leaves_breaking", true);
 		lavesBreakingForceRadius = builder.comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed. The radius is applied from one of the top most log blocks. break_leaves must be activated for this to take effect.").defineInRange("leaves_breaking_force_radius", 0, 0, 10);
 	}
 	

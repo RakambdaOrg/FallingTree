@@ -6,7 +6,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import javax.annotation.Nonnull;
@@ -62,25 +64,29 @@ public class TreeHandler{
 	
 	public static boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
 		final World world = tree.getWorld();
-		final boolean noToolLoss = (!tool.isDamageable() || Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss());
 		final int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
-		int toolUsesLeft = noToolLoss ? Integer.MAX_VALUE : ((tool.getMaxDamage() - tool.getDamage()) / damageMultiplicand);
+		final int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
+		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
-			toolUsesLeft--;
-		}
-		if(toolUsesLeft < 1){
-			return false;
-		}
-		final boolean isTreeFullyBroken = noToolLoss || toolUsesLeft >= tree.getLogCount();
-		tree.getLogs().stream().limit(toolUsesLeft).forEachOrdered(logBlock -> {
-			final BlockState logState = world.getBlockState(logBlock);
-			if(!Config.COMMON.getToolsConfiguration().isIgnoreDurabilityLoss()){
-				tool.damageItem(damageMultiplicand, player, (entity) -> {});
+			if(rawWeightedUsesLeft <= 1){
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.field_240973_b_);
+				return false;
 			}
+			if(tree.getLogCount() >= rawWeightedUsesLeft){
+				rawWeightedUsesLeft = Math.ceil(rawWeightedUsesLeft) - 1;
+			}
+		}
+		final boolean isTreeFullyBroken = damageMultiplicand == 0 || rawWeightedUsesLeft >= tree.getLogCount();
+		tree.getLogs().stream().limit((int) rawWeightedUsesLeft).forEachOrdered(logBlock -> {
+			final BlockState logState = world.getBlockState(logBlock);
 			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
 			logState.getBlock().harvestBlock(world, player, logBlock, logState, world.getTileEntity(logBlock), tool);
 			world.destroyBlock(logBlock, false);
 		});
+		int toolDamage = (damageMultiplicand * (int) Math.min(tree.getLogCount(), rawWeightedUsesLeft)) - 1;
+		if(toolDamage > 0){
+			tool.damageItem(toolDamage, player, (entity) -> {});
+		}
 		if(isTreeFullyBroken){
 			final int radius = Config.COMMON.getTreesConfiguration().getLavesBreakingForceRadius();
 			if(radius > 0){
