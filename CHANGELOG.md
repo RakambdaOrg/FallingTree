@@ -1,3 +1,6 @@
+## [1.16.1-2.1.6] - 2020-07-18
+- Add option in the configuration (`break_in_creative`) to cut down trees even when in creative
+
 ## [1.16.1-2.1.5] - 2020-07-09
 - Remove ignoreDurabilityLoss, it wasn't working anyway since b5122b87c09e137e95402b14d2621b190bae646b as the event isn't cancelled anymore
 - Fix an issue where 1 more durability is applied on the tool

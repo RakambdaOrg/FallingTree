@@ -47,10 +47,10 @@ public final class ForgeEventSubscriber{
 	}
 	
 	private static boolean isPlayerInRightState(PlayerEntity player){
-		if(player.abilities.isCreativeMode && !FallingTree.isDevBuild()){
+		if(player.abilities.isCreativeMode && !Config.COMMON.isBreakInCreative()){
 			return false;
 		}
-		if(Config.COMMON.isReverseSneaking() != player.isCrouching()){
+		if(Config.COMMON.isReverseSneaking() != player.isSneaking()){
 			return false;
 		}
 		return canPlayerBreakTree(player);
