@@ -14,6 +14,7 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLeaves;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLeaves;
 	private final ForgeConfigSpec.IntValue maxSize;
+	private final ForgeConfigSpec.IntValue minimumLeavesAroundRequired;
 	private final ForgeConfigSpec.BooleanValue lavesBreaking;
 	private final ForgeConfigSpec.IntValue lavesBreakingForceRadius;
 	
@@ -25,6 +26,7 @@ public class TreeConfiguration{
 		maxSize = builder.comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.").defineInRange("logs_max_count", 100, 1, Integer.MAX_VALUE);
 		lavesBreaking = builder.comment("When set to true, leaves that should naturally break will be broken instantly").define("leaves_breaking", true);
 		lavesBreakingForceRadius = builder.comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed. The radius is applied from one of the top most log blocks. break_leaves must be activated for this to take effect.").defineInRange("leaves_breaking_force_radius", 0, 0, 10);
+		minimumLeavesAroundRequired = builder.comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree").defineInRange("minimum_leaves_around_required", 0, 0, 5);
 	}
 	
 	public Collection<Block> getBlacklistedLeaves(){
@@ -41,6 +43,10 @@ public class TreeConfiguration{
 	
 	public int getMaxSize(){
 		return this.maxSize.get();
+	}
+	
+	public int getMinimumLeavesAroundRequired(){
+		return this.minimumLeavesAroundRequired.get();
 	}
 	
 	public Collection<Block> getWhitelistedLeaves(){

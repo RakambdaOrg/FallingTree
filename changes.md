@@ -1,1 +1,1 @@
-- Add option in the configuration (`break_in_creative`) to cut down trees even when in creative
+- Add an option (`minimum_leaves_around_required` default `0`) to tell how many leaves blocks should be at the top of the tree to apply the mod. This should be useful if you want to break only trees an not your houses. Set it to something like 3 and the whole log stack will be cut only if there's at least 3 leaves next to the top most log.

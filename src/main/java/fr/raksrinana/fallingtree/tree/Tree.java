@@ -4,10 +4,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Tree{
 	private final World world;
@@ -24,6 +21,10 @@ public class Tree{
 		if(Objects.nonNull(blockPos)){
 			this.logs.add(blockPos);
 		}
+	}
+	
+	public Optional<BlockPos> getTopMostLog(){
+		return logs.stream().max(Comparator.comparingInt(BlockPos::getY));
 	}
 	
 	public int getLogCount(){

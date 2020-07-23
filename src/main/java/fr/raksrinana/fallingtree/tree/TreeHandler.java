@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -37,7 +38,20 @@ public class TreeHandler{
 			nearbyPos.removeAll(analyzedPos);
 			toAnalyzePos.addAll(nearbyPos.stream().filter(pos -> !toAnalyzePos.contains(pos)).collect(Collectors.toList()));
 		}
-		return Optional.of(tree);
+		
+		int aroundRequired = Config.COMMON.getTreesConfiguration().getMinimumLeavesAroundRequired();
+		if(tree.getTopMostLog().map(topLog -> getLeavesAround(world, topLog) >= aroundRequired).orElseGet(() -> aroundRequired == 0)){
+			return Optional.of(tree);
+		}
+		
+		return Optional.empty();
+	}
+	
+	private static long getLeavesAround(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
+		return Arrays.stream(Direction.values())
+				.map(blockPos::offset)
+				.filter(testPos -> isLeafBlock(world.getBlockState(testPos).getBlock()))
+				.count();
 	}
 	
 	@Nonnull
