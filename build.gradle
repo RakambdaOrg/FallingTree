@@ -18,8 +18,8 @@ plugins {
 buildProperties {
     secrets {
         using(file('secrets.properties')).or(System.getenv()).or([
-                "curseforge_api_key": "N/A",
-                "github_token"      : "N/A"
+                "CURSEFORGE_API_KEY": "N/A",
+                "GITHUB_TOKEN"      : "N/A"
         ])
     }
 }
@@ -115,7 +115,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 curseforge {
-    apiKey = buildProperties.secrets['curseforge_api_key'].string
+    apiKey = buildProperties.secrets['CURSEFORGE_API_KEY'].string
     project {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
@@ -135,7 +135,7 @@ curseforge {
 githubRelease {
     owner = "RakSrinaNa"
     repo = project.repoName
-    token = buildProperties.secrets['github_token'].string
+    token = buildProperties.secrets['GITHUB_TOKEN'].string
     tagName = "${project.mc_version}-${project.version}"
     releaseName = "${project.mc_version}-${project.version}"
     targetCommitish = "${project.mc_version}"
