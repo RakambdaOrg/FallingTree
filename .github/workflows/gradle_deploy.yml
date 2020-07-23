@@ -1,4 +1,4 @@
-name: Build
+name: Curse deploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  build:
+  curse:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
