@@ -6,6 +6,7 @@ public class CommonConfig{
 	private final TreeConfiguration trees;
 	private final ToolConfiguration tools;
 	private final ForgeConfigSpec.BooleanValue reverseSneaking;
+	private final ForgeConfigSpec.BooleanValue breakInCreative;
 	
 	public CommonConfig(ForgeConfigSpec.Builder builder){
 		builder.comment("Falling Tree configuration");
@@ -16,6 +17,7 @@ public class CommonConfig{
 		tools = new ToolConfiguration(builder);
 		builder.pop();
 		reverseSneaking = builder.comment("When set to true, a tree will only be chopped down if the player is sneaking").define("reverse_sneaking", false);
+		breakInCreative = builder.comment("When set to true, the mod will cut down trees in creative too").define("break_in_creative", false);
 	}
 	
 	public ToolConfiguration getToolsConfiguration(){
@@ -28,5 +30,9 @@ public class CommonConfig{
 	
 	public boolean isReverseSneaking(){
 		return this.reverseSneaking.get();
+	}
+	
+	public boolean isBreakInCreative(){
+		return this.breakInCreative.get();
 	}
 }

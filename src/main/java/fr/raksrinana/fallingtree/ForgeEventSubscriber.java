@@ -33,7 +33,9 @@ public final class ForgeEventSubscriber{
 			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
 				TreeHandler.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
 					if(Config.COMMON.getTreesConfiguration().getMaxSize() >= tree.getLogCount()){
-						TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND));
+						if(!TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
+							event.setCanceled(true);
+						}
 					}
 					else{
 						event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()));
@@ -44,10 +46,10 @@ public final class ForgeEventSubscriber{
 	}
 	
 	private static boolean isPlayerInRightState(PlayerEntity player){
-		if(player.abilities.isCreativeMode && !FallingTree.isDevBuild()){
+		if(player.abilities.isCreativeMode && !Config.COMMON.isBreakInCreative()){
 			return false;
 		}
-		if(Config.COMMON.isReverseSneaking() != player.isCrouching()){
+		if(Config.COMMON.isReverseSneaking() != player.isSneaking()){
 			return false;
 		}
 		return canPlayerBreakTree(player);
