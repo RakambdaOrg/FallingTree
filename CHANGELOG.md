@@ -1,3 +1,7 @@
+## [1.16.1-2.1.8] - 2020-07-29
+* Add new `license` field in mod description
+* On servers the mod is now only required server-side (so clients can join without the mod)
+
 ## [1.16.1-2.1.7] - 2020-07-23
 - Add an option (`minimum_leaves_around_required` default `0`) to tell how many leaves blocks should be at the top of the tree to apply the mod. This should be useful if you want to break only trees an not your houses. Set it to something like 3 and the whole log stack will be cut only if there's at least 3 leaves next to the top most log.
 

@@ -4,7 +4,8 @@ issueTrackerURL="https://github.com/RakSrinaNa/FallingTree/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/falling-tree"
 logoFile="logo.png"
 # credits=""
-authors="RakSrinaNa"
+authors = "RakSrinaNa"
+license = "GPL-3.0"
 
 [[mods]] #mandatory
 	modId="falling_tree"
