@@ -1,8 +1,6 @@
 ## [1.16.1-2.2.1] - 2020-07-31
 * Remove some useless logs in the console.
-
 * Add an option `speed_multiplicand` to modify the breaking speed of the log.
-
 * Improve shift_down mode for big trees.
 
 ## [1.16.1-2.2.0] - 2020-07-31
