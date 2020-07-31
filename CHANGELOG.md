@@ -1,3 +1,10 @@
+## [1.16.1-2.2.1] - 2020-07-31
+* Remove some useless logs in the console.
+
+* Add an option `speed_multiplicand` to modify the breaking speed of the log.
+
+* Improve shift_down mode for big trees.
+
 ## [1.16.1-2.2.0] - 2020-07-31
 * Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
 * Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.

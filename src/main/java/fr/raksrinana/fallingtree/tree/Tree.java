@@ -23,8 +23,18 @@ public class Tree{
 		}
 	}
 	
+	public Optional<BlockPos> getTopMostFurthestLog(){
+		return getTopMostLog().flatMap(topMost -> logs.stream()
+				.filter(log -> Objects.equals(log.getY(), topMost.getY()))
+				.max(Comparator.comparingInt(this::getDistanceFromHit)));
+	}
+	
 	public Optional<BlockPos> getTopMostLog(){
 		return logs.stream().max(Comparator.comparingInt(BlockPos::getY));
+	}
+	
+	public int getDistanceFromHit(BlockPos pos){
+		return Math.abs(hitPos.getX() - pos.getX()) + Math.abs(hitPos.getY() - pos.getY()) + Math.abs(hitPos.getZ() - pos.getZ());
 	}
 	
 	public int getLogCount(){

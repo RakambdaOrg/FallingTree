@@ -136,7 +136,7 @@ public class TreeHandler{
 				return false;
 			}
 		}
-		tree.getTopMostLog().ifPresent(logBlock -> {
+		tree.getTopMostFurthestLog().ifPresent(logBlock -> {
 			final BlockState logState = world.getBlockState(logBlock);
 			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
 			logState.getBlock().harvestBlock(world, player, tree.getHitPos(), logState, world.getTileEntity(logBlock), tool);
