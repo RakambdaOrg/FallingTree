@@ -11,7 +11,7 @@ license = "GPL-3.0"
 modId = "falling_tree"
 version = "${file.jarVersion}"
 displayName = "Falling Tree"
-updateJSONURL = "https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.15.2/update.json"
+updateJSONURL = "https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.16.1/update.json"
 description = '''Change the way you cut tress.'''
 
 [[dependencies.falling_tree]]
