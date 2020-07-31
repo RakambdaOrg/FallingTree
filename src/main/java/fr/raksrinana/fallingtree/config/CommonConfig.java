@@ -16,8 +16,8 @@ public class CommonConfig{
 		builder.push("tools");
 		tools = new ToolConfiguration(builder);
 		builder.pop();
-		reverseSneaking = builder.comment("When set to true, a tree will only be chopped down if the player is sneaking").define("reverse_sneaking", false);
-		breakInCreative = builder.comment("When set to true, the mod will cut down trees in creative too").define("break_in_creative", false);
+		reverseSneaking = builder.comment("When set to true, a tree will only be chopped down if the player is sneaking.").define("reverse_sneaking", false);
+		breakInCreative = builder.comment("When set to true, the mod will cut down trees in creative too.").define("break_in_creative", false);
 	}
 	
 	public ToolConfiguration getToolsConfiguration(){

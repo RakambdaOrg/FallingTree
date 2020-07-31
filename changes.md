@@ -1,5 +1,5 @@
-- Remove ignoreDurabilityLoss, it wasn't working anyway since b5122b87c09e137e95402b14d2621b190bae646b as the event isn't cancelled anymore
-- Fix an issue where 1 more durability is applied on the tool
-- Setting damage multiplicand to 0 will have the effect of taking away 1 durability on the tool per cut (#12
-- Add option in the configuration (`break_in_creative`) to cut down trees even when in creative
-- Add an option (`minimum_leaves_around_required` default `0`) to tell how many leaves blocks should be at the top of the tree to apply the mod. This should be useful if you want to break only trees an not your houses. Set it to something like 3 and the whole log stack will be cut only if there's at least 3 leaves next to the top most log.
+* Add an option (`minimum_leaves_around_required` default `0`) to tell how many leaves blocks should be at the top of the tree to apply the mod. This should be useful if you want to break only trees an not your houses. Set it to something like 3 and the whole log stack will be cut only if there's at least 3 leaves next to the top most log.
+* On servers the mod is now only required server-side (so clients can join without the mod).
+* Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
+* Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.
+* Add an option `speed_multiplicand` to modify the breaking speed of the log.
