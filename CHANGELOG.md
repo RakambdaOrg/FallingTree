@@ -1,3 +1,7 @@
+## [1.16.1-2.2.0] - 2020-07-31
+* Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
+* Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.
+
 ## [1.16.1-2.1.8] - 2020-07-29
 * Add new `license` field in mod description
 * On servers the mod is now only required server-side (so clients can join without the mod)

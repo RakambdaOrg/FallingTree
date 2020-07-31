@@ -1,6 +1,8 @@
 package fr.raksrinana.fallingtree;
 
+import fr.raksrinana.fallingtree.config.BreakMode;
 import fr.raksrinana.fallingtree.config.Config;
+import fr.raksrinana.fallingtree.tree.Tree;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
 import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.block.Block;
@@ -33,17 +35,33 @@ public final class ForgeEventSubscriber{
 		if(!event.isCanceled() && !event.getWorld().isRemote()){
 			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
 				TreeHandler.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
-					if(Config.COMMON.getTreesConfiguration().getMaxSize() >= tree.getLogCount()){
-						if(!TreeHandler.destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
-							event.setCanceled(true);
-						}
+					BreakMode breakMode = Config.COMMON.getTreesConfiguration().getBreakMode();
+					System.out.println(breakMode);
+					if(breakMode == BreakMode.INSTANTANEOUS){
+						breakInstant(event, tree);
 					}
-					else{
-						event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()), Util.field_240973_b_);
+					else if(breakMode == BreakMode.SHIFT_DOWN){
+						breakShiftDown(event, tree);
 					}
 				});
 			}
 		}
+	}
+	
+	private static void breakInstant(BlockEvent.BreakEvent event, Tree tree){
+		if(Config.COMMON.getTreesConfiguration().getMaxSize() >= tree.getLogCount()){
+			if(!TreeHandler.destroyInstant(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
+				event.setCanceled(true);
+			}
+		}
+		else{
+			event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()), Util.field_240973_b_);
+		}
+	}
+	
+	private static void breakShiftDown(BlockEvent.BreakEvent event, Tree tree){
+		TreeHandler.destroyShift(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND));
+		event.setCanceled(true);
 	}
 	
 	private static boolean isPlayerInRightState(PlayerEntity player){

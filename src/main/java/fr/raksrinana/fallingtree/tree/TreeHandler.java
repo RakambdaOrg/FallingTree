@@ -76,7 +76,7 @@ public class TreeHandler{
 		return world.getBlockState(blockPos).getBlock().equals(logBlock);
 	}
 	
-	public static boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
+	public static boolean destroyInstant(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
 		final World world = tree.getWorld();
 		final int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
 		final int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
@@ -121,6 +121,30 @@ public class TreeHandler{
 					}
 				});
 			}
+		}
+		return true;
+	}
+	
+	public static boolean destroyShift(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
+		final World world = tree.getWorld();
+		final int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
+		final int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
+		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
+		if(Config.COMMON.getToolsConfiguration().isPreserve()){
+			if(rawWeightedUsesLeft <= 1){
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.field_240973_b_);
+				return false;
+			}
+		}
+		tree.getTopMostLog().ifPresent(logBlock -> {
+			final BlockState logState = world.getBlockState(logBlock);
+			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
+			logState.getBlock().harvestBlock(world, player, tree.getHitPos(), logState, world.getTileEntity(logBlock), tool);
+			world.destroyBlock(logBlock, false);
+		});
+		int toolDamage = damageMultiplicand;
+		if(toolDamage > 0){
+			tool.damageItem(toolDamage, player, (entity) -> {});
 		}
 		return true;
 	}

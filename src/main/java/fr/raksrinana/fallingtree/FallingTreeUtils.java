@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree;
 
 import fr.raksrinana.fallingtree.config.Config;
+import fr.raksrinana.fallingtree.config.ToolConfiguration;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -64,10 +65,11 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
+		final ToolConfiguration toolConfiguration = Config.COMMON.getToolsConfiguration();
 		final Item heldItem = player.getHeldItem(Hand.MAIN_HAND).getItem();
-		final boolean isWhitelistedTool = heldItem instanceof AxeItem || Config.COMMON.getToolsConfiguration().getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
+		final boolean isWhitelistedTool = toolConfiguration.isIgnoreTools() || heldItem instanceof AxeItem || toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
 		if(isWhitelistedTool){
-			final boolean isBlacklistedTool = Config.COMMON.getToolsConfiguration().getBlacklisted().stream().anyMatch(tool -> tool.equals(heldItem));
+			final boolean isBlacklistedTool = toolConfiguration.getBlacklisted().stream().anyMatch(tool -> tool.equals(heldItem));
 			return !isBlacklistedTool;
 		}
 		return false;
