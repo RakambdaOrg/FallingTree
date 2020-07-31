@@ -1,2 +1,3 @@
-* Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
-* Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.
+* Remove some useless logs in the console.
+
+* Add an option `speed_multiplicand` to modify the breaking speed of the log.
