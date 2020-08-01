@@ -1,3 +1,9 @@
+## [1.15.2-2.2.1] - 2020-08-01
+* On servers the mod is now only required server-side (so clients can join without the mod).
+* Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
+* Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.
+* Add an option `speed_multiplicand` to modify the breaking speed of the log.
+
 ## [1.15.2-2.1.7] - 2020-07-23
 - Remove ignoreDurabilityLoss, it wasn't working anyway since b5122b87c09e137e95402b14d2621b190bae646b as the event isn't cancelled anymore
 - Fix an issue where 1 more durability is applied on the tool
