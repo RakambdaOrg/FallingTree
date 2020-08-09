@@ -11,7 +11,7 @@ buildscript {
 
 plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id "com.github.breadmoirai.github-release" version "2.2.10"
+    id "com.github.breadmoirai.github-release" version '2.2.10'
     id 'com.novoda.build-properties' version '0.4.1'
 }
 
@@ -24,7 +24,6 @@ buildProperties {
     }
 }
 
-apply plugin: 'scala'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: "com.github.breadmoirai.github-release"
@@ -47,8 +46,10 @@ javadoc {
     failOnError = false
 }
 
-archivesBaseName = project.archivesBaseName
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+archivesBaseName = "${project.repoName}-${project.loader}-${project.minecraft_version}"
 
 minecraft {
     mappings channel: project.mcp_channel.toString(), version: project.mcp_mappings.toString()
@@ -97,19 +98,19 @@ jar {
 }
 
 task deobfJar(type: Jar) {
-    appendix = "${project.mc_version}"
+    appendix = "${project.minecraft_version}"
     classifier = 'deobf'
     from sourceSets.main.output
 }
 
 task sourcesJar(type: Jar) {
-    appendix = "${project.mc_version}"
+    appendix = "${project.minecraft_version}"
     classifier = 'sources'
     from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    appendix = "${project.mc_version}"
+    appendix = "${project.minecraft_version}"
     classifier = 'javadoc'
     from javadoc.getDestinationDir()
 }
@@ -119,15 +120,15 @@ curseforge {
     project {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
-        addGameVersion "${project.mc_version}"
+        addGameVersion project.minecraft_version
+        addGameVersion project.loader
         changelog = getLatestChangeLog()
         releaseType = "${project.curseforge_release_type}"
         mainArtifact(jar) {
-            displayName = "${project.archivesBaseName}-${project.mc_version}-${project.version}"
+            displayName = "${archivesBaseName}-${project.version}"
         }
     }
     options {
-        debug = false
         javaVersionAutoDetect = false
     }
 }
@@ -136,9 +137,9 @@ githubRelease {
     owner = "RakSrinaNa"
     repo = project.repoName
     token = buildProperties.secrets['GITHUB_TOKEN'].string
-    tagName = "${project.mc_version}-${project.version}"
-    releaseName = "${project.mc_version}-${project.version}"
-    targetCommitish = "${project.mc_version}"
+    tagName = "${archivesBaseName}-${project.version}"
+    releaseName = "${archivesBaseName}-${project.version}"
+    targetCommitish = "${project.minecraft_version}"
     body {
         return getLatestChangeLog()
     }
@@ -163,7 +164,6 @@ import groovy.json.JsonSlurper
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
 
 def writeUpdateJson() {
     def version = project.version
@@ -172,11 +172,11 @@ def writeUpdateJson() {
     def json = slurper.parse(file)
 
     // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
-    if (!json[project.mc_version].containsKey(version.toString()))
-        json[project.mc_version][version.toString()] = project.changelogUrl
-    json[project.mc_version] = json[project.mc_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)
-    json['promos']["${project.mc_version}-latest"] = version
-    json['promos']["${project.mc_version}-recommended"] = version
+    if (!json[project.minecraft_version].containsKey(version.toString()))
+        json[project.minecraft_version][version.toString()] = project.changelogUrl
+    json[project.minecraft_version] = json[project.minecraft_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)
+    json['promos']["${project.minecraft_version}-latest"] = version
+    json['promos']["${project.minecraft_version}-recommended"] = version
 
     println(json)
     file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
@@ -202,13 +202,6 @@ String getLatestChangeLog() {
 task makeChangeLog() {
     doLast {
         moveOldLog()
-
-        ProcessBuilder commiter = new ProcessBuilder("git", "commit", "-m", "v${project.version}")
-        def process1 = commiter.start()
-        process1.waitFor(10L, TimeUnit.SECONDS)
-        ProcessBuilder pusher = new ProcessBuilder("git", "push")
-        def process2 = pusher.start()
-        process2.waitFor(20L, TimeUnit.SECONDS)
     }
 }
 
@@ -222,7 +215,7 @@ void moveOldLog() {
         def version = project.version
         def dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         def currDate = LocalDate.now()
-        def combined = "## [${project.mc_version}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
+        def combined = "## [${project.loader}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
         old_log_file.setText(combined)
     }
 }
