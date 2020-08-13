@@ -1,3 +1,6 @@
+## [Forge-1.16.2-2.2.1] - 2020-08-13
+* Port to 1.16.2
+
 ## [1.16.1-2.2.1] - 2020-07-31
 * Remove some useless logs in the console.
 * Add an option `speed_multiplicand` to modify the breaking speed of the log.

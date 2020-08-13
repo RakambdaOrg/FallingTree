@@ -47,7 +47,7 @@ public class TreeConfiguration{
 				"INFO: Only in INSTANTANEOUS mode.")
 				.defineInRange("leaves_breaking_force_radius", 0, 0, 10);
 		minimumLeavesAroundRequired = builder.comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.")
-				.defineInRange("minimum_leaves_around_required", 0, 0, 5);
+				.defineInRange("minimum_leaves_around_required", 3, 0, 5);
 	}
 	
 	public Collection<Block> getBlacklistedLeaves(){

@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class CacheSpeed{
 	private final BlockPos pos;
-	private float speed;
-	private long millis;
+	private final float speed;
+	private final long millis;
 	
 	public CacheSpeed(BlockPos pos, float speed){
 		this.pos = pos;

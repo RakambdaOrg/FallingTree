@@ -1,6 +1,6 @@
 modLoader="javafml"
-loaderVersion="[32,)"
-issueTrackerURL="https://github.com/RakSrinaNa/FallingTree/issues"
+loaderVersion="[33,)"
+issueTrackerURL="https://github.com/${project.repoUser}/${project.repoName}/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/falling-tree"
 logoFile="logo.png"
 # credits=""
@@ -8,21 +8,21 @@ authors = "RakSrinaNa"
 license = "GPL-3.0"
 
 [[mods]] #mandatory
-modId = "falling_tree"
-version = "${file.jarVersion}"
-displayName = "Falling Tree"
-updateJSONURL = "https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.16.1/update.json"
-description = '''Change the way you cut tress.'''
+    modId="${project.mod_id}"
+    version="${project.version}"
+    displayName="${project.modName}"
+    updateJSONURL="https://raw.githubusercontent.com/${project.repoUser}/${project.repoName}/${project.repoBranch}/update.json"
+    description = '''Change the way you cut trees.'''
 
 [[dependencies.falling_tree]]
     modId="forge"
     mandatory=true
-    versionRange="[32.0.0,)"
+    versionRange="[33.0.0,)"
     ordering="NONE"
 	side="BOTH"
 [[dependencies.falling_tree]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.1]"
+    versionRange="[${project.minecraft_version}]"
     ordering="NONE"
     side="BOTH"

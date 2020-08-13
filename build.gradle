@@ -80,6 +80,12 @@ minecraft {
     }
 }
 
+processResources {
+    filesMatching("**/mods.toml") {
+        expand project.properties
+    }
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 }
@@ -89,7 +95,7 @@ jar {
         attributes(["Specification-Title"     : project.mod_id,
                     "Specification-Vendor"    : "RakSrinaNa",
                     "Specification-Version"   : "0.2",
-                    "Implementation-Title"    : project.name,
+                    "Implementation-Title"    : project.modName,
                     "Implementation-Version"  : project.version,
                     "Implementation-Vendor"   : "RakSrinaNa",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
@@ -133,12 +139,12 @@ curseforge {
 }
 
 githubRelease {
-    owner = "RakSrinaNa"
+    owner = project.repoUser
     repo = project.repoName
     token = buildProperties.secrets['GITHUB_TOKEN'].string
     tagName = "${archivesBaseName}-${project.version}"
     releaseName = "${archivesBaseName}-${project.version}"
-    targetCommitish = "${project.minecraft_version}"
+    targetCommitish = "${project.repoBranch}"
     body {
         return getLatestChangeLog()
     }
@@ -169,10 +175,13 @@ def writeUpdateJson() {
     def slurper = new JsonSlurper()
     def file = new File('update.json')
     def json = slurper.parse(file)
+    def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/blob/${project.repoBranch}/CHANGELOG.md"
+
+    json['changelog'] = changelogUrl
 
     // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
     if (!json[project.minecraft_version].containsKey(version.toString()))
-        json[project.minecraft_version][version.toString()] = project.changelogUrl
+        json[project.minecraft_version][version.toString()] = changelogUrl
     json[project.minecraft_version] = json[project.minecraft_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)
     json['promos']["${project.minecraft_version}-latest"] = version
     json['promos']["${project.minecraft_version}-recommended"] = version
@@ -214,7 +223,7 @@ void moveOldLog() {
         def version = project.version
         def dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         def currDate = LocalDate.now()
-        def combined = "## [${project.loader}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
+        def combined = "## [${project.loader}-${project.minecraft_version}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
         old_log_file.setText(combined)
     }
 }
