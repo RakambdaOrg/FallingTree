@@ -16,8 +16,8 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.ConfigValue<BreakMode> breakMode;
 	private final ForgeConfigSpec.IntValue maxSize;
 	private final ForgeConfigSpec.IntValue minimumLeavesAroundRequired;
-	private final ForgeConfigSpec.BooleanValue lavesBreaking;
-	private final ForgeConfigSpec.IntValue lavesBreakingForceRadius;
+	private final ForgeConfigSpec.BooleanValue leavesBreaking;
+	private final ForgeConfigSpec.IntValue leavesBreakingForceRadius;
 	
 	public TreeConfiguration(ForgeConfigSpec.Builder builder){
 		breakMode = builder.comment("How to break the tree.",
@@ -39,9 +39,9 @@ public class TreeConfiguration{
 		maxSize = builder.comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.",
 				"INFO: Only in INSTANTANEOUS mode.")
 				.defineInRange("logs_max_count", 100, 1, Integer.MAX_VALUE);
-		lavesBreaking = builder.comment("When set to true, leaves that should naturally break will be broken instantly.")
+		leavesBreaking = builder.comment("When set to true, leaves that should naturally break will be broken instantly.")
 				.define("leaves_breaking", true);
-		lavesBreakingForceRadius = builder.comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed.",
+		leavesBreakingForceRadius = builder.comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed.",
 				"The radius is applied from one of the top most log blocks.",
 				"INFO: break_leaves must be activated for this to take effect.",
 				"INFO: Only in INSTANTANEOUS mode.")
@@ -58,8 +58,8 @@ public class TreeConfiguration{
 		return getAsBlocks(blacklistedLogs.get());
 	}
 	
-	public int getLavesBreakingForceRadius(){
-		return this.lavesBreakingForceRadius.get();
+	public boolean getLeavesBreaking(){
+		return this.leavesBreaking.get();
 	}
 	
 	public int getMaxSize(){
@@ -78,8 +78,8 @@ public class TreeConfiguration{
 		return getAsBlocks(whitelistedLogs.get());
 	}
 	
-	public boolean isLavesBreaking(){
-		return this.lavesBreaking.get();
+	public int getLeavesBreakingForceRadius(){
+		return this.leavesBreakingForceRadius.get();
 	}
 	
 	public BreakMode getBreakMode(){

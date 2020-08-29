@@ -102,7 +102,7 @@ public class TreeHandler{
 			tool.damageItem(toolDamage, player, (entity) -> {});
 		}
 		if(isTreeFullyBroken){
-			final int radius = Config.COMMON.getTreesConfiguration().getLavesBreakingForceRadius();
+			final int radius = Config.COMMON.getTreesConfiguration().getLeavesBreakingForceRadius();
 			if(radius > 0){
 				tree.getLogs().stream().max(Comparator.comparingInt(BlockPos::getY)).ifPresent(topLog -> {
 					BlockPos.Mutable checkPos = new BlockPos.Mutable();
