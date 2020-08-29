@@ -1,7 +1,7 @@
-package fr.raksrinana.fallingtree;
+package fr.raksrinana.fallingtree.leaves;
 
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
 import java.util.Objects;
 
 public class LeafBreakingSchedule{

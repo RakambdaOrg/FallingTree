@@ -1,17 +1,16 @@
 buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+    ext {
+        mod_menu_version = '1.14.6+build.31'
+        cloth_config_version = '4.7.0-unstable'
+        auto_config1u_version = '3.2.0-unstable'
     }
 }
 
 plugins {
+    id 'fabric-loom' version '0.4-SNAPSHOT'
+    id 'maven-publish'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id "com.github.breadmoirai.github-release" version '2.2.10'
+    id "com.github.breadmoirai.github-release" version "2.2.9"
     id 'com.novoda.build-properties' version '0.4.1'
 }
 
@@ -24,100 +23,96 @@ buildProperties {
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: "com.github.breadmoirai.github-release"
-
-repositories {
-    flatDir {
-        name "fileRepo"
-        dirs "repo"
-    }
-    mavenLocal()
-    jcenter()
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.compilerArgs = ['-Xlint:deprecation']
-}
-
-javadoc {
-    failOnError = false
-}
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = "${project.repoName}-${project.loader}-${project.minecraft_version}"
 
-minecraft {
-    mappings channel: project.mcp_channel.toString(), version: project.mcp_mappings.toString()
-
-    runs {
-        client {
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            workingDirectory project.file('run-client')
-
-            mods {
-                edit_sign {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            workingDirectory project.file('run-server')
-            mods {
-                edit_sign {
-                    source sourceSets.main
-                }
-            }
-        }
+repositories {
+    maven {
+        name = 'CurseForge'
+        url = 'https://minecraft.curseforge.com/api/maven'
     }
-}
-
-processResources {
-    filesMatching("**/mods.toml") {
-        expand project.properties
+    maven {
+        name = 'Cloth Config'
+        url = 'https://dl.bintray.com/shedaniel/cloth-config-2'
+    }
+    maven {
+        name = 'Auto Config (updated fork)'
+        url = 'https://dl.bintray.com/shedaniel/autoconfig1u'
+    }
+    maven {
+        name = 'prospector-fabric'
+        url = 'https://maven.fabricmc.net/io/github/prospector/modmenu/'
     }
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.forge_version}"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modImplementation("io.github.prospector:modmenu:${mod_menu_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    modImplementation("me.shedaniel.cloth:config-2:${cloth_config_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+        exclude module: "modmenu"
+    }
+    include "me.shedaniel.cloth:config-2:${cloth_config_version}"
+
+    modImplementation("me.sargunvohra.mcmods:autoconfig1u:${auto_config1u_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    include "me.sargunvohra.mcmods:autoconfig1u:${auto_config1u_version}"
 }
 
-jar {
-    manifest {
-        attributes(["Specification-Title"     : project.mod_id,
-                    "Specification-Vendor"    : "RakSrinaNa",
-                    "Specification-Version"   : "0.2",
-                    "Implementation-Title"    : project.modName,
-                    "Implementation-Version"  : project.version,
-                    "Implementation-Vendor"   : "RakSrinaNa",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+processResources {
+    inputs.property "version", project.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "fabric.mod.json"
+        expand project.properties
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "fabric.mod.json"
     }
 }
 
-task deobfJar(type: Jar) {
-    appendix = "${project.minecraft_version}"
-    classifier = 'deobf'
-    from sourceSets.main.output
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs = ['-Xlint:deprecation']
 }
 
-task sourcesJar(type: Jar) {
-    appendix = "${project.minecraft_version}"
-    classifier = 'sources'
-    from sourceSets.main.allJava
+task sourcesJar(type: org.gradle.jvm.tasks.Jar, dependsOn: classes) {
+    classifier = "sources"
+    from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    appendix = "${project.minecraft_version}"
-    classifier = 'javadoc'
-    from javadoc.getDestinationDir()
+jar {
+    from "LICENSE"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact(remapJar) {
+                builtBy remapJar
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    repositories {
+        // mavenLocal()
+    }
 }
 
 curseforge {
@@ -129,66 +124,39 @@ curseforge {
         addGameVersion project.loader
         changelog = getLatestChangeLog()
         releaseType = "${project.curseforge_release_type}"
-        mainArtifact(jar) {
+        mainArtifact(remapJar) {
             displayName = "${archivesBaseName}-${project.version}"
+        }
+        afterEvaluate {
+            uploadTask.dependsOn('remapJar')
+        }
+        relations {
+            requiredDependency 'fabric-api'
+            embeddedLibrary 'auto-config-updated-api'
+            embeddedLibrary 'cloth-config'
+            optionalDependency 'modmenu'
         }
     }
     options {
+        forgeGradleIntegration = false
         javaVersionAutoDetect = false
     }
 }
 
 githubRelease {
-    owner = project.repoUser
+    owner = "RakSrinaNa"
     repo = project.repoName
     token = buildProperties.secrets['GITHUB_TOKEN'].string
     tagName = "${archivesBaseName}-${project.version}"
     releaseName = "${archivesBaseName}-${project.version}"
-    targetCommitish = "${project.repoBranch}"
+    targetCommitish = "${project.minecraft_version}-fabric"
     body {
         return getLatestChangeLog()
     }
 }
 
-artifacts {
-    if (project.hasProperty('doDeobfJar')) {
-        archives deobfJar
-    }
-    if (project.hasProperty('doSourceJar')) {
-        archives sourcesJar
-    }
-    if (project.hasProperty('doJavadocJar')) {
-        archives javadocJar
-    }
-}
-
-// Update JSON management
-
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
-
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-def writeUpdateJson() {
-    def version = project.version
-    def slurper = new JsonSlurper()
-    def file = new File('update.json')
-    def json = slurper.parse(file)
-    def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/blob/${project.repoBranch}/CHANGELOG.md"
-
-    json['changelog'] = changelogUrl
-
-    // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
-    if (!json[project.minecraft_version].containsKey(version.toString()))
-        json[project.minecraft_version][version.toString()] = changelogUrl
-    json[project.minecraft_version] = json[project.minecraft_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)
-    json['promos']["${project.minecraft_version}-latest"] = version
-    json['promos']["${project.minecraft_version}-recommended"] = version
-
-    println(json)
-    file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
-}
 
 String getAllChangeLog() {
     final old_log = file("CHANGELOG.md")
@@ -220,18 +188,9 @@ void moveOldLog() {
     if (new_log_file.exists()) {
         if (!old_log_file.exists())
             old_log_file.createNewFile()
-        def version = project.version
         def dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         def currDate = LocalDate.now()
         def combined = "## [${project.loader}-${project.minecraft_version}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
         old_log_file.setText(combined)
     }
 }
-
-task createUpdateJson {
-    doLast {
-        println('Updating update.json...')
-        writeUpdateJson()
-    }
-}
-build.finalizedBy createUpdateJson

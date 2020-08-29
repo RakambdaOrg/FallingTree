@@ -1,3 +1,6 @@
+## [Fabric-1.16.2-2.2.2] - 2020-08-29
+* Port to fabric
+
 ## [Forge-1.16.2-2.2.2] - 2020-08-14
 * Update pack format
 
