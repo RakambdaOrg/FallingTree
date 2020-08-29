@@ -47,12 +47,12 @@ public class Configuration implements ConfigData{
 		MaxRunner maxRunner = new MaxRunner();
 		
 		// Validators
-		registry.registerAnnotationTransformer((guis, i13n, field, config, defaults, guiProvider) -> guis.stream().peek(gui -> {
-			gui.setErrorSupplier(() -> minRunner.apply(gui.getValue(), field.getAnnotation(Min.class)));
-		}).collect(Collectors.toList()), Min.class);
-		registry.registerAnnotationTransformer((guis, i13n, field, config, defaults, guiProvider) -> guis.stream().peek(gui -> {
-			gui.setErrorSupplier(() -> maxRunner.apply(gui.getValue(), field.getAnnotation(Max.class)));
-		}).collect(Collectors.toList()), Max.class);
+		registry.registerAnnotationTransformer((guis, i13n, field, config, defaults, guiProvider) -> guis.stream()
+				.peek(gui -> gui.setErrorSupplier(() -> minRunner.apply(gui.getValue(), field.getAnnotation(Min.class))))
+				.collect(Collectors.toList()), Min.class);
+		registry.registerAnnotationTransformer((guis, i13n, field, config, defaults, guiProvider) -> guis.stream()
+				.peek(gui -> gui.setErrorSupplier(() -> maxRunner.apply(gui.getValue(), field.getAnnotation(Max.class))))
+				.collect(Collectors.toList()), Max.class);
 	}
 	
 	@Override
