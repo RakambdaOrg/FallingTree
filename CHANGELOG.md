@@ -1,3 +1,6 @@
+## [Fabric-1.16.2-2.2.3] - 2020-09-01
+* Make break speed mixin cancellable, should fix #19
+
 ## [Fabric-1.16.2-2.2.2] - 2020-08-29
 * Port to fabric
 

@@ -1,1 +1,1 @@
-* Port to fabric
+* Make break speed mixin cancellable, should fix #19

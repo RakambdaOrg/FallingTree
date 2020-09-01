@@ -23,7 +23,7 @@ import java.util.UUID;
 public abstract class AbstractBlockMixin{
 	private static final Map<UUID, CacheSpeed> speedCache = new HashMap<>();
 	
-	@Inject(method = "calcBlockBreakingDelta", at = @At(value = "TAIL"))
+	@Inject(method = "calcBlockBreakingDelta", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
 		if(FallingTree.config.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
