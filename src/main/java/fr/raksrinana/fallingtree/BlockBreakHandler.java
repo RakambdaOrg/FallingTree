@@ -2,17 +2,14 @@ package fr.raksrinana.fallingtree;
 
 import fr.raksrinana.fallingtree.tree.Tree;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockBreakHandler implements net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.Before{
-	@Override
-	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
+public class BlockBreakHandler{
+	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos blockPos){
 		if(!world.isClient()){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
 				return TreeHandler.getTree(world, blockPos).map(tree -> {

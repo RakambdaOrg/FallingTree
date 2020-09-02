@@ -1,1 +1,1 @@
-* Make break speed mixin cancellable, should fix #19
+* Port to 1.16.1
