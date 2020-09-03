@@ -5,6 +5,8 @@
 .idea
 build
 eclipse
+/logs
+/run
 /run-client
 /run-server
 
