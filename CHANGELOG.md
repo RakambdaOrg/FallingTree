@@ -1,3 +1,6 @@
+## [Fabric-1.16.1-2.3.1] - 2020-09-04
+* Set minimum required fabric api (#22)
+
 ## [Fabric-1.16.1-2.3.0] - 2020-09-04
 * Perform less ticking on leaves (#20)
 

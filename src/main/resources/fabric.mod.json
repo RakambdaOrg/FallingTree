@@ -31,7 +31,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric-resource-loader-v0": "*",
-    "fabric": "*",
+    "fabric": ">=0.18.0+build.387-1.16.1",
     "minecraft": "${minecraft_version}"
   },
   "suggests": {

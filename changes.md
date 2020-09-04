@@ -1,1 +1,1 @@
-* Perform less ticking on leaves (#20)
+* Set minimum required fabric api (#22)
