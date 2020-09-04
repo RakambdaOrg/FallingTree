@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @Config(name = "fallingtree")
 public class Configuration implements ConfigData{
 	@Comment("When set to true, a tree will only be chopped down if the player is sneaking.")
-	public final boolean reverseSneaking = false;
+	public boolean reverseSneaking = false;
 	@Comment("When set to true, the mod will cut down trees in creative too.")
-	public final boolean breakInCreative = false;
+	public boolean breakInCreative = false;
 	@ConfigEntry.Category("trees")
 	@ConfigEntry.Gui.TransitiveObject
 	public TreeConfiguration trees = new TreeConfiguration();

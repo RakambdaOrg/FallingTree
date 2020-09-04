@@ -1,1 +1,1 @@
-* Make break speed mixin cancellable, should fix #19
+* Perform less ticking on leaves (#20)

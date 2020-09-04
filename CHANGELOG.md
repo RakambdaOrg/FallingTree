@@ -1,3 +1,6 @@
+## [Fabric-1.16.2-2.3.0] - 2020-09-04
+* Perform less ticking on leaves (#20)
+
 ## [Fabric-1.16.2-2.2.3] - 2020-09-01
 * Make break speed mixin cancellable, should fix #19
 
