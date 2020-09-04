@@ -1,5 +1,1 @@
-* Add an option (`minimum_leaves_around_required` default `0`) to tell how many leaves blocks should be at the top of the tree to apply the mod. This should be useful if you want to break only trees an not your houses. Set it to something like 3 and the whole log stack will be cut only if there's at least 3 leaves next to the top most log.
-* On servers the mod is now only required server-side (so clients can join without the mod).
-* Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
-* Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.
-* Add an option `speed_multiplicand` to modify the breaking speed of the log.
+* Perform less ticking on leaves (#20)
