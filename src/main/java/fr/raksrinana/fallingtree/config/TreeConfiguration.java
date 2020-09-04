@@ -58,7 +58,7 @@ public class TreeConfiguration{
 		return getAsBlocks(blacklistedLogs.get());
 	}
 	
-	public boolean getLeavesBreaking(){
+	public boolean isLeavesBreaking(){
 		return this.leavesBreaking.get();
 	}
 	

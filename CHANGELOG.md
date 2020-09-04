@@ -1,3 +1,6 @@
+## [Forge-1.16.2-2.3.0] - 2020-09-04
+* Perform less ticking on leaves (#20)
+
 ## [Forge-1.16.2-2.2.2] - 2020-08-14
 * Update pack format
 

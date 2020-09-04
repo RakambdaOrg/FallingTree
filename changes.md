@@ -1,1 +1,1 @@
-* Update pack format
+* Perform less ticking on leaves (#20)

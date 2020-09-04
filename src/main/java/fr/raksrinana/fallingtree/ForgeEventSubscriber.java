@@ -103,7 +103,7 @@ public final class ForgeEventSubscriber{
 	
 	@SubscribeEvent
 	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
-		if(Config.COMMON.getTreesConfiguration().getLeavesBreaking() && !event.getWorld().isRemote()){
+		if(Config.COMMON.getTreesConfiguration().isLeavesBreaking() && !event.getWorld().isRemote()){
 			ServerWorld world = (ServerWorld) event.getWorld();
 			BlockState eventState = event.getState();
 			Block eventBlock = eventState.getBlock();
@@ -111,7 +111,7 @@ public final class ForgeEventSubscriber{
 			if(eventBlock.isAir(eventState, world, eventPos)){
 				for(Direction facing : event.getNotifiedSides()){
 					BlockPos neighborPos = eventPos.offset(facing);
-					if(world.isBlockLoaded(neighborPos)){
+					if(world.isAreaLoaded(neighborPos, 1)){
 						BlockState neighborState = event.getWorld().getBlockState(neighborPos);
 						if(isLeafBlock(neighborState.getBlock())){
 							scheduledLeavesBreaking.add(new LeafBreakingSchedule(world, neighborPos, 4));
@@ -130,19 +130,14 @@ public final class ForgeEventSubscriber{
 				LeafBreakingSchedule leafBreakingSchedule = leavesBreak.next();
 				ServerWorld world = leafBreakingSchedule.getWorld();
 				if(leafBreakingSchedule.getRemainingTicks() <= 0){
-					if(world.isBlockLoaded(leafBreakingSchedule.getBlockPos())){
+					if(world.isAreaLoaded(leafBreakingSchedule.getBlockPos(), 1)){
 						BlockState state = world.getBlockState(leafBreakingSchedule.getBlockPos());
-						Block block = state.getBlock();
-						if(isLeafBlock(block)){
-							block.randomTick(state, world, leafBreakingSchedule.getBlockPos(), world.getRandom());
-						}
-						else{
-							leavesBreak.remove();
+						state.tick(world, leafBreakingSchedule.getBlockPos(), world.getRandom());
+						if(state.ticksRandomly()){
+							state.randomTick(world, leafBreakingSchedule.getBlockPos(), world.getRandom());
 						}
 					}
-					else{
-						leavesBreak.remove();
-					}
+					leavesBreak.remove();
 				}
 				else{
 					leafBreakingSchedule.tick();
