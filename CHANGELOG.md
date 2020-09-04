@@ -1,3 +1,6 @@
+## [1.15.2-2.3.0] - 2020-09-04
+* Perform less ticking on leaves (#20)
+
 ## [1.15.2-2.2.1] - 2020-08-01
 * On servers the mod is now only required server-side (so clients can join without the mod).
 * Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
