@@ -4,6 +4,7 @@ import fr.raksrinana.fallingtree.config.Configuration;
 import fr.raksrinana.fallingtree.leaves.LeafBreakingHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 
 public class FallingTree implements ModInitializer{
 	public static Configuration config;
@@ -13,5 +14,6 @@ public class FallingTree implements ModInitializer{
 		config = Configuration.register();
 		
 		ServerTickEvents.END_SERVER_TICK.register(new LeafBreakingHandler());
+		PlayerBlockBreakEvents.BEFORE.register(new BlockBreakHandler());
 	}
 }

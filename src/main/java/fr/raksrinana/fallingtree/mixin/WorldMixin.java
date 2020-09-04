@@ -8,8 +8,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,7 +35,9 @@ public abstract class WorldMixin{
 			if(eventBlock.is(Blocks.AIR)){
 				for(Direction facing : notifiedSides){
 					BlockPos neighborPos = eventPos.offset(facing);
-					if(world.isChunkLoaded(neighborPos)){
+					Chunk chunk = world.getChunk(neighborPos);
+					ChunkPos chunkPos = chunk.getPos();
+					if(world.isChunkLoaded(chunkPos.x, chunkPos.z)){
 						BlockState neighborState = world.getBlockState(neighborPos);
 						if(isLeafBlock(neighborState.getBlock())){
 							LeafBreakingHandler.scheduledLeavesBreaking.add(new LeafBreakingSchedule(world, neighborPos, 4));

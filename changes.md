@@ -1,1 +1,1 @@
-* Port to 1.16.1
+* Perform less ticking on leaves (#20)
