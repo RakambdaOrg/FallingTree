@@ -1,3 +1,6 @@
+## [Fabric-1.16.3-rc1-2.3.1] - 2020-09-07
+* Port to 1.16.3 release candidate 1
+
 ## [Fabric-1.16.2-2.3.1] - 2020-09-04
 * Set minimum required fabric api (#22)
 

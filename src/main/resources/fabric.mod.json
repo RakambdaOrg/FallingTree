@@ -32,7 +32,7 @@
     "fabricloader": ">=0.7.4",
     "fabric-resource-loader-v0": "*",
     "fabric": ">=0.20.1+build.401-1.16",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "*"
   },
   "suggests": {
     "modmenu": "*"

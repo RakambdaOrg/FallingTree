@@ -1,1 +1,1 @@
-* Set minimum required fabric api (#22)
+* Port to 1.16.3 release candidate 1
