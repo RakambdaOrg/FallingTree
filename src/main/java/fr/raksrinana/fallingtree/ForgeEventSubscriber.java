@@ -104,7 +104,7 @@ public final class ForgeEventSubscriber{
 	
 	@SubscribeEvent
 	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
-		if(Config.COMMON.getTreesConfiguration().isLeavesBreaking() && !event.getWorld().isRemote()){
+		if(Config.COMMON.getTreesConfiguration().isLeavesBreaking() && !event.getWorld().isRemote() && event.getWorld() instanceof ServerWorld){
 			ServerWorld world = (ServerWorld) event.getWorld();
 			BlockState eventState = event.getState();
 			Block eventBlock = eventState.getBlock();
