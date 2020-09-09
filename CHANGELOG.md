@@ -1,3 +1,6 @@
+## [Fabric-1.16.1-2.3.2] - 2020-09-09
+* Do not take into account "minimumLeavesAroundRequired" when using shift down mode
+
 ## [Fabric-1.16.1-2.3.1] - 2020-09-04
 * Set minimum required fabric api (#22)
 

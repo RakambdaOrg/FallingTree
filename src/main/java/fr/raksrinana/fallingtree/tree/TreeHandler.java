@@ -34,12 +34,16 @@ public class TreeHandler{
 			toAnalyzePos.addAll(nearbyPos.stream().filter(pos -> !toAnalyzePos.contains(pos)).collect(Collectors.toList()));
 		}
 		
-		int aroundRequired = FallingTree.config.getTreesConfiguration().getMinimumLeavesAroundRequired();
-		if(tree.getTopMostLog().map(topLog -> getLeavesAround(world, topLog) >= aroundRequired).orElseGet(() -> aroundRequired == 0)){
-			return Optional.of(tree);
+		if(FallingTree.config.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
+			int aroundRequired = FallingTree.config.getTreesConfiguration().getMinimumLeavesAroundRequired();
+			if(tree.getTopMostLog()
+					.map(topLog -> getLeavesAround(world, topLog) < aroundRequired)
+					.orElse(true)){
+				return Optional.empty();
+			}
 		}
 		
-		return Optional.empty();
+		return Optional.of(tree);
 	}
 	
 	private static Collection<BlockPos> neighborLogs(World world, Block logBlock, BlockPos blockPos, Collection<BlockPos> analyzedPos){

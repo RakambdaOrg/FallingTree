@@ -37,7 +37,8 @@ public class TreeConfiguration{
 	@Min(0)
 	@Max(5)
 	public int minimumLeavesAroundRequired = 3;
-	@Comment("When set to true, leaves that should naturally break will be broken instantly.")
+	@Comment("When set to true, leaves that should naturally break will be broken instantly. " +
+			"INFO: Only in INSTANTANEOUS mode.")
 	public boolean leavesBreaking = true;
 	@Comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed. " +
 			"The radius is applied from one of the top most log blocks. " +
