@@ -1,3 +1,7 @@
+## [1.15.2-2.3.1] - 2020-09-09
+* Check world type before scheduling leaf breaking (#23)
+* Do not take into account "minimumLeavesAroundRequired" when using shift down mode
+
 ## [1.15.2-2.3.0] - 2020-09-04
 * Perform less ticking on leaves (#20)
 

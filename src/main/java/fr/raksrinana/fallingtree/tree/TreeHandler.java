@@ -38,12 +38,16 @@ public class TreeHandler{
 			toAnalyzePos.addAll(nearbyPos.stream().filter(pos -> !toAnalyzePos.contains(pos)).collect(Collectors.toList()));
 		}
 		
-		int aroundRequired = Config.COMMON.getTreesConfiguration().getMinimumLeavesAroundRequired();
-		if(tree.getTopMostLog().map(topLog -> getLeavesAround(world, topLog) >= aroundRequired).orElseGet(() -> aroundRequired == 0)){
-			return Optional.of(tree);
+		if(Config.COMMON.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
+			int aroundRequired = Config.COMMON.getTreesConfiguration().getMinimumLeavesAroundRequired();
+			if(tree.getTopMostLog()
+					.map(topLog -> getLeavesAround(world, topLog) < aroundRequired)
+					.orElse(true)){
+				return Optional.empty();
+			}
 		}
 		
-		return Optional.empty();
+		return Optional.of(tree);
 	}
 	
 	private static long getLeavesAround(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
