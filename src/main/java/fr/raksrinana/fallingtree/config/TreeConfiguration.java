@@ -33,7 +33,8 @@ public class TreeConfiguration{
 			"INFO: Only in INSTANTANEOUS mode.")
 	@Min(1)
 	public int maxSize = 100;
-	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.")
+	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree. " +
+			"INFO: Only in INSTANTANEOUS mode.")
 	@Min(0)
 	@Max(5)
 	public int minimumLeavesAroundRequired = 3;
