@@ -33,12 +33,12 @@ public class TreeConfiguration{
 			"INFO: Only in INSTANTANEOUS mode.")
 	@Min(1)
 	public int maxSize = 100;
-	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.")
+	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree. " +
+			"INFO: Only in INSTANTANEOUS mode.")
 	@Min(0)
 	@Max(5)
 	public int minimumLeavesAroundRequired = 3;
-	@Comment("When set to true, leaves that should naturally break will be broken instantly. " +
-			"INFO: Only in INSTANTANEOUS mode.")
+	@Comment("When set to true, leaves that should naturally break will be broken instantly.")
 	public boolean leavesBreaking = true;
 	@Comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed. " +
 			"The radius is applied from one of the top most log blocks. " +
