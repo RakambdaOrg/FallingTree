@@ -1,1 +1,1 @@
-* Set minimum required fabric api (#22)
+* Do not take into account "minimumLeavesAroundRequired" when using shift down mode
