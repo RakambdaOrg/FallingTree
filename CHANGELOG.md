@@ -1,3 +1,7 @@
+## [Fabric-1.16.3-2.3.2] - 2020-09-10
+* Port to 1.16.3
+* Do not take into account "minimumLeavesAroundRequired" when using shift down mode
+
 ## [Fabric-1.16.3-rc1-2.3.1] - 2020-09-07
 * Port to 1.16.3 release candidate 1
 
