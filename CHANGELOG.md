@@ -1,3 +1,6 @@
+## [Forge-1.16.3-2.3.1] - 2020-09-11
+* Port to 1.16.3
+
 ## [Forge-1.16.2-2.3.1] - 2020-09-09
 * Check world type before scheduling leaf breaking (#23)
 * Do not take into account "minimumLeavesAroundRequired" when using shift down mode
