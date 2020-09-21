@@ -53,7 +53,7 @@ public class TreeHandler{
 			for(int z = -1; z <= 1; z++){
 				for(int y = -1; y <= 1; y++){
 					checkPos.set(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
-					if(!analyzedPos.contains(checkPos) && isSameLog(world, checkPos, logBlock)){
+					if(!analyzedPos.contains(checkPos) && isSameTree(world, checkPos, logBlock)){
 						neighborLogs.add(checkPos.toImmutable());
 					}
 				}
@@ -70,8 +70,14 @@ public class TreeHandler{
 				.count();
 	}
 	
-	private static boolean isSameLog(World world, BlockPos blockPos, Block logBlock){
-		return world.getBlockState(blockPos).getBlock().equals(logBlock);
+	private static boolean isSameTree(World world, BlockPos checkBlockPos, Block parentLogBlock){
+		Block checkBlock = world.getBlockState(checkBlockPos).getBlock();
+		if(FallingTree.config.getTreesConfiguration().isAllowMixedLogs()){
+			return isTreeBlock(checkBlock);
+		}
+		else{
+			return checkBlock.equals(parentLogBlock);
+		}
 	}
 	
 	public static boolean destroyInstant(Tree tree, PlayerEntity player, ItemStack tool){

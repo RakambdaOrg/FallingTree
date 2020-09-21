@@ -47,6 +47,9 @@ public class TreeConfiguration{
 	@Min(0)
 	@Max(10)
 	public int leavesBreakingForceRadius = 0;
+	@Comment("When set to true this allow to have any kind of log in a tree trunk. " +
+			"Otherwise (false) the trunk will be considered as being only one kind of log.")
+	public boolean allowMixedLogs = false;
 	
 	public Collection<Block> getBlacklistedLeaves(){
 		return getAsBlocks(blacklistedLeaves);
@@ -82,5 +85,9 @@ public class TreeConfiguration{
 	
 	public boolean isLeavesBreaking(){
 		return this.leavesBreaking;
+	}
+	
+	public boolean isAllowMixedLogs(){
+		return this.allowMixedLogs;
 	}
 }
