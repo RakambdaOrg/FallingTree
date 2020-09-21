@@ -1,3 +1,6 @@
+## [Fabric-1.16.3-2.4.0] - 2020-09-21
+* Add option to cut trees with mixed log blocks
+
 ## [Fabric-1.16.3-2.3.2] - 2020-09-10
 * Port to 1.16.3
 * Do not take into account "minimumLeavesAroundRequired" when using shift down mode
