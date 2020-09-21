@@ -1,6 +1,9 @@
-name: Build
+name: CI
 
-on: [push]
+on: [ push ]
+
+env:
+  APP_JAVA_VERSION: 8
 
 jobs:
   build:
@@ -11,7 +14,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: ${{ env.APP_JAVA_VERSION }}
       - uses: actions/cache@v1
         name: Restore gradle cache
         with:
@@ -26,10 +29,44 @@ jobs:
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Set wrapper permissions
+      - name: Set gradle permissions
         run: chmod +x gradlew
       - name: Check project
         run: ./gradlew check
         env:
           GITHUB_USER: RakSrinaNa
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-curseforge:
+    runs-on: ubuntu-latest
+    needs: build
+    if: "startsWith(github.ref, 'refs/tags/')"
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.APP_JAVA_VERSION }}
+      - uses: actions/cache@v1
+        name: Restore gradle cache
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.OS }}-gradle-${{ env.cache-name }}-
+            ${{ runner.OS }}-gradle-
+            ${{ runner.OS }}-
+      - uses: actions/cache@v1
+        name: Cache gradle wrapper
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Set gradle permissions
+        run: chmod +x gradlew
+      - name: Push on CurseForge
+        run: ./gradlew curseforge
+        env:
+          GITHUB_USER: RakSrinaNa
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
