@@ -1,1 +1,1 @@
-* Do not take into account "minimumLeavesAroundRequired" when using shift down mode
+* Add option to cut trees with mixed log blocks
