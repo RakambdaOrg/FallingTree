@@ -18,6 +18,7 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.IntValue minimumLeavesAroundRequired;
 	private final ForgeConfigSpec.BooleanValue leavesBreaking;
 	private final ForgeConfigSpec.IntValue leavesBreakingForceRadius;
+	private final ForgeConfigSpec.BooleanValue allowMixedLogs;
 	
 	public TreeConfiguration(ForgeConfigSpec.Builder builder){
 		breakMode = builder.comment("How to break the tree.",
@@ -49,6 +50,9 @@ public class TreeConfiguration{
 		minimumLeavesAroundRequired = builder.comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.",
 				"INFO: Only in INSTANTANEOUS mode.")
 				.defineInRange("minimum_leaves_around_required", 3, 0, 5);
+		allowMixedLogs = builder.comment("When set to true this allow to have any kind of log in a tree trunk.",
+				"Otherwise (false) the trunk will be considered as being only one kind of log.")
+				.define("allow_mixed_logs", false);
 	}
 	
 	public Collection<Block> getBlacklistedLeaves(){
@@ -85,5 +89,9 @@ public class TreeConfiguration{
 	
 	public BreakMode getBreakMode(){
 		return breakMode.get();
+	}
+	
+	public boolean isAllowMixedLogs(){
+		return this.allowMixedLogs.get();
 	}
 }
