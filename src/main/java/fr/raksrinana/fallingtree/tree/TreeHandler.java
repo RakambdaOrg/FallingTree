@@ -12,7 +12,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
@@ -65,7 +64,7 @@ public class TreeHandler{
 			for(int z = -1; z <= 1; z++){
 				for(int y = -1; y <= 1; y++){
 					checkPos.setPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
-					if(!analyzedPos.contains(checkPos) && isSameLog(world, checkPos, logBlock)){
+					if(!analyzedPos.contains(checkPos) && isSameTree(world, checkPos, logBlock)){
 						neighborLogs.add(checkPos.toImmutable());
 					}
 				}
@@ -75,8 +74,14 @@ public class TreeHandler{
 		return neighborLogs;
 	}
 	
-	private static boolean isSameLog(@Nonnull IWorld world, @Nonnull BlockPos blockPos, @Nullable Block logBlock){
-		return world.getBlockState(blockPos).getBlock().equals(logBlock);
+	private static boolean isSameTree(@Nonnull IWorld world, BlockPos checkBlockPos, Block parentLogBlock){
+		Block checkBlock = world.getBlockState(checkBlockPos).getBlock();
+		if(Config.COMMON.getTreesConfiguration().isAllowMixedLogs()){
+			return isTreeBlock(checkBlock);
+		}
+		else{
+			return checkBlock.equals(parentLogBlock);
+		}
 	}
 	
 	public static boolean destroyInstant(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
