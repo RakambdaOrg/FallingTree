@@ -8,10 +8,10 @@ authors="RakSrinaNa"
 
 [[mods]] #mandatory
 	modId="falling_tree"
-	version="${file.jarVersion}"
+	version="${project.version}"
 	displayName="Falling Tree"
 	updateJSONURL="https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.14.4/update.json"
-	description='''Cut trees in one cut'''
+    description='''Change the way you cut tress.'''
 
 [[dependencies.falling_tree]]
     modId="forge"

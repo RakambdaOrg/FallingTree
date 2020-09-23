@@ -4,38 +4,29 @@ import fr.raksrinana.fallingtree.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Hand;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isTreeBlock;
 
 public class TreeHandler{
-	public static boolean isTreeBlock(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
-		final Block block = world.getBlockState(blockPos).getBlock();
-		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS) || Config.COMMON.getWhitelistedLogs().anyMatch(log -> log.equals(block));
-		if(isWhitelistedBlock){
-			final boolean isBlacklistedBlock = Config.COMMON.getBlacklistedLogs().anyMatch(log -> log.equals(block));
-			return !isBlacklistedBlock;
-		}
-		return false;
-	}
-	
 	@Nonnull
-	public static Optional<Tree> getTree(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
-		if(!isTreeBlock(world, blockPos)){
+	public static Optional<Tree> getTree(@Nonnull World world, @Nonnull BlockPos blockPos){
+		Block logBlock = world.getBlockState(blockPos).getBlock();
+		if(!isTreeBlock(logBlock)){
 			return Optional.empty();
 		}
 		Queue<BlockPos> toAnalyzePos = new LinkedList<>();
 		Set<BlockPos> analyzedPos = new HashSet<>();
-		Block logBlock = world.getBlockState(blockPos).getBlock();
-		Tree tree = new Tree((World) world, blockPos);
+		Tree tree = new Tree(world, blockPos);
 		toAnalyzePos.add(blockPos);
 		while(!toAnalyzePos.isEmpty()){
 			BlockPos analyzingPos = toAnalyzePos.remove();
@@ -45,7 +36,24 @@ public class TreeHandler{
 			nearbyPos.removeAll(analyzedPos);
 			toAnalyzePos.addAll(nearbyPos.stream().filter(pos -> !toAnalyzePos.contains(pos)).collect(Collectors.toList()));
 		}
+		
+		if(Config.COMMON.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
+			int aroundRequired = Config.COMMON.getTreesConfiguration().getMinimumLeavesAroundRequired();
+			if(tree.getTopMostLog()
+					.map(topLog -> getLeavesAround(world, topLog) < aroundRequired)
+					.orElse(true)){
+				return Optional.empty();
+			}
+		}
+		
 		return Optional.of(tree);
+	}
+	
+	private static long getLeavesAround(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
+		return Arrays.stream(Direction.values())
+				.map(blockPos::offset)
+				.filter(testPos -> isLeafBlock(world.getBlockState(testPos).getBlock()))
+				.count();
 	}
 	
 	@Nonnull
@@ -56,7 +64,7 @@ public class TreeHandler{
 			for(int z = -1; z <= 1; z++){
 				for(int y = -1; y <= 1; y++){
 					checkPos.setPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
-					if(!analyzedPos.contains(checkPos) && isSameLog(world, checkPos, logBlock)){
+					if(!analyzedPos.contains(checkPos) && isSameTree(world, checkPos, logBlock)){
 						neighborLogs.add(checkPos.toImmutable());
 					}
 				}
@@ -66,27 +74,43 @@ public class TreeHandler{
 		return neighborLogs;
 	}
 	
-	private static boolean isSameLog(@Nonnull IWorld world, @Nonnull BlockPos blockPos, @Nullable Block logBlock){
-		return world.getBlockState(blockPos).getBlock().equals(logBlock);
+	private static boolean isSameTree(@Nonnull IWorld world, BlockPos checkBlockPos, Block parentLogBlock){
+		Block checkBlock = world.getBlockState(checkBlockPos).getBlock();
+		if(Config.COMMON.getTreesConfiguration().isAllowMixedLogs()){
+			return isTreeBlock(checkBlock);
+		}
+		else{
+			return checkBlock.equals(parentLogBlock);
+		}
 	}
 	
-	public static boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
-		int toolUsesLeft = (!tool.isDamageable() || Config.COMMON.ignoreDurabilityLoss.get()) ? Integer.MAX_VALUE : tool.getMaxDamage() - tool.getDamage();
-		if(Config.COMMON.preserveTools.get()){
-			toolUsesLeft--;
-		}
-		if(toolUsesLeft < 1){
-			return false;
-		}
-		final boolean isFullyBroken = Config.COMMON.ignoreDurabilityLoss.get() || (tool.getMaxDamage() - tool.getDamage()) >= tree.getLogCount();
-		tree.getLogs().stream().limit(toolUsesLeft).forEachOrdered(logBlock -> {
-			if(!Config.COMMON.ignoreDurabilityLoss.get() && tree.getWorld() instanceof World){
-				tool.onBlockDestroyed((World) tree.getWorld(), tree.getWorld().getBlockState(logBlock), logBlock, player);
+	public static boolean destroyInstant(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
+		final World world = tree.getWorld();
+		final int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
+		final int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
+		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
+		if(Config.COMMON.getToolsConfiguration().isPreserve()){
+			if(rawWeightedUsesLeft <= 1){
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"));
+				return false;
 			}
-			tree.getWorld().destroyBlock(logBlock, true);
+			if(tree.getLogCount() >= rawWeightedUsesLeft){
+				rawWeightedUsesLeft = Math.ceil(rawWeightedUsesLeft) - 1;
+			}
+		}
+		final boolean isTreeFullyBroken = damageMultiplicand == 0 || rawWeightedUsesLeft >= tree.getLogCount();
+		tree.getLogs().stream().limit((int) rawWeightedUsesLeft).forEachOrdered(logBlock -> {
+			final BlockState logState = world.getBlockState(logBlock);
+			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
+			logState.getBlock().harvestBlock(world, player, logBlock, logState, world.getTileEntity(logBlock), tool);
+			world.destroyBlock(logBlock, false);
 		});
-		if(isFullyBroken){
-			final int radius = Config.COMMON.forceBreakLeavesRadius.get();
+		int toolDamage = (damageMultiplicand * (int) Math.min(tree.getLogCount(), rawWeightedUsesLeft)) - 1;
+		if(toolDamage > 0){
+			tool.damageItem(toolDamage, player, (entity) -> {});
+		}
+		if(isTreeFullyBroken){
+			final int radius = Config.COMMON.getTreesConfiguration().getLeavesBreakingForceRadius();
 			if(radius > 0){
 				tree.getLogs().stream().max(Comparator.comparingInt(BlockPos::getY)).ifPresent(topLog -> {
 					BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
@@ -94,9 +118,11 @@ public class TreeHandler{
 						for(int dy = -radius; dy < radius; dy++){
 							for(int dz = -radius; dz < radius; dz++){
 								checkPos.setPos(topLog.getX() + dx, topLog.getY() + dy, topLog.getZ() + dz);
-								final BlockState checkState = tree.getWorld().getBlockState(checkPos);
-								if(BlockTags.LEAVES.contains(checkState.getBlock())){
-									tree.getWorld().destroyBlock(checkPos, true);
+								final BlockState checkState = world.getBlockState(checkPos);
+								final Block checkBlock = checkState.getBlock();
+								if(isLeafBlock(checkBlock)){
+									Block.spawnDrops(checkState, world, checkPos);
+									world.removeBlock(checkPos, false);
 								}
 							}
 						}
@@ -107,13 +133,27 @@ public class TreeHandler{
 		return true;
 	}
 	
-	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
-		final ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-		final boolean isWhitelistedTool = heldItem.getItem() instanceof AxeItem || Config.COMMON.getWhitelistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
-		if(isWhitelistedTool){
-			final boolean isBlacklistedTool = Config.COMMON.getBlacklistedTools().anyMatch(tool -> tool.equals(heldItem.getItem()));
-			return !isBlacklistedTool;
+	public static boolean destroyShift(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
+		final World world = tree.getWorld();
+		final int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
+		final int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
+		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
+		if(Config.COMMON.getToolsConfiguration().isPreserve()){
+			if(rawWeightedUsesLeft <= 1){
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"));
+				return false;
+			}
 		}
-		return false;
+		tree.getTopMostFurthestLog().ifPresent(logBlock -> {
+			final BlockState logState = world.getBlockState(logBlock);
+			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
+			logState.getBlock().harvestBlock(world, player, tree.getHitPos(), logState, world.getTileEntity(logBlock), tool);
+			world.destroyBlock(logBlock, false);
+		});
+		int toolDamage = damageMultiplicand;
+		if(toolDamage > 0){
+			tool.damageItem(toolDamage, player, (entity) -> {});
+		}
+		return true;
 	}
 }
