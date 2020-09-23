@@ -1,9 +1,9 @@
 [{
   "modid": "falling_tree",
   "name": "Falling Tree",
-  "description": "Cut trees in one cut",
+  "description": "Change the way you cut tress.",
   "version": "${version}",
-  "mcversion": "${mcversion}",
+  "mcversion": "${mc_version}",
   "url": "https://www.curseforge.com/minecraft/mc-mods/falling-tree",
   "updateUrl": "https://raw.githubusercontent.com/RakSrinaNa/FallingTree/1.12.2/update.json",
   "authorList": ["RakSrinaNa"],
