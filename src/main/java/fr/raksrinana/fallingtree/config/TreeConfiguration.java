@@ -33,10 +33,10 @@ public class TreeConfiguration{
 				.defineList("logs_blacklisted", Lists.newArrayList(), Objects::nonNull);
 		whitelistedLeaves = builder.comment("Additional list of blocks considered as leaves.",
 				"INFO: Blocks marked with the leaves tag will already be whitelisted.")
-				.defineList("logs_whitelisted", Lists.newArrayList(), Objects::nonNull);
+				.defineList("leaves_whitelisted", Lists.newArrayList(), Objects::nonNull);
 		blacklistedLeaves = builder.comment("List of blocks that should not be considered as leaves.",
 				"INFO: This wins over the whitelist.")
-				.defineList("logs_blacklisted", Lists.newArrayList(), Objects::nonNull);
+				.defineList("leaves_blacklisted", Lists.newArrayList(), Objects::nonNull);
 		maxSize = builder.comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.",
 				"INFO: Only in INSTANTANEOUS mode.")
 				.defineInRange("logs_max_count", 100, 1, Integer.MAX_VALUE);
