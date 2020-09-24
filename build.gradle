@@ -105,10 +105,7 @@ curseforge {
 }
 
 processResources {
-    inputs.property "version", project.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
+    filesMatching("mcmod.info") {
         expand project.properties
     }
 }
