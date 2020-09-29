@@ -1,8 +1,9 @@
-package fr.raksrinana.fallingtree;
+package fr.raksrinana.fallingtree.utils;
 
 import fr.raksrinana.fallingtree.config.Config;
 import fr.raksrinana.fallingtree.config.ToolConfiguration;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
@@ -46,13 +47,18 @@ public class FallingTreeUtils{
 		}
 	}
 	
-	public static boolean isTreeBlock(@Nonnull Block block){
-		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS) || Config.COMMON.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
+	public static boolean isLogBlock(Block block){
+		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS)
+				|| Config.COMMON.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			final boolean isBlacklistedBlock = Config.COMMON.getTreesConfiguration().getBlacklistedLogs().stream().anyMatch(log -> log.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
+	}
+	
+	public static boolean isNetherWartOrShroomlight(Block block){
+		return block.isIn(BlockTags.field_232874_ao_) || block.equals(Blocks.field_235383_mw_);
 	}
 	
 	public static boolean isLeafBlock(@Nonnull Block block){

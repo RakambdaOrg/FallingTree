@@ -4,6 +4,7 @@ import fr.raksrinana.fallingtree.config.BreakMode;
 import fr.raksrinana.fallingtree.config.Config;
 import fr.raksrinana.fallingtree.tree.Tree;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
+import fr.raksrinana.fallingtree.utils.CacheSpeed;
 import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,8 +24,8 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nonnull;
 import java.util.*;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.canPlayerBreakTree;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.isLeafBlock;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.canPlayerBreakTree;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventSubscriber{
