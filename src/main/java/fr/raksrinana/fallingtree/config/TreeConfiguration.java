@@ -6,7 +6,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.getAsBlocks;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
 public class TreeConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLogs;
@@ -19,6 +19,7 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.BooleanValue leavesBreaking;
 	private final ForgeConfigSpec.IntValue leavesBreakingForceRadius;
 	private final ForgeConfigSpec.BooleanValue allowMixedLogs;
+	private final ForgeConfigSpec.BooleanValue breakNetherTreeWarts;
 	
 	public TreeConfiguration(ForgeConfigSpec.Builder builder){
 		breakMode = builder.comment("How to break the tree.",
@@ -49,10 +50,12 @@ public class TreeConfiguration{
 				.defineInRange("leaves_breaking_force_radius", 0, 0, 10);
 		minimumLeavesAroundRequired = builder.comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.",
 				"INFO: Only in INSTANTANEOUS mode.")
-				.defineInRange("minimum_leaves_around_required", 3, 0, 5);
+				.defineInRange("minimum_leaves_around_required", 1, 0, 5);
 		allowMixedLogs = builder.comment("When set to true this allow to have any kind of log in a tree trunk.",
 				"Otherwise (false) the trunk will be considered as being only one kind of log.")
 				.define("allow_mixed_logs", false);
+		breakNetherTreeWarts = builder.comment("When set to true nether tree warts (leaves) will be broken along with the trunk.")
+				.define("break_nether_tree_warts", true);
 	}
 	
 	public Collection<Block> getBlacklistedLeaves(){
@@ -93,5 +96,9 @@ public class TreeConfiguration{
 	
 	public boolean isAllowMixedLogs(){
 		return this.allowMixedLogs.get();
+	}
+	
+	public boolean isBreakNetherTreeWarts(){
+		return breakNetherTreeWarts.get();
 	}
 }

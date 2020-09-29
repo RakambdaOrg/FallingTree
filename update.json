@@ -2,6 +2,7 @@
     "homepage": "https://github.com/RakSrinaNa/FallingTree",
     "changelog": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.2-forge/CHANGELOG.md",
     "1.16.2": {
+        "2.5.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.2-forge/CHANGELOG.md",
         "2.4.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.2-forge/CHANGELOG.md",
         "2.3.1": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.2-forge/CHANGELOG.md",
         "2.3.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.2-forge/CHANGELOG.md",
@@ -10,7 +11,7 @@
         "2.1.1": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.2-forge/CHANGELOG.md"
     },
     "promos": {
-        "1.16.2-latest": "2.4.0",
-        "1.16.2-recommended": "2.4.0"
+        "1.16.2-latest": "2.5.0",
+        "1.16.2-recommended": "2.5.0"
     }
 }

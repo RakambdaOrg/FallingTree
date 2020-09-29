@@ -1,6 +1,8 @@
 package fr.raksrinana.fallingtree.tree;
 
 import fr.raksrinana.fallingtree.config.Config;
+import fr.raksrinana.fallingtree.utils.ToAnalyzePos;
+import fr.raksrinana.fallingtree.utils.TreePart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,30 +12,27 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.isLeafBlock;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.isTreeBlock;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.*;
 
 public class TreeHandler{
-	@Nonnull
-	public static Optional<Tree> getTree(@Nonnull World world, @Nonnull BlockPos blockPos){
-		Block logBlock = world.getBlockState(blockPos).getBlock();
-		if(!isTreeBlock(logBlock)){
+	public static Optional<Tree> getTree(World world, BlockPos originPos){
+		Block originBlock = world.getBlockState(originPos).getBlock();
+		if(!isLogBlock(originBlock)){
 			return Optional.empty();
 		}
-		Queue<BlockPos> toAnalyzePos = new LinkedList<>();
-		Set<BlockPos> analyzedPos = new HashSet<>();
-		Tree tree = new Tree(world, blockPos);
-		toAnalyzePos.add(blockPos);
+		Queue<ToAnalyzePos> toAnalyzePos = new PriorityQueue<>();
+		Set<ToAnalyzePos> analyzedPos = new HashSet<>();
+		Tree tree = new Tree(world, originPos);
+		toAnalyzePos.add(new ToAnalyzePos(originPos, originBlock, originPos, originBlock, TreePart.LOG));
 		while(!toAnalyzePos.isEmpty()){
-			BlockPos analyzingPos = toAnalyzePos.remove();
-			tree.addLog(analyzingPos);
+			ToAnalyzePos analyzingPos = toAnalyzePos.remove();
+			tree.addPart(analyzingPos.getTreePart(), analyzingPos.getCheckPos());
 			analyzedPos.add(analyzingPos);
-			Collection<BlockPos> nearbyPos = neighborLogs(world, logBlock, analyzingPos, analyzedPos);
+			Collection<ToAnalyzePos> nearbyPos = neighborLogs(world, originPos, originBlock, analyzingPos, analyzedPos);
 			nearbyPos.removeAll(analyzedPos);
 			toAnalyzePos.addAll(nearbyPos.stream().filter(pos -> !toAnalyzePos.contains(pos)).collect(Collectors.toList()));
 		}
@@ -50,23 +49,28 @@ public class TreeHandler{
 		return Optional.of(tree);
 	}
 	
-	private static long getLeavesAround(@Nonnull IWorld world, @Nonnull BlockPos blockPos){
+	private static long getLeavesAround(World world, BlockPos blockPos){
 		return Arrays.stream(Direction.values())
 				.map(blockPos::offset)
-				.filter(testPos -> isLeafBlock(world.getBlockState(testPos).getBlock()))
+				.filter(testPos -> {
+					Block block = world.getBlockState(testPos).getBlock();
+					return isLeafBlock(block) || isNetherWartOrShroomlight(block);
+				})
 				.count();
 	}
 	
-	@Nonnull
-	private static Collection<BlockPos> neighborLogs(@Nonnull IWorld world, @Nonnull Block logBlock, @Nonnull BlockPos blockPos, @Nonnull Collection<BlockPos> analyzedPos){
-		List<BlockPos> neighborLogs = new LinkedList<>();
+	private static Collection<ToAnalyzePos> neighborLogs(World world, BlockPos originPos, Block originBlock, ToAnalyzePos parent, Collection<ToAnalyzePos> analyzedPos){
+		final BlockPos blockPos = parent.getCheckPos();
+		List<ToAnalyzePos> neighborLogs = new LinkedList<>();
 		final BlockPos.Mutable checkPos = new BlockPos.Mutable();
 		for(int x = -1; x <= 1; x++){
 			for(int z = -1; z <= 1; z++){
 				for(int y = -1; y <= 1; y++){
 					checkPos.setPos(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
-					if(!analyzedPos.contains(checkPos) && isSameTree(world, checkPos, logBlock)){
-						neighborLogs.add(checkPos.toImmutable());
+					Block checkBlock = world.getBlockState(checkPos).getBlock();
+					ToAnalyzePos analyzed = new ToAnalyzePos(blockPos, parent.getCheckBlock(), checkPos.toImmutable(), checkBlock, getTreePart(checkBlock));
+					if(!analyzedPos.contains(analyzed) && shouldIncludeInChain(originPos, originBlock, parent, analyzed)){
+						neighborLogs.add(analyzed);
 					}
 				}
 			}
@@ -75,13 +79,37 @@ public class TreeHandler{
 		return neighborLogs;
 	}
 	
-	private static boolean isSameTree(@Nonnull IWorld world, BlockPos checkBlockPos, Block parentLogBlock){
-		Block checkBlock = world.getBlockState(checkBlockPos).getBlock();
+	private static TreePart getTreePart(Block checkBlock){
+		if(isLogBlock(checkBlock)){
+			return TreePart.LOG;
+		}
+		if(isNetherWartOrShroomlight(checkBlock)){
+			return TreePart.WART;
+		}
+		return TreePart.OTHER;
+	}
+	
+	private static boolean shouldIncludeInChain(BlockPos originPos, Block originBlock, ToAnalyzePos parent, ToAnalyzePos check){
+		if(parent.getTreePart() == TreePart.LOG && isSameTree(originBlock, check)){
+			return true;
+		}
+		if(Config.COMMON.getTreesConfiguration().isBreakNetherTreeWarts()){
+			if(check.getTreePart() == TreePart.WART){
+				BlockPos checkBlockPos = check.getCheckPos();
+				int dx = Math.abs(originPos.getX() - checkBlockPos.getX());
+				int dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
+				return dx <= 4 && dz <= 4;
+			}
+		}
+		return false;
+	}
+	
+	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){
 		if(Config.COMMON.getTreesConfiguration().isAllowMixedLogs()){
-			return isTreeBlock(checkBlock);
+			return check.getTreePart() == TreePart.LOG;
 		}
 		else{
-			return checkBlock.equals(parentLogBlock);
+			return check.getCheckBlock().equals(parentLogBlock);
 		}
 	}
 	
@@ -111,6 +139,11 @@ public class TreeHandler{
 			tool.damageItem(toolDamage, player, (entity) -> {});
 		}
 		if(isTreeFullyBroken){
+			tree.getWarts().forEach(wartPos -> {
+				final BlockState wartState = world.getBlockState(wartPos);
+				wartState.getBlock().harvestBlock(world, player, wartPos, wartState, world.getTileEntity(wartPos), tool);
+				world.removeBlock(wartPos, false);
+			});
 			final int radius = Config.COMMON.getTreesConfiguration().getLeavesBreakingForceRadius();
 			if(radius > 0){
 				tree.getLogs().stream().max(Comparator.comparingInt(BlockPos::getY)).ifPresent(topLog -> {
@@ -145,7 +178,7 @@ public class TreeHandler{
 				return false;
 			}
 		}
-		tree.getTopMostFurthestLog().ifPresent(logBlock -> {
+		tree.getTopMostFurthestPart().ifPresent(logBlock -> {
 			final BlockState logState = world.getBlockState(logBlock);
 			player.addStat(Stats.ITEM_USED.get(logState.getBlock().asItem()));
 			logState.getBlock().harvestBlock(world, player, tree.getHitPos(), logState, world.getTileEntity(logBlock), tool);

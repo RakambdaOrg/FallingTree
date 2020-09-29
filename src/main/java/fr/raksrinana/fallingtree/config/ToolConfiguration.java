@@ -6,7 +6,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.getAsItems;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsItems;
 
 public class ToolConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelisted;
