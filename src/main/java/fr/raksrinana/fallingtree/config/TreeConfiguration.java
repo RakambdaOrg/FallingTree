@@ -50,6 +50,8 @@ public class TreeConfiguration{
 	@Comment("When set to true this allow to have any kind of log in a tree trunk. " +
 			"Otherwise (false) the trunk will be considered as being only one kind of log.")
 	public boolean allowMixedLogs = false;
+	@Comment("When set to true nether tree warts (leaves) will be broken along with the trunk.")
+	public boolean breakNetherTreeWarts = true;
 	
 	public Collection<Block> getBlacklistedLeaves(){
 		return getAsBlocks(blacklistedLeaves);
@@ -89,5 +91,9 @@ public class TreeConfiguration{
 	
 	public boolean isAllowMixedLogs(){
 		return this.allowMixedLogs;
+	}
+	
+	public boolean isBreakNetherTreeWarts(){
+		return breakNetherTreeWarts;
 	}
 }

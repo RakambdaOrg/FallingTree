@@ -1,1 +1,1 @@
-* Add option to cut trees with mixed log blocks
+* Add option (activated by default) to break nether tree warts (leaves)

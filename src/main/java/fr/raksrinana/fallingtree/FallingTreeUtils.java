@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree;
 import fr.raksrinana.fallingtree.config.ToolConfiguration;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.tag.BlockTags;
@@ -40,7 +41,7 @@ public class FallingTreeUtils{
 		}
 	}
 	
-	public static boolean isTreeBlock(Block block){
+	public static boolean isLogBlock(Block block){
 		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS)
 				|| FallingTree.config.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
@@ -48,6 +49,10 @@ public class FallingTreeUtils{
 			return !isBlacklistedBlock;
 		}
 		return false;
+	}
+	
+	public static boolean isNetherWartOrShroomlight(Block block){
+		return block.isIn(BlockTags.WART_BLOCKS) || block.is(Blocks.SHROOMLIGHT);
 	}
 	
 	public static boolean isLeafBlock(Block block){
