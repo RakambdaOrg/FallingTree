@@ -91,7 +91,7 @@ public class TreeHandler{
 		if(parent.getTreePartType() == TreePartType.LOG && isSameTree(originBlock, check)){
 			return true;
 		}
-		if(FallingTree.config.trees.isBreakNetherTreeWarts()){
+		if(FallingTree.config.getTreesConfiguration().isBreakNetherTreeWarts()){
 			if(check.getTreePartType() == TreePartType.WART){
 				BlockPos checkBlockPos = check.getCheckPos();
 				int dx = Math.abs(originPos.getX() - checkBlockPos.getX());
