@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.getAsBlocks;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class TreeConfiguration{

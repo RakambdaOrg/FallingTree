@@ -1,5 +1,6 @@
-package fr.raksrinana.fallingtree;
+package fr.raksrinana.fallingtree.utils;
 
+import fr.raksrinana.fallingtree.FallingTree;
 import fr.raksrinana.fallingtree.config.ToolConfiguration;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;

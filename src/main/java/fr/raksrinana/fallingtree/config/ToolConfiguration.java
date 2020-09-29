@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.getAsItems;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsItems;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class ToolConfiguration{

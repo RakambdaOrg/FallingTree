@@ -14,7 +14,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import java.util.*;
 import java.util.stream.Collectors;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.*;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.*;
 
 public class TreeHandler{
 	public static Optional<Tree> getTree(World world, BlockPos originPos){

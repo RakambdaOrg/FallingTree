@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree;
 
 import fr.raksrinana.fallingtree.tree.Tree;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
+import fr.raksrinana.fallingtree.utils.FallingTreeUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
