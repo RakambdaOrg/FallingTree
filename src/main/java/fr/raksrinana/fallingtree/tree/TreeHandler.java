@@ -2,7 +2,7 @@ package fr.raksrinana.fallingtree.tree;
 
 import fr.raksrinana.fallingtree.FallingTree;
 import fr.raksrinana.fallingtree.utils.ToAnalyzePos;
-import fr.raksrinana.fallingtree.utils.TreePart;
+import fr.raksrinana.fallingtree.utils.TreePartType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,10 +25,10 @@ public class TreeHandler{
 		Queue<ToAnalyzePos> toAnalyzePos = new PriorityQueue<>();
 		Set<ToAnalyzePos> analyzedPos = new HashSet<>();
 		Tree tree = new Tree(world, originPos);
-		toAnalyzePos.add(new ToAnalyzePos(originPos, originBlock, originPos, originBlock, TreePart.LOG));
+		toAnalyzePos.add(new ToAnalyzePos(originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0));
 		while(!toAnalyzePos.isEmpty()){
 			ToAnalyzePos analyzingPos = toAnalyzePos.remove();
-			tree.addPart(analyzingPos.getTreePart(), analyzingPos.getCheckPos());
+			tree.addPart(analyzingPos.toTreePart());
 			analyzedPos.add(analyzingPos);
 			Collection<ToAnalyzePos> nearbyPos = neighborLogs(world, originPos, originBlock, analyzingPos, analyzedPos);
 			nearbyPos.removeAll(analyzedPos);
@@ -56,7 +56,7 @@ public class TreeHandler{
 				for(int y = -1; y <= 1; y++){
 					checkPos.set(blockPos.getX() + x, blockPos.getY() + y, blockPos.getZ() + z);
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
-					ToAnalyzePos analyzed = new ToAnalyzePos(blockPos, parent.getCheckBlock(), checkPos.toImmutable(), checkBlock, getTreePart(checkBlock));
+					ToAnalyzePos analyzed = new ToAnalyzePos(blockPos, parent.getCheckBlock(), checkPos.toImmutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
 					if(!analyzedPos.contains(analyzed) && shouldIncludeInChain(originPos, originBlock, parent, analyzed)){
 						neighborLogs.add(analyzed);
 					}
@@ -67,14 +67,14 @@ public class TreeHandler{
 		return neighborLogs;
 	}
 	
-	private static TreePart getTreePart(Block checkBlock){
+	private static TreePartType getTreePart(Block checkBlock){
 		if(isLogBlock(checkBlock)){
-			return TreePart.LOG;
+			return TreePartType.LOG;
 		}
 		if(isNetherWartOrShroomlight(checkBlock)){
-			return TreePart.WART;
+			return TreePartType.WART;
 		}
-		return TreePart.OTHER;
+		return TreePartType.OTHER;
 	}
 	
 	private static long getLeavesAround(World world, BlockPos blockPos){
@@ -88,11 +88,11 @@ public class TreeHandler{
 	}
 	
 	private static boolean shouldIncludeInChain(BlockPos originPos, Block originBlock, ToAnalyzePos parent, ToAnalyzePos check){
-		if(parent.getTreePart() == TreePart.LOG && isSameTree(originBlock, check)){
+		if(parent.getTreePartType() == TreePartType.LOG && isSameTree(originBlock, check)){
 			return true;
 		}
 		if(FallingTree.config.trees.isBreakNetherTreeWarts()){
-			if(check.getTreePart() == TreePart.WART){
+			if(check.getTreePartType() == TreePartType.WART){
 				BlockPos checkBlockPos = check.getCheckPos();
 				int dx = Math.abs(originPos.getX() - checkBlockPos.getX());
 				int dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
@@ -104,7 +104,7 @@ public class TreeHandler{
 	
 	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){
 		if(FallingTree.config.getTreesConfiguration().isAllowMixedLogs()){
-			return check.getTreePart() == TreePart.LOG;
+			return check.getTreePartType() == TreePartType.LOG;
 		}
 		else{
 			return check.getCheckBlock().equals(parentLogBlock);
@@ -126,24 +126,29 @@ public class TreeHandler{
 			}
 		}
 		final boolean isTreeFullyBroken = damageMultiplicand == 0 || rawWeightedUsesLeft >= tree.getLogCount();
-		tree.getLogs().stream().limit((int) rawWeightedUsesLeft).forEachOrdered(logBlock -> {
-			final BlockState logState = world.getBlockState(logBlock);
-			logState.getBlock().afterBreak(world, player, logBlock, logState, world.getBlockEntity(logBlock), tool);
-			world.removeBlock(logBlock, false);
-		});
+		tree.getLogs().stream()
+				.limit((int) rawWeightedUsesLeft)
+				.map(TreePart::getBlockPos)
+				.forEachOrdered(logBlockPos -> {
+					final BlockState logState = world.getBlockState(logBlockPos);
+					logState.getBlock().afterBreak(world, player, logBlockPos, logState, world.getBlockEntity(logBlockPos), tool);
+					world.removeBlock(logBlockPos, false);
+				});
 		int toolDamage = (damageMultiplicand * (int) Math.min(tree.getLogCount(), rawWeightedUsesLeft)) - 1;
 		if(toolDamage > 0){
 			tool.damage(toolDamage, player, (entity) -> {});
 		}
 		if(isTreeFullyBroken){
-			tree.getWarts().forEach(wartPos -> {
-				final BlockState wartState = world.getBlockState(wartPos);
-				wartState.getBlock().afterBreak(world, player, wartPos, wartState, world.getBlockEntity(wartPos), tool);
-				world.removeBlock(wartPos, false);
-			});
+			tree.getWarts().stream()
+					.map(TreePart::getBlockPos)
+					.forEach(wartPos -> {
+						final BlockState wartState = world.getBlockState(wartPos);
+						wartState.getBlock().afterBreak(world, player, wartPos, wartState, world.getBlockEntity(wartPos), tool);
+						world.removeBlock(wartPos, false);
+					});
 			final int radius = FallingTree.config.getTreesConfiguration().getLeavesBreakingForceRadius();
 			if(radius > 0){
-				tree.getLogs().stream().max(Comparator.comparingInt(BlockPos::getY)).ifPresent(topLog -> {
+				tree.getTopMostLog().ifPresent(topLog -> {
 					BlockPos.Mutable checkPos = new BlockPos.Mutable();
 					for(int dx = -radius; dx < radius; dx++){
 						for(int dy = -radius; dy < radius; dy++){
@@ -175,11 +180,13 @@ public class TreeHandler{
 				return false;
 			}
 		}
-		tree.getTopMostFurthestPart().ifPresent(logBlock -> {
-			final BlockState logState = world.getBlockState(logBlock);
-			logState.getBlock().afterBreak(world, player, tree.getHitPos(), logState, world.getBlockEntity(logBlock), tool);
-			world.removeBlock(logBlock, false);
-		});
+		tree.getLastSequencePart()
+				.map(TreePart::getBlockPos)
+				.ifPresent(logBlock -> {
+					final BlockState logState = world.getBlockState(logBlock);
+					logState.getBlock().afterBreak(world, player, tree.getHitPos(), logState, world.getBlockEntity(logBlock), tool);
+					world.removeBlock(logBlock, false);
+				});
 		int toolDamage = damageMultiplicand;
 		if(toolDamage > 0){
 			tool.damage(toolDamage, player, (entity) -> {});
