@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree;
 
 import fr.raksrinana.fallingtree.tree.Tree;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
+import fr.raksrinana.fallingtree.utils.FallingTreeUtils;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

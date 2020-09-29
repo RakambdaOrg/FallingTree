@@ -1,4 +1,4 @@
-package fr.raksrinana.fallingtree;
+package fr.raksrinana.fallingtree.utils;
 
 import net.minecraft.util.math.BlockPos;
 import java.util.Objects;
