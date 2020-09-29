@@ -1,8 +1,8 @@
 package fr.raksrinana.fallingtree.mixin;
 
-import fr.raksrinana.fallingtree.CacheSpeed;
+import fr.raksrinana.fallingtree.utils.CacheSpeed;
 import fr.raksrinana.fallingtree.FallingTree;
-import fr.raksrinana.fallingtree.FallingTreeUtils;
+import fr.raksrinana.fallingtree.utils.FallingTreeUtils;
 import fr.raksrinana.fallingtree.config.BreakMode;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
 import net.minecraft.block.AbstractBlock;

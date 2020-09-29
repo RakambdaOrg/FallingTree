@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.EnumSet;
-import static fr.raksrinana.fallingtree.FallingTreeUtils.isLeafBlock;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 
 @Mixin(World.class)
 public abstract class WorldMixin{

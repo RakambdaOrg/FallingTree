@@ -14,6 +14,7 @@
   "text.autoconfig.fallingtree.option.trees.leavesBreaking": "Cassage de feuilles",
   "text.autoconfig.fallingtree.option.trees.leavesBreakingForceRadius": "Rayon du cassage des feuilles forcé",
   "text.autoconfig.fallingtree.option.trees.allowMixedLogs": "Autoriser les troncs avec bois différents",
+  "text.autoconfig.fallingtree.option.trees.breakNetherTreeWarts": "Casse les feuilles des arbres du netehr",
   "text.autoconfig.fallingtree.option.tools.whitelisted": "Outils autorisés",
   "text.autoconfig.fallingtree.option.tools.blacklisted": "Outils bannis",
   "text.autoconfig.fallingtree.option.tools.preserve": "Préserver les outils",
