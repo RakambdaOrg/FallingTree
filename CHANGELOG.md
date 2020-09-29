@@ -1,3 +1,6 @@
+## [Forge-1.16.3-2.5.0] - 2020-09-29
+* Add option (activated by default) to break nether tree warts (leaves)
+
 ## [Forge-1.16.3-2.4.0] - 2020-09-21
 * Add option to cut trees with mixed log blocks
 
