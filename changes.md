@@ -1,1 +1,1 @@
-* Add option (activated by default) to break nether tree warts (leaves)
+* Add Brazilian Portuguese language (@Eufranio)
