@@ -17,6 +17,7 @@ Steps to reproduce the behavior:
 
 **Infos:**
  - Minecraft verson: [e.g. 1.14.4]
+ - Mod loader: [Forge/Fabric]
  - Mod version: [e.g. 1.0.0]
 
 If you provide a crash report please include it in a readable way (like pastebin or gist for example).
