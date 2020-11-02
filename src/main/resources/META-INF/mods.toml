@@ -1,6 +1,6 @@
-modLoader="javafml"
-loaderVersion="[34,)"
-issueTrackerURL="https://github.com/${project.repoUser}/${project.repoName}/issues"
+modLoader = "javafml"
+loaderVersion = "[35,)"
+issueTrackerURL = "https://github.com/${project.repoUser}/${project.repoName}/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/falling-tree"
 logoFile="logo.png"
 # credits=""
@@ -16,9 +16,9 @@ license = "GPL-3.0"
 
 [[dependencies.falling_tree]]
     modId="forge"
-    mandatory=true
-    versionRange="[34.0.0,)"
-    ordering="NONE"
+mandatory = true
+versionRange = "[35.0.0,)"
+ordering = "NONE"
 	side="BOTH"
 [[dependencies.falling_tree]]
     modId="minecraft"

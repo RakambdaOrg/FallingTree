@@ -11,6 +11,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -58,8 +59,8 @@ public class FallingTreeUtils{
 		return false;
 	}
 	
-	public static boolean isNetherWartOrShroomlight(Block block){
-		return block.isIn(BlockTags.field_232874_ao_) || block.equals(Blocks.field_235383_mw_);
+	public static boolean isNetherWartOrShroomlight(Block block) {
+		return block.isIn(BlockTags.WART_BLOCKS) || block.equals(Blocks.SHROOMLIGHT);
 	}
 	
 	public static boolean isLeafBlock(@Nonnull Block block){

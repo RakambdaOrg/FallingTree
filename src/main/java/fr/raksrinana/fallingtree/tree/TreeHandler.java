@@ -13,9 +13,11 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
 import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.*;
 
 public class TreeHandler{
@@ -119,8 +121,8 @@ public class TreeHandler{
 		final int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
 		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
-			if(rawWeightedUsesLeft <= 1){
-				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.field_240973_b_);
+			if(rawWeightedUsesLeft <= 1) {
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.DUMMY_UUID);
 				return false;
 			}
 			if(tree.getLogCount() >= rawWeightedUsesLeft){
@@ -178,8 +180,8 @@ public class TreeHandler{
 		final int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
 		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
-			if(rawWeightedUsesLeft <= 1){
-				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.field_240973_b_);
+			if(rawWeightedUsesLeft <= 1) {
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.DUMMY_UUID);
 				return false;
 			}
 		}

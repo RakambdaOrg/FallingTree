@@ -22,8 +22,10 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+
 import javax.annotation.Nonnull;
 import java.util.*;
+
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.canPlayerBreakTree;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 
@@ -82,8 +84,8 @@ public final class ForgeEventSubscriber{
 				event.setCanceled(true);
 			}
 		}
-		else{
-			event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()), Util.field_240973_b_);
+		else {
+			event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()), Util.DUMMY_UUID);
 		}
 	}
 	
