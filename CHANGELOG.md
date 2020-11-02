@@ -1,10 +1,17 @@
+## [Fabric-1.16.4-2.5.1] - 2020-11-02
+
+* Port to 1.16.4
+
 ## [Fabric-1.16.3-2.5.1] - 2020-10-02
+
 * Add Brazilian Portuguese language (@Eufranio)
 
 ## [Fabric-1.16.3-2.5.0] - 2020-09-29
+
 * Add option (activated by default) to break nether tree warts (leaves)
 
 ## [Fabric-1.16.3-2.4.0] - 2020-09-21
+
 * Add option to cut trees with mixed log blocks
 
 ## [Fabric-1.16.3-2.3.2] - 2020-09-10
