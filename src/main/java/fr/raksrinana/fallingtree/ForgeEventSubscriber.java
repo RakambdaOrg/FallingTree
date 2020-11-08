@@ -22,10 +22,8 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-
 import javax.annotation.Nonnull;
 import java.util.*;
-
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.canPlayerBreakTree;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 
@@ -36,7 +34,7 @@ public final class ForgeEventSubscriber{
 	
 	@SubscribeEvent
 	public static void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
-		if(!event.isCanceled()){
+		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled()){
 			if(Config.COMMON.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
 				if(isPlayerInRightState(event.getPlayer())){
 					CacheSpeed cacheSpeed = speedCache.compute(event.getPlayer().getUniqueID(), (pos, speed) -> {
@@ -63,7 +61,7 @@ public final class ForgeEventSubscriber{
 	
 	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
-		if(!event.isCanceled() && !event.getWorld().isRemote()){
+		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isRemote()){
 			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
 				TreeHandler.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
 					BreakMode breakMode = Config.COMMON.getTreesConfiguration().getBreakMode();
@@ -84,7 +82,7 @@ public final class ForgeEventSubscriber{
 				event.setCanceled(true);
 			}
 		}
-		else {
+		else{
 			event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()), Util.DUMMY_UUID);
 		}
 	}
