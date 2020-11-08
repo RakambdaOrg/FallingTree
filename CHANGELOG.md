@@ -1,3 +1,7 @@
+## [Forge-1.16.4-2.6.0] - 2020-11-08
+
+* Add an option to disable tree cutting (so can only keep leaf decay activated)
+
 ## [Forge-1.16.4-2.5.0] - 2020-11-02
 
 * Port to 1.16.4
