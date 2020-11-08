@@ -38,7 +38,7 @@ public class TreeConfiguration{
 	@Min(0)
 	@Max(5)
 	public int minimumLeavesAroundRequired = 1;
-	@Comment("When set to true, the mod will cut trees with one cut.")
+	@Comment("When set to true, the mod be applied when cutting trunks.")
 	public boolean treeBreaking = true;
 	@Comment("When set to true, leaves that should naturally break will be broken instantly.")
 	public boolean leavesBreaking = true;

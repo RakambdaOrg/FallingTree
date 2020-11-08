@@ -11,6 +11,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "Mode de casse",
   "text.autoconfig.fallingtree.option.trees.maxSize": "Taille maximum",
   "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired": "Nombre minimum de feuilles autour",
+  "text.autoconfig.fallingtree.option.trees.treeBreaking": "Cassage des troncs",
   "text.autoconfig.fallingtree.option.trees.leavesBreaking": "Cassage de feuilles",
   "text.autoconfig.fallingtree.option.trees.leavesBreakingForceRadius": "Rayon du cassage des feuilles forcé",
   "text.autoconfig.fallingtree.option.trees.allowMixedLogs": "Autoriser les troncs avec bois différents",

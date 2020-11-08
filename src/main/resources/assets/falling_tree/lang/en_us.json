@@ -11,6 +11,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "Break mode",
   "text.autoconfig.fallingtree.option.trees.maxSize": "Max size",
   "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired": "Minimum leaves around required",
+  "text.autoconfig.fallingtree.option.trees.treeBreaking": "Trunk breaking",
   "text.autoconfig.fallingtree.option.trees.leavesBreaking": "Leaves breaking",
   "text.autoconfig.fallingtree.option.trees.leavesBreakingForceRadius": "Leaves breaking force radius",
   "text.autoconfig.fallingtree.option.trees.allowMixedLogs": "Allow trunks with mixed log blocks",
