@@ -1,3 +1,7 @@
+## [Fabric-1.16.4-2.6.0] - 2020-11-08
+
+* Add an option to disable tree cutting (so can only keep leaf decay activated)
+
 ## [Fabric-1.16.4-2.5.1] - 2020-11-02
 
 * Port to 1.16.4
