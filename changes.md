@@ -1,1 +1,1 @@
-* Port to 1.16.4
+* Add an option to disable tree cutting (so can only keep leaf decay activated)

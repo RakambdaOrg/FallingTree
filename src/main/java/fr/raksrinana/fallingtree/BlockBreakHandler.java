@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class BlockBreakHandler implements net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.Before{
 	@Override
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
-		if(!world.isClient()){
+		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && !world.isClient()){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
 				return TreeHandler.getTree(world, blockPos).map(tree -> {
 					switch(FallingTree.config.getTreesConfiguration().getBreakMode()){
