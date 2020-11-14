@@ -1,3 +1,7 @@
+## [Fabric-1.16.4-2.7.0] - 2020-11-14
+
+* Allow to whitelist/blacklist by tags
+
 ## [Fabric-1.16.4-2.6.0] - 2020-11-08
 
 * Add an option to disable tree cutting (so can only keep leaf decay activated)
