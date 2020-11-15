@@ -11,6 +11,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "Modo de quebrar",
   "text.autoconfig.fallingtree.option.trees.maxSize": "Tamanho máximo",
   "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired": "Número mínimo de folhas requerido",
+  "text.autoconfig.fallingtree.option.trees.treeBreaking": "Trunk breaking",
   "text.autoconfig.fallingtree.option.trees.leavesBreaking": "Folhas quebrando",
   "text.autoconfig.fallingtree.option.trees.leavesBreakingForceRadius": "Raio de folhas quebrando",
   "text.autoconfig.fallingtree.option.trees.allowMixedLogs": "Permitir troncos com vários tipos de madeira",

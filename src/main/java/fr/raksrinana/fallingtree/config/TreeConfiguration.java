@@ -38,6 +38,8 @@ public class TreeConfiguration{
 	@Min(0)
 	@Max(5)
 	public int minimumLeavesAroundRequired = 1;
+	@Comment("When set to true, the mod be applied when cutting trunks.")
+	public boolean treeBreaking = true;
 	@Comment("When set to true, leaves that should naturally break will be broken instantly.")
 	public boolean leavesBreaking = true;
 	@Comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed. " +
@@ -87,6 +89,10 @@ public class TreeConfiguration{
 	
 	public boolean isLeavesBreaking(){
 		return this.leavesBreaking;
+	}
+	
+	public boolean isTreeBreaking(){
+		return this.treeBreaking;
 	}
 	
 	public boolean isAllowMixedLogs(){

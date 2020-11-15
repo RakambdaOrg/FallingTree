@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.utils;
 
 import fr.raksrinana.fallingtree.FallingTree;
 import fr.raksrinana.fallingtree.config.ToolConfiguration;
+import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -14,31 +15,56 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FallingTreeUtils{
 	public static Set<Item> getAsItems(Collection<? extends String> names){
-		return names.stream().map(FallingTreeUtils::getItem).filter(Objects::nonNull).collect(Collectors.toSet());
+		return names.stream()
+				.filter(Objects::nonNull)
+				.flatMap(FallingTreeUtils::getItem)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toSet());
 	}
 	
-	public static Item getItem(String name){
+	public static Stream<Item> getItem(String name){
 		try{
-			return Registry.ITEM.get(new Identifier(name));
+			boolean isTag = name.startsWith("#");
+			if(isTag){
+				name = name.substring(1);
+			}
+			Identifier identifier = new Identifier(name);
+			if(isTag){
+				return TagRegistry.item(identifier).values().stream();
+			}
+			return Stream.of(Registry.ITEM.get(identifier));
 		}
 		catch(Exception e){
-			return null;
+			return Stream.empty();
 		}
 	}
 	
 	public static Set<Block> getAsBlocks(Collection<? extends String> names){
-		return names.stream().map(FallingTreeUtils::getBlock).filter(Objects::nonNull).collect(Collectors.toSet());
+		return names.stream()
+				.filter(Objects::nonNull)
+				.flatMap(FallingTreeUtils::getBlock)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toSet());
 	}
 	
-	public static Block getBlock(String name){
+	public static Stream<Block> getBlock(String name){
 		try{
-			return Registry.BLOCK.get(new Identifier(name));
+			boolean isTag = name.startsWith("#");
+			if(isTag){
+				name = name.substring(1);
+			}
+			Identifier identifier = new Identifier(name);
+			if(isTag){
+				return TagRegistry.block(identifier).values().stream();
+			}
+			return Stream.of(Registry.BLOCK.get(identifier));
 		}
 		catch(Exception e){
-			return null;
+			return Stream.empty();
 		}
 	}
 	

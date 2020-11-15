@@ -1,10 +1,10 @@
 package fr.raksrinana.fallingtree.mixin;
 
-import fr.raksrinana.fallingtree.utils.CacheSpeed;
 import fr.raksrinana.fallingtree.FallingTree;
-import fr.raksrinana.fallingtree.utils.FallingTreeUtils;
 import fr.raksrinana.fallingtree.config.BreakMode;
 import fr.raksrinana.fallingtree.tree.TreeHandler;
+import fr.raksrinana.fallingtree.utils.CacheSpeed;
+import fr.raksrinana.fallingtree.utils.FallingTreeUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +25,7 @@ public abstract class AbstractBlockMixin{
 	
 	@Inject(method = "calcBlockBreakingDelta", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
-		if(FallingTree.config.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
+		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && FallingTree.config.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
 				CacheSpeed cacheSpeed = speedCache.compute(player.getUuid(), (uuid, speed) -> {
 					if(Objects.isNull(speed) || !speed.isValid(pos)){
