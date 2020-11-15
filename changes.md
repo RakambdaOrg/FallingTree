@@ -1,1 +1,2 @@
-* Add option (activated by default) to break nether tree warts (leaves)
+* Add an option to disable tree cutting (so can only keep leaf decay activated)
+* Allow to whitelist/blacklist by tags

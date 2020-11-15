@@ -16,6 +16,7 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.ConfigValue<BreakMode> breakMode;
 	private final ForgeConfigSpec.IntValue maxSize;
 	private final ForgeConfigSpec.IntValue minimumLeavesAroundRequired;
+	private final ForgeConfigSpec.BooleanValue treeBreaking;
 	private final ForgeConfigSpec.BooleanValue leavesBreaking;
 	private final ForgeConfigSpec.IntValue leavesBreakingForceRadius;
 	private final ForgeConfigSpec.BooleanValue allowMixedLogs;
@@ -41,6 +42,8 @@ public class TreeConfiguration{
 		maxSize = builder.comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.",
 				"INFO: Only in INSTANTANEOUS mode.")
 				.defineInRange("logs_max_count", 100, 1, Integer.MAX_VALUE);
+		treeBreaking = builder.comment("When set to true, the mod will cut trees with one cut.")
+				.define("tree_breaking", true);
 		leavesBreaking = builder.comment("When set to true, leaves that should naturally break will be broken instantly.")
 				.define("leaves_breaking", true);
 		leavesBreakingForceRadius = builder.comment("Radius to force break leaves. If another tree is still holding the leaves they'll still be broken. If the leaves are persistent (placed by player) they'll also be destroyed.",
@@ -68,6 +71,10 @@ public class TreeConfiguration{
 	
 	public boolean isLeavesBreaking(){
 		return this.leavesBreaking.get();
+	}
+	
+	public boolean isTreeBreaking(){
+		return this.treeBreaking.get();
 	}
 	
 	public int getMaxSize(){

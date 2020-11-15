@@ -120,7 +120,7 @@ public class TreeHandler{
 		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
-				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.field_240973_b_);
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.DUMMY_UUID);
 				return false;
 			}
 			if(tree.getLogCount() >= rawWeightedUsesLeft){
@@ -179,7 +179,7 @@ public class TreeHandler{
 		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
-				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.field_240973_b_);
+				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), Util.DUMMY_UUID);
 				return false;
 			}
 		}
