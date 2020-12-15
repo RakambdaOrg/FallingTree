@@ -1,10 +1,11 @@
 package fr.raksrinana.fallingtree.tree;
 
-import fr.raksrinana.fallingtree.utils.TreePartType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import java.util.*;
-import java.util.stream.Collectors;
+import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
+import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
+import static java.util.stream.Collectors.toSet;
 
 public class Tree{
 	private final World world;
@@ -26,16 +27,16 @@ public class Tree{
 				.max(Comparator.comparingInt(TreePart::getSequence));
 	}
 	
-	public Collection<TreePart> getWarts(){
-		return getParts().stream()
-				.filter(part -> part.getTreePartType() == TreePartType.WART)
-				.collect(Collectors.toSet());
-	}
-	
 	public Collection<TreePart> getLogs(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == TreePartType.LOG)
-				.collect(Collectors.toSet());
+				.filter(part -> part.getTreePartType() == LOG)
+				.collect(toSet());
+	}
+	
+	public Collection<TreePart> getWarts(){
+		return getParts().stream()
+				.filter(part -> part.getTreePartType() == WART)
+				.collect(toSet());
 	}
 	
 	private Optional<BlockPos> getTopMostPart(){

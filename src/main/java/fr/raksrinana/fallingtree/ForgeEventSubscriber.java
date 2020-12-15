@@ -2,30 +2,37 @@ package fr.raksrinana.fallingtree;
 
 import fr.raksrinana.fallingtree.config.BreakMode;
 import fr.raksrinana.fallingtree.config.Config;
-import fr.raksrinana.fallingtree.tree.Tree;
-import fr.raksrinana.fallingtree.tree.TreeHandler;
+import fr.raksrinana.fallingtree.config.ToolConfiguration;
+import fr.raksrinana.fallingtree.tree.breaking.ITreeBreakingHandler;
+import fr.raksrinana.fallingtree.tree.breaking.InstantaneousTreeBreakingHandler;
+import fr.raksrinana.fallingtree.tree.breaking.ShiftDownTreeBreakingHandler;
+import fr.raksrinana.fallingtree.tree.builder.TreeBuilder;
 import fr.raksrinana.fallingtree.utils.CacheSpeed;
+import fr.raksrinana.fallingtree.utils.LeafBreakingSchedule;
 import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nonnull;
 import java.util.*;
-import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.canPlayerBreakTree;
+import static fr.raksrinana.fallingtree.config.BreakMode.INSTANTANEOUS;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static net.minecraft.util.Hand.MAIN_HAND;
+import static net.minecraftforge.event.TickEvent.Phase.END;
+import static net.minecraftforge.fml.LogicalSide.SERVER;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventSubscriber{
@@ -35,61 +42,20 @@ public final class ForgeEventSubscriber{
 	@SubscribeEvent
 	public static void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
 		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled()){
-			if(Config.COMMON.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
+			if(Config.COMMON.getTreesConfiguration().getBreakMode() == INSTANTANEOUS){
 				if(isPlayerInRightState(event.getPlayer())){
 					CacheSpeed cacheSpeed = speedCache.compute(event.getPlayer().getUniqueID(), (pos, speed) -> {
-						if(Objects.isNull(speed) || !speed.isValid(event.getPos())){
+						if(isNull(speed) || !speed.isValid(event.getPos())){
 							speed = getSpeed(event);
 						}
 						return speed;
 					});
-					if(Objects.nonNull(cacheSpeed)){
+					if(nonNull(cacheSpeed)){
 						event.setNewSpeed(cacheSpeed.getSpeed());
 					}
 				}
 			}
 		}
-	}
-	
-	private static CacheSpeed getSpeed(PlayerEvent.BreakSpeed event){
-		double speedMultiplicand = Config.COMMON.getToolsConfiguration().getSpeedMultiplicand();
-		return speedMultiplicand <= 0 ? null :
-				TreeHandler.getTree(event.getEntity().getEntityWorld(), event.getPos())
-						.map(tree -> new CacheSpeed(event.getPos(), event.getOriginalSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
-						.orElse(null);
-	}
-	
-	@SubscribeEvent
-	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
-		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isRemote()){
-			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
-				TreeHandler.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
-					BreakMode breakMode = Config.COMMON.getTreesConfiguration().getBreakMode();
-					if(breakMode == BreakMode.INSTANTANEOUS){
-						breakInstant(event, tree);
-					}
-					else if(breakMode == BreakMode.SHIFT_DOWN){
-						breakShiftDown(event, tree);
-					}
-				});
-			}
-		}
-	}
-	
-	private static void breakInstant(BlockEvent.BreakEvent event, Tree tree){
-		if(Config.COMMON.getTreesConfiguration().getMaxSize() >= tree.getLogCount()){
-			if(!TreeHandler.destroyInstant(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND))){
-				event.setCanceled(true);
-			}
-		}
-		else{
-			event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), Config.COMMON.getTreesConfiguration().getMaxSize()), Util.DUMMY_UUID);
-		}
-	}
-	
-	private static void breakShiftDown(BlockEvent.BreakEvent event, Tree tree){
-		TreeHandler.destroyShift(tree, event.getPlayer(), event.getPlayer().getHeldItem(Hand.MAIN_HAND));
-		event.setCanceled(true);
 	}
 	
 	private static boolean isPlayerInRightState(PlayerEntity player){
@@ -125,9 +91,49 @@ public final class ForgeEventSubscriber{
 		}
 	}
 	
+	private static CacheSpeed getSpeed(PlayerEvent.BreakSpeed event){
+		double speedMultiplicand = Config.COMMON.getToolsConfiguration().getSpeedMultiplicand();
+		return speedMultiplicand <= 0 ? null :
+				TreeBuilder.getTree(event.getEntity().getEntityWorld(), event.getPos())
+						.map(tree -> new CacheSpeed(event.getPos(), event.getOriginalSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
+						.orElse(null);
+	}
+	
+	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
+		ToolConfiguration toolConfiguration = Config.COMMON.getToolsConfiguration();
+		Item heldItem = player.getHeldItem(MAIN_HAND).getItem();
+		boolean isWhitelistedTool = toolConfiguration.isIgnoreTools()
+				|| heldItem instanceof AxeItem
+				|| toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(isWhitelistedTool){
+			boolean isBlacklistedTool = toolConfiguration.getBlacklisted().stream().anyMatch(tool -> tool.equals(heldItem));
+			return !isBlacklistedTool;
+		}
+		return false;
+	}
+	
+	@SubscribeEvent
+	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
+		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isRemote()){
+			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
+				TreeBuilder.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
+					BreakMode breakMode = Config.COMMON.getTreesConfiguration().getBreakMode();
+					getBreakingHandler(breakMode).breakTree(event, tree);
+				});
+			}
+		}
+	}
+	
+	public static ITreeBreakingHandler getBreakingHandler(BreakMode breakMode){
+		if(breakMode == INSTANTANEOUS){
+			return InstantaneousTreeBreakingHandler.getInstance();
+		}
+		return ShiftDownTreeBreakingHandler.getInstance();
+	}
+	
 	@SubscribeEvent
 	public static void onServerTick(TickEvent.ServerTickEvent event){
-		if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END){
+		if(event.side == SERVER && event.phase == END){
 			Iterator<LeafBreakingSchedule> leavesBreak = scheduledLeavesBreaking.iterator();
 			while(leavesBreak.hasNext()){
 				LeafBreakingSchedule leafBreakingSchedule = leavesBreak.next();
