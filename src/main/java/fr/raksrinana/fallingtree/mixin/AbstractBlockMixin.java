@@ -1,10 +1,8 @@
 package fr.raksrinana.fallingtree.mixin;
 
 import fr.raksrinana.fallingtree.FallingTree;
-import fr.raksrinana.fallingtree.config.BreakMode;
-import fr.raksrinana.fallingtree.tree.TreeHandler;
+import fr.raksrinana.fallingtree.tree.builder.TreeBuilder;
 import fr.raksrinana.fallingtree.utils.CacheSpeed;
-import fr.raksrinana.fallingtree.utils.FallingTreeUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import static fr.raksrinana.fallingtree.config.BreakMode.INSTANTANEOUS;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isPlayerInRightState;
 
 @Mixin(AbstractBlock.class)
 public abstract class AbstractBlockMixin{
@@ -25,8 +25,8 @@ public abstract class AbstractBlockMixin{
 	
 	@Inject(method = "calcBlockBreakingDelta", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
-		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && FallingTree.config.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
-			if(FallingTreeUtils.isPlayerInRightState(player)){
+		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && FallingTree.config.getTreesConfiguration().getBreakMode() == INSTANTANEOUS){
+			if(isPlayerInRightState(player)){
 				CacheSpeed cacheSpeed = speedCache.compute(player.getUuid(), (uuid, speed) -> {
 					if(Objects.isNull(speed) || !speed.isValid(pos)){
 						speed = getSpeed(player, pos, callbackInfoReturnable.getReturnValue());
@@ -43,7 +43,7 @@ public abstract class AbstractBlockMixin{
 	private static CacheSpeed getSpeed(PlayerEntity player, BlockPos pos, float originalSpeed){
 		double speedMultiplicand = FallingTree.config.getToolsConfiguration().getSpeedMultiplicand();
 		return speedMultiplicand <= 0 ? null :
-				TreeHandler.getTree(player.getEntityWorld(), pos)
+				TreeBuilder.getTree(player.getEntityWorld(), pos)
 						.map(tree -> new CacheSpeed(pos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
 						.orElse(null);
 	}

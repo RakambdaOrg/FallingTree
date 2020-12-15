@@ -1,11 +1,14 @@
-package fr.raksrinana.fallingtree.utils;
+package fr.raksrinana.fallingtree.tree.builder;
 
 import fr.raksrinana.fallingtree.tree.TreePart;
+import fr.raksrinana.fallingtree.tree.builder.position.IPositionFetcher;
+import fr.raksrinana.fallingtree.utils.TreePartType;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import java.util.Objects;
 
 public class ToAnalyzePos implements Comparable<ToAnalyzePos>{
+	private final IPositionFetcher positionFetcher;
 	private final BlockPos parentPos;
 	private final Block parentBlock;
 	private final BlockPos checkPos;
@@ -13,7 +16,8 @@ public class ToAnalyzePos implements Comparable<ToAnalyzePos>{
 	private final TreePartType treePartType;
 	private final int sequence;
 	
-	public ToAnalyzePos(BlockPos parentPos, Block parentBlock, BlockPos checkPos, Block checkBlock, TreePartType treePartType, int sequence){
+	public ToAnalyzePos(IPositionFetcher positionFetcher, BlockPos parentPos, Block parentBlock, BlockPos checkPos, Block checkBlock, TreePartType treePartType, int sequence){
+		this.positionFetcher = positionFetcher;
 		this.parentPos = parentPos;
 		this.parentBlock = parentBlock;
 		this.checkPos = checkPos;
@@ -45,6 +49,10 @@ public class ToAnalyzePos implements Comparable<ToAnalyzePos>{
 	
 	public BlockPos getCheckPos(){
 		return checkPos;
+	}
+	
+	public IPositionFetcher getPositionFetcher(){
+		return positionFetcher;
 	}
 	
 	public TreePartType getTreePartType(){

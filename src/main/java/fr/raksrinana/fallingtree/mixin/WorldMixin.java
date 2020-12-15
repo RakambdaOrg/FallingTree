@@ -5,7 +5,6 @@ import fr.raksrinana.fallingtree.leaves.LeafBreakingHandler;
 import fr.raksrinana.fallingtree.leaves.LeafBreakingSchedule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -18,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.EnumSet;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
+import static net.minecraft.block.Blocks.AIR;
 
 @Mixin(World.class)
 public abstract class WorldMixin{
@@ -32,7 +32,7 @@ public abstract class WorldMixin{
 	private static void onUpdate(ServerWorld world, BlockPos eventPos, BlockState eventState, EnumSet<Direction> notifiedSides){
 		if(FallingTree.config.getTreesConfiguration().isLeavesBreaking()){
 			Block eventBlock = eventState.getBlock();
-			if(eventBlock.is(Blocks.AIR)){
+			if(eventBlock.is(AIR)){
 				for(Direction facing : notifiedSides){
 					BlockPos neighborPos = eventPos.offset(facing);
 					Chunk chunk = world.getChunk(neighborPos);

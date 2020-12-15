@@ -3,19 +3,22 @@ package fr.raksrinana.fallingtree.utils;
 import fr.raksrinana.fallingtree.FallingTree;
 import fr.raksrinana.fallingtree.config.ToolConfiguration;
 import net.fabricmc.fabric.api.tag.TagRegistry;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import static fr.raksrinana.fallingtree.utils.TreePartType.*;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.empty;
+import static net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags.AXES;
+import static net.minecraft.block.Blocks.SHROOMLIGHT;
+import static net.minecraft.tag.BlockTags.*;
+import static net.minecraft.util.registry.Registry.BLOCK;
+import static net.minecraft.util.registry.Registry.ITEM;
 
 public class FallingTreeUtils{
 	public static Set<Item> getAsItems(Collection<? extends String> names){
@@ -23,7 +26,7 @@ public class FallingTreeUtils{
 				.filter(Objects::nonNull)
 				.flatMap(FallingTreeUtils::getItem)
 				.filter(Objects::nonNull)
-				.collect(Collectors.toSet());
+				.collect(toSet());
 	}
 	
 	public static Stream<Item> getItem(String name){
@@ -36,10 +39,10 @@ public class FallingTreeUtils{
 			if(isTag){
 				return TagRegistry.item(identifier).values().stream();
 			}
-			return Stream.of(Registry.ITEM.get(identifier));
+			return Stream.of(ITEM.get(identifier));
 		}
 		catch(Exception e){
-			return Stream.empty();
+			return empty();
 		}
 	}
 	
@@ -48,7 +51,7 @@ public class FallingTreeUtils{
 				.filter(Objects::nonNull)
 				.flatMap(FallingTreeUtils::getBlock)
 				.filter(Objects::nonNull)
-				.collect(Collectors.toSet());
+				.collect(toSet());
 	}
 	
 	public static Stream<Block> getBlock(String name){
@@ -61,35 +64,44 @@ public class FallingTreeUtils{
 			if(isTag){
 				return TagRegistry.block(identifier).values().stream();
 			}
-			return Stream.of(Registry.BLOCK.get(identifier));
+			return Stream.of(BLOCK.get(identifier));
 		}
 		catch(Exception e){
-			return Stream.empty();
+			return empty();
 		}
-	}
-	
-	public static boolean isLogBlock(Block block){
-		final boolean isWhitelistedBlock = block.isIn(BlockTags.LOGS)
-				|| FallingTree.config.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
-		if(isWhitelistedBlock){
-			final boolean isBlacklistedBlock = FallingTree.config.getTreesConfiguration().getBlacklistedLogs().stream().anyMatch(log -> log.equals(block));
-			return !isBlacklistedBlock;
-		}
-		return false;
-	}
-	
-	public static boolean isNetherWartOrShroomlight(Block block){
-		return block.isIn(BlockTags.WART_BLOCKS) || block.is(Blocks.SHROOMLIGHT);
 	}
 	
 	public static boolean isLeafBlock(Block block){
-		final boolean isWhitelistedBlock = block.isIn(BlockTags.LEAVES)
+		boolean isWhitelistedBlock = block.isIn(LEAVES)
 				|| FallingTree.config.getTreesConfiguration().getWhitelistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
-			final boolean isBlacklistedBlock = FallingTree.config.getTreesConfiguration().getBlacklistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
+			boolean isBlacklistedBlock = FallingTree.config.getTreesConfiguration().getBlacklistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
+	}
+	
+	public static boolean canPlayerBreakTree(PlayerEntity player){
+		ToolConfiguration toolConfiguration = FallingTree.config.getToolsConfiguration();
+		Item heldItem = player.getMainHandStack().getItem();
+		boolean isWhitelistedTool = toolConfiguration.isIgnoreTools()
+				|| heldItem.isIn(AXES)
+				|| toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(isWhitelistedTool){
+			boolean isBlacklistedTool = toolConfiguration.getBlacklisted().stream().anyMatch(tool -> tool.equals(heldItem));
+			return !isBlacklistedTool;
+		}
+		return false;
+	}
+	
+	public static TreePartType getTreePart(Block checkBlock){
+		if(isLogBlock(checkBlock)){
+			return LOG;
+		}
+		if(isNetherWartOrShroomlight(checkBlock)){
+			return WART;
+		}
+		return OTHER;
 	}
 	
 	public static boolean isPlayerInRightState(PlayerEntity player){
@@ -102,16 +114,17 @@ public class FallingTreeUtils{
 		return canPlayerBreakTree(player);
 	}
 	
-	public static boolean canPlayerBreakTree(PlayerEntity player){
-		final ToolConfiguration toolConfiguration = FallingTree.config.getToolsConfiguration();
-		final Item heldItem = player.getMainHandStack().getItem();
-		final boolean isWhitelistedTool = toolConfiguration.isIgnoreTools()
-				|| heldItem.isIn(FabricToolTags.AXES)
-				|| toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
-		if(isWhitelistedTool){
-			final boolean isBlacklistedTool = toolConfiguration.getBlacklisted().stream().anyMatch(tool -> tool.equals(heldItem));
-			return !isBlacklistedTool;
+	public static boolean isLogBlock(Block block){
+		boolean isWhitelistedBlock = block.isIn(LOGS)
+				|| FallingTree.config.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
+		if(isWhitelistedBlock){
+			boolean isBlacklistedBlock = FallingTree.config.getTreesConfiguration().getBlacklistedLogs().stream().anyMatch(log -> log.equals(block));
+			return !isBlacklistedBlock;
 		}
 		return false;
+	}
+	
+	public static boolean isNetherWartOrShroomlight(Block block){
+		return block.isIn(WART_BLOCKS) || block.is(SHROOMLIGHT);
 	}
 }

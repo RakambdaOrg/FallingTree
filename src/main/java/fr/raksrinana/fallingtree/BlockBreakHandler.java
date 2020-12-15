@@ -1,45 +1,36 @@
 package fr.raksrinana.fallingtree;
 
-import fr.raksrinana.fallingtree.tree.Tree;
-import fr.raksrinana.fallingtree.tree.TreeHandler;
-import fr.raksrinana.fallingtree.utils.FallingTreeUtils;
+import fr.raksrinana.fallingtree.config.BreakMode;
+import fr.raksrinana.fallingtree.tree.breaking.ITreeBreakingHandler;
+import fr.raksrinana.fallingtree.tree.breaking.InstantaneousTreeBreakingHandler;
+import fr.raksrinana.fallingtree.tree.breaking.ShiftDownTreeBreakingHandler;
+import fr.raksrinana.fallingtree.tree.builder.TreeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import static fr.raksrinana.fallingtree.config.BreakMode.INSTANTANEOUS;
+import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isPlayerInRightState;
 
 public class BlockBreakHandler implements net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.Before{
 	@Override
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
 		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && !world.isClient()){
-			if(FallingTreeUtils.isPlayerInRightState(player)){
-				return TreeHandler.getTree(world, blockPos).map(tree -> {
-					switch(FallingTree.config.getTreesConfiguration().getBreakMode()){
-						case INSTANTANEOUS:
-							return breakInstant(player, tree);
-						case SHIFT_DOWN:
-							return breakShiftDown(player, tree);
-						default:
-							return true;
-					}
+			if(isPlayerInRightState(player)){
+				return TreeBuilder.getTree(world, blockPos).map(tree -> {
+					BreakMode breakMode = FallingTree.config.getTreesConfiguration().getBreakMode();
+					return getBreakingHandler(breakMode).breakTree(player, tree);
 				}).orElse(true);
 			}
 		}
 		return true;
 	}
 	
-	private static boolean breakInstant(PlayerEntity player, Tree tree){
-		if(FallingTree.config.getTreesConfiguration().getMaxSize() < tree.getLogCount()){
-			player.sendSystemMessage(new TranslatableText("chat.falling_tree.tree_too_big", tree.getLogCount(), FallingTree.config.getTreesConfiguration().getMaxSize()), Util.NIL_UUID);
-			return true;
+	public static ITreeBreakingHandler getBreakingHandler(BreakMode breakMode){
+		if(breakMode == INSTANTANEOUS){
+			return InstantaneousTreeBreakingHandler.getInstance();
 		}
-		return TreeHandler.destroyInstant(tree, player, player.getMainHandStack());
-	}
-	
-	private static boolean breakShiftDown(PlayerEntity player, Tree tree){
-		return TreeHandler.destroyShift(tree, player, player.getMainHandStack());
+		return ShiftDownTreeBreakingHandler.getInstance();
 	}
 }
