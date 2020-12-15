@@ -3,10 +3,8 @@ package fr.raksrinana.fallingtree.tree.builder.position;
 import fr.raksrinana.fallingtree.tree.builder.ToAnalyzePos;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.Objects;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getTreePart;
 import static java.util.stream.Collectors.toList;
@@ -21,11 +19,11 @@ public class BasicPositionFetcher implements IPositionFetcher{
 	public Collection<ToAnalyzePos> getPositions(World world, ToAnalyzePos parent){
 		BlockPos parentPos = parent.getCheckPos();
 		Block parentBlock = world.getBlockState(parentPos).getBlock();
-		return EnumSet.allOf(Direction.class).stream()
-				.map(parentPos::offset)
+		return BlockPos.stream(parentPos.up().north().east(), parentPos.down().south().west())
+				.filter(pos -> !Objects.equals(pos, parentPos))
 				.map(checkPos -> {
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
-					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos, checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
+					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.toImmutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
 				})
 				.collect(toList());
 	}

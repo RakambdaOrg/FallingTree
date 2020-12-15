@@ -13,9 +13,10 @@ import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.*;
 import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
 import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
 import static java.util.Optional.empty;
-import static java.util.stream.Collectors.toList;
 
 public class TreeBuilder{
+	private static final EnumSet<Direction> ALL_DIRECTIONS = EnumSet.allOf(Direction.class);
+	
 	public static Optional<Tree> getTree(World world, BlockPos originPos){
 		Block originBlock = world.getBlockState(originPos).getBlock();
 		if(!isLogBlock(originBlock)){
@@ -36,7 +37,8 @@ public class TreeBuilder{
 			Collection<ToAnalyzePos> nextPositions = filterPotentialPos(originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
 			
 			nextPositions.removeAll(analyzedPos);
-			toAnalyzePos.addAll(nextPositions.stream().filter(pos -> !toAnalyzePos.contains(pos)).collect(toList()));
+			nextPositions.removeAll(toAnalyzePos);
+			toAnalyzePos.addAll(nextPositions);
 		}
 		
 		if(FallingTree.config.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
@@ -66,7 +68,7 @@ public class TreeBuilder{
 	}
 	
 	private static long getLeavesAround(World world, BlockPos blockPos){
-		return Arrays.stream(Direction.values())
+		return ALL_DIRECTIONS.stream()
 				.map(blockPos::offset)
 				.filter(testPos -> {
 					Block block = world.getBlockState(testPos).getBlock();
