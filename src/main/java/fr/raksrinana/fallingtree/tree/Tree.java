@@ -2,9 +2,13 @@ package fr.raksrinana.fallingtree.tree;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Optional;
+import java.util.Set;
 import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
 import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
+import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.toSet;
 
 public class Tree{
@@ -24,7 +28,7 @@ public class Tree{
 	
 	public Optional<TreePart> getLastSequencePart(){
 		return getParts().stream()
-				.max(Comparator.comparingInt(TreePart::getSequence));
+				.max(comparingInt(TreePart::getSequence));
 	}
 	
 	public Collection<TreePart> getLogs(){
@@ -39,16 +43,16 @@ public class Tree{
 				.collect(toSet());
 	}
 	
-	private Optional<BlockPos> getTopMostPart(){
-		return getParts().stream()
-				.map(TreePart::getBlockPos)
-				.max(Comparator.comparingInt(BlockPos::getY));
-	}
-	
 	public Optional<BlockPos> getTopMostLog(){
 		return getLogs().stream()
 				.map(TreePart::getBlockPos)
-				.max(Comparator.comparingInt(BlockPos::getY));
+				.max(comparingInt(BlockPos::getY));
+	}
+	
+	private Optional<BlockPos> getTopMostPart(){
+		return getParts().stream()
+				.map(TreePart::getBlockPos)
+				.max(comparingInt(BlockPos::getY));
 	}
 	
 	public int getLogCount(){

@@ -2,10 +2,8 @@ package fr.raksrinana.fallingtree.tree.builder.position;
 
 import fr.raksrinana.fallingtree.tree.builder.ToAnalyzePos;
 import net.minecraft.block.Block;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -21,12 +19,11 @@ public class AbovePositionFetcher implements IPositionFetcher{
 	public Collection<ToAnalyzePos> getPositions(World world, ToAnalyzePos parent){
 		BlockPos parentPos = parent.getCheckPos();
 		Block parentBlock = world.getBlockState(parentPos).getBlock();
-		return Arrays.stream(Direction.values())
-				.filter(direction -> direction != Direction.SOUTH)
-				.map(parentPos::offset)
+		return BlockPos.getAllInBox(parentPos.north().east(), parentPos.west())
+				.filter(pos -> !Objects.equals(pos, parentPos))
 				.map(checkPos -> {
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
-					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos, checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
+					return new ToAnalyzePos(BasicPositionFetcher.getInstance(), parentPos, parentBlock, checkPos, checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
 				})
 				.collect(Collectors.toList());
 	}
