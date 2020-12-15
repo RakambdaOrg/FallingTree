@@ -6,8 +6,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getTreePart;
+import static java.util.stream.Collectors.toList;
 
 public class BasicPositionFetcher implements IPositionFetcher{
 	private static BasicPositionFetcher INSTANCE;
@@ -19,13 +19,13 @@ public class BasicPositionFetcher implements IPositionFetcher{
 	public Collection<ToAnalyzePos> getPositions(World world, ToAnalyzePos parent){
 		BlockPos parentPos = parent.getCheckPos();
 		Block parentBlock = world.getBlockState(parentPos).getBlock();
-		return BlockPos.getAllInBox(parentPos.north().east(), parentPos.south().west())
+		return BlockPos.getAllInBox(parentPos.up().north().east(), parentPos.down().south().west())
 				.filter(pos -> !Objects.equals(pos, parentPos))
 				.map(checkPos -> {
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
-					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos, checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
+					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.toImmutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
 				})
-				.collect(Collectors.toList());
+				.collect(toList());
 	}
 	
 	public static BasicPositionFetcher getInstance(){
