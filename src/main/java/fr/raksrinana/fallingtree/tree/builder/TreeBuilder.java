@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.tree.builder;
 
 import fr.raksrinana.fallingtree.config.Config;
+import fr.raksrinana.fallingtree.config.DetectionMode;
 import fr.raksrinana.fallingtree.tree.Tree;
 import fr.raksrinana.fallingtree.tree.builder.position.AbovePositionFetcher;
 import fr.raksrinana.fallingtree.tree.builder.position.AboveYFetcher;
@@ -58,10 +59,11 @@ public class TreeBuilder{
 	}
 	
 	private static IPositionFetcher getFirstPositionFetcher(){
-		if(Config.COMMON.getTreesConfiguration().getDetectionMode() == ABOVE_CUT){
+		DetectionMode detectionMode = Config.COMMON.getTreesConfiguration().getDetectionMode();
+		if(detectionMode == ABOVE_CUT){
 			return AbovePositionFetcher.getInstance();
 		}
-		if(Config.COMMON.getTreesConfiguration().getDetectionMode() == ABOVE_Y){
+		if(detectionMode == ABOVE_Y){
 			return AboveYFetcher.getInstance();
 		}
 		return BasicPositionFetcher.getInstance();
