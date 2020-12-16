@@ -143,6 +143,9 @@ curseforge {
         mainArtifact(jar) {
             displayName = "${archivesBaseName}-${project.version}"
         }
+        relations {
+            requiredDependency 'cloth-config-forge'
+        }
     }
     options {
         javaVersionAutoDetect = false
