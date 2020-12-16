@@ -9,10 +9,10 @@ import java.util.Objects;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getTreePart;
 import static java.util.stream.Collectors.toList;
 
-public class BasicPositionFetcher implements IPositionFetcher{
-	private static BasicPositionFetcher INSTANCE;
+public class AboveYFetcher implements IPositionFetcher{
+	private static AboveYFetcher INSTANCE;
 	
-	private BasicPositionFetcher(){
+	private AboveYFetcher(){
 	}
 	
 	@Override
@@ -20,6 +20,7 @@ public class BasicPositionFetcher implements IPositionFetcher{
 		BlockPos parentPos = parent.getCheckPos();
 		Block parentBlock = world.getBlockState(parentPos).getBlock();
 		return BlockPos.stream(parentPos.up().north().east(), parentPos.down().south().west())
+				.filter(pos -> pos.getY() >= originPos.getY())
 				.map(checkPos -> {
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
 					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.toImmutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
@@ -27,9 +28,9 @@ public class BasicPositionFetcher implements IPositionFetcher{
 				.collect(toList());
 	}
 	
-	public static BasicPositionFetcher getInstance(){
+	public static AboveYFetcher getInstance(){
 		if(Objects.isNull(INSTANCE)){
-			INSTANCE = new BasicPositionFetcher();
+			INSTANCE = new AboveYFetcher();
 		}
 		return INSTANCE;
 	}

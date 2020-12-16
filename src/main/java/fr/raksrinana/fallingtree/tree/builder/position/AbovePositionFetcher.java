@@ -16,11 +16,10 @@ public class AbovePositionFetcher implements IPositionFetcher{
 	}
 	
 	@Override
-	public Collection<ToAnalyzePos> getPositions(World world, ToAnalyzePos parent){
+	public Collection<ToAnalyzePos> getPositions(World world, BlockPos originPos, ToAnalyzePos parent){
 		BlockPos parentPos = parent.getCheckPos();
 		Block parentBlock = world.getBlockState(parentPos).getBlock();
 		return BlockPos.stream(parentPos.up().north().east(), parentPos.south().west())
-				.filter(pos -> !Objects.equals(pos, parentPos))
 				.map(checkPos -> {
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
 					return new ToAnalyzePos(BasicPositionFetcher.getInstance(), parentPos, parentBlock, checkPos.toImmutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);

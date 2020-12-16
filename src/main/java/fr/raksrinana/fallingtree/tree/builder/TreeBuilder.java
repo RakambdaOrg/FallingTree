@@ -1,7 +1,10 @@
 package fr.raksrinana.fallingtree.tree.builder;
 
 import fr.raksrinana.fallingtree.FallingTree;
+import fr.raksrinana.fallingtree.config.DetectionMode;
 import fr.raksrinana.fallingtree.tree.Tree;
+import fr.raksrinana.fallingtree.tree.builder.position.AbovePositionFetcher;
+import fr.raksrinana.fallingtree.tree.builder.position.AboveYFetcher;
 import fr.raksrinana.fallingtree.tree.builder.position.BasicPositionFetcher;
 import fr.raksrinana.fallingtree.tree.builder.position.IPositionFetcher;
 import net.minecraft.block.Block;
@@ -9,6 +12,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import java.util.*;
+import static fr.raksrinana.fallingtree.config.DetectionMode.ABOVE_CUT;
+import static fr.raksrinana.fallingtree.config.DetectionMode.ABOVE_Y;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.*;
 import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
 import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
@@ -33,7 +38,7 @@ public class TreeBuilder{
 			tree.addPart(analyzingPos.toTreePart());
 			analyzedPos.add(analyzingPos);
 			
-			Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, analyzingPos);
+			Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, originPos, analyzingPos);
 			Collection<ToAnalyzePos> nextPositions = filterPotentialPos(originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
 			
 			nextPositions.removeAll(analyzedPos);
@@ -54,6 +59,13 @@ public class TreeBuilder{
 	}
 	
 	private static IPositionFetcher getFirstPositionFetcher(){
+		DetectionMode detectionMode = FallingTree.config.getTreesConfiguration().getDetectionMode();
+		if(detectionMode == ABOVE_CUT){
+			return AbovePositionFetcher.getInstance();
+		}
+		if(detectionMode == ABOVE_Y){
+			return AboveYFetcher.getInstance();
+		}
 		return BasicPositionFetcher.getInstance();
 	}
 	

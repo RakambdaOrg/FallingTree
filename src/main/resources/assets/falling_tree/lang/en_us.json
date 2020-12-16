@@ -9,6 +9,7 @@
   "text.autoconfig.fallingtree.option.trees.whitelistedLeaves": "Whitelisted leaves",
   "text.autoconfig.fallingtree.option.trees.blacklistedLeaves": "Blacklisted leaves",
   "text.autoconfig.fallingtree.option.trees.breakMode": "Break mode",
+  "text.autoconfig.fallingtree.option.trees.detectionMode": "Detection mode",
   "text.autoconfig.fallingtree.option.trees.maxSize": "Max size",
   "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired": "Minimum leaves around required",
   "text.autoconfig.fallingtree.option.trees.treeBreaking": "Trunk breaking",
