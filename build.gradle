@@ -1,4 +1,9 @@
 buildscript {
+    ext{
+        cloth_config_version = '4.1.1'
+        auto_config1u_version = '3.3.1'
+    }
+
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
@@ -29,6 +34,10 @@ apply plugin: 'eclipse'
 apply plugin: "com.github.breadmoirai.github-release"
 
 repositories {
+    maven {
+        name = 'Cloth Config'
+        url = 'https://dl.bintray.com/shedaniel/cloth-config-2'
+    }
     flatDir {
         name "fileRepo"
         dirs "repo"
@@ -88,6 +97,8 @@ processResources {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
+
+    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
 }
 
 jar {
