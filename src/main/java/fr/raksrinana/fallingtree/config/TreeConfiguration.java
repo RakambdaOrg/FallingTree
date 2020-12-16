@@ -10,6 +10,8 @@ import me.shedaniel.clothconfig2.forge.gui.entries.StringListListEntry;
 import net.minecraft.block.Block;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
@@ -108,6 +110,7 @@ public class TreeConfiguration{
 				.define("break_nether_tree_warts", true);
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(ConfigBuilder builder){
 		EnumListEntry<BreakMode> breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.breakMode"), BreakMode.class, getBreakMode())

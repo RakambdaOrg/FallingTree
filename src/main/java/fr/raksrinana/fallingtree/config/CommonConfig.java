@@ -5,6 +5,8 @@ import me.shedaniel.clothconfig2.forge.api.ConfigCategory;
 import me.shedaniel.clothconfig2.forge.gui.entries.BooleanListEntry;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class CommonConfig{
@@ -27,6 +29,7 @@ public class CommonConfig{
 		breakInCreative = builder.comment(DESC_BREAK_IN_CREATIVE).define("break_in_creative", false);
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(ConfigBuilder builder){
 		BooleanListEntry reverseSneakingEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.reverseSneaking"), isReverseSneaking())

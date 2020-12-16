@@ -10,6 +10,8 @@ import me.shedaniel.clothconfig2.forge.gui.entries.StringListListEntry;
 import net.minecraft.item.Item;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
@@ -67,6 +69,7 @@ public class ToolConfiguration{
 				.define("preserve", false);
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(ConfigBuilder builder){
 		BooleanListEntry ignoreToolsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.tools.ignoreTools"), isIgnoreTools())
