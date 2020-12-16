@@ -14,6 +14,7 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLeaves;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLeaves;
 	private final ForgeConfigSpec.ConfigValue<BreakMode> breakMode;
+	private final ForgeConfigSpec.ConfigValue<DetectionMode> detectionMode;
 	private final ForgeConfigSpec.IntValue maxSize;
 	private final ForgeConfigSpec.IntValue minimumLeavesAroundRequired;
 	private final ForgeConfigSpec.BooleanValue treeBreaking;
@@ -27,6 +28,11 @@ public class TreeConfiguration{
 				"Instantaneous will break it in one go.",
 				"Shift down will make the tree fall down as you cut it, so you still have to break x blocks but don't have to climb the tree for them.")
 				.defineEnum("break_mode", BreakMode.INSTANTANEOUS);
+		detectionMode = builder.comment("What part of the tree should be cut.",
+				"Whole tree will break the whole tree.",
+				"Above cut will break only blocks that are connected from above the cut point.",
+				"Above y will break only blocks that are above the y value of the cut point.")
+				.defineEnum("detection_mode", DetectionMode.WHOLE_TREE);
 		whitelistedLogs = builder.comment("Additional list of blocks considered as logs and that will be destroyed by the mod.",
 				"INFO: Blocks marked with the log tag will already be whitelisted.")
 				.defineList("logs_whitelisted", Lists.newArrayList(), Objects::nonNull);
@@ -99,6 +105,10 @@ public class TreeConfiguration{
 	
 	public BreakMode getBreakMode(){
 		return breakMode.get();
+	}
+	
+	public DetectionMode getDetectionMode(){
+		return detectionMode.get();
 	}
 	
 	public boolean isAllowMixedLogs(){

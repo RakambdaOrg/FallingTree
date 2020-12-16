@@ -1,1 +1,1 @@
-* Allow to whitelist/blacklist by tags
+* Add option to break only parts of the tree that are above the cut.
