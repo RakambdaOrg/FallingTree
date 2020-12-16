@@ -1,3 +1,8 @@
+## [Forge-1.16.4-2.8.0] - 2020-12-16
+
+* Add option to break only parts of the tree that are above the cut.
+* Add GUI to change configuration (Main menu > Mods > FallingTree > Config).
+
 ## [Forge-1.16.4-2.7.0] - 2020-11-14
 
 * Allow to whitelist/blacklist by tags
