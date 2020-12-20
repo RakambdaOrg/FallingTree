@@ -3,15 +3,21 @@ package fr.raksrinana.fallingtree.config;
 import me.shedaniel.clothconfig2.forge.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.forge.api.ConfigCategory;
 import me.shedaniel.clothconfig2.forge.gui.entries.BooleanListEntry;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
+import static fr.raksrinana.fallingtree.config.Config.toTooltips;
 
 public class CommonConfig{
-	private static final String DESC_REVERSE_SNEAKING = "When set to true, a tree will only be chopped down if the player is sneaking.";
-	private static final String DESC_BREAK_IN_CREATIVE = "When set to true, the mod will cut down trees in creative too.";
+	private static final String[] DESC_REVERSE_SNEAKING = {
+			"When set to true, a tree will,",
+			"only be chopped down if the player is sneaking."
+	};
+	private static final String[] DESC_BREAK_IN_CREATIVE = {
+			"When set to true, the mod will,",
+			"cut down trees in creative too."
+	};
 	private final TreeConfiguration trees;
 	private final ToolConfiguration tools;
 	private final ForgeConfigSpec.BooleanValue reverseSneaking;
@@ -34,13 +40,13 @@ public class CommonConfig{
 		BooleanListEntry reverseSneakingEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.reverseSneaking"), isReverseSneaking())
 				.setDefaultValue(false)
-				.setTooltip(new StringTextComponent(DESC_REVERSE_SNEAKING))
+				.setTooltip(toTooltips(DESC_REVERSE_SNEAKING))
 				.setSaveConsumer(reverseSneaking::set)
 				.build();
 		BooleanListEntry breakInCreativeEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.breakInCreative"), isBreakInCreative())
 				.setDefaultValue(false)
-				.setTooltip(new StringTextComponent(DESC_BREAK_IN_CREATIVE))
+				.setTooltip(toTooltips(DESC_BREAK_IN_CREATIVE))
 				.setSaveConsumer(breakInCreative::set)
 				.build();
 		

@@ -1,3 +1,7 @@
+## [Forge-1.16.4-2.8.1] - 2020-12-20
+
+* Avoid having config tooltips getting out of screen by reducing text width (#40)
+
 ## [Forge-1.16.4-2.8.0] - 2020-12-16
 
 * Add option to break only parts of the tree that are above the cut.
