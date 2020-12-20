@@ -7,7 +7,9 @@ import fr.raksrinana.fallingtree.config.validator.MinRunner;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Category;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.Tooltip;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.TransitiveObject;
 import me.sargunvohra.mcmods.autoconfig1u.gui.registry.GuiRegistry;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
@@ -20,15 +22,17 @@ import java.util.stream.Collectors;
 
 @Config(name = "fallingtree")
 public class Configuration implements ConfigData{
+	@Tooltip(count = 2)
 	@Comment("When set to true, a tree will only be chopped down if the player is sneaking.")
 	public boolean reverseSneaking = false;
+	@Tooltip(count = 2)
 	@Comment("When set to true, the mod will cut down trees in creative too.")
 	public boolean breakInCreative = false;
-	@ConfigEntry.Category("trees")
-	@ConfigEntry.Gui.TransitiveObject
+	@Category("trees")
+	@TransitiveObject
 	public TreeConfiguration trees = new TreeConfiguration();
-	@ConfigEntry.Category("tools")
-	@ConfigEntry.Gui.TransitiveObject
+	@Category("tools")
+	@TransitiveObject
 	public ToolConfiguration tools = new ToolConfiguration();
 	
 	public static Configuration register(){
