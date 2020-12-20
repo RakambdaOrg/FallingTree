@@ -8,96 +8,72 @@ import me.shedaniel.clothconfig2.forge.gui.entries.EnumListEntry;
 import me.shedaniel.clothconfig2.forge.gui.entries.IntegerListEntry;
 import me.shedaniel.clothconfig2.forge.gui.entries.StringListListEntry;
 import net.minecraft.block.Block;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import static fr.raksrinana.fallingtree.config.Config.toTooltips;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
 public class TreeConfiguration{
 	private static final String[] DESC_BREAK_MODE = {
 			"How to break the tree.",
-			"",
-			"Instantaneous will break it in one go.",
-			"",
-			"Shift down will make the tree fall down as you cut it,",
-			"so you still have to break x blocks but don't have to",
-			"climb the tree for them."
+			"INSTANTANEOUS will break it in one go.",
+			"SHIFT_DOWN will make the tree fall down as you cut it, so you still have to break x blocks but don't have to climb the tree for them."
 	};
 	private static final String[] DESC_DETECTION_MODE = {
 			"What part of the tree should be cut.",
-			"",
-			"Whole tree will break the whole tree.",
-			"",
-			"Above cut will break only blocks that are connected",
-			"from above the cut point.",
-			"",
-			"Above y will break only blocks that are above the y",
-			"value of the cut point."
+			"WHOLE_TREE tree will break the whole tree.",
+			"ABOVE_CUT will break only blocks that are connected from above the cut point.",
+			"ABOVE_Y will break only blocks that are above the y value of the cut point."
 	};
 	private static final String[] DESC_WHITELISTED_LOGS = {
-			"Additional list of blocks considered as logs and that",
-			"will be destroyed by the mod.",
-			"",
-			"INFO: Blocks marked with the log tag will already be",
-			"whitelisted."
+			"Additional list of blocks considered as logs and that will be destroyed by the mod.",
+			"INFO: Blocks marked with the log tag will already be whitelisted."
 	};
 	private static final String[] DESC_BLACKLISTED_LOGS = {
 			"List of blocks that should not be considered as logs.",
-			"",
 			"INFO: This wins over the whitelist."
 	};
 	private static final String[] DESC_WHITELISTED_LEAVES = {
 			"Additional list of blocks considered as leaves.",
-			"",
-			"INFO: Blocks marked with the leaves tag will",
-			"already be whitelisted."
+			"INFO: Blocks marked with the leaves tag will already be whitelisted."
 	};
 	private static final String[] DESC_BLACKLISTED_LEAVES = {
 			"List of blocks that should not be considered as leaves.",
 			"INFO: This wins over the whitelist."
 	};
 	private static final String[] DESC_MAX_SIZE = {
-			"The maximum size of a tree. If there's more logs",
-			"than this value the tree won't be cut.",
-			"",
+			"The maximum size of a tree. If there's more logs than this value the tree won't be cut.",
 			"INFO: Only in INSTANTANEOUS mode."
 	};
 	private static final String[] DESC_TREE_BREAKING = {
 			"When set to true, the mod will cut trees with one cut."
 	};
 	private static final String[] DESC_LEAVES_BREAKING = {
-			"When set to true, leaves that should naturally break",
-			"will be broken instantly."
+			"When set to true, leaves that should naturally break will be broken instantly."
 	};
 	private static final String[] DESC_LEAVES_BREAKING_FORCE_RADIUS = {
-			"Radius to force break leaves. If another tree is",
-			"still holding the leaves they'll still be broken.",
-			"If the leaves are persistent (placed by player)",
-			"they'll also be destroyed.",
+			"Radius to force break leaves. If another tree is still holding the leaves they'll still be broken.",
+			"If the leaves are persistent (placed by player) they'll also be destroyed.",
 			"The radius is applied from one of the top most log blocks.",
-			"",
 			"INFO: break_leaves must be activated for this to take effect.",
 			"INFO: Only in INSTANTANEOUS mode."
 	};
 	private static final String[] DESC_MINIMUM_LEAVES_AROUND_REQUIRED = {
-			"The minimum amount of leaves that needs to be around",
-			"the top most log in order for the mod to consider it a tree.",
+			"The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.",
 			"INFO: Only in INSTANTANEOUS mode."
 	};
 	private static final String[] DESC_ALLOW_MIXED_LOGS = {
-			"When set to true this allow to have any kind of log",
-			"in a tree trunk.",
-			"Otherwise (false) the trunk will be considered as being",
-			"only one kind of log."
+			"When set to true this allow to have any kind of log in a tree trunk.",
+			"Otherwise (false) the trunk will be considered as being only one kind of log."
 	};
 	private static final String[] DESC_BREAK_NETHER_TREE_WARTS = {
-			"When set to true nether tree warts (leaves) will",
-			"be broken along with the trunk."
+			"When set to true nether tree warts (leaves) will be broken along with the trunk."
 	};
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLogs;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLogs;
@@ -145,86 +121,86 @@ public class TreeConfiguration{
 	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(ConfigBuilder builder){
 		EnumListEntry<BreakMode> breakModeEntry = builder.entryBuilder()
-				.startEnumSelector(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.breakMode"), BreakMode.class, getBreakMode())
+				.startEnumSelector(new TranslationTextComponent(getFieldName("breakMode")), BreakMode.class, getBreakMode())
 				.setDefaultValue(BreakMode.INSTANTANEOUS)
-				.setTooltip(toTooltips(DESC_BREAK_MODE))
+				.setTooltip(getTooltips("breakMode", 7))
 				.setSaveConsumer(breakMode::set)
 				.build();
 		EnumListEntry<DetectionMode> detectionModeEntry = builder.entryBuilder()
-				.startEnumSelector(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.detectionMode"), DetectionMode.class, getDetectionMode())
+				.startEnumSelector(new TranslationTextComponent(getFieldName("detectionMode")), DetectionMode.class, getDetectionMode())
 				.setDefaultValue(DetectionMode.WHOLE_TREE)
-				.setTooltip(toTooltips(DESC_DETECTION_MODE))
+				.setTooltip(getTooltips("detectionMode", 9))
 				.setSaveConsumer(detectionMode::set)
 				.build();
 		StringListListEntry whitelistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.whitelistedLogs"), (List<String>) whitelistedLogs.get())
+				.startStrList(new TranslationTextComponent(getFieldName("whitelistedLogs")), (List<String>) whitelistedLogs.get())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(toTooltips(DESC_WHITELISTED_LOGS))
+				.setTooltip(getTooltips("whitelistedLogs", 5))
 				.setSaveConsumer(whitelistedLogs::set)
 				.build();
 		StringListListEntry blacklistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.blacklistedLogs"), (List<String>) blacklistedLogs.get())
+				.startStrList(new TranslationTextComponent(getFieldName("blacklistedLogs")), (List<String>) blacklistedLogs.get())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(toTooltips(DESC_BLACKLISTED_LOGS))
+				.setTooltip(getTooltips("blacklistedLogs", 3))
 				.setSaveConsumer(blacklistedLogs::set)
 				.build();
 		StringListListEntry whitelistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.whitelistedLeaves"), (List<String>) whitelistedLeaves.get())
+				.startStrList(new TranslationTextComponent(getFieldName("whitelistedLeaves")), (List<String>) whitelistedLeaves.get())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(toTooltips(DESC_WHITELISTED_LEAVES))
+				.setTooltip(getTooltips("whitelistedLeaves", 4))
 				.setSaveConsumer(whitelistedLeaves::set)
 				.build();
 		StringListListEntry blacklistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.blacklistedLeaves"), (List<String>) blacklistedLeaves.get())
+				.startStrList(new TranslationTextComponent(getFieldName("blacklistedLeaves")), (List<String>) blacklistedLeaves.get())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(toTooltips(DESC_BLACKLISTED_LEAVES))
+				.setTooltip(getTooltips("blacklistedLeaves", 3))
 				.setSaveConsumer(blacklistedLeaves::set)
 				.build();
 		IntegerListEntry maxSizeEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.maxSize"), getMaxSize())
+				.startIntField(new TranslationTextComponent(getFieldName("maxSize")), getMaxSize())
 				.setDefaultValue(100)
 				.setMin(1)
-				.setTooltip(toTooltips(DESC_MAX_SIZE))
+				.setTooltip(getTooltips("maxSize", 4))
 				.setSaveConsumer(maxSize::set)
 				.build();
 		BooleanListEntry treeBreakingEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.treeBreaking"), isTreeBreaking())
+				.startBooleanToggle(new TranslationTextComponent(getFieldName("treeBreaking")), isTreeBreaking())
 				.setDefaultValue(true)
-				.setTooltip(toTooltips(DESC_TREE_BREAKING))
+				.setTooltip(getTooltips("treeBreaking", 1))
 				.setSaveConsumer(treeBreaking::set)
 				.build();
 		BooleanListEntry leavesBreakingEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.leavesBreaking"), isLeavesBreaking())
+				.startBooleanToggle(new TranslationTextComponent(getFieldName("leavesBreaking")), isLeavesBreaking())
 				.setDefaultValue(true)
-				.setTooltip(toTooltips(DESC_LEAVES_BREAKING))
+				.setTooltip(getTooltips("leavesBreaking", 2))
 				.setSaveConsumer(leavesBreaking::set)
 				.build();
 		IntegerListEntry leavesBreakingForceRadiusEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.leavesBreakingForceRadius"), getLeavesBreakingForceRadius())
+				.startIntField(new TranslationTextComponent(getFieldName("leavesBreakingForceRadius")), getLeavesBreakingForceRadius())
 				.setDefaultValue(0)
 				.setMin(0)
 				.setMax(10)
-				.setTooltip(toTooltips(DESC_LEAVES_BREAKING_FORCE_RADIUS))
+				.setTooltip(getTooltips("leavesBreakingForceRadius", 8))
 				.setSaveConsumer(leavesBreakingForceRadius::set)
 				.build();
 		IntegerListEntry minimumLeavesAroundRequiredEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired"), getMinimumLeavesAroundRequired())
+				.startIntField(new TranslationTextComponent(getFieldName("minimumLeavesAroundRequired")), getMinimumLeavesAroundRequired())
 				.setDefaultValue(1)
 				.setMin(0)
 				.setMax(5)
-				.setTooltip(toTooltips(DESC_MINIMUM_LEAVES_AROUND_REQUIRED))
+				.setTooltip(getTooltips("minimumLeavesAroundRequired", 4))
 				.setSaveConsumer(minimumLeavesAroundRequired::set)
 				.build();
 		BooleanListEntry allowMixedLogsEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.allowMixedLogs"), isAllowMixedLogs())
+				.startBooleanToggle(new TranslationTextComponent(getFieldName("allowMixedLogs")), isAllowMixedLogs())
 				.setDefaultValue(false)
-				.setTooltip(toTooltips(DESC_ALLOW_MIXED_LOGS))
+				.setTooltip(getTooltips("allowMixedLogs", 4))
 				.setSaveConsumer(allowMixedLogs::set)
 				.build();
 		BooleanListEntry breakNetherTreeWartsEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent("text.autoconfig.fallingtree.option.trees.breakNetherTreeWarts"), isBreakNetherTreeWarts())
+				.startBooleanToggle(new TranslationTextComponent(getFieldName("breakNetherTreeWarts")), isBreakNetherTreeWarts())
 				.setDefaultValue(false)
-				.setTooltip(toTooltips(DESC_BREAK_NETHER_TREE_WARTS))
+				.setTooltip(getTooltips("breakNetherTreeWarts", 2))
 				.setSaveConsumer(breakNetherTreeWarts::set)
 				.build();
 		
@@ -242,6 +218,26 @@ public class TreeConfiguration{
 		tools.addEntry(minimumLeavesAroundRequiredEntry);
 		tools.addEntry(allowMixedLogsEntry);
 		tools.addEntry(breakNetherTreeWartsEntry);
+	}
+	
+	private String getFieldName(String fieldName){
+		return "text.autoconfig.fallingtree.option.trees." + fieldName;
+	}
+	
+	private ITextComponent[] getTooltips(String fieldName, int count){
+		String tooltipKey = getFieldName(fieldName) + ".@Tooltip";
+		List<String> keys = new LinkedList<>();
+		if(count <= 1){
+			keys.add(tooltipKey);
+		}
+		else{
+			for(int i = 0; i < count; i++){
+				keys.add(tooltipKey + "[" + i + "]");
+			}
+		}
+		return keys.stream()
+				.map(TranslationTextComponent::new)
+				.toArray(ITextComponent[]::new);
 	}
 	
 	public Collection<Block> getBlacklistedLeaves(){
