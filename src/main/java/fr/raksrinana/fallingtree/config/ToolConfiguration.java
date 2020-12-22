@@ -1,7 +1,8 @@
 package fr.raksrinana.fallingtree.config;
 
-import fr.raksrinana.fallingtree.config.validator.Max;
+import fr.raksrinana.fallingtree.config.validator.ItemId;
 import fr.raksrinana.fallingtree.config.validator.Min;
+import fr.raksrinana.fallingtree.config.validator.MinMax;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.Tooltip;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 import net.minecraft.item.Item;
@@ -15,10 +16,12 @@ public class ToolConfiguration{
 	@Tooltip(count = 3)
 	@Comment("Additional list of tools that can be used to chop down a tree. \n" +
 			"INFO: Items marked with the axe tag will already be whitelisted.")
+	@ItemId
 	public List<String> whitelisted = new ArrayList<>();
 	@Tooltip(count = 3)
 	@Comment("List of tools that should not be considered as tools. \n" +
 			"INFO: This wins over the whitelist.")
+	@ItemId
 	public List<String> blacklisted = new ArrayList<>();
 	@Tooltip(count = 3)
 	@Comment("When set to true, when a tree is broken and the tool is about to break we will just break enough blocks so that the tool is left at 1 of durability.")
@@ -42,8 +45,7 @@ public class ToolConfiguration{
 			"If set to 2 each log block will be counted twice, so if the tree is 5 blocks tall, it'll require the time of breaking 10 logs. \n" +
 			"INFO: Only in INSTANTANEOUS mode. \n" +
 			"WARNING: If you are on a server, this either has to be set to 0 or every player should have the mod. Else they'll have a weird effect of breaking the block but the block is still there.")
-	@Min(0)
-	@Max(50)
+	@MinMax(min = 0, max = 50)
 	public double speedMultiplicand = 0;
 	
 	public Collection<Item> getBlacklisted(){

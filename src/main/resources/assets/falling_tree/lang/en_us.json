@@ -1,4 +1,9 @@
 {
+  "text.autoconfig.fallingtree.error.invalidItemResourceLocation": "Invalid item provided, must have format 'mod_id:item_id'",
+  "text.autoconfig.fallingtree.error.invalidBlockResourceLocation": "Invalid block provided, must have format 'mod_id:block_id'",
+  "text.autoconfig.fallingtree.error.valueTooLow": "Value must be greater or equal to %d",
+  "text.autoconfig.fallingtree.error.valueTooHigh": "Value must be less or equal to %d",
+  "text.autoconfig.fallingtree.error.valueNotInRange": "Value must be between %d and %d",
   "text.autoconfig.fallingtree.category.default": "General",
   "text.autoconfig.fallingtree.category.trees": "Trees",
   "text.autoconfig.fallingtree.category.tools": "Tools",

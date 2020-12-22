@@ -1,7 +1,8 @@
 package fr.raksrinana.fallingtree.config;
 
-import fr.raksrinana.fallingtree.config.validator.Max;
+import fr.raksrinana.fallingtree.config.validator.BlockId;
 import fr.raksrinana.fallingtree.config.validator.Min;
+import fr.raksrinana.fallingtree.config.validator.MinMax;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.EnumHandler;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.Tooltip;
@@ -17,18 +18,22 @@ public class TreeConfiguration{
 	@Tooltip(count = 5)
 	@Comment("Additional list of blocks considered as logs and that will be destroyed by the mod. \n" +
 			"INFO: Blocks marked with the log tag will already be whitelisted.")
+	@BlockId
 	public List<String> whitelistedLogs = new ArrayList<>();
 	@Tooltip(count = 3)
 	@Comment("List of blocks that should not be considered as logs. \n" +
 			"INFO: This wins over the whitelist.")
+	@BlockId
 	public List<String> blacklistedLogs = new ArrayList<>();
 	@Tooltip(count = 4)
 	@Comment("Additional list of blocks considered as leaves. \n" +
 			"INFO: Blocks marked with the leaves tag will already be whitelisted.")
+	@BlockId
 	public List<String> whitelistedLeaves = new ArrayList<>();
 	@Tooltip(count = 3)
 	@Comment("List of blocks that should not be considered as leaves. \n" +
 			"INFO: This wins over the whitelist.")
+	@BlockId
 	public List<String> blacklistedLeaves = new ArrayList<>();
 	@Tooltip(count = 7)
 	@Comment("How to break the tree. \n" +
@@ -51,8 +56,7 @@ public class TreeConfiguration{
 	@Tooltip(count = 4)
 	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree. \n" +
 			"INFO: Only in INSTANTANEOUS mode.")
-	@Min(0)
-	@Max(5)
+	@MinMax(min = 0, max = 5)
 	public int minimumLeavesAroundRequired = 1;
 	@Tooltip(count = 1)
 	@Comment("When set to true, the mod be applied when cutting trunks.")
@@ -65,8 +69,7 @@ public class TreeConfiguration{
 			"The radius is applied from one of the top most log blocks. \n" +
 			"INFO: break_leaves must be activated for this to take effect. \n" +
 			"INFO: Only in INSTANTANEOUS mode.")
-	@Min(0)
-	@Max(10)
+	@MinMax(min = 0, max = 10)
 	public int leavesBreakingForceRadius = 0;
 	@Tooltip(count = 4)
 	@Comment("When set to true this allow to have any kind of log in a tree trunk. \n" +
