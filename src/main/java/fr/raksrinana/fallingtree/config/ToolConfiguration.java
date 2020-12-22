@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import static fr.raksrinana.fallingtree.config.Config.getMinecraftItemIdCellError;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsItems;
 
 public class ToolConfiguration{
@@ -85,12 +86,14 @@ public class ToolConfiguration{
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("whitelisted", 3))
 				.setSaveConsumer(whitelisted::set)
+				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
 		StringListListEntry blacklistedEntry = builder.entryBuilder()
 				.startStrList(new TranslationTextComponent(getFieldName("blacklisted")), (List<String>) blacklisted.get())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("blacklisted", 3))
 				.setSaveConsumer(blacklisted::set)
+				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
 		IntegerListEntry damageMultiplicandEntry = builder.entryBuilder()
 				.startIntField(new TranslationTextComponent(getFieldName("damageMultiplicand")), getDamageMultiplicand())

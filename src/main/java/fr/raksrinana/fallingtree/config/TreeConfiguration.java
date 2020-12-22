@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import static fr.raksrinana.fallingtree.config.Config.getMinecraftBlockIdCellError;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
 public class TreeConfiguration{
@@ -137,24 +138,28 @@ public class TreeConfiguration{
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("whitelistedLogs", 5))
 				.setSaveConsumer(whitelistedLogs::set)
+				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
 		StringListListEntry blacklistedLogsEntry = builder.entryBuilder()
 				.startStrList(new TranslationTextComponent(getFieldName("blacklistedLogs")), (List<String>) blacklistedLogs.get())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("blacklistedLogs", 3))
 				.setSaveConsumer(blacklistedLogs::set)
+				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
 		StringListListEntry whitelistedLeavesEntry = builder.entryBuilder()
 				.startStrList(new TranslationTextComponent(getFieldName("whitelistedLeaves")), (List<String>) whitelistedLeaves.get())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("whitelistedLeaves", 4))
 				.setSaveConsumer(whitelistedLeaves::set)
+				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
 		StringListListEntry blacklistedLeavesEntry = builder.entryBuilder()
 				.startStrList(new TranslationTextComponent(getFieldName("blacklistedLeaves")), (List<String>) blacklistedLeaves.get())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("blacklistedLeaves", 3))
 				.setSaveConsumer(blacklistedLeaves::set)
+				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
 		IntegerListEntry maxSizeEntry = builder.entryBuilder()
 				.startIntField(new TranslationTextComponent(getFieldName("maxSize")), getMaxSize())
