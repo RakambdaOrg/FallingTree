@@ -2,8 +2,8 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: enhancement
-assignees: 'RakSrinaNa'
+labels: "type: \U0001F9F1 enhancement"
+assignees: RakSrinaNa
 
 ---
 
