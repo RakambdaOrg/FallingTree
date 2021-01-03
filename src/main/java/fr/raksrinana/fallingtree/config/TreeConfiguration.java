@@ -3,15 +3,9 @@ package fr.raksrinana.fallingtree.config;
 import fr.raksrinana.fallingtree.FallingTree;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.common.config.ConfigManager;
 import java.util.Collection;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
-@Mod.EventBusSubscriber(modid = FallingTree.MOD_ID)
 @Config(modid = FallingTree.MOD_ID, category = "trees")
 public class TreeConfiguration{
 	@Config.Name("logs_whitelisted")
@@ -118,12 +112,5 @@ public class TreeConfiguration{
 	
 	public static boolean isAllowMixedLogs(){
 		return allowMixedLogs;
-	}
-	
-	@SubscribeEvent
-	public static void onConfigChanged(OnConfigChangedEvent event){
-		if(event.getModID().equals(FallingTree.MOD_ID)){
-			ConfigManager.sync(FallingTree.MOD_ID, Config.Type.INSTANCE);
-		}
 	}
 }

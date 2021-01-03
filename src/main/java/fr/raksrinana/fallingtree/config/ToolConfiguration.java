@@ -3,15 +3,9 @@ package fr.raksrinana.fallingtree.config;
 import fr.raksrinana.fallingtree.FallingTree;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.common.config.ConfigManager;
 import java.util.Collection;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsItems;
 
-@Mod.EventBusSubscriber(modid = FallingTree.MOD_ID)
 @Config(modid = FallingTree.MOD_ID, category = "tools")
 public class ToolConfiguration{
 	@Config.Name("whitelisted")
@@ -81,12 +75,5 @@ public class ToolConfiguration{
 	
 	public static double getSpeedMultiplicand(){
 		return speedMultiplicand;
-	}
-	
-	@SubscribeEvent
-	public static void onConfigChanged(OnConfigChangedEvent event){
-		if(event.getModID().equals(FallingTree.MOD_ID)){
-			ConfigManager.sync(FallingTree.MOD_ID, Config.Type.INSTANCE);
-		}
 	}
 }
