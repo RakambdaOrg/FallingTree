@@ -25,6 +25,7 @@ public class FallingTreeUtils{
 	public static Set<Item> getAsItems(Collection<? extends String> names){
 		return names.stream()
 				.filter(Objects::nonNull)
+				.filter(val -> !val.isEmpty())
 				.flatMap(FallingTreeUtils::getItem)
 				.filter(Objects::nonNull)
 				.collect(toSet());
@@ -52,7 +53,12 @@ public class FallingTreeUtils{
 	}
 	
 	public static Set<Block> getAsBlocks(Collection<? extends String> names){
-		return names.stream().flatMap(FallingTreeUtils::getBlock).filter(Objects::nonNull).collect(toSet());
+		return names.stream()
+				.filter(Objects::nonNull)
+				.filter(val -> !val.isEmpty())
+				.flatMap(FallingTreeUtils::getBlock)
+				.filter(Objects::nonNull)
+				.collect(toSet());
 	}
 	
 	@Nonnull
