@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.config.validator;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -16,13 +17,23 @@ public class BlockIdRunner implements ValidatorRunner<BlockId>{
 			return Optional.of(errorText);
 		}
 		if(value instanceof String){
-			boolean valid = MINECRAFT_ID_PATTERN.matcher((String) value).matches();
-			if(!valid){
-				return Optional.of(errorText);
+			String val = value.toString();
+			if(annotation.allowEmpty() && val.isEmpty()){
+				// OK
+			}
+			else{
+				boolean valid = MINECRAFT_ID_PATTERN.matcher((String) value).matches();
+				if(!valid){
+					return Optional.of(errorText);
+				}
 			}
 		}
-		if(value instanceof List){
-			boolean valid = ((List<?>) value).stream().allMatch(val -> MINECRAFT_ID_PATTERN.matcher(val.toString()).matches());
+		else if(value instanceof List){
+			List<?> list = (List<?>) value;
+			boolean valid = list.stream()
+					.filter(Objects::nonNull)
+					.map(Object::toString)
+					.allMatch(val -> MINECRAFT_ID_PATTERN.matcher(val).matches());
 			if(!valid){
 				return Optional.of(errorText);
 			}
