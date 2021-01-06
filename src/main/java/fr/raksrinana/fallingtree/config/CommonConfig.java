@@ -1,15 +1,6 @@
 package fr.raksrinana.fallingtree.config;
 
-import me.shedaniel.clothconfig2.forge.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.forge.api.ConfigCategory;
-import me.shedaniel.clothconfig2.forge.gui.entries.BooleanListEntry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
-import java.util.LinkedList;
-import java.util.List;
 
 public class CommonConfig{
 	private static final String[] DESC_REVERSE_SNEAKING = {
@@ -35,47 +26,12 @@ public class CommonConfig{
 		breakInCreative = builder.comment(DESC_BREAK_IN_CREATIVE).define("break_in_creative", false);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
-	public void fillConfigScreen(ConfigBuilder builder){
-		BooleanListEntry reverseSneakingEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("reverseSneaking")), isReverseSneaking())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("reverseSneaking", 2))
-				.setSaveConsumer(reverseSneaking::set)
-				.build();
-		BooleanListEntry breakInCreativeEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("breakInCreative")), isBreakInCreative())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("breakInCreative", 2))
-				.setSaveConsumer(breakInCreative::set)
-				.build();
-		
-		ConfigCategory general = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.default"));
-		general.addEntry(reverseSneakingEntry);
-		general.addEntry(breakInCreativeEntry);
-		
-		trees.fillConfigScreen(builder);
-		tools.fillConfigScreen(builder);
+	public void setBreakInCreative(Boolean value){
+		breakInCreative.set(value);
 	}
 	
-	private String getFieldName(String fieldName){
-		return "text.autoconfig.fallingtree.option." + fieldName;
-	}
-	
-	private ITextComponent[] getTooltips(String fieldName, int count){
-		String tooltipKey = getFieldName(fieldName) + ".@Tooltip";
-		List<String> keys = new LinkedList<>();
-		if(count <= 1){
-			keys.add(tooltipKey);
-		}
-		else{
-			for(int i = 0; i < count; i++){
-				keys.add(tooltipKey + "[" + i + "]");
-			}
-		}
-		return keys.stream()
-				.map(TranslationTextComponent::new)
-				.toArray(ITextComponent[]::new);
+	public void setReverseSneaking(Boolean value){
+		reverseSneaking.set(value);
 	}
 	
 	public ToolConfiguration getToolsConfiguration(){

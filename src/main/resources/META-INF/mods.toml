@@ -15,14 +15,19 @@ license = "GPL-3.0"
     description = '''Change the way you cut trees.'''
 
 [[dependencies.falling_tree]]
-    modId="forge"
+modId = "forge"
 mandatory = true
 versionRange = "[35.0.0,)"
 ordering = "NONE"
-	side="BOTH"
+side = "BOTH"
 [[dependencies.falling_tree]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[${project.minecraft_version}]"
-    ordering="NONE"
-    side="BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[${project.minecraft_version}]"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.falling_tree]]
+modId = "cloth-config"
+mandatory = false
+ordering = "NONE"
+side = "CLIENT"

@@ -1,3 +1,7 @@
+## [Forge-1.16.4-2.8.2] - 2021-01-06
+
+* Only add config GUI if cloth config is present ; thus makin cloth config an optional dependency
+
 ## [Forge-1.16.4-2.8.1] - 2020-12-20
 
 * Avoid having config tooltips getting out of screen by reducing text width (#40)

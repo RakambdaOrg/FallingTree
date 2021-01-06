@@ -144,7 +144,7 @@ curseforge {
             displayName = "${archivesBaseName}-${project.version}"
         }
         relations {
-            requiredDependency 'cloth-config-forge'
+            optionalDependency 'cloth-config-forge'
         }
     }
     options {

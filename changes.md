@@ -1,1 +1,1 @@
-* Avoid having config tooltips getting out of screen by reducing text width (#40)
+* Only add config GUI if cloth config is present ; thus makin cloth config an optional dependency

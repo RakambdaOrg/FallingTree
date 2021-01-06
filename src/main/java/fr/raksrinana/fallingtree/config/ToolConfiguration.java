@@ -1,23 +1,11 @@
 package fr.raksrinana.fallingtree.config;
 
 import com.google.common.collect.Lists;
-import me.shedaniel.clothconfig2.forge.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.forge.api.ConfigCategory;
-import me.shedaniel.clothconfig2.forge.gui.entries.BooleanListEntry;
-import me.shedaniel.clothconfig2.forge.gui.entries.DoubleListEntry;
-import me.shedaniel.clothconfig2.forge.gui.entries.IntegerListEntry;
-import me.shedaniel.clothconfig2.forge.gui.entries.StringListListEntry;
 import net.minecraft.item.Item;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import static fr.raksrinana.fallingtree.config.Config.getMinecraftItemIdCellError;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsItems;
 
 public class ToolConfiguration{
@@ -73,77 +61,36 @@ public class ToolConfiguration{
 				.define("preserve", false);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
-	public void fillConfigScreen(ConfigBuilder builder){
-		BooleanListEntry ignoreToolsEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("ignoreTools")), isIgnoreTools())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("ignoreTools", 4))
-				.setSaveConsumer(ignoreTools::set)
-				.build();
-		StringListListEntry whitelistedEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("whitelisted")), (List<String>) whitelisted.get())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("whitelisted", 3))
-				.setSaveConsumer(whitelisted::set)
-				.setCellErrorSupplier(getMinecraftItemIdCellError())
-				.build();
-		StringListListEntry blacklistedEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("blacklisted")), (List<String>) blacklisted.get())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("blacklisted", 3))
-				.setSaveConsumer(blacklisted::set)
-				.setCellErrorSupplier(getMinecraftItemIdCellError())
-				.build();
-		IntegerListEntry damageMultiplicandEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent(getFieldName("damageMultiplicand")), getDamageMultiplicand())
-				.setDefaultValue(1)
-				.setMin(0)
-				.setTooltip(getTooltips("damageMultiplicand", 7))
-				.setSaveConsumer(damageMultiplicand::set)
-				.build();
-		DoubleListEntry speedMultiplicandEntry = builder.entryBuilder()
-				.startDoubleField(new TranslationTextComponent(getFieldName("speedMultiplicand")), getSpeedMultiplicand())
-				.setDefaultValue(0)
-				.setMin(0)
-				.setMax(50)
-				.setTooltip(getTooltips("speedMultiplicand", 15))
-				.setSaveConsumer(speedMultiplicand::set)
-				.build();
-		BooleanListEntry preserveEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("preserve")), isPreserve())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("preserve", 3))
-				.setSaveConsumer(preserve::set)
-				.build();
-		
-		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.tools"));
-		tools.addEntry(ignoreToolsEntry);
-		tools.addEntry(whitelistedEntry);
-		tools.addEntry(blacklistedEntry);
-		tools.addEntry(damageMultiplicandEntry);
-		tools.addEntry(speedMultiplicandEntry);
-		tools.addEntry(preserveEntry);
+	public List<String> getBlacklistedStr(){
+		return (List<String>) blacklisted.get();
 	}
 	
-	private String getFieldName(String fieldName){
-		return "text.autoconfig.fallingtree.option.tools." + fieldName;
+	public List<String> getWhitelistedStr(){
+		return (List<String>) whitelisted.get();
 	}
 	
-	private ITextComponent[] getTooltips(String fieldName, int count){
-		String tooltipKey = getFieldName(fieldName) + ".@Tooltip";
-		List<String> keys = new LinkedList<>();
-		if(count <= 1){
-			keys.add(tooltipKey);
-		}
-		else{
-			for(int i = 0; i < count; i++){
-				keys.add(tooltipKey + "[" + i + "]");
-			}
-		}
-		return keys.stream()
-				.map(TranslationTextComponent::new)
-				.toArray(ITextComponent[]::new);
+	public void setBlacklisted(List<String> value){
+		blacklisted.set(value);
+	}
+	
+	public void setDamageMultiplicand(Integer value){
+		damageMultiplicand.set(value);
+	}
+	
+	public void setIgnoreTools(Boolean value){
+		ignoreTools.set(value);
+	}
+	
+	public void setPreserve(Boolean value){
+		preserve.set(value);
+	}
+	
+	public void setSpeedMultiplicand(Double value){
+		speedMultiplicand.set(value);
+	}
+	
+	public void setWhitelisted(List<String> value){
+		whitelisted.set(value);
 	}
 	
 	public Collection<Item> getBlacklisted(){

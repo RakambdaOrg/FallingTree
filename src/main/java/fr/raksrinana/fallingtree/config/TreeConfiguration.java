@@ -1,23 +1,11 @@
 package fr.raksrinana.fallingtree.config;
 
 import com.google.common.collect.Lists;
-import me.shedaniel.clothconfig2.forge.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.forge.api.ConfigCategory;
-import me.shedaniel.clothconfig2.forge.gui.entries.BooleanListEntry;
-import me.shedaniel.clothconfig2.forge.gui.entries.EnumListEntry;
-import me.shedaniel.clothconfig2.forge.gui.entries.IntegerListEntry;
-import me.shedaniel.clothconfig2.forge.gui.entries.StringListListEntry;
 import net.minecraft.block.Block;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import static fr.raksrinana.fallingtree.config.Config.getMinecraftBlockIdCellError;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
 public class TreeConfiguration{
@@ -119,130 +107,72 @@ public class TreeConfiguration{
 				.define("break_nether_tree_warts", true);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
-	public void fillConfigScreen(ConfigBuilder builder){
-		EnumListEntry<BreakMode> breakModeEntry = builder.entryBuilder()
-				.startEnumSelector(new TranslationTextComponent(getFieldName("breakMode")), BreakMode.class, getBreakMode())
-				.setDefaultValue(BreakMode.INSTANTANEOUS)
-				.setTooltip(getTooltips("breakMode", 7))
-				.setSaveConsumer(breakMode::set)
-				.build();
-		EnumListEntry<DetectionMode> detectionModeEntry = builder.entryBuilder()
-				.startEnumSelector(new TranslationTextComponent(getFieldName("detectionMode")), DetectionMode.class, getDetectionMode())
-				.setDefaultValue(DetectionMode.WHOLE_TREE)
-				.setTooltip(getTooltips("detectionMode", 9))
-				.setSaveConsumer(detectionMode::set)
-				.build();
-		StringListListEntry whitelistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("whitelistedLogs")), (List<String>) whitelistedLogs.get())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("whitelistedLogs", 5))
-				.setSaveConsumer(whitelistedLogs::set)
-				.setCellErrorSupplier(getMinecraftBlockIdCellError())
-				.build();
-		StringListListEntry blacklistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("blacklistedLogs")), (List<String>) blacklistedLogs.get())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("blacklistedLogs", 3))
-				.setSaveConsumer(blacklistedLogs::set)
-				.setCellErrorSupplier(getMinecraftBlockIdCellError())
-				.build();
-		StringListListEntry whitelistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("whitelistedLeaves")), (List<String>) whitelistedLeaves.get())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("whitelistedLeaves", 4))
-				.setSaveConsumer(whitelistedLeaves::set)
-				.setCellErrorSupplier(getMinecraftBlockIdCellError())
-				.build();
-		StringListListEntry blacklistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("blacklistedLeaves")), (List<String>) blacklistedLeaves.get())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("blacklistedLeaves", 3))
-				.setSaveConsumer(blacklistedLeaves::set)
-				.setCellErrorSupplier(getMinecraftBlockIdCellError())
-				.build();
-		IntegerListEntry maxSizeEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent(getFieldName("maxSize")), getMaxSize())
-				.setDefaultValue(100)
-				.setMin(1)
-				.setTooltip(getTooltips("maxSize", 4))
-				.setSaveConsumer(maxSize::set)
-				.build();
-		BooleanListEntry treeBreakingEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("treeBreaking")), isTreeBreaking())
-				.setDefaultValue(true)
-				.setTooltip(getTooltips("treeBreaking", 1))
-				.setSaveConsumer(treeBreaking::set)
-				.build();
-		BooleanListEntry leavesBreakingEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("leavesBreaking")), isLeavesBreaking())
-				.setDefaultValue(true)
-				.setTooltip(getTooltips("leavesBreaking", 2))
-				.setSaveConsumer(leavesBreaking::set)
-				.build();
-		IntegerListEntry leavesBreakingForceRadiusEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent(getFieldName("leavesBreakingForceRadius")), getLeavesBreakingForceRadius())
-				.setDefaultValue(0)
-				.setMin(0)
-				.setMax(10)
-				.setTooltip(getTooltips("leavesBreakingForceRadius", 8))
-				.setSaveConsumer(leavesBreakingForceRadius::set)
-				.build();
-		IntegerListEntry minimumLeavesAroundRequiredEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent(getFieldName("minimumLeavesAroundRequired")), getMinimumLeavesAroundRequired())
-				.setDefaultValue(1)
-				.setMin(0)
-				.setMax(5)
-				.setTooltip(getTooltips("minimumLeavesAroundRequired", 4))
-				.setSaveConsumer(minimumLeavesAroundRequired::set)
-				.build();
-		BooleanListEntry allowMixedLogsEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("allowMixedLogs")), isAllowMixedLogs())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("allowMixedLogs", 4))
-				.setSaveConsumer(allowMixedLogs::set)
-				.build();
-		BooleanListEntry breakNetherTreeWartsEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("breakNetherTreeWarts")), isBreakNetherTreeWarts())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("breakNetherTreeWarts", 2))
-				.setSaveConsumer(breakNetherTreeWarts::set)
-				.build();
-		
-		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.trees"));
-		tools.addEntry(breakModeEntry);
-		tools.addEntry(detectionModeEntry);
-		tools.addEntry(whitelistedLogsEntry);
-		tools.addEntry(blacklistedLogsEntry);
-		tools.addEntry(whitelistedLeavesEntry);
-		tools.addEntry(blacklistedLeavesEntry);
-		tools.addEntry(maxSizeEntry);
-		tools.addEntry(treeBreakingEntry);
-		tools.addEntry(leavesBreakingEntry);
-		tools.addEntry(leavesBreakingForceRadiusEntry);
-		tools.addEntry(minimumLeavesAroundRequiredEntry);
-		tools.addEntry(allowMixedLogsEntry);
-		tools.addEntry(breakNetherTreeWartsEntry);
+	public List<String> getBlacklistedLeavesStr(){
+		return (List<String>) blacklistedLeaves.get();
 	}
 	
-	private String getFieldName(String fieldName){
-		return "text.autoconfig.fallingtree.option.trees." + fieldName;
+	public List<String> getBlacklistedLogsStr(){
+		return (List<String>) blacklistedLogs.get();
 	}
 	
-	private ITextComponent[] getTooltips(String fieldName, int count){
-		String tooltipKey = getFieldName(fieldName) + ".@Tooltip";
-		List<String> keys = new LinkedList<>();
-		if(count <= 1){
-			keys.add(tooltipKey);
-		}
-		else{
-			for(int i = 0; i < count; i++){
-				keys.add(tooltipKey + "[" + i + "]");
-			}
-		}
-		return keys.stream()
-				.map(TranslationTextComponent::new)
-				.toArray(ITextComponent[]::new);
+	public List<String> getWhitelistedLeavesStr(){
+		return (List<String>) whitelistedLeaves.get();
+	}
+	
+	public List<String> getWhitelistedLogsStr(){
+		return (List<String>) whitelistedLogs.get();
+	}
+	
+	public void setAllowMixedLogs(Boolean value){
+		allowMixedLogs.set(value);
+	}
+	
+	public void setBlacklistedLeaves(List<String> value){
+		blacklistedLeaves.set(value);
+	}
+	
+	public void setBlacklistedLogs(List<String> value){
+		blacklistedLogs.set(value);
+	}
+	
+	public void setBreakMode(BreakMode value){
+		breakMode.set(value);
+	}
+	
+	public void setBreakNetherTreeWarts(Boolean value){
+		breakNetherTreeWarts.set(value);
+	}
+	
+	public void setDetectionMode(DetectionMode value){
+		detectionMode.set(value);
+	}
+	
+	public void setLeavesBreaking(Boolean value){
+		leavesBreaking.set(value);
+	}
+	
+	public void setLeavesBreakingForceRadius(Integer value){
+		leavesBreakingForceRadius.set(value);
+	}
+	
+	public void setMaxSize(Integer value){
+		maxSize.set(value);
+	}
+	
+	public void setMinimumLeavesAroundRequired(Integer value){
+		minimumLeavesAroundRequired.set(value);
+	}
+	
+	public void setTreeBreaking(Boolean value){
+		treeBreaking.set(value);
+	}
+	
+	public void setWhitelistedLeaves(List<String> value){
+		whitelistedLeaves.set(value);
+	}
+	
+	public void setWhitelistedLogs(List<String> value){
+		whitelistedLogs.set(value);
 	}
 	
 	public Collection<Block> getBlacklistedLeaves(){
