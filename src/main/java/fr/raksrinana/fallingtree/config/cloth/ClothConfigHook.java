@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-@OnlyIn(Dist.CLIENT)
 public class ClothConfigHook{
 	private static final Pattern MINECRAFT_ID_PATTERN = Pattern.compile("#?[a-z0-9_.-]+:[a-z0-9/._-]+");
 	
@@ -34,6 +33,7 @@ public class ClothConfigHook{
 		});
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(ConfigBuilder builder){
 		CommonConfig config = Config.COMMON;
 		
@@ -58,60 +58,7 @@ public class ClothConfigHook{
 		fillToolsConfigScreen(builder);
 	}
 	
-	private void fillToolsConfigScreen(ConfigBuilder builder){
-		ToolConfiguration config = Config.COMMON.getToolsConfiguration();
-		
-		BooleanListEntry ignoreToolsEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("tools", "ignoreTools", 4))
-				.setSaveConsumer(config::setIgnoreTools)
-				.build();
-		StringListListEntry whitelistedEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("tools", "whitelisted")), config.getWhitelistedStr())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("tools", "whitelisted", 3))
-				.setSaveConsumer(config::setWhitelisted)
-				.setCellErrorSupplier(getMinecraftItemIdCellError())
-				.build();
-		StringListListEntry blacklistedEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("tools", "blacklisted")), config.getBlacklistedStr())
-				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("tools", "blacklisted", 3))
-				.setSaveConsumer(config::setBlacklisted)
-				.setCellErrorSupplier(getMinecraftItemIdCellError())
-				.build();
-		IntegerListEntry damageMultiplicandEntry = builder.entryBuilder()
-				.startIntField(new TranslationTextComponent(getFieldName("tools", "damageMultiplicand")), config.getDamageMultiplicand())
-				.setDefaultValue(1)
-				.setMin(0)
-				.setTooltip(getTooltips("tools", "damageMultiplicand", 7))
-				.setSaveConsumer(config::setDamageMultiplicand)
-				.build();
-		DoubleListEntry speedMultiplicandEntry = builder.entryBuilder()
-				.startDoubleField(new TranslationTextComponent(getFieldName("tools", "speedMultiplicand")), config.getSpeedMultiplicand())
-				.setDefaultValue(0)
-				.setMin(0)
-				.setMax(50)
-				.setTooltip(getTooltips("tools", "speedMultiplicand", 15))
-				.setSaveConsumer(config::setSpeedMultiplicand)
-				.build();
-		BooleanListEntry preserveEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslationTextComponent(getFieldName("tools", "preserve")), config.isPreserve())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("tools", "preserve", 3))
-				.setSaveConsumer(config::setPreserve)
-				.build();
-		
-		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.tools"));
-		tools.addEntry(ignoreToolsEntry);
-		tools.addEntry(whitelistedEntry);
-		tools.addEntry(blacklistedEntry);
-		tools.addEntry(damageMultiplicandEntry);
-		tools.addEntry(speedMultiplicandEntry);
-		tools.addEntry(preserveEntry);
-	}
-	
+	@OnlyIn(Dist.CLIENT)
 	private void fillTreesConfigScreen(ConfigBuilder builder){
 		TreeConfiguration config = Config.COMMON.getTreesConfiguration();
 		
@@ -217,6 +164,61 @@ public class ClothConfigHook{
 		tools.addEntry(minimumLeavesAroundRequiredEntry);
 		tools.addEntry(allowMixedLogsEntry);
 		tools.addEntry(breakNetherTreeWartsEntry);
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	private void fillToolsConfigScreen(ConfigBuilder builder){
+		ToolConfiguration config = Config.COMMON.getToolsConfiguration();
+		
+		BooleanListEntry ignoreToolsEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslationTextComponent(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("tools", "ignoreTools", 4))
+				.setSaveConsumer(config::setIgnoreTools)
+				.build();
+		StringListListEntry whitelistedEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("tools", "whitelisted")), config.getWhitelistedStr())
+				.setDefaultValue(Lists.newArrayList())
+				.setTooltip(getTooltips("tools", "whitelisted", 3))
+				.setSaveConsumer(config::setWhitelisted)
+				.setCellErrorSupplier(getMinecraftItemIdCellError())
+				.build();
+		StringListListEntry blacklistedEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("tools", "blacklisted")), config.getBlacklistedStr())
+				.setDefaultValue(Lists.newArrayList())
+				.setTooltip(getTooltips("tools", "blacklisted", 3))
+				.setSaveConsumer(config::setBlacklisted)
+				.setCellErrorSupplier(getMinecraftItemIdCellError())
+				.build();
+		IntegerListEntry damageMultiplicandEntry = builder.entryBuilder()
+				.startIntField(new TranslationTextComponent(getFieldName("tools", "damageMultiplicand")), config.getDamageMultiplicand())
+				.setDefaultValue(1)
+				.setMin(0)
+				.setTooltip(getTooltips("tools", "damageMultiplicand", 7))
+				.setSaveConsumer(config::setDamageMultiplicand)
+				.build();
+		DoubleListEntry speedMultiplicandEntry = builder.entryBuilder()
+				.startDoubleField(new TranslationTextComponent(getFieldName("tools", "speedMultiplicand")), config.getSpeedMultiplicand())
+				.setDefaultValue(0)
+				.setMin(0)
+				.setMax(50)
+				.setTooltip(getTooltips("tools", "speedMultiplicand", 15))
+				.setSaveConsumer(config::setSpeedMultiplicand)
+				.build();
+		BooleanListEntry preserveEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslationTextComponent(getFieldName("tools", "preserve")), config.isPreserve())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("tools", "preserve", 3))
+				.setSaveConsumer(config::setPreserve)
+				.build();
+		
+		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.tools"));
+		tools.addEntry(ignoreToolsEntry);
+		tools.addEntry(whitelistedEntry);
+		tools.addEntry(blacklistedEntry);
+		tools.addEntry(damageMultiplicandEntry);
+		tools.addEntry(speedMultiplicandEntry);
+		tools.addEntry(preserveEntry);
 	}
 	
 	private String getFieldName(String category, String fieldName){

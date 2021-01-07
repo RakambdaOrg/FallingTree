@@ -1,3 +1,7 @@
+## [Forge-1.16.4-2.8.3] - 2021-01-07
+
+* Fix server starting when cloth-config is installed on server (#52)
+
 ## [Forge-1.16.4-2.8.2] - 2021-01-06
 
 * Only add config GUI if cloth config is present ; thus makin cloth config an optional dependency

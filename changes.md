@@ -1,1 +1,1 @@
-* Only add config GUI if cloth config is present ; thus makin cloth config an optional dependency
+* Fix server starting when cloth-config is installed on server (#52)
