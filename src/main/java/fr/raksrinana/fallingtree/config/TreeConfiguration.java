@@ -64,6 +64,12 @@ public class TreeConfiguration{
 	private static final String[] DESC_BREAK_NETHER_TREE_WARTS = {
 			"When set to true nether tree warts (leaves) will be broken along with the trunk."
 	};
+	private static final String[] DESC_SEARCH_AROUND_RADIUS = {
+			"This defines the area in which the tree is searched. If any branch is going out of this area it won't be cut.",
+			"This value is the radius of the area.",
+			"i.e. Setting a value of 2 will result on an area of 3x3 centered on the log broken.",
+			"If this value is set to a negative number then no area restriction will be applied."
+	};
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLogs;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLogs;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLeaves;
@@ -77,6 +83,7 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.IntValue leavesBreakingForceRadius;
 	private final ForgeConfigSpec.BooleanValue allowMixedLogs;
 	private final ForgeConfigSpec.BooleanValue breakNetherTreeWarts;
+	private final ForgeConfigSpec.IntValue searchAreaRadius;
 	
 	public TreeConfiguration(ForgeConfigSpec.Builder builder){
 		breakMode = builder.comment(DESC_BREAK_MODE)
@@ -105,6 +112,12 @@ public class TreeConfiguration{
 				.define("allow_mixed_logs", false);
 		breakNetherTreeWarts = builder.comment(DESC_BREAK_NETHER_TREE_WARTS)
 				.define("break_nether_tree_warts", true);
+		searchAreaRadius = builder.comment(DESC_SEARCH_AROUND_RADIUS)
+				.defineInRange("search_around_radius", -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
+	
+	public int getSearchAreaRadius(){
+		return searchAreaRadius.get();
 	}
 	
 	public List<String> getBlacklistedLeavesStr(){
@@ -225,5 +238,9 @@ public class TreeConfiguration{
 	
 	public boolean isBreakNetherTreeWarts(){
 		return breakNetherTreeWarts.get();
+	}
+	
+	public void setSearchAreaRadius(Integer value){
+		searchAreaRadius.set(value);
 	}
 }

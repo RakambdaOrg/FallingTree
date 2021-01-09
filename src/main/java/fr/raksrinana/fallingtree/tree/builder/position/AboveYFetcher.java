@@ -20,7 +20,7 @@ public class AboveYFetcher implements IPositionFetcher{
 		BlockPos parentPos = parent.getCheckPos();
 		Block parentBlock = world.getBlockState(parentPos).getBlock();
 		return BlockPos.getAllInBox(parentPos.up().north().east(), parentPos.down().south().west())
-				.filter(pos -> pos.getY() >= originPos.getY())
+				.filter(pos -> pos.getY() > originPos.getY())
 				.map(checkPos -> {
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
 					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.toImmutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);

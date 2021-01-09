@@ -12,6 +12,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import java.util.*;
+import java.util.function.Predicate;
 import static fr.raksrinana.fallingtree.config.DetectionMode.ABOVE_CUT;
 import static fr.raksrinana.fallingtree.config.DetectionMode.ABOVE_Y;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.*;
@@ -33,13 +34,15 @@ public class TreeBuilder{
 		Tree tree = new Tree(world, originPos);
 		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, LOG, 0));
 		
+		Predicate<BlockPos> boundingBoxSearch = getBoundingBoxSearch(originPos);
+		
 		while(!toAnalyzePos.isEmpty()){
 			ToAnalyzePos analyzingPos = toAnalyzePos.remove();
 			tree.addPart(analyzingPos.toTreePart());
 			analyzedPos.add(analyzingPos);
 			
 			Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, originPos, analyzingPos);
-			Collection<ToAnalyzePos> nextPositions = filterPotentialPos(originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
+			Collection<ToAnalyzePos> nextPositions = filterPotentialPos(boundingBoxSearch, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
 			
 			nextPositions.removeAll(analyzedPos);
 			nextPositions.removeAll(toAnalyzePos);
@@ -58,6 +61,23 @@ public class TreeBuilder{
 		return Optional.of(tree);
 	}
 	
+	private static Predicate<BlockPos> getBoundingBoxSearch(BlockPos originPos){
+		int radius = Config.COMMON.getTreesConfiguration().getSearchAreaRadius();
+		if(radius < 0){
+			return pos -> true;
+		}
+		
+		int minX = originPos.getX() - radius;
+		int maxX = originPos.getX() + radius;
+		int minZ = originPos.getZ() - radius;
+		int maxZ = originPos.getZ() + radius;
+		
+		return pos -> minX <= pos.getX()
+				&& maxX >= pos.getX()
+				&& minZ <= pos.getZ()
+				&& maxZ >= pos.getZ();
+	}
+	
 	private static IPositionFetcher getFirstPositionFetcher(){
 		DetectionMode detectionMode = Config.COMMON.getTreesConfiguration().getDetectionMode();
 		if(detectionMode == ABOVE_CUT){
@@ -69,10 +89,10 @@ public class TreeBuilder{
 		return BasicPositionFetcher.getInstance();
 	}
 	
-	private static Collection<ToAnalyzePos> filterPotentialPos(BlockPos originPos, Block originBlock, ToAnalyzePos parent, Collection<ToAnalyzePos> potentialPos, Collection<ToAnalyzePos> analyzedPos){
+	private static Collection<ToAnalyzePos> filterPotentialPos(Predicate<BlockPos> boundingBoxSearch, BlockPos originPos, Block originBlock, ToAnalyzePos parent, Collection<ToAnalyzePos> potentialPos, Collection<ToAnalyzePos> analyzedPos){
 		List<ToAnalyzePos> filtered = new LinkedList<>();
 		potentialPos.forEach(pos -> {
-			if(!analyzedPos.contains(pos) && shouldIncludeInChain(originPos, originBlock, parent, pos)){
+			if(!analyzedPos.contains(pos) && shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos)){
 				filtered.add(pos);
 			}
 		});
@@ -89,8 +109,8 @@ public class TreeBuilder{
 				.count();
 	}
 	
-	private static boolean shouldIncludeInChain(BlockPos originPos, Block originBlock, ToAnalyzePos parent, ToAnalyzePos check){
-		if(parent.getTreePartType() == LOG && isSameTree(originBlock, check)){
+	private static boolean shouldIncludeInChain(Predicate<BlockPos> boundingBoxSearch, BlockPos originPos, Block originBlock, ToAnalyzePos parent, ToAnalyzePos check){
+		if(parent.getTreePartType() == LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.getCheckPos())){
 			return true;
 		}
 		if(Config.COMMON.getTreesConfiguration().isBreakNetherTreeWarts()){

@@ -149,6 +149,12 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "breakNetherTreeWarts", 2))
 				.setSaveConsumer(config::setBreakNetherTreeWarts)
 				.build();
+		IntegerListEntry searchAreaRadiusEntry = builder.entryBuilder()
+				.startIntField(new TranslationTextComponent(getFieldName("trees", "searchAreaRadius")), config.getSearchAreaRadius())
+				.setDefaultValue(-1)
+				.setTooltip(getTooltips("trees", "searchAreaRadius", 5))
+				.setSaveConsumer(config::setSearchAreaRadius)
+				.build();
 		
 		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.trees"));
 		tools.addEntry(breakModeEntry);
@@ -164,6 +170,7 @@ public class ClothConfigHook{
 		tools.addEntry(minimumLeavesAroundRequiredEntry);
 		tools.addEntry(allowMixedLogsEntry);
 		tools.addEntry(breakNetherTreeWartsEntry);
+		tools.addEntry(searchAreaRadiusEntry);
 	}
 	
 	@OnlyIn(Dist.CLIENT)

@@ -1,3 +1,8 @@
+## [Forge-1.16.4-2.9.0] - 2021-01-09
+
+* Break mode matches description text. Now only logs that are ABOVE the y value will be cut. See https://github.com/RakSrinaNa/FallingTree/issues/53#issuecomment-757332779 for a visual representation of each mode (#53)
+* Add a new option under `Tree > Search area radius` to only search a tree in a certain area. This can be configured to somehow define how "wide" a tree can be. By default there's no limit (#53)
+
 ## [Forge-1.16.4-2.8.3] - 2021-01-07
 
 * Fix server starting when cloth-config is installed on server (#52)
