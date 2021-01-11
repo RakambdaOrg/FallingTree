@@ -10,6 +10,7 @@ plugins {
     id 'fabric-loom' version '0.5.34'
     id 'maven-publish'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'com.modrinth.minotaur' version '1.1.0'
     id 'com.github.breadmoirai.github-release' version "2.2.10"
     id 'com.novoda.build-properties' version '0.4.1'
     id 'com.github.ben-manes.versions' version '0.36.0'
@@ -19,6 +20,7 @@ buildProperties {
     secrets {
         using(file('secrets.properties')).or(System.getenv()).or([
                 "CURSEFORGE_API_KEY": "N/A",
+                "MODRINTH_TOKEN"    : "N/A",
                 "GITHUB_TOKEN"      : "N/A"
         ])
     }
@@ -141,6 +143,22 @@ curseforge {
     options {
         forgeGradleIntegration = false
         javaVersionAutoDetect = false
+    }
+}
+
+import com.modrinth.minotaur.TaskModrinthUpload
+task publishModrinth(type: TaskModrinthUpload) {
+    token = buildProperties.secrets['MODRINTH_TOKEN'].string
+    projectId = 'Fb4jn8m6'
+    versionNumber = "${archivesBaseName}-${project.version}"
+    uploadFile = remapJar
+    addGameVersion(project.minecraft_version)
+    addLoader(project.loader.toLowerCase())
+    releaseType = "${project.curseforge_release_type}"
+    changelog = getLatestChangeLog()
+
+    afterEvaluate {
+        tasks.publishModrinth.dependsOn(remapJar)
     }
 }
 
