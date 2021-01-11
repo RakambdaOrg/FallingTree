@@ -83,6 +83,18 @@ public class TreeConfiguration{
 			"i.e. Setting a value of 2 will result on an area of 3x3 centered on the log broken. \n" +
 			"If this value is set to a negative number then no area restriction will be applied.")
 	public int searchAreaRadius = -1;
+	@Tooltip(count = 1)
+	@Comment("List the blocks that can be against the tree. If something else is adjacent then the tree won't be cut. \n" +
+			"INFO: Use adjacentStopMode to define how we stop the search for the tree.")
+	@BlockId
+	public List<String> whitelistedAdjacentBlocks = new ArrayList<>();
+	@Tooltip(count = 1)
+	@Comment("What to do when an non whitelisted adjacent block is found. \n" +
+			"STOP_ALL will stop the search and nothing will be cut. \n" +
+			"STOP_BRANCH will stop the current branch only. The rest of the tree will be cut."
+	)
+	@EnumHandler(option = EnumDisplayOption.BUTTON)
+	public AdjacentStopMode adjacentStopMode = AdjacentStopMode.STOP_ALL;
 	
 	public Collection<Block> getBlacklistedLeaves(){
 		return ConfigCache.getInstance().getBlacklistedLeaves(this::getBlacklistedLeavesStr);
@@ -154,5 +166,13 @@ public class TreeConfiguration{
 	
 	public int getSearchAreaRadius(){
 		return searchAreaRadius;
+	}
+	
+	public AdjacentStopMode getAdjacentStopMode(){
+		return adjacentStopMode;
+	}
+	
+	public Collection<Block> getWhitelistedAdjacentBlocks(){
+		return getAsBlocks(whitelistedAdjacentBlocks);
 	}
 }
