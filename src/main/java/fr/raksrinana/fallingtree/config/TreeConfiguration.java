@@ -6,7 +6,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
 public class TreeConfiguration{
 	private static final String[] DESC_BREAK_MODE = {
@@ -189,11 +188,11 @@ public class TreeConfiguration{
 	}
 	
 	public Collection<Block> getBlacklistedLeaves(){
-		return getAsBlocks(blacklistedLeaves.get());
+		return ConfigCache.getInstance().getBlacklistedLeaves(this::getBlacklistedLeavesStr);
 	}
 	
 	public Collection<Block> getBlacklistedLogs(){
-		return getAsBlocks(blacklistedLogs.get());
+		return ConfigCache.getInstance().getBlacklistedLogs(this::getBlacklistedLogsStr);
 	}
 	
 	public boolean isLeavesBreaking(){
@@ -213,11 +212,11 @@ public class TreeConfiguration{
 	}
 	
 	public Collection<Block> getWhitelistedLeaves(){
-		return getAsBlocks(whitelistedLeaves.get());
+		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeavesStr);
 	}
 	
 	public Collection<Block> getWhitelistedLogs(){
-		return getAsBlocks(whitelistedLogs.get());
+		return ConfigCache.getInstance().getWhitelistedLogs(this::getWhitelistedLogsStr);
 	}
 	
 	public int getLeavesBreakingForceRadius(){

@@ -29,6 +29,8 @@ public class ClothConfigHook{
 			
 			fillConfigScreen(builder);
 			
+			builder.setSavingRunnable(() -> ConfigCache.getInstance().invalidate());
+			
 			return builder.build();
 		});
 	}
