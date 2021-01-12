@@ -3,9 +3,10 @@ package fr.raksrinana.fallingtree.config;
 import fr.raksrinana.fallingtree.config.validator.*;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
+import me.sargunvohra.mcmods.autoconfig1u.ConfigHolder;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Category;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.Excluded;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.Tooltip;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.TransitiveObject;
 import me.sargunvohra.mcmods.autoconfig1u.gui.registry.GuiRegistry;
@@ -14,6 +15,7 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.ActionResult;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -21,17 +23,17 @@ import static java.util.stream.Collectors.toList;
 
 @Config(name = "fallingtree")
 public class Configuration implements ConfigData{
-	@ConfigEntry.Gui.Excluded
+	@Excluded
 	private static final MinRunner MIN_RUNNER = new MinRunner();
-	@ConfigEntry.Gui.Excluded
+	@Excluded
 	private static final MaxRunner MAX_RUNNER = new MaxRunner();
-	@ConfigEntry.Gui.Excluded
+	@Excluded
 	private static final MinMaxRunner MIN_MAX_RUNNER = new MinMaxRunner();
-	@ConfigEntry.Gui.Excluded
+	@Excluded
 	private static final BlockIdRunner BLOCK_ID_RUNNER = new BlockIdRunner();
-	@ConfigEntry.Gui.Excluded
+	@Excluded
 	private static final ItemIdRunner ITEM_ID_RUNNER = new ItemIdRunner();
-	@ConfigEntry.Gui.Excluded
+	@Excluded
 	private static final List<ValidatorRunner<?>> RUNNERS = Arrays.asList(MIN_RUNNER, MAX_RUNNER, MIN_MAX_RUNNER, BLOCK_ID_RUNNER, ITEM_ID_RUNNER);
 	@Tooltip(count = 2)
 	@Comment("When set to true, a tree will only be chopped down if the player is sneaking.")
@@ -47,7 +49,17 @@ public class Configuration implements ConfigData{
 	public ToolConfiguration tools = new ToolConfiguration();
 	
 	public static Configuration register(){
-		Configuration configuration = AutoConfig.register(Configuration.class, JanksonConfigSerializer::new).getConfig();
+		ConfigHolder<Configuration> configHolder = AutoConfig.register(Configuration.class, JanksonConfigSerializer::new);
+		configHolder.registerSaveListener((configHolder1, configuration) -> {
+			ConfigCache.getInstance().invalidate();
+			return ActionResult.PASS;
+		});
+		configHolder.registerLoadListener((configHolder1, configuration) -> {
+			ConfigCache.getInstance().invalidate();
+			return ActionResult.PASS;
+		});
+		
+		Configuration configuration = configHolder.getConfig();
 		
 		if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT){
 			registerGui();
