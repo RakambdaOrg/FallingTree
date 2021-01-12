@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsItems;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class ToolConfiguration{
@@ -49,7 +48,19 @@ public class ToolConfiguration{
 	public double speedMultiplicand = 0;
 	
 	public Collection<Item> getBlacklisted(){
-		return getAsItems(blacklisted);
+		return ConfigCache.getInstance().getToolsBlacklisted(this::getBlacklistedStr);
+	}
+	
+	private Collection<String> getBlacklistedStr(){
+		return blacklisted;
+	}
+	
+	public Collection<Item> getWhitelisted(){
+		return ConfigCache.getInstance().getToolsWhitelisted(this::getWhitelistedStr);
+	}
+	
+	private Collection<String> getWhitelistedStr(){
+		return whitelisted;
 	}
 	
 	public int getDamageMultiplicand(){
@@ -58,10 +69,6 @@ public class ToolConfiguration{
 	
 	public double getSpeedMultiplicand(){
 		return this.speedMultiplicand;
-	}
-	
-	public Collection<Item> getWhitelisted(){
-		return getAsItems(whitelisted);
 	}
 	
 	public boolean isIgnoreTools(){

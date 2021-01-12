@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsBlocks;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class TreeConfiguration{
@@ -86,11 +85,19 @@ public class TreeConfiguration{
 	public int searchAreaRadius = -1;
 	
 	public Collection<Block> getBlacklistedLeaves(){
-		return getAsBlocks(blacklistedLeaves);
+		return ConfigCache.getInstance().getBlacklistedLeaves(this::getBlacklistedLeavesStr);
+	}
+	
+	private Collection<String> getBlacklistedLeavesStr(){
+		return blacklistedLeaves;
 	}
 	
 	public Collection<Block> getBlacklistedLogs(){
-		return getAsBlocks(blacklistedLogs);
+		return ConfigCache.getInstance().getBlacklistedLogs(this::getBlacklistedLogsStr);
+	}
+	
+	public Collection<String> getBlacklistedLogsStr(){
+		return blacklistedLogs;
 	}
 	
 	public BreakMode getBreakMode(){
@@ -114,11 +121,19 @@ public class TreeConfiguration{
 	}
 	
 	public Collection<Block> getWhitelistedLeaves(){
-		return getAsBlocks(whitelistedLeaves);
+		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeavesStr);
+	}
+	
+	private Collection<String> getWhitelistedLeavesStr(){
+		return whitelistedLeaves;
 	}
 	
 	public Collection<Block> getWhitelistedLogs(){
-		return getAsBlocks(whitelistedLogs);
+		return ConfigCache.getInstance().getWhitelistedLogs(this::getWhitelistedLogsStr);
+	}
+	
+	private Collection<String> getWhitelistedLogsStr(){
+		return whitelistedLogs;
 	}
 	
 	public boolean isLeavesBreaking(){
