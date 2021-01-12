@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.tree.builder;
 
 import fr.raksrinana.fallingtree.FallingTree;
+import fr.raksrinana.fallingtree.config.ConfigCache;
 import fr.raksrinana.fallingtree.config.DetectionMode;
 import fr.raksrinana.fallingtree.tree.Tree;
 import fr.raksrinana.fallingtree.tree.builder.position.AbovePositionFetcher;
@@ -9,8 +10,6 @@ import fr.raksrinana.fallingtree.tree.builder.position.BasicPositionFetcher;
 import fr.raksrinana.fallingtree.tree.builder.position.IPositionFetcher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -77,18 +76,12 @@ public class TreeBuilder{
 	
 	private static Predicate<Block> getAdjacentPredicate(){
 		Collection<Block> whitelist = FallingTree.config.getTreesConfiguration().getWhitelistedAdjacentBlocks();
-		Collection<Block> base = FallingTree.config.getTreesConfiguration().getWhitelistedLogs();
-		base.addAll(FallingTree.config.getTreesConfiguration().getWhitelistedLeaves());
-		base.addAll(BlockTags.LEAVES.values());
-		base.addAll(BlockTags.LOGS.values());
-		base.add(Blocks.AIR);
-		base.removeAll(FallingTree.config.getTreesConfiguration().getBlacklistedLeaves());
-		base.removeAll(FallingTree.config.getTreesConfiguration().getBlacklistedLogs());
+		Collection<Block> base = ConfigCache.getInstance().getAdjacentBlocksBase();
 		
 		if(whitelist.isEmpty()){
 			return block -> true;
 		}
-		switch(FallingTree.config.getTreesConfiguration().adjacentStopMode){
+		switch(FallingTree.config.getTreesConfiguration().getAdjacentStopMode()){
 			case STOP_ALL:
 				return block -> {
 					boolean whitelisted = whitelist.contains(block) || base.contains(block);
