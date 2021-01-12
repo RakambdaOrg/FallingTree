@@ -6,7 +6,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.getAsItems;
 
 public class ToolConfiguration{
 	private static final String[] DESC_IGNORE_TOOLS = {
@@ -94,11 +93,11 @@ public class ToolConfiguration{
 	}
 	
 	public Collection<Item> getBlacklisted(){
-		return getAsItems(blacklisted.get());
+		return ConfigCache.getInstance().getToolsBlacklisted(this::getBlacklistedStr);
 	}
 	
 	public Collection<Item> getWhitelisted(){
-		return getAsItems(whitelisted.get());
+		return ConfigCache.getInstance().getToolsWhitelisted(this::getWhitelistedStr);
 	}
 	
 	public boolean isPreserve(){
