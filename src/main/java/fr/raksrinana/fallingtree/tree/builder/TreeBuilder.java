@@ -9,6 +9,7 @@ import fr.raksrinana.fallingtree.tree.builder.position.BasicPositionFetcher;
 import fr.raksrinana.fallingtree.tree.builder.position.IPositionFetcher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
@@ -80,6 +81,9 @@ public class TreeBuilder{
 		base.addAll(FallingTree.config.getTreesConfiguration().getWhitelistedLeaves());
 		base.addAll(BlockTags.LEAVES.values());
 		base.addAll(BlockTags.LOGS.values());
+		base.add(Blocks.AIR);
+		base.removeAll(FallingTree.config.getTreesConfiguration().getBlacklistedLeaves());
+		base.removeAll(FallingTree.config.getTreesConfiguration().getBlacklistedLogs());
 		
 		if(whitelist.isEmpty()){
 			return block -> true;
