@@ -157,6 +157,19 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "searchAreaRadius", 5))
 				.setSaveConsumer(config::setSearchAreaRadius)
 				.build();
+		StringListListEntry whitelistedAdjacentBlocks = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedAdjacentBlocks")), config.getWhitelistedAdjacentBlocksStr())
+				.setDefaultValue(Lists.newArrayList())
+				.setTooltip(getTooltips("trees", "whitelistedAdjacentBlocks", 9))
+				.setSaveConsumer(config::setWhitelistedAdjacentBlocks)
+				.setCellErrorSupplier(getMinecraftBlockIdCellError())
+				.build();
+		EnumListEntry<AdjacentStopMode> adjacentStopModeEntry = builder.entryBuilder()
+				.startEnumSelector(new TranslationTextComponent(getFieldName("trees", "adjacentStopMode")), AdjacentStopMode.class, config.getAdjacentStopMode())
+				.setDefaultValue(AdjacentStopMode.STOP_ALL)
+				.setTooltip(getTooltips("trees", "adjacentStopMode", 9))
+				.setSaveConsumer(config::setAdjacentStopMode)
+				.build();
 		
 		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.trees"));
 		tools.addEntry(breakModeEntry);
@@ -173,6 +186,8 @@ public class ClothConfigHook{
 		tools.addEntry(allowMixedLogsEntry);
 		tools.addEntry(breakNetherTreeWartsEntry);
 		tools.addEntry(searchAreaRadiusEntry);
+		tools.addEntry(whitelistedAdjacentBlocks);
+		tools.addEntry(adjacentStopModeEntry);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
