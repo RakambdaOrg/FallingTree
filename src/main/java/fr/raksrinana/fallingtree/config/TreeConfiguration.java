@@ -69,6 +69,15 @@ public class TreeConfiguration{
 			"i.e. Setting a value of 2 will result on an area of 3x3 centered on the log broken.",
 			"If this value is set to a negative number then no area restriction will be applied."
 	};
+	private static final String[] DESC_WHITELISTED_ADJACENT_BLOCKS = {
+			"List the blocks that can be against the tree. If something else is adjacent then the tree won't be cut.",
+			"INFO: Use adjacentStopMode to define how we stop the search for the tree."
+	};
+	private static final String[] DESC_ADJACENT_STOP_MODE = {
+			"What to do when an non whitelisted adjacent block is found.",
+			"STOP_ALL will stop the search and nothing will be cut.",
+			"STOP_BRANCH will stop the current branch only. The rest of the tree will be cut."
+	};
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLogs;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLogs;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLeaves;
@@ -83,6 +92,8 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.BooleanValue allowMixedLogs;
 	private final ForgeConfigSpec.BooleanValue breakNetherTreeWarts;
 	private final ForgeConfigSpec.IntValue searchAreaRadius;
+	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedAdjacentBlocks;
+	private final ForgeConfigSpec.ConfigValue<AdjacentStopMode> adjacentStopMode;
 	
 	public TreeConfiguration(ForgeConfigSpec.Builder builder){
 		breakMode = builder.comment(DESC_BREAK_MODE)
@@ -113,6 +124,18 @@ public class TreeConfiguration{
 				.define("break_nether_tree_warts", true);
 		searchAreaRadius = builder.comment(DESC_SEARCH_AROUND_RADIUS)
 				.defineInRange("search_around_radius", -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		whitelistedAdjacentBlocks = builder.comment(DESC_WHITELISTED_ADJACENT_BLOCKS)
+				.defineList("adjacent_blocks_whitelisted", Lists.newArrayList(), Objects::nonNull);
+		adjacentStopMode = builder.comment(DESC_ADJACENT_STOP_MODE)
+				.defineEnum("adjacent_stop_mode", AdjacentStopMode.STOP_ALL);
+	}
+	
+	public AdjacentStopMode getAdjacentStopMode(){
+		return adjacentStopMode.get();
+	}
+	
+	public void setAdjacentStopMode(AdjacentStopMode value){
+		this.adjacentStopMode.set(value);
 	}
 	
 	public int getSearchAreaRadius(){
@@ -241,5 +264,17 @@ public class TreeConfiguration{
 	
 	public void setSearchAreaRadius(Integer value){
 		searchAreaRadius.set(value);
+	}
+	
+	public Collection<Block> getWhitelistedAdjacentBlocks(){
+		return ConfigCache.getInstance().getWhitelistedAdjacentBlocks(this::getWhitelistedAdjacentBlocksStr);
+	}
+	
+	public void setWhitelistedAdjacentBlocks(List<String> value){
+		this.whitelistedAdjacentBlocks.set(value);
+	}
+	
+	public List<String> getWhitelistedAdjacentBlocksStr(){
+		return (List<String>) whitelistedAdjacentBlocks.get();
 	}
 }

@@ -1,8 +1,11 @@
 package fr.raksrinana.fallingtree.config;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.tags.BlockTags;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -17,6 +20,8 @@ public class ConfigCache{
 	private Set<Block> logsBlacklist;
 	private Set<Block> leavesWhitelist;
 	private Set<Block> logsWhitelist;
+	private Set<Block> adjacentBlocksWhitelist;
+	private Set<Block> adjacentBlocksBase;
 	
 	public void invalidate(){
 		toolsBlacklist = null;
@@ -25,6 +30,8 @@ public class ConfigCache{
 		leavesWhitelist = null;
 		logsBlacklist = null;
 		logsWhitelist = null;
+		adjacentBlocksWhitelist = null;
+		adjacentBlocksBase = null;
 	}
 	
 	public Collection<Item> getToolsWhitelisted(Supplier<Collection<String>> collectionSupplier){
@@ -67,6 +74,27 @@ public class ConfigCache{
 			logsWhitelist = getAsBlocks(collectionSupplier.get());
 		}
 		return logsWhitelist;
+	}
+	
+	public Collection<Block> getWhitelistedAdjacentBlocks(Supplier<Collection<String>> collectionSupplier){
+		if(Objects.isNull(adjacentBlocksWhitelist)){
+			adjacentBlocksWhitelist = getAsBlocks(collectionSupplier.get());
+		}
+		return adjacentBlocksWhitelist;
+	}
+	
+	public Collection<Block> getAdjacentBlocksBase(){
+		if(Objects.isNull(adjacentBlocksBase)){
+			adjacentBlocksBase = new HashSet<>();
+			adjacentBlocksBase.add(Blocks.AIR);
+			adjacentBlocksBase.addAll(BlockTags.LEAVES.getAllElements());
+			adjacentBlocksBase.addAll(BlockTags.LOGS.getAllElements());
+			adjacentBlocksBase.addAll(getWhitelistedLogs(Config.COMMON.getTreesConfiguration()::getWhitelistedLogsStr));
+			adjacentBlocksBase.addAll(getWhitelistedLeaves(Config.COMMON.getTreesConfiguration()::getWhitelistedLeavesStr));
+			adjacentBlocksBase.removeAll(getBlacklistedLogs(Config.COMMON.getTreesConfiguration()::getBlacklistedLogsStr));
+			adjacentBlocksBase.removeAll(getBlacklistedLeaves(Config.COMMON.getTreesConfiguration()::getBlacklistedLeavesStr));
+		}
+		return adjacentBlocksBase;
 	}
 	
 	public static ConfigCache getInstance(){
