@@ -1,3 +1,8 @@
+## [Fabric-1.16.4-2.10.0] - 2021-01-13
+
+* Cache configuration so white/black lists are not fetched all the time (#56)
+* Add a configuration to whitelist the blocks that can be adjacent to a trunk. By default (empty) this won't apply any restrictions (#54)
+
 ## [Fabric-1.16.4-2.9.0] - 2021-01-09
 
 * Break mode matches description text. Now only logs that are ABOVE the y value will be cut. See https://github.com/RakSrinaNa/FallingTree/issues/53#issuecomment-757332779 for a visual representation of each mode (#53)
