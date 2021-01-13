@@ -9,10 +9,11 @@
     "2.8.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.4-forge/CHANGELOG.md",
     "2.7.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.4-forge/CHANGELOG.md",
     "2.6.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.4-forge/CHANGELOG.md",
-    "2.5.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.4-forge/CHANGELOG.md"
+    "2.5.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.4-forge/CHANGELOG.md",
+    "2.10.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.4-forge/CHANGELOG.md"
   },
   "promos": {
-    "1.16.4-latest": "2.9.0",
-    "1.16.4-recommended": "2.9.0"
+    "1.16.4-latest": "2.10.0",
+    "1.16.4-recommended": "2.10.0"
   }
 }
