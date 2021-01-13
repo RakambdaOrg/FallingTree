@@ -1,3 +1,7 @@
+## [Fabric-1.16.5-rc1-2.10.0] - 2021-01-13
+
+* Port to 1.16.5
+
 ## [Fabric-1.16.4-2.10.0] - 2021-01-13
 
 * Cache configuration so white/black lists are not fetched all the time (#56)

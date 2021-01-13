@@ -1,2 +1,1 @@
-* Cache configuration so white/black lists are not fetched all the time (#56)
-* Add a configuration to whitelist the blocks that can be adjacent to a trunk. By default (empty) this won't apply any restrictions (#54)
+* Port to 1.16.5
