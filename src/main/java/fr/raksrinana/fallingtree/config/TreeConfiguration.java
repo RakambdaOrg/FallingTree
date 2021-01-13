@@ -83,12 +83,24 @@ public class TreeConfiguration{
 			"i.e. Setting a value of 2 will result on an area of 3x3 centered on the log broken. \n" +
 			"If this value is set to a negative number then no area restriction will be applied.")
 	public int searchAreaRadius = -1;
+	@Tooltip(count = 9)
+	@Comment("List the blocks that can be against the tree. If something else is adjacent then the tree won't be cut. \n" +
+			"INFO: Use adjacentStopMode to define how we stop the search for the tree.")
+	@BlockId
+	public List<String> whitelistedAdjacentBlocks = new ArrayList<>();
+	@Tooltip(count = 9)
+	@Comment("What to do when an non whitelisted adjacent block is found. \n" +
+			"STOP_ALL will stop the search and nothing will be cut. \n" +
+			"STOP_BRANCH will stop the current branch only. The rest of the tree will be cut."
+	)
+	@EnumHandler(option = EnumDisplayOption.BUTTON)
+	public AdjacentStopMode adjacentStopMode = AdjacentStopMode.STOP_ALL;
 	
 	public Collection<Block> getBlacklistedLeaves(){
 		return ConfigCache.getInstance().getBlacklistedLeaves(this::getBlacklistedLeavesStr);
 	}
 	
-	private Collection<String> getBlacklistedLeavesStr(){
+	public Collection<String> getBlacklistedLeavesStr(){
 		return blacklistedLeaves;
 	}
 	
@@ -124,16 +136,16 @@ public class TreeConfiguration{
 		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeavesStr);
 	}
 	
-	private Collection<String> getWhitelistedLeavesStr(){
-		return whitelistedLeaves;
+	public Collection<Block> getWhitelistedAdjacentBlocks(){
+		return ConfigCache.getInstance().getWhitelistedAdjacentBlocks(this::getWhitelistedAdjacentBlocksString);
 	}
 	
 	public Collection<Block> getWhitelistedLogs(){
 		return ConfigCache.getInstance().getWhitelistedLogs(this::getWhitelistedLogsStr);
 	}
 	
-	private Collection<String> getWhitelistedLogsStr(){
-		return whitelistedLogs;
+	public Collection<String> getWhitelistedAdjacentBlocksString(){
+		return whitelistedAdjacentBlocks;
 	}
 	
 	public boolean isLeavesBreaking(){
@@ -154,5 +166,17 @@ public class TreeConfiguration{
 	
 	public int getSearchAreaRadius(){
 		return searchAreaRadius;
+	}
+	
+	public AdjacentStopMode getAdjacentStopMode(){
+		return adjacentStopMode;
+	}
+	
+	public Collection<String> getWhitelistedLeavesStr(){
+		return whitelistedLeaves;
+	}
+	
+	public Collection<String> getWhitelistedLogsStr(){
+		return whitelistedLogs;
 	}
 }
