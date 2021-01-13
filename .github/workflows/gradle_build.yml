@@ -75,4 +75,4 @@ jobs:
         env:
           GITHUB_USER: RakSrinaNa
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+          CURSEFORGE_API_KEY: ${{ secrets.MODRINTH_TOKEN }}
