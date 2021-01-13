@@ -150,7 +150,7 @@ import com.modrinth.minotaur.TaskModrinthUpload
 task publishModrinth(type: TaskModrinthUpload) {
     token = buildProperties.secrets['MODRINTH_TOKEN'].string
     projectId = 'Fb4jn8m6'
-    versionNumber = "${project.version}"
+    versionNumber = "${project.version}-${project.loader}"
     versionName = "${archivesBaseName}-${project.version}"
     uploadFile = remapJar
     addGameVersion(project.minecraft_version)
