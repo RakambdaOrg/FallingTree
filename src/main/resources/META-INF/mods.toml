@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[35,)"
+loaderVersion = "[36,)"
 issueTrackerURL = "https://github.com/${project.repoUser}/${project.repoName}/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/falling-tree"
 logoFile="logo.png"
@@ -17,7 +17,7 @@ description = '''Change the way you cut trees.'''
 [[dependencies.falling_tree]]
 modId = "forge"
 mandatory = true
-versionRange = "[35.0.0,)"
+versionRange = "[36.0.0,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.falling_tree]]
