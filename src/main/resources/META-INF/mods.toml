@@ -10,9 +10,9 @@ license = "GPL-3.0"
 [[mods]] #mandatory
     modId="${project.mod_id}"
     version="${project.version}"
-    displayName="${project.modName}"
-    updateJSONURL="https://raw.githubusercontent.com/${project.repoUser}/${project.repoName}/${project.repoBranch}/update.json"
-    description = '''Change the way you cut trees.'''
+    displayName = "${project.modName}"
+updateJSONURL = "https://raw.githubusercontent.com/${project.repoUser}/${project.repoName}/${project.minecraft_version}-forge/update.json"
+description = '''Change the way you cut trees.'''
 
 [[dependencies.falling_tree]]
 modId = "forge"

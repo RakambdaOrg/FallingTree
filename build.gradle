@@ -177,7 +177,7 @@ githubRelease {
     token = buildProperties.secrets['GITHUB_TOKEN'].string
     tagName = "${archivesBaseName}-${project.version}"
     releaseName = "${archivesBaseName}-${project.version}"
-    targetCommitish = "${project.repoBranch}"
+    targetCommitish = "${project.minecraft_version}-forge"
     body {
         return getLatestChangeLog()
     }
@@ -208,7 +208,7 @@ def writeUpdateJson() {
     def slurper = new JsonSlurper()
     def file = new File('update.json')
     def json = slurper.parse(file)
-    def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/blob/${project.repoBranch}/CHANGELOG.md"
+    def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/blob/${project.minecraft_version}-forge/CHANGELOG.md"
 
     json['changelog'] = changelogUrl
 
