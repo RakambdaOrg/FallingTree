@@ -3,3 +3,6 @@ contact_links:
   - name: Releases
     url: https://www.curseforge.com/minecraft/mc-mods/falling-tree
     about: You can find the latest releases on CurseForge.
+  - name: Question
+    url: https://github.com/RakSrinaNa/FallingTree/discussions
+    about: Got a question? Ask it there.
