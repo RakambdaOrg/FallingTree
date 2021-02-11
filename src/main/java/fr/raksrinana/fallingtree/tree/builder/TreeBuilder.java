@@ -10,7 +10,6 @@ import fr.raksrinana.fallingtree.tree.builder.position.BasicPositionFetcher;
 import fr.raksrinana.fallingtree.tree.builder.position.IPositionFetcher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -33,6 +32,7 @@ public class TreeBuilder{
 			return empty();
 		}
 		
+		int maxLogCount = FallingTree.config.getTreesConfiguration().getMaxSize();
 		Queue<ToAnalyzePos> toAnalyzePos = new PriorityQueue<>();
 		Set<ToAnalyzePos> analyzedPos = new HashSet<>();
 		Tree tree = new Tree(world, originPos);
@@ -47,6 +47,10 @@ public class TreeBuilder{
 				tree.addPart(analyzingPos.toTreePart());
 				analyzedPos.add(analyzingPos);
 				
+				if(tree.getLogCount() > maxLogCount){
+					return Optional.empty();
+				}
+				
 				Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, originPos, analyzingPos);
 				Collection<ToAnalyzePos> nextPositions = filterPotentialPos(boundingBoxSearch, adjacentPredicate, world, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
 				
@@ -56,9 +60,6 @@ public class TreeBuilder{
 			}
 		}
 		catch(AbortSearchException e){
-			world.getServer().getPlayerManager()
-					.getPlayerList()
-					.forEach(player -> player.sendMessage(new LiteralText("[FT Debug] Not cut because of " + e.getMessage()), false));
 			return Optional.empty();
 		}
 		
@@ -86,7 +87,7 @@ public class TreeBuilder{
 				return block -> {
 					boolean whitelisted = whitelist.contains(block) || base.contains(block);
 					if(!whitelisted){
-						throw new AbortSearchException(block);
+						throw new AbortSearchException("Found block " + block + " that isn't whitelisted");
 					}
 					return true;
 				};
