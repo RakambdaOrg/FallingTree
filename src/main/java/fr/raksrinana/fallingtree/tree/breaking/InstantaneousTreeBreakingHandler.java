@@ -29,7 +29,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(FallingTree.config.getToolsConfiguration().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
-				player.sendSystemMessage(new TranslatableText("chat.falling_tree.prevented_break_tool"), NIL_UUID);
+				player.sendSystemMessage(new TranslatableText("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
 			}
 			if(tree.getLogCount() >= rawWeightedUsesLeft){

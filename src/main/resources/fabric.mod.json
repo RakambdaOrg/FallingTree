@@ -13,7 +13,7 @@
     "sources": "https://github.com/RakSrinaNa/FallingTree"
   },
   "license": "GPL-3.0",
-  "icon": "assets/falling_tree/logo.png",
+  "icon": "assets/fallingtree/logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [

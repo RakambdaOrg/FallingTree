@@ -28,7 +28,7 @@ public class BlockBreakHandler implements net.fabricmc.fabric.api.event.player.P
 					}).orElse(true);
 				}
 				catch(TreeTooBigException e){
-					player.sendSystemMessage(new TranslatableText("chat.falling_tree.tree_too_big", FallingTree.config.getTreesConfiguration().getMaxSize()), NIL_UUID);
+					player.sendSystemMessage(new TranslatableText("chat.fallingtree.tree_too_big", FallingTree.config.getTreesConfiguration().getMaxSize()), NIL_UUID);
 					return true;
 				}
 			}
