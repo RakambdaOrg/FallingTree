@@ -1,3 +1,7 @@
+## [Fabric-1.16.5-2.10.1] - 2021-02-11
+
+* Abort search as soon as max log count is reached (#70)
+
 ## [Fabric-1.16.5-rc1-2.10.0] - 2021-01-13
 
 * Port to 1.16.5
