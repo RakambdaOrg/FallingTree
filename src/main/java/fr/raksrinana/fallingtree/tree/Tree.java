@@ -33,7 +33,7 @@ public class Tree{
 	}
 	
 	public Optional<TreePart> getLastSequencePart(){
-		return getLogs().stream()
+		return getParts().stream()
 				.max(comparingInt(TreePart::getSequence));
 	}
 	
