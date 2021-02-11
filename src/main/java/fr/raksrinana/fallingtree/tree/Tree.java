@@ -1,29 +1,36 @@
 package fr.raksrinana.fallingtree.tree;
 
+import fr.raksrinana.fallingtree.utils.TreePartType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
 import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
 import static java.util.Comparator.comparingInt;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 
 public class Tree{
 	private final World world;
 	private final Set<TreePart> parts;
+	private final Map<TreePartType, Integer> partsCount;
 	private final BlockPos hitPos;
 	
 	public Tree(World world, BlockPos blockPos){
 		this.world = world;
 		this.hitPos = blockPos;
 		this.parts = new LinkedHashSet<>();
+		this.partsCount = new HashMap<>();
 	}
 	
 	public void addPart(TreePart treePart){
 		this.parts.add(treePart);
+		this.partsCount.compute(treePart.getTreePartType(), (key, value) -> {
+			if(isNull(value)){
+				return 1;
+			}
+			return value + 1;
+		});
 	}
 	
 	public Optional<TreePart> getLastSequencePart(){
@@ -56,7 +63,7 @@ public class Tree{
 	}
 	
 	public int getLogCount(){
-		return this.getLogs().size();
+		return this.partsCount.computeIfAbsent(LOG, key -> 0);
 	}
 	
 	public BlockPos getHitPos(){

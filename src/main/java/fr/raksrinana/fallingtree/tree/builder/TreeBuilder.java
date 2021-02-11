@@ -32,6 +32,7 @@ public class TreeBuilder{
 			return empty();
 		}
 		
+		int maxLogCount = Config.COMMON.getTreesConfiguration().getMaxSize();
 		Queue<ToAnalyzePos> toAnalyzePos = new PriorityQueue<>();
 		Set<ToAnalyzePos> analyzedPos = new HashSet<>();
 		Tree tree = new Tree(world, originPos);
@@ -45,6 +46,10 @@ public class TreeBuilder{
 				ToAnalyzePos analyzingPos = toAnalyzePos.remove();
 				tree.addPart(analyzingPos.toTreePart());
 				analyzedPos.add(analyzingPos);
+				
+				if(tree.getLogCount() > maxLogCount){
+					return Optional.empty();
+				}
 				
 				Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, originPos, analyzingPos);
 				Collection<ToAnalyzePos> nextPositions = filterPotentialPos(boundingBoxSearch, adjacentPredicate, world, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
@@ -82,7 +87,7 @@ public class TreeBuilder{
 				return block -> {
 					boolean whitelisted = whitelist.contains(block) || base.contains(block);
 					if(!whitelisted){
-						throw new AbortSearchException(block);
+						throw new AbortSearchException("Found block " + block + " that isn't whitelisted");
 					}
 					return true;
 				};

@@ -1,1 +1,1 @@
-* Port to 1.16.5
+* Abort search as soon as max log count is reaches (#70)
