@@ -14,19 +14,19 @@ license = "GPL-3.0"
 updateJSONURL = "https://raw.githubusercontent.com/${project.repoUser}/${project.repoName}/${project.minecraft_version}-forge/update.json"
 description = '''Change the way you cut trees.'''
 
-[[dependencies.falling_tree]]
+[[dependencies.fallingtree]]
 modId = "forge"
 mandatory = true
 versionRange = "[36.0.0,)"
 ordering = "NONE"
 side = "BOTH"
-[[dependencies.falling_tree]]
+[[dependencies.fallingtree]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[${project.minecraft_version}]"
 ordering = "NONE"
 side = "BOTH"
-[[dependencies.falling_tree]]
+[[dependencies.fallingtree]]
 modId = "cloth-config"
 mandatory = false
 ordering = "NONE"

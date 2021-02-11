@@ -7,6 +7,7 @@ import fr.raksrinana.fallingtree.tree.breaking.ITreeBreakingHandler;
 import fr.raksrinana.fallingtree.tree.breaking.InstantaneousTreeBreakingHandler;
 import fr.raksrinana.fallingtree.tree.breaking.ShiftDownTreeBreakingHandler;
 import fr.raksrinana.fallingtree.tree.builder.TreeBuilder;
+import fr.raksrinana.fallingtree.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.utils.CacheSpeed;
 import fr.raksrinana.fallingtree.utils.LeafBreakingSchedule;
 import io.netty.util.internal.ConcurrentSet;
@@ -17,6 +18,7 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
@@ -31,6 +33,7 @@ import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static net.minecraft.util.Hand.MAIN_HAND;
+import static net.minecraft.util.Util.DUMMY_UUID;
 import static net.minecraftforge.event.TickEvent.Phase.END;
 import static net.minecraftforge.fml.LogicalSide.SERVER;
 
@@ -93,10 +96,15 @@ public final class ForgeEventSubscriber{
 	
 	private static CacheSpeed getSpeed(PlayerEvent.BreakSpeed event){
 		double speedMultiplicand = Config.COMMON.getToolsConfiguration().getSpeedMultiplicand();
-		return speedMultiplicand <= 0 ? null :
-				TreeBuilder.getTree(event.getEntity().getEntityWorld(), event.getPos())
-						.map(tree -> new CacheSpeed(event.getPos(), event.getOriginalSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
-						.orElse(null);
+		try{
+			return speedMultiplicand <= 0 ? null :
+					TreeBuilder.getTree(event.getEntity().getEntityWorld(), event.getPos())
+							.map(tree -> new CacheSpeed(event.getPos(), event.getOriginalSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
+							.orElse(null);
+		}
+		catch(TreeTooBigException e){
+			return null;
+		}
 	}
 	
 	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
@@ -116,10 +124,15 @@ public final class ForgeEventSubscriber{
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
 		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isRemote()){
 			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
-				TreeBuilder.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
-					BreakMode breakMode = Config.COMMON.getTreesConfiguration().getBreakMode();
-					getBreakingHandler(breakMode).breakTree(event, tree);
-				});
+				try{
+					TreeBuilder.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
+						BreakMode breakMode = Config.COMMON.getTreesConfiguration().getBreakMode();
+						getBreakingHandler(breakMode).breakTree(event, tree);
+					});
+				}
+				catch(TreeTooBigException e){
+					event.getPlayer().sendMessage(new TranslationTextComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTreesConfiguration().getMaxSize()), DUMMY_UUID);
+				}
 			}
 		}
 	}

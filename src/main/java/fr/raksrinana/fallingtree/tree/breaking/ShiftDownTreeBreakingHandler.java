@@ -31,7 +31,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
-				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), DUMMY_UUID);
+				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), DUMMY_UUID);
 				return;
 			}
 		}

@@ -22,13 +22,8 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	@Override
 	public void breakTree(BlockEvent.BreakEvent event, Tree tree){
-		if(getMaxSize() >= tree.getLogCount()){
-			if(!destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(MAIN_HAND))){
-				event.setCanceled(true);
-			}
-		}
-		else{
-			event.getPlayer().sendMessage(new TranslationTextComponent("chat.falling_tree.tree_too_big", tree.getLogCount(), getMaxSize()), DUMMY_UUID);
+		if(!destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(MAIN_HAND))){
+			event.setCanceled(true);
 		}
 	}
 	
@@ -44,7 +39,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
-				player.sendMessage(new TranslationTextComponent("chat.falling_tree.prevented_break_tool"), DUMMY_UUID);
+				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), DUMMY_UUID);
 				return false;
 			}
 			if(tree.getLogCount() >= rawWeightedUsesLeft){
