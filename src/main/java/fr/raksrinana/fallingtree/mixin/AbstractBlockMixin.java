@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.mixin;
 
 import fr.raksrinana.fallingtree.FallingTree;
 import fr.raksrinana.fallingtree.tree.builder.TreeBuilder;
+import fr.raksrinana.fallingtree.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.utils.CacheSpeed;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
@@ -42,9 +43,14 @@ public abstract class AbstractBlockMixin{
 	
 	private static CacheSpeed getSpeed(PlayerEntity player, BlockPos pos, float originalSpeed){
 		double speedMultiplicand = FallingTree.config.getToolsConfiguration().getSpeedMultiplicand();
-		return speedMultiplicand <= 0 ? null :
-				TreeBuilder.getTree(player.getEntityWorld(), pos)
-						.map(tree -> new CacheSpeed(pos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
-						.orElse(null);
+		try{
+			return speedMultiplicand <= 0 ? null :
+					TreeBuilder.getTree(player.getEntityWorld(), pos)
+							.map(tree -> new CacheSpeed(pos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
+							.orElse(null);
+		}
+		catch(TreeTooBigException e){
+			return null;
+		}
 	}
 }

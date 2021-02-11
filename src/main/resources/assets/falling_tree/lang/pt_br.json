@@ -23,6 +23,6 @@
   "text.autoconfig.fallingtree.option.tools.ignoreTools": "Não diminui a durabilidade de ferramentas",
   "text.autoconfig.fallingtree.option.tools.damageMultiplicand": "Multiplicador de dano (durabilidade)",
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand": "Multiplicador de sementes",
-  "chat.falling_tree.tree_too_big": "Essa árvore é muito grande e não pode ser derrubada de uma vez! (tamanho: %d, max: %d)",
+  "chat.falling_tree.tree_too_big": "Essa árvore é muito grande e não pode ser derrubada de uma vez! (max: %d)",
   "chat.falling_tree.prevented_break_tool": "Sua ferramenta está quase quebrando, vá repará-la ou consiga uma nova!"
 }

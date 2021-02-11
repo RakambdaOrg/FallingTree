@@ -18,10 +18,6 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	@Override
 	public boolean breakTree(PlayerEntity player, Tree tree){
-		if(FallingTree.config.getTreesConfiguration().getMaxSize() < tree.getLogCount()){
-			player.sendSystemMessage(new TranslatableText("chat.falling_tree.tree_too_big", tree.getLogCount(), FallingTree.config.getTreesConfiguration().getMaxSize()), NIL_UUID);
-			return true;
-		}
 		return destroyInstant(tree, player, player.getMainHandStack());
 	}
 	

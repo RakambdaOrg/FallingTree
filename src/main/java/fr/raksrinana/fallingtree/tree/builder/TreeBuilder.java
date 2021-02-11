@@ -26,7 +26,7 @@ import static java.util.Optional.empty;
 public class TreeBuilder{
 	private static final EnumSet<Direction> ALL_DIRECTIONS = EnumSet.allOf(Direction.class);
 	
-	public static Optional<Tree> getTree(World world, BlockPos originPos){
+	public static Optional<Tree> getTree(World world, BlockPos originPos) throws TreeTooBigException{
 		Block originBlock = world.getBlockState(originPos).getBlock();
 		if(!isLogBlock(originBlock)){
 			return empty();
@@ -48,7 +48,7 @@ public class TreeBuilder{
 				analyzedPos.add(analyzingPos);
 				
 				if(tree.getLogCount() > maxLogCount){
-					return Optional.empty();
+					throw new TreeTooBigException();
 				}
 				
 				Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, originPos, analyzingPos);
