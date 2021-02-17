@@ -1,3 +1,7 @@
+## [Fabric-1.16.5-2.10.2] - 2021-02-17
+
+* Cut trees from the branches towards the cut point (#71)
+
 ## [Fabric-1.16.5-2.10.1] - 2021-02-11
 
 * Abort search as soon as max log count is reached (#70)

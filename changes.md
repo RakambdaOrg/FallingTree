@@ -1,1 +1,1 @@
-* Abort search as soon as max log count is reached (#70)
+* Cut trees from the branches towards the cut point (#71)

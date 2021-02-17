@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import java.util.Comparator;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 import static net.minecraft.util.Util.NIL_UUID;
 
@@ -38,6 +39,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		tree.getLogs().stream()
+				.sorted(Comparator.comparingInt(TreePart::getSequence).reversed())
 				.limit((int) rawWeightedUsesLeft)
 				.map(TreePart::getBlockPos)
 				.forEachOrdered(logBlockPos -> {
