@@ -13,7 +13,7 @@ plugins {
     id 'com.modrinth.minotaur' version '1.1.0'
     id 'com.github.breadmoirai.github-release' version "2.2.10"
     id 'com.novoda.build-properties' version '0.4.1'
-    id 'com.github.ben-manes.versions' version '0.36.0'
+    id 'com.github.ben-manes.versions' version '0.38.0'
 }
 
 buildProperties {
