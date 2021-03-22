@@ -105,9 +105,9 @@ public class TreeConfiguration{
 		blacklistedLogs = builder.comment(DESC_BLACKLISTED_LOGS)
 				.defineList("logs_blacklisted", Lists.newArrayList(), Objects::nonNull);
 		whitelistedLeaves = builder.comment(DESC_WHITELISTED_LEAVES)
-				.defineList("logs_whitelisted", Lists.newArrayList(), Objects::nonNull);
+				.defineList("leaves_whitelisted", Lists.newArrayList(), Objects::nonNull);
 		blacklistedLeaves = builder.comment(DESC_BLACKLISTED_LEAVES)
-				.defineList("logs_blacklisted", Lists.newArrayList(), Objects::nonNull);
+				.defineList("leaves_blacklisted", Lists.newArrayList(), Objects::nonNull);
 		maxSize = builder.comment(DESC_MAX_SIZE)
 				.defineInRange("logs_max_count", 100, 1, Integer.MAX_VALUE);
 		treeBreaking = builder.comment(DESC_TREE_BREAKING)
