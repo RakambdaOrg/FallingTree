@@ -148,7 +148,7 @@ public class TreeBuilder{
 				.map(blockPos::offset)
 				.filter(testPos -> {
 					Block block = world.getBlockState(testPos).getBlock();
-					return isLeafBlock(block) || isNetherWartOrShroomlight(block);
+					return isLeafBlock(block) || isNetherWartOrShroomlight(block) || isLeafNeedBreakBlock(block);
 				})
 				.count();
 	}
