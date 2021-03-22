@@ -34,6 +34,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	private boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
 		World world = tree.getWorld();
+		int breakableCount = tree.getBreakableCount();
 		int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
 		int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
 		
@@ -43,46 +44,36 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), DUMMY_UUID);
 				return false;
 			}
-			if(tree.getLogCount() >= rawWeightedUsesLeft){
+			if(breakableCount >= rawWeightedUsesLeft){
 				rawWeightedUsesLeft = Math.ceil(rawWeightedUsesLeft) - 1;
 			}
 		}
 		
-		tree.getLogs().stream()
+		int brokenCount = tree.getBreakableParts().stream()
 				.sorted(Comparator.comparingInt(TreePart::getSequence).reversed())
 				.limit((int) rawWeightedUsesLeft)
 				.map(TreePart::getBlockPos)
-				.forEachOrdered(logBlockPos -> {
+				.mapToInt(logBlockPos -> {
 					BlockState logState = world.getBlockState(logBlockPos);
 					player.addStat(ITEM_USED.get(logState.getBlock().asItem()));
 					logState.getBlock().harvestBlock(world, player, logBlockPos, logState, world.getTileEntity(logBlockPos), tool);
 					world.removeBlock(logBlockPos, false);
-				});
+					return 1;
+				})
+				.sum();
 		
-		int toolDamage = (damageMultiplicand * (int) Math.min(tree.getLogCount(), rawWeightedUsesLeft)) - 1;
+		int toolDamage = damageMultiplicand * brokenCount - 1;
 		if(toolDamage > 0){
 			tool.damageItem(toolDamage, player, (entity) -> {});
 		}
 		
-		boolean isTreeFullyBroken = damageMultiplicand == 0 || rawWeightedUsesLeft >= tree.getLogCount();
-		if(isTreeFullyBroken){
-			breakWarts(tree, player, tool, world);
-			breakLeaves(tree, world);
+		if(brokenCount >= breakableCount){
+			forceBreakDecayLeaves(tree, world);
 		}
 		return true;
 	}
 	
-	private void breakWarts(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool, World world){
-		tree.getWarts().stream()
-				.map(TreePart::getBlockPos)
-				.forEach(wartPos -> {
-					BlockState wartState = world.getBlockState(wartPos);
-					wartState.getBlock().harvestBlock(world, player, wartPos, wartState, world.getTileEntity(wartPos), tool);
-					world.removeBlock(wartPos, false);
-				});
-	}
-	
-	private static void breakLeaves(@Nonnull Tree tree, World world){
+	private static void forceBreakDecayLeaves(@Nonnull Tree tree, World world){
 		int radius = Config.COMMON.getTreesConfiguration().getLeavesBreakingForceRadius();
 		if(radius > 0){
 			tree.getTopMostLog().ifPresent(topLog -> {
