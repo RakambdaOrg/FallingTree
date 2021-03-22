@@ -105,7 +105,7 @@ public class FallingTreeUtils{
 		return OTHER;
 	}
 	
-	private static boolean isLeafNeedBreakBlock(Block block){
+	public static boolean isLeafNeedBreakBlock(Block block){
 		return Config.COMMON.getTreesConfiguration()
 				.getWhitelistedNonDecayLeaves().stream()
 				.anyMatch(log -> log.equals(block));
