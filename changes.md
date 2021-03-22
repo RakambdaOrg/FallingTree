@@ -1,1 +1,1 @@
-* Cut trees from the branches towards the cut point (#71)
+* Add configuration whitelistedNonDecayLeaves to add leaves that doesn't decay and need to be broken by the tool (uses durability)

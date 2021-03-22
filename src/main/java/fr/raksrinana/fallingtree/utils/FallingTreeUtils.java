@@ -101,9 +101,18 @@ public class FallingTreeUtils{
 			return LOG;
 		}
 		if(isNetherWartOrShroomlight(checkBlock)){
-			return WART;
+			return NETHER_WART;
+		}
+		if(isLeafNeedBreakBlock(checkBlock)){
+			return LEAF_NEED_BREAK;
 		}
 		return OTHER;
+	}
+	
+	private static boolean isLeafNeedBreakBlock(Block block){
+		return FallingTree.config.getTreesConfiguration()
+				.getWhitelistedNonDecayLeaves().stream()
+				.anyMatch(log -> log.equals(block));
 	}
 	
 	public static boolean isPlayerInRightState(PlayerEntity player){

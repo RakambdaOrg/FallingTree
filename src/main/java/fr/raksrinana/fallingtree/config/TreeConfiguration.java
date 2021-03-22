@@ -24,11 +24,15 @@ public class TreeConfiguration{
 			"INFO: This wins over the whitelist.")
 	@BlockId
 	public List<String> blacklistedLogs = new ArrayList<>();
-	@Tooltip(count = 4)
-	@Comment("Additional list of blocks considered as leaves. \n" +
+	@Tooltip(count = 5)
+	@Comment("Additional list of blocks considered as leaves (decay naturally). \n" +
 			"INFO: Blocks marked with the leaves tag will already be whitelisted.")
 	@BlockId
 	public List<String> whitelistedLeaves = new ArrayList<>();
+	@Tooltip(count = 2)
+	@Comment("Additional list of blocks considered as leaves but that doesn't decay (need to be broken by tool).")
+	@BlockId
+	public List<String> whitelistedNonDecayLeaves = new ArrayList<>();
 	@Tooltip(count = 3)
 	@Comment("List of blocks that should not be considered as leaves. \n" +
 			"INFO: This wins over the whitelist.")
@@ -136,6 +140,10 @@ public class TreeConfiguration{
 		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeavesStr);
 	}
 	
+	public Collection<Block> getWhitelistedNonDecayLeaves(){
+		return ConfigCache.getInstance().getWhitelistedNonDecayLeaves(this::getWhitelistedNonDecayLeavesStr);
+	}
+	
 	public Collection<Block> getWhitelistedAdjacentBlocks(){
 		return ConfigCache.getInstance().getWhitelistedAdjacentBlocks(this::getWhitelistedAdjacentBlocksString);
 	}
@@ -174,6 +182,10 @@ public class TreeConfiguration{
 	
 	public Collection<String> getWhitelistedLeavesStr(){
 		return whitelistedLeaves;
+	}
+	
+	public Collection<String> getWhitelistedNonDecayLeavesStr(){
+		return whitelistedNonDecayLeaves;
 	}
 	
 	public Collection<String> getWhitelistedLogsStr(){
