@@ -5,32 +5,42 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import java.util.*;
 import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
-import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
+import static fr.raksrinana.fallingtree.utils.TreePartType.NETHER_WART;
 import static java.util.Comparator.comparingInt;
-import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 
 public class Tree{
 	private final World world;
 	private final Set<TreePart> parts;
-	private final Map<TreePartType, Integer> partsCount;
+	private final Map<TreePartType, Integer> partCounts;
 	private final BlockPos hitPos;
 	
 	public Tree(World world, BlockPos blockPos){
 		this.world = world;
 		this.hitPos = blockPos;
 		this.parts = new LinkedHashSet<>();
-		this.partsCount = new HashMap<>();
+		this.partCounts = new HashMap<>();
 	}
 	
 	public void addPart(TreePart treePart){
 		this.parts.add(treePart);
-		this.partsCount.compute(treePart.getTreePartType(), (key, value) -> {
-			if(isNull(value)){
+		this.partCounts.compute(treePart.getTreePartType(), (key, value) -> {
+			if(Objects.isNull(value)){
 				return 1;
 			}
 			return value + 1;
 		});
+	}
+	
+	public int getBreakableCount(){
+		return Arrays.stream(TreePartType.values())
+				.filter(TreePartType::isBreakable)
+				.mapToInt(this::getPartCount)
+				.sum();
+	}
+	
+	private int getPartCount(TreePartType treePartType){
+		return this.partCounts.computeIfAbsent(treePartType, key -> 0);
 	}
 	
 	public Optional<TreePart> getLastSequencePart(){
@@ -44,10 +54,14 @@ public class Tree{
 				.collect(toSet());
 	}
 	
-	public Collection<TreePart> getWarts(){
+	public Collection<TreePart> getBreakableParts(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == WART)
+				.filter(part -> part.getTreePartType().isBreakable())
 				.collect(toSet());
+	}
+	
+	public int getLogCount(){
+		return getPartCount(LOG);
 	}
 	
 	public Optional<BlockPos> getTopMostLog(){
@@ -62,8 +76,10 @@ public class Tree{
 				.max(comparingInt(BlockPos::getY));
 	}
 	
-	public int getLogCount(){
-		return this.partsCount.computeIfAbsent(LOG, key -> 0);
+	public Collection<TreePart> getWarts(){
+		return getParts().stream()
+				.filter(part -> part.getTreePartType() == NETHER_WART)
+				.collect(toSet());
 	}
 	
 	public BlockPos getHitPos(){

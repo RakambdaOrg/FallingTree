@@ -19,6 +19,7 @@ public class ConfigCache{
 	private Set<Block> leavesBlacklist;
 	private Set<Block> logsBlacklist;
 	private Set<Block> leavesWhitelist;
+	private Set<Block> leavesNonDecayWhitelist;
 	private Set<Block> logsWhitelist;
 	private Set<Block> adjacentBlocksWhitelist;
 	private Set<Block> adjacentBlocksBase;
@@ -28,6 +29,7 @@ public class ConfigCache{
 		toolsWhitelist = null;
 		leavesBlacklist = null;
 		leavesWhitelist = null;
+		leavesNonDecayWhitelist = null;
 		logsBlacklist = null;
 		logsWhitelist = null;
 		adjacentBlocksWhitelist = null;
@@ -69,13 +71,6 @@ public class ConfigCache{
 		return leavesWhitelist;
 	}
 	
-	public Collection<Block> getWhitelistedLogs(Supplier<Collection<String>> collectionSupplier){
-		if(Objects.isNull(logsWhitelist)){
-			logsWhitelist = getAsBlocks(collectionSupplier.get());
-		}
-		return logsWhitelist;
-	}
-	
 	public Collection<Block> getWhitelistedAdjacentBlocks(Supplier<Collection<String>> collectionSupplier){
 		if(Objects.isNull(adjacentBlocksWhitelist)){
 			adjacentBlocksWhitelist = getAsBlocks(collectionSupplier.get());
@@ -91,10 +86,25 @@ public class ConfigCache{
 			adjacentBlocksBase.addAll(BlockTags.LOGS.getAllElements());
 			adjacentBlocksBase.addAll(getWhitelistedLogs(Config.COMMON.getTreesConfiguration()::getWhitelistedLogsStr));
 			adjacentBlocksBase.addAll(getWhitelistedLeaves(Config.COMMON.getTreesConfiguration()::getWhitelistedLeavesStr));
+			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(Config.COMMON.getTreesConfiguration()::getWhitelistedNonDecayLeavesStr));
 			adjacentBlocksBase.removeAll(getBlacklistedLogs(Config.COMMON.getTreesConfiguration()::getBlacklistedLogsStr));
 			adjacentBlocksBase.removeAll(getBlacklistedLeaves(Config.COMMON.getTreesConfiguration()::getBlacklistedLeavesStr));
 		}
 		return adjacentBlocksBase;
+	}
+	
+	public Collection<Block> getWhitelistedLogs(Supplier<Collection<String>> collectionSupplier){
+		if(Objects.isNull(logsWhitelist)){
+			logsWhitelist = getAsBlocks(collectionSupplier.get());
+		}
+		return logsWhitelist;
+	}
+	
+	public Collection<Block> getWhitelistedNonDecayLeaves(Supplier<Collection<String>> collectionSupplier){
+		if(Objects.isNull(leavesNonDecayWhitelist)){
+			leavesNonDecayWhitelist = getAsBlocks(collectionSupplier.get());
+		}
+		return leavesNonDecayWhitelist;
 	}
 	
 	public static ConfigCache getInstance(){

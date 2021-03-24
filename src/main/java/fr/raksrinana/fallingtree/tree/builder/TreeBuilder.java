@@ -19,8 +19,7 @@ import java.util.stream.Collectors;
 import static fr.raksrinana.fallingtree.config.DetectionMode.ABOVE_CUT;
 import static fr.raksrinana.fallingtree.config.DetectionMode.ABOVE_Y;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.*;
-import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
-import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
+import static fr.raksrinana.fallingtree.utils.TreePartType.*;
 import static java.util.Optional.empty;
 
 public class TreeBuilder{
@@ -149,7 +148,7 @@ public class TreeBuilder{
 				.map(blockPos::offset)
 				.filter(testPos -> {
 					Block block = world.getBlockState(testPos).getBlock();
-					return isLeafBlock(block) || isNetherWartOrShroomlight(block);
+					return isLeafBlock(block) || isNetherWartOrShroomlight(block) || isLeafNeedBreakBlock(block);
 				})
 				.count();
 	}
@@ -159,14 +158,14 @@ public class TreeBuilder{
 			return true;
 		}
 		if(Config.COMMON.getTreesConfiguration().isBreakNetherTreeWarts()){
-			if(check.getTreePartType() == WART){
+			if(check.getTreePartType() == NETHER_WART){
 				BlockPos checkBlockPos = check.getCheckPos();
 				int dx = Math.abs(originPos.getX() - checkBlockPos.getX());
 				int dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
 				return dx <= 4 && dz <= 4;
 			}
 		}
-		return false;
+		return check.getTreePartType() == LEAF_NEED_BREAK;
 	}
 	
 	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){

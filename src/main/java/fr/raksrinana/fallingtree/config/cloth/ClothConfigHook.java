@@ -93,8 +93,15 @@ public class ClothConfigHook{
 		StringListListEntry whitelistedLeavesEntry = builder.entryBuilder()
 				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedLeaves")), config.getWhitelistedLeavesStr())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("trees", "whitelistedLeaves", 4))
+				.setTooltip(getTooltips("trees", "whitelistedLeaves", 5))
 				.setSaveConsumer(config::setWhitelistedLeaves)
+				.setCellErrorSupplier(getMinecraftBlockIdCellError())
+				.build();
+		StringListListEntry whitelistedNonDecayLeavesEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedNonDecayLeaves")), config.getWhitelistedNonDecayLeavesStr())
+				.setDefaultValue(Lists.newArrayList())
+				.setTooltip(getTooltips("trees", "whitelistedNonDecayLeaves", 2))
+				.setSaveConsumer(config::setWhitelistedNonDecayLeaves)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
 		StringListListEntry blacklistedLeavesEntry = builder.entryBuilder()
@@ -177,6 +184,7 @@ public class ClothConfigHook{
 		tools.addEntry(whitelistedLogsEntry);
 		tools.addEntry(blacklistedLogsEntry);
 		tools.addEntry(whitelistedLeavesEntry);
+		tools.addEntry(whitelistedNonDecayLeavesEntry);
 		tools.addEntry(blacklistedLeavesEntry);
 		tools.addEntry(maxSizeEntry);
 		tools.addEntry(treeBreakingEntry);

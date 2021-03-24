@@ -28,8 +28,11 @@ public class TreeConfiguration{
 			"INFO: This wins over the whitelist."
 	};
 	private static final String[] DESC_WHITELISTED_LEAVES = {
-			"Additional list of blocks considered as leaves.",
+			"Additional list of blocks considered as leaves (decay naturally).",
 			"INFO: Blocks marked with the leaves tag will already be whitelisted."
+	};
+	private static final String[] DESC_WHITELISTED_NON_DECAY_LEAVES = {
+			"Additional list of blocks considered as leaves but that doesn't decay (need to be broken by tool)."
 	};
 	private static final String[] DESC_BLACKLISTED_LEAVES = {
 			"List of blocks that should not be considered as leaves.",
@@ -81,6 +84,7 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLogs;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLogs;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedLeaves;
+	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedNonDecayLeaves;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLeaves;
 	private final ForgeConfigSpec.ConfigValue<BreakMode> breakMode;
 	private final ForgeConfigSpec.ConfigValue<DetectionMode> detectionMode;
@@ -106,6 +110,8 @@ public class TreeConfiguration{
 				.defineList("logs_blacklisted", Lists.newArrayList(), Objects::nonNull);
 		whitelistedLeaves = builder.comment(DESC_WHITELISTED_LEAVES)
 				.defineList("leaves_whitelisted", Lists.newArrayList(), Objects::nonNull);
+		whitelistedNonDecayLeaves = builder.comment(DESC_WHITELISTED_NON_DECAY_LEAVES)
+				.defineList("leaves_non_decay_whitelisted", Lists.newArrayList(), Objects::nonNull);
 		blacklistedLeaves = builder.comment(DESC_BLACKLISTED_LEAVES)
 				.defineList("leaves_blacklisted", Lists.newArrayList(), Objects::nonNull);
 		maxSize = builder.comment(DESC_MAX_SIZE)
@@ -152,6 +158,10 @@ public class TreeConfiguration{
 	
 	public List<String> getWhitelistedLeavesStr(){
 		return (List<String>) whitelistedLeaves.get();
+	}
+	
+	public Collection<Block> getWhitelistedNonDecayLeaves(){
+		return ConfigCache.getInstance().getWhitelistedNonDecayLeaves(this::getWhitelistedNonDecayLeavesStr);
 	}
 	
 	public List<String> getWhitelistedLogsStr(){
@@ -206,6 +216,10 @@ public class TreeConfiguration{
 		whitelistedLeaves.set(value);
 	}
 	
+	public List<String> getWhitelistedNonDecayLeavesStr(){
+		return (List<String>) whitelistedNonDecayLeaves.get();
+	}
+	
 	public void setWhitelistedLogs(List<String> value){
 		whitelistedLogs.set(value);
 	}
@@ -236,6 +250,10 @@ public class TreeConfiguration{
 	
 	public Collection<Block> getWhitelistedLeaves(){
 		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeavesStr);
+	}
+	
+	public void setWhitelistedNonDecayLeaves(List<String> value){
+		whitelistedNonDecayLeaves.set(value);
 	}
 	
 	public Collection<Block> getWhitelistedLogs(){
