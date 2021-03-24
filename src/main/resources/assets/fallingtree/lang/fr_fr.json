@@ -6,7 +6,7 @@
   "text.autoconfig.fallingtree.option.breakInCreative": "Casser en créatif",
   "text.autoconfig.fallingtree.option.trees.whitelistedLogs": "Bois autorisé",
   "text.autoconfig.fallingtree.option.trees.blacklistedLogs": "Bois bannis",
-  "text.autoconfig.fallingtree.option.trees.whitelistedLeaves": "Feuilles autorisées",
+  "text.autoconfig.fallingtree.option.trees.whitelistedLeaves": "Feuilles autorisées (fane naturellement)",
   "text.autoconfig.fallingtree.option.trees.blacklistedLeaves": "Feuilles bannies",
   "text.autoconfig.fallingtree.option.trees.breakMode": "Mode de casse",
   "text.autoconfig.fallingtree.option.trees.detectionMode": "Mode de détection",

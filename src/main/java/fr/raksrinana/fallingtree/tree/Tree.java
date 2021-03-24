@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import java.util.*;
 import static fr.raksrinana.fallingtree.utils.TreePartType.LOG;
-import static fr.raksrinana.fallingtree.utils.TreePartType.WART;
+import static fr.raksrinana.fallingtree.utils.TreePartType.NETHER_WART;
 import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.toSet;
 
@@ -32,21 +32,42 @@ public class Tree{
 		});
 	}
 	
+	public int getBreakableCount(){
+		return Arrays.stream(TreePartType.values())
+				.filter(TreePartType::isBreakable)
+				.mapToInt(this::getPartCount)
+				.sum();
+	}
+	
+	private int getPartCount(TreePartType treePartType){
+		return this.partCounts.computeIfAbsent(treePartType, key -> 0);
+	}
+	
 	public Optional<TreePart> getLastSequencePart(){
 		return getParts().stream()
 				.max(comparingInt(TreePart::getSequence));
-	}
-	
-	public Optional<BlockPos> getTopMostLog(){
-		return getLogs().stream()
-				.map(TreePart::getBlockPos)
-				.max(comparingInt(BlockPos::getY));
 	}
 	
 	public Collection<TreePart> getLogs(){
 		return getParts().stream()
 				.filter(part -> part.getTreePartType() == LOG)
 				.collect(toSet());
+	}
+	
+	public Collection<TreePart> getBreakableParts(){
+		return getParts().stream()
+				.filter(part -> part.getTreePartType().isBreakable())
+				.collect(toSet());
+	}
+	
+	public int getLogCount(){
+		return getPartCount(LOG);
+	}
+	
+	public Optional<BlockPos> getTopMostLog(){
+		return getLogs().stream()
+				.map(TreePart::getBlockPos)
+				.max(comparingInt(BlockPos::getY));
 	}
 	
 	private Optional<BlockPos> getTopMostPart(){
@@ -57,12 +78,8 @@ public class Tree{
 	
 	public Collection<TreePart> getWarts(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == WART)
+				.filter(part -> part.getTreePartType() == NETHER_WART)
 				.collect(toSet());
-	}
-	
-	public int getLogCount(){
-		return this.partCounts.computeIfAbsent(LOG, key -> 0);
 	}
 	
 	public BlockPos getHitPos(){

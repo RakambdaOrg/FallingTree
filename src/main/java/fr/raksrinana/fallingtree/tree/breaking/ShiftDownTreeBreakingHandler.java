@@ -22,10 +22,9 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		World world = tree.getWorld();
 		int damageMultiplicand = FallingTree.config.getToolsConfiguration().getDamageMultiplicand();
 		int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
-		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		
 		if(FallingTree.config.getToolsConfiguration().isPreserve()){
-			if(rawWeightedUsesLeft <= 1){
+			if(toolUsesLeft <= damageMultiplicand){
 				player.sendSystemMessage(new TranslatableText("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
 			}
@@ -39,9 +38,8 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 					world.removeBlock(logBlock, false);
 				});
 		
-		int toolDamage = damageMultiplicand;
-		if(toolDamage > 0){
-			tool.damage(toolDamage, player, (entity) -> {});
+		if(damageMultiplicand > 0){
+			tool.damage(damageMultiplicand, player, (entity) -> {});
 		}
 		return false;
 	}
