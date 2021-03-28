@@ -99,7 +99,7 @@ public final class ForgeEventSubscriber{
 		try{
 			return speedMultiplicand <= 0 ? null :
 					TreeBuilder.getTree(event.getEntity().getEntityWorld(), event.getPos())
-							.map(tree -> new CacheSpeed(event.getPos(), event.getOriginalSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
+							.map(tree -> new CacheSpeed(event.getPos(), event.getNewSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
 							.orElse(null);
 		}
 		catch(TreeTooBigException e){
