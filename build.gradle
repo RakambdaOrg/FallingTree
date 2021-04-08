@@ -156,7 +156,7 @@ task publishModrinth(type: TaskModrinthUpload) {
 githubRelease {
     owner = "RakSrinaNa"
     repo = project.repoName
-    token = project.findProperty("githubReleaseToken")
+    token = "${project.findProperty("githubReleaseToken")}"
     tagName = "${archivesBaseName}-${project.version}"
     releaseName = "${archivesBaseName}-${project.version}"
     targetCommitish = "${project.minecraft_version}-fabric"
