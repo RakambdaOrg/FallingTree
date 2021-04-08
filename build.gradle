@@ -123,7 +123,7 @@ task signJar(type: SignJar, dependsOn: jar) {
 build.dependsOn signJar
 
 curseforge {
-    apiKey = project.curseforgeApiKey
+    apiKey = project.findProperty("curseforgeApiKey")
     project {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
@@ -145,7 +145,7 @@ curseforge {
 
 import com.modrinth.minotaur.TaskModrinthUpload
 task publishModrinth(type: TaskModrinthUpload) {
-    token = project.modrinthToken
+    token = project.findProperty("modrinthToken")
     projectId = project.modrinth_project_id
     versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
     versionName = "${archivesBaseName}-${project.version}"
@@ -163,7 +163,7 @@ task publishModrinth(type: TaskModrinthUpload) {
 githubRelease {
     owner = project.repoUser
     repo = project.repoName
-    token = project.githubReleaseToken
+    token = project.findProperty("githubReleaseToken")
     tagName = "${archivesBaseName}-${project.version}"
     releaseName = "${archivesBaseName}-${project.version}"
     targetCommitish = "${project.minecraft_version}-forge"
