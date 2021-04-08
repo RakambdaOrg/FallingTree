@@ -12,18 +12,7 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id 'com.modrinth.minotaur' version '1.1.0'
     id 'com.github.breadmoirai.github-release' version "2.2.10"
-    id 'com.novoda.build-properties' version '0.4.1'
     id 'com.github.ben-manes.versions' version '0.38.0'
-}
-
-buildProperties {
-    secrets {
-        using(file('secrets.properties')).or(System.getenv()).or([
-                "CURSEFORGE_API_KEY": "N/A",
-                "MODRINTH_TOKEN"    : "N/A",
-                "GITHUB_TOKEN"      : "N/A"
-        ])
-    }
 }
 
 
@@ -119,7 +108,7 @@ publishing {
 }
 
 curseforge {
-    apiKey = buildProperties.secrets['CURSEFORGE_API_KEY'].string
+    apiKey = project.curseforgeApiKey
     project {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
@@ -147,8 +136,9 @@ curseforge {
 }
 
 import com.modrinth.minotaur.TaskModrinthUpload
+
 task publishModrinth(type: TaskModrinthUpload) {
-    token = buildProperties.secrets['MODRINTH_TOKEN'].string
+    token = project.modrinthToken
     projectId = "${project.modrinth_project_id}"
     versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
     versionName = "${archivesBaseName}-${project.version}"
@@ -166,7 +156,7 @@ task publishModrinth(type: TaskModrinthUpload) {
 githubRelease {
     owner = "RakSrinaNa"
     repo = project.repoName
-    token = buildProperties.secrets['GITHUB_TOKEN'].string
+    token = project.githubReleaseToken
     tagName = "${archivesBaseName}-${project.version}"
     releaseName = "${archivesBaseName}-${project.version}"
     targetCommitish = "${project.minecraft_version}-fabric"
