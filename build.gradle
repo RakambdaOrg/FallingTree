@@ -10,7 +10,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
 
@@ -57,8 +57,7 @@ javadoc {
     failOnError = false
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 archivesBaseName = "${project.repoName}-${project.loader}-${project.minecraft_version}"
 
@@ -91,6 +90,8 @@ minecraft {
     }
 }
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 processResources {
     filesMatching("**/mods.toml") {
         expand project.properties
@@ -115,23 +116,7 @@ jar {
     }
 }
 
-task deobfJar(type: Jar) {
-    appendix = "${project.minecraft_version}"
-    classifier = 'deobf'
-    from sourceSets.main.output
-}
-
-task sourcesJar(type: Jar) {
-    appendix = "${project.minecraft_version}"
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    appendix = "${project.minecraft_version}"
-    classifier = 'javadoc'
-    from javadoc.getDestinationDir()
-}
+jar.finalizedBy('reobfJar')
 
 curseforge {
     apiKey = buildProperties.secrets['CURSEFORGE_API_KEY'].string
@@ -183,18 +168,6 @@ githubRelease {
     }
 }
 
-artifacts {
-    if (project.hasProperty('doDeobfJar')) {
-        archives deobfJar
-    }
-    if (project.hasProperty('doSourceJar')) {
-        archives sourcesJar
-    }
-    if (project.hasProperty('doJavadocJar')) {
-        archives javadocJar
-    }
-}
-
 // Update JSON management
 
 import groovy.json.JsonOutput
@@ -206,7 +179,7 @@ import java.time.format.DateTimeFormatter
 def writeUpdateJson() {
     def version = project.version
     def slurper = new JsonSlurper()
-    def file = new File('update.json')
+    def file = project.file('update.json')
     def json = slurper.parse(file)
     def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/blob/${project.minecraft_version}-forge/CHANGELOG.md"
 
