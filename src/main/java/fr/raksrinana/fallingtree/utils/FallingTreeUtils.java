@@ -40,8 +40,8 @@ public class FallingTreeUtils{
 			}
 			ResourceLocation resourceLocation = new ResourceLocation(name);
 			if(isTag){
-				return Optional.ofNullable(ItemTags.getCollection().get(resourceLocation))
-						.map(ITag::getAllElements)
+				return Optional.ofNullable(ItemTags.getAllTags().getTag(resourceLocation))
+						.map(ITag::getValues)
 						.map(Collection::stream)
 						.orElse(empty());
 			}
@@ -70,8 +70,8 @@ public class FallingTreeUtils{
 			}
 			ResourceLocation resourceLocation = new ResourceLocation(name);
 			if(isTag){
-				return Optional.ofNullable(BlockTags.getCollection().get(resourceLocation))
-						.map(ITag::getAllElements)
+				return Optional.ofNullable(BlockTags.getAllTags().getTag(resourceLocation))
+						.map(ITag::getValues)
 						.map(Collection::stream)
 						.orElse(empty());
 			}
@@ -83,7 +83,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafBlock(@Nonnull Block block){
-		boolean isWhitelistedBlock = block.isIn(LEAVES)
+		boolean isWhitelistedBlock = block.is(LEAVES)
 				|| Config.COMMON.getTreesConfiguration().getWhitelistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
 			boolean isBlacklistedBlock = Config.COMMON.getTreesConfiguration().getBlacklistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
@@ -112,7 +112,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLogBlock(Block block){
-		boolean isWhitelistedBlock = block.isIn(LOGS)
+		boolean isWhitelistedBlock = block.is(LOGS)
 				|| Config.COMMON.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			boolean isBlacklistedBlock = Config.COMMON.getTreesConfiguration().getBlacklistedLogs().stream().anyMatch(log -> log.equals(block));
@@ -122,6 +122,6 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isNetherWartOrShroomlight(Block block){
-		return block.isIn(WART_BLOCKS) || block.equals(SHROOMLIGHT);
+		return block.is(WART_BLOCKS) || block.equals(SHROOMLIGHT);
 	}
 }

@@ -33,7 +33,7 @@ import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static net.minecraft.util.Hand.MAIN_HAND;
-import static net.minecraft.util.Util.DUMMY_UUID;
+import static net.minecraft.util.Util.NIL_UUID;
 import static net.minecraftforge.event.TickEvent.Phase.END;
 import static net.minecraftforge.fml.LogicalSide.SERVER;
 
@@ -47,7 +47,7 @@ public final class ForgeEventSubscriber{
 		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled()){
 			if(Config.COMMON.getTreesConfiguration().getBreakMode() == INSTANTANEOUS){
 				if(isPlayerInRightState(event.getPlayer())){
-					CacheSpeed cacheSpeed = speedCache.compute(event.getPlayer().getUniqueID(), (pos, speed) -> {
+					CacheSpeed cacheSpeed = speedCache.compute(event.getPlayer().getUUID(), (pos, speed) -> {
 						if(isNull(speed) || !speed.isValid(event.getPos())){
 							speed = getSpeed(event);
 						}
@@ -62,43 +62,20 @@ public final class ForgeEventSubscriber{
 	}
 	
 	private static boolean isPlayerInRightState(PlayerEntity player){
-		if(player.abilities.isCreativeMode && !Config.COMMON.isBreakInCreative()){
+		if(player.isCreative() && !Config.COMMON.isBreakInCreative()){
 			return false;
 		}
-		if(Config.COMMON.isReverseSneaking() != player.isSneaking()){
+		if(Config.COMMON.isReverseSneaking() != player.isCrouching()){
 			return false;
 		}
 		return canPlayerBreakTree(player);
-	}
-	
-	@SubscribeEvent
-	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
-		if(Config.COMMON.getTreesConfiguration().isLeavesBreaking()
-				&& !event.getWorld().isRemote()
-				&& event.getWorld() instanceof ServerWorld){
-			ServerWorld world = (ServerWorld) event.getWorld();
-			BlockState eventState = event.getState();
-			Block eventBlock = eventState.getBlock();
-			BlockPos eventPos = event.getPos();
-			if(eventBlock.isAir(eventState, world, eventPos)){
-				for(Direction facing : event.getNotifiedSides()){
-					BlockPos neighborPos = eventPos.offset(facing);
-					if(world.isAreaLoaded(neighborPos, 1)){
-						BlockState neighborState = event.getWorld().getBlockState(neighborPos);
-						if(isLeafBlock(neighborState.getBlock())){
-							scheduledLeavesBreaking.add(new LeafBreakingSchedule(world, neighborPos, 4));
-						}
-					}
-				}
-			}
-		}
 	}
 	
 	private static CacheSpeed getSpeed(PlayerEvent.BreakSpeed event){
 		double speedMultiplicand = Config.COMMON.getToolsConfiguration().getSpeedMultiplicand();
 		try{
 			return speedMultiplicand <= 0 ? null :
-					TreeBuilder.getTree(event.getEntity().getEntityWorld(), event.getPos())
+					TreeBuilder.getTree(event.getEntity().getCommandSenderWorld(), event.getPos())
 							.map(tree -> new CacheSpeed(event.getPos(), event.getNewSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
 							.orElse(null);
 		}
@@ -109,7 +86,7 @@ public final class ForgeEventSubscriber{
 	
 	public static boolean canPlayerBreakTree(@Nonnull PlayerEntity player){
 		ToolConfiguration toolConfiguration = Config.COMMON.getToolsConfiguration();
-		Item heldItem = player.getHeldItem(MAIN_HAND).getItem();
+		Item heldItem = player.getItemInHand(MAIN_HAND).getItem();
 		boolean isWhitelistedTool = toolConfiguration.isIgnoreTools()
 				|| heldItem instanceof AxeItem
 				|| toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
@@ -121,8 +98,31 @@ public final class ForgeEventSubscriber{
 	}
 	
 	@SubscribeEvent
+	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
+		if(Config.COMMON.getTreesConfiguration().isLeavesBreaking()
+				&& !event.getWorld().isClientSide()
+				&& event.getWorld() instanceof ServerWorld){
+			ServerWorld world = (ServerWorld) event.getWorld();
+			BlockState eventState = event.getState();
+			Block eventBlock = eventState.getBlock();
+			BlockPos eventPos = event.getPos();
+			if(eventBlock.isAir(eventState, world, eventPos)){
+				for(Direction facing : event.getNotifiedSides()){
+					BlockPos neighborPos = eventPos.relative(facing);
+					if(world.isAreaLoaded(neighborPos, 1)){
+						BlockState neighborState = event.getWorld().getBlockState(neighborPos);
+						if(isLeafBlock(neighborState.getBlock())){
+							scheduledLeavesBreaking.add(new LeafBreakingSchedule(world, neighborPos, 4));
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
-		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isRemote()){
+		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isClientSide()){
 			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
 				try{
 					TreeBuilder.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
@@ -131,7 +131,7 @@ public final class ForgeEventSubscriber{
 					});
 				}
 				catch(TreeTooBigException e){
-					event.getPlayer().sendMessage(new TranslationTextComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTreesConfiguration().getMaxSize()), DUMMY_UUID);
+					event.getPlayer().sendMessage(new TranslationTextComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTreesConfiguration().getMaxSize()), NIL_UUID);
 				}
 			}
 		}
@@ -155,7 +155,7 @@ public final class ForgeEventSubscriber{
 					if(world.isAreaLoaded(leafBreakingSchedule.getBlockPos(), 1)){
 						BlockState state = world.getBlockState(leafBreakingSchedule.getBlockPos());
 						state.tick(world, leafBreakingSchedule.getBlockPos(), world.getRandom());
-						if(state.ticksRandomly()){
+						if(state.isRandomlyTicking()){
 							state.randomTick(world, leafBreakingSchedule.getBlockPos(), world.getRandom());
 						}
 					}

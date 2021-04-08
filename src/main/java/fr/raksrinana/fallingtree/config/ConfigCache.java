@@ -82,8 +82,8 @@ public class ConfigCache{
 		if(Objects.isNull(adjacentBlocksBase)){
 			adjacentBlocksBase = new HashSet<>();
 			adjacentBlocksBase.add(Blocks.AIR);
-			adjacentBlocksBase.addAll(BlockTags.LEAVES.getAllElements());
-			adjacentBlocksBase.addAll(BlockTags.LOGS.getAllElements());
+			adjacentBlocksBase.addAll(BlockTags.LEAVES.getValues());
+			adjacentBlocksBase.addAll(BlockTags.LOGS.getValues());
 			adjacentBlocksBase.addAll(getWhitelistedLogs(Config.COMMON.getTreesConfiguration()::getWhitelistedLogsStr));
 			adjacentBlocksBase.addAll(getWhitelistedLeaves(Config.COMMON.getTreesConfiguration()::getWhitelistedLeavesStr));
 			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(Config.COMMON.getTreesConfiguration()::getWhitelistedNonDecayLeavesStr));

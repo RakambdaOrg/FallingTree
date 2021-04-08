@@ -19,10 +19,10 @@ public class BasicPositionFetcher implements IPositionFetcher{
 	public Collection<ToAnalyzePos> getPositions(World world, BlockPos originPos, ToAnalyzePos parent){
 		BlockPos parentPos = parent.getCheckPos();
 		Block parentBlock = world.getBlockState(parentPos).getBlock();
-		return BlockPos.getAllInBox(parentPos.up().north().east(), parentPos.down().south().west())
+		return BlockPos.betweenClosedStream(parentPos.above().north().east(), parentPos.below().south().west())
 				.map(checkPos -> {
 					Block checkBlock = world.getBlockState(checkPos).getBlock();
-					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.toImmutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
+					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.immutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
 				})
 				.collect(toList());
 	}

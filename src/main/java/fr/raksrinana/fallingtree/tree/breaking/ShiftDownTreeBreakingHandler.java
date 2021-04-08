@@ -12,25 +12,25 @@ import net.minecraftforge.event.world.BlockEvent;
 import javax.annotation.Nonnull;
 import static net.minecraft.stats.Stats.ITEM_USED;
 import static net.minecraft.util.Hand.MAIN_HAND;
-import static net.minecraft.util.Util.DUMMY_UUID;
+import static net.minecraft.util.Util.NIL_UUID;
 
 public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private static ShiftDownTreeBreakingHandler INSTANCE;
 	
 	@Override
 	public void breakTree(BlockEvent.BreakEvent event, Tree tree){
-		destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(MAIN_HAND));
+		destroy(tree, event.getPlayer(), event.getPlayer().getItemInHand(MAIN_HAND));
 		event.setCanceled(true);
 	}
 	
 	private void destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
 		World world = tree.getWorld();
 		int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
-		int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
+		int toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 		
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			if(toolUsesLeft <= damageMultiplicand){
-				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), DUMMY_UUID);
+				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return;
 			}
 		}
@@ -39,13 +39,13 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 				.map(TreePart::getBlockPos)
 				.ifPresent(logBlock -> {
 					final BlockState logState = world.getBlockState(logBlock);
-					player.addStat(ITEM_USED.get(logState.getBlock().asItem()));
-					logState.getBlock().harvestBlock(world, player, tree.getHitPos(), logState, world.getTileEntity(logBlock), tool);
+					player.awardStat(ITEM_USED.get(logState.getBlock().asItem()));
+					logState.getBlock().playerDestroy(world, player, tree.getHitPos(), logState, world.getBlockEntity(logBlock), tool);
 					world.removeBlock(logBlock, false);
 				});
 		
 		if(damageMultiplicand > 0){
-			tool.damageItem(damageMultiplicand, player, (entity) -> {});
+			tool.hurtAndBreak(damageMultiplicand, player, (entity) -> {});
 		}
 	}
 	

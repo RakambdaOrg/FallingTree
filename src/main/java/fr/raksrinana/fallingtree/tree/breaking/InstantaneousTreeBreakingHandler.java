@@ -16,14 +16,14 @@ import java.util.Comparator;
 import static fr.raksrinana.fallingtree.utils.FallingTreeUtils.isLeafBlock;
 import static net.minecraft.stats.Stats.ITEM_USED;
 import static net.minecraft.util.Hand.MAIN_HAND;
-import static net.minecraft.util.Util.DUMMY_UUID;
+import static net.minecraft.util.Util.NIL_UUID;
 
 public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private static InstantaneousTreeBreakingHandler INSTANCE;
 	
 	@Override
 	public void breakTree(BlockEvent.BreakEvent event, Tree tree){
-		if(!destroy(tree, event.getPlayer(), event.getPlayer().getHeldItem(MAIN_HAND))){
+		if(!destroy(tree, event.getPlayer(), event.getPlayer().getItemInHand(MAIN_HAND))){
 			event.setCanceled(true);
 		}
 	}
@@ -36,12 +36,12 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		World world = tree.getWorld();
 		int breakableCount = tree.getBreakableCount();
 		int damageMultiplicand = Config.COMMON.getToolsConfiguration().getDamageMultiplicand();
-		int toolUsesLeft = tool.isDamageable() ? (tool.getMaxDamage() - tool.getDamage()) : Integer.MAX_VALUE;
+		int toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 		
 		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getToolsConfiguration().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
-				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), DUMMY_UUID);
+				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
 			}
 			if(breakableCount >= rawWeightedUsesLeft){
@@ -55,8 +55,8 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 				.map(TreePart::getBlockPos)
 				.mapToInt(logBlockPos -> {
 					BlockState logState = world.getBlockState(logBlockPos);
-					player.addStat(ITEM_USED.get(logState.getBlock().asItem()));
-					logState.getBlock().harvestBlock(world, player, logBlockPos, logState, world.getTileEntity(logBlockPos), tool);
+					player.awardStat(ITEM_USED.get(logState.getBlock().asItem()));
+					logState.getBlock().playerDestroy(world, player, logBlockPos, logState, world.getBlockEntity(logBlockPos), tool);
 					world.removeBlock(logBlockPos, false);
 					return 1;
 				})
@@ -64,7 +64,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		
 		int toolDamage = damageMultiplicand * brokenCount - 1;
 		if(toolDamage > 0){
-			tool.damageItem(toolDamage, player, (entity) -> {});
+			tool.hurtAndBreak(toolDamage, player, (entity) -> {});
 		}
 		
 		if(brokenCount >= breakableCount){
@@ -81,11 +81,11 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 				for(int dx = -radius; dx < radius; dx++){
 					for(int dy = -radius; dy < radius; dy++){
 						for(int dz = -radius; dz < radius; dz++){
-							checkPos.setPos(topLog.getX() + dx, topLog.getY() + dy, topLog.getZ() + dz);
+							checkPos.set(topLog.getX() + dx, topLog.getY() + dy, topLog.getZ() + dz);
 							BlockState checkState = world.getBlockState(checkPos);
 							Block checkBlock = checkState.getBlock();
 							if(isLeafBlock(checkBlock)){
-								Block.spawnDrops(checkState, world, checkPos);
+								Block.dropResources(checkState, world, checkPos);
 								world.removeBlock(checkPos, false);
 							}
 						}

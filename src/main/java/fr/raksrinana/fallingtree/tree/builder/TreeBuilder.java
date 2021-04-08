@@ -136,7 +136,7 @@ public class TreeBuilder{
 				.filter(pos -> !analyzedPos.contains(pos))
 				.filter(pos -> shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos))
 				.filter(pos -> EnumSet.allOf(Direction.class).stream()
-						.map(direction -> pos.getCheckPos().offset(direction))
+						.map(direction -> pos.getCheckPos().relative(direction))
 						.map(world::getBlockState)
 						.map(BlockState::getBlock)
 						.allMatch(adjacentPredicate))
@@ -145,7 +145,7 @@ public class TreeBuilder{
 	
 	private static long getLeavesAround(World world, BlockPos blockPos){
 		return ALL_DIRECTIONS.stream()
-				.map(blockPos::offset)
+				.map(blockPos::relative)
 				.filter(testPos -> {
 					Block block = world.getBlockState(testPos).getBlock();
 					return isLeafBlock(block) || isNetherWartOrShroomlight(block) || isLeafNeedBreakBlock(block);
