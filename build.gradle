@@ -118,6 +118,22 @@ jar {
 
 jar.finalizedBy('reobfJar')
 
+import net.minecraftforge.gradle.common.task.SignJar
+
+task signJar(type: SignJar, dependsOn: jar) {
+    onlyIf {
+        project.hasProperty('forgeKeyStore')
+    }
+
+    keyStore = project.findProperty('forgeKeyStore')
+    alias = project.findProperty('forgeKeyStoreAlias')
+    storePass = project.findProperty('forgeKeyStorePass')
+    keyPass = project.findProperty('forgeKeyStoreKeyPass')
+    inputFile = jar.getArchiveFile()
+    outputFile = jar.getArchiveFile()
+}
+build.dependsOn signJar
+
 curseforge {
     apiKey = buildProperties.secrets['CURSEFORGE_API_KEY'].string
     project {
@@ -146,8 +162,8 @@ task publishModrinth(type: TaskModrinthUpload) {
     versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
     versionName = "${archivesBaseName}-${project.version}"
     uploadFile = jar
-    addGameVersion(project.minecraft_version)
-    addLoader(project.loader.toLowerCase())
+    addGameVersion("${project.minecraft_version}")
+    addLoader("${project.loader.toLowerCase()}")
     releaseType = "${project.curseforge_release_type}"
     changelog = getLatestChangeLog()
 
