@@ -108,6 +108,10 @@ publishing {
 }
 
 curseforge {
+    onlyIf {
+        project.hasProperty('curseforgeApiKey')
+    }
+
     apiKey = project.findProperty("curseforgeApiKey")
     project {
         id = "${project.curseforge_project_id}"
@@ -138,6 +142,10 @@ curseforge {
 import com.modrinth.minotaur.TaskModrinthUpload
 
 task publishModrinth(type: TaskModrinthUpload) {
+    onlyIf {
+        project.hasProperty('modrinthToken')
+    }
+
     token = project.findProperty("modrinthToken")
     projectId = "${project.modrinth_project_id}"
     versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
