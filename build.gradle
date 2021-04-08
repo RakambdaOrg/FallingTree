@@ -82,7 +82,7 @@ tasks.withType(JavaCompile) {
 }
 
 task sourcesJar(type: org.gradle.jvm.tasks.Jar, dependsOn: classes) {
-    classifier = "sources"
+    archiveClassifier.set("sources")
     from sourceSets.main.allSource
 }
 
@@ -108,11 +108,7 @@ publishing {
 }
 
 curseforge {
-    onlyIf {
-        project.hasProperty('curseforgeApiKey')
-    }
-
-    apiKey = project.findProperty("curseforgeApiKey")
+    apiKey = "${project.findProperty("curseforgeApiKey")}"
     project {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
@@ -151,8 +147,8 @@ task publishModrinth(type: TaskModrinthUpload) {
     versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
     versionName = "${archivesBaseName}-${project.version}"
     uploadFile = remapJar
-    addGameVersion(project.minecraft_version)
-    addLoader(project.loader.toLowerCase())
+    addGameVersion(project.minecraft_version as String)
+    addLoader(project.loader.toLowerCase() as String)
     releaseType = "${project.curseforge_release_type}"
     changelog = getLatestChangeLog()
 
@@ -162,28 +158,19 @@ task publishModrinth(type: TaskModrinthUpload) {
 }
 
 githubRelease {
+    def tag = "${archivesBaseName}-${project.version}"
+
     owner = "RakSrinaNa"
-    repo = project.repoName
-    token = "${project.findProperty("githubReleaseToken")}"
-    tagName = "${archivesBaseName}-${project.version}"
-    releaseName = "${archivesBaseName}-${project.version}"
-    targetCommitish = "${project.minecraft_version}-fabric"
-    body {
-        return getLatestChangeLog()
-    }
+    repo.set(project.repoName as String)
+    token("${project.findProperty("githubReleaseToken")}")
+    tagName.set(tag)
+    releaseName.set(tag)
+    targetCommitish.set("${project.minecraft_version}-fabric")
+    body.set(getLatestChangeLog())
 }
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-String getAllChangeLog() {
-    final old_log = file("CHANGELOG.md")
-    final header_file = file("header.md")
-
-    def all_log = old_log.exists() ? old_log.text : "No change log provided."
-    def header = header_file.exists() ? header_file.text : ""
-    return header + System.lineSeparator() + all_log
-}
 
 String getLatestChangeLog() {
     final def log_file = file("changes.md")
