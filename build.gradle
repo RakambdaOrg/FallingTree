@@ -131,7 +131,7 @@ curseforge {
         addGameVersion project.loader
         changelog = getLatestChangeLog()
         releaseType = "${project.curseforge_release_type}"
-        mainArtifact(jar) {
+        mainArtifact(signJar) {
             displayName = "${archivesBaseName}-${project.version}"
         }
         relations {
@@ -149,14 +149,14 @@ task publishModrinth(type: TaskModrinthUpload) {
     projectId = project.modrinth_project_id
     versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
     versionName = "${archivesBaseName}-${project.version}"
-    uploadFile = jar
+    uploadFile = signJar
     addGameVersion(project.minecraft_version as String)
     addLoader(project.loader.toLowerCase() as String)
     releaseType = "${project.curseforge_release_type}"
     changelog = getLatestChangeLog()
 
     afterEvaluate {
-        tasks.publishModrinth.dependsOn(jar)
+        tasks.publishModrinth.dependsOn(signJar)
     }
 }
 
