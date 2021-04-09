@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
+      - name: Restore keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -32,10 +36,7 @@ jobs:
       - name: Set gradle permissions
         run: chmod +x gradlew
       - name: Check project
-        run: ./gradlew check
-        env:
-          GITHUB_USER: RakSrinaNa
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew check -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
 
   publish:
     runs-on: ubuntu-latest
@@ -44,6 +45,10 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
+      - name: Restore keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -65,14 +70,6 @@ jobs:
       - name: Set gradle permissions
         run: chmod +x gradlew
       - name: Push on CurseForge
-        run: ./gradlew curseforge
-        env:
-          GITHUB_USER: RakSrinaNa
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+        run: ./gradlew curseforge -PcurseforgeApiKey="${{ secrets.CURSEFORGE_API_KEY }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
       - name: Push on Modrinth
-        run: ./gradlew publishModrinth
-        env:
-          GITHUB_USER: RakSrinaNa
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew publishModrinth -DmodrinthToken="${{ secrets.MODRINTH_TOKEN }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
