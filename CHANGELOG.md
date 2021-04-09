@@ -1,3 +1,9 @@
+## [Forge-1.16.5-2.11.1] - 2021-04-09
+
+* Take into account break speed modifications from other mods that may have handled the event before (#80)
+* Use official minecraft mappings
+* Jar should now be signed
+
 ## [Forge-1.16.5-2.11.0] - 2021-03-24
 
 * Fixed leaves whitelist/blacklist not being saved (#76)
