@@ -121,6 +121,7 @@ task signJar(type: SignJar, dependsOn: jar) {
     outputFile = jar.getArchiveFile()
 }
 build.dependsOn signJar
+assemble.dependsOn signJar
 
 curseforge {
     apiKey = "${project.findProperty("curseforgeApiKey")}"
@@ -131,7 +132,7 @@ curseforge {
         addGameVersion project.loader
         changelog = getLatestChangeLog()
         releaseType = "${project.curseforge_release_type}"
-        mainArtifact(signJar) {
+        mainArtifact(jar) {
             displayName = "${archivesBaseName}-${project.version}"
         }
         relations {
@@ -149,7 +150,7 @@ task publishModrinth(type: TaskModrinthUpload) {
     projectId = project.modrinth_project_id
     versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
     versionName = "${archivesBaseName}-${project.version}"
-    uploadFile = signJar
+    uploadFile = jar
     addGameVersion(project.minecraft_version as String)
     addLoader(project.loader.toLowerCase() as String)
     releaseType = "${project.curseforge_release_type}"
