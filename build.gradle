@@ -50,25 +50,25 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
         exclude module: "modmenu"
     }
-    include "me.shedaniel.cloth:config-2:${cloth_config_version}"
+    include "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
 }
 
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand project.properties
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-    options.compilerArgs = ['-Xlint:deprecation']
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.compilerArgs = ['-Xlint:deprecation']
+
+    def targetVersion = 8
+    if (JavaVersion.current().isJava9Compatible()) {
+        it.options.release.set(targetVersion)
+    }
 }
 
 task sourcesJar(type: org.gradle.jvm.tasks.Jar, dependsOn: classes) {

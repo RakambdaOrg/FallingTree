@@ -3,10 +3,9 @@ package fr.raksrinana.fallingtree.config;
 import fr.raksrinana.fallingtree.config.validator.BlockId;
 import fr.raksrinana.fallingtree.config.validator.Min;
 import fr.raksrinana.fallingtree.config.validator.MinMax;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.EnumHandler;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry.Gui.Tooltip;
-import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
+import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler;
+import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.Tooltip;
+import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.minecraft.block.Block;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,14 +41,14 @@ public class TreeConfiguration{
 	@Comment("How to break the tree. \n" +
 			"INSTANTANEOUS will break it in one go. \n" +
 			"SHIFT_DOWN will make the tree fall down as you cut it, so you still have to break x blocks but don't have to climb the tree for them.")
-	@EnumHandler(option = EnumDisplayOption.BUTTON)
+	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public BreakMode breakMode = BreakMode.INSTANTANEOUS;
 	@Tooltip(count = 9)
 	@Comment("What part of the tree should be cut. \n" +
 			"WHOLE_TREE will break the whole tree. \n" +
 			"ABOVE_CUT will break only blocks that are connected from above the cut point. \n" +
 			"ABOVE_Y will break only blocks that are above the y value of the cut point.")
-	@EnumHandler(option = EnumDisplayOption.BUTTON)
+	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public DetectionMode detectionMode = DetectionMode.WHOLE_TREE;
 	@Tooltip(count = 4)
 	@Comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut. \n" +
@@ -97,7 +96,7 @@ public class TreeConfiguration{
 			"STOP_ALL will stop the search and nothing will be cut. \n" +
 			"STOP_BRANCH will stop the current branch only. The rest of the tree will be cut."
 	)
-	@EnumHandler(option = EnumDisplayOption.BUTTON)
+	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public AdjacentStopMode adjacentStopMode = AdjacentStopMode.STOP_ALL;
 	
 	public Collection<Block> getBlacklistedLeaves(){
