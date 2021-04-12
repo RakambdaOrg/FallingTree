@@ -149,7 +149,7 @@ task publishModrinth(type: TaskModrinthUpload) {
     uploadFile = remapJar
     addGameVersion(project.minecraft_version as String)
     addLoader(project.loader.toLowerCase() as String)
-    releaseType = "${project.curseforge_release_type}"
+    versionType = "${project.curseforge_release_type}"
     changelog = getLatestChangeLog()
 
     afterEvaluate {
