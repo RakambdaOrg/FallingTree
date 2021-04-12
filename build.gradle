@@ -1,12 +1,10 @@
 buildscript {
     ext{
-        cloth_config_version = '4.1.3'
-        auto_config1u_version = '3.3.1'
+        cloth_config_version = '4.11.19'
     }
 
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -27,14 +25,13 @@ apply plugin: 'eclipse'
 repositories {
     maven {
         name = 'Cloth Config'
-        url = 'https://dl.bintray.com/shedaniel/cloth-config-2'
+        url = 'https://maven.shedaniel.me/'
     }
     flatDir {
         name "fileRepo"
         dirs "repo"
     }
     mavenLocal()
-    jcenter()
 }
 
 tasks.withType(JavaCompile) {
