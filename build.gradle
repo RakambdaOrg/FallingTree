@@ -1,13 +1,12 @@
 buildscript {
     ext {
-        mod_menu_version = '1.14.6+build.31'
-        cloth_config_version = '4.8.2'
-        auto_config1u_version = '3.3.1'
+        mod_menu_version = '1.16.9'
+        cloth_config_version = '4.11.19'
     }
 }
 
 plugins {
-    id 'fabric-loom' version '0.5.34'
+    id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'maven-publish'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id 'com.modrinth.minotaur' version '1.2.0'
@@ -27,16 +26,12 @@ repositories {
         url = 'https://minecraft.curseforge.com/api/maven'
     }
     maven {
+        name = "ModMenu"
+        url = "https://maven.terraformersmc.com/releases/"
+    }
+    maven {
         name = 'Cloth Config'
-        url = 'https://dl.bintray.com/shedaniel/cloth-config-2'
-    }
-    maven {
-        name = 'Auto Config (updated fork)'
-        url = 'https://dl.bintray.com/shedaniel/autoconfig1u'
-    }
-    maven {
-        name = 'prospector-fabric'
-        url = 'https://maven.fabricmc.net/io/github/prospector/modmenu/'
+        url = 'https://maven.shedaniel.me/'
     }
 }
 
@@ -47,20 +42,15 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation("io.github.prospector:modmenu:${mod_menu_version}") {
+    modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation("me.shedaniel.cloth:config-2:${cloth_config_version}") {
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
         exclude module: "modmenu"
     }
     include "me.shedaniel.cloth:config-2:${cloth_config_version}"
-
-    modImplementation("me.sargunvohra.mcmods:autoconfig1u:${auto_config1u_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    include "me.sargunvohra.mcmods:autoconfig1u:${auto_config1u_version}"
 }
 
 processResources {
