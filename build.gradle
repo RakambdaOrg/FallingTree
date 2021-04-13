@@ -1,99 +1,54 @@
 buildscript {
-    ext {
-        mod_menu_version = '1.16.9'
-        cloth_config_version = '4.11.19'
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.google.guava:guava:30.1.1-jre")
+        classpath("commons-io:commons-io:2.8.0")
     }
 }
 
 plugins {
-    id 'fabric-loom' version '0.6-SNAPSHOT'
-    id 'maven-publish'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id 'com.modrinth.minotaur' version '1.2.0'
-    id 'com.github.breadmoirai.github-release' version "2.2.10"
-    id 'com.github.ben-manes.versions' version '0.38.0'
+    id "com.github.breadmoirai.github-release" version '2.2.12'
+    id "com.github.ben-manes.versions" version "0.38.0"
 }
 
+allprojects {
+    apply plugin: "java"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+    java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
-archivesBaseName = "${project.repoName}-${project.loader}-${project.minecraft_version}"
-
-repositories {
-    maven {
-        name = 'CurseForge'
-        url = 'https://minecraft.curseforge.com/api/maven'
-    }
-    maven {
-        name = "ModMenu"
-        url = "https://maven.terraformersmc.com/releases/"
-    }
-    maven {
-        name = 'Cloth Config'
-        url = 'https://maven.shedaniel.me/'
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.compilerArgs = ['-Xlint:deprecation']
     }
 }
 
-dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+group = "fr.raksrinana"
+archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+task buildJar(type: Jar) {
+    dependsOn ":common:jar", ":fabric:build", ":forge:build"
+    finalizedBy ":forge:signJar"
 
-    modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from zipTree("common/build/libs/common-${project.version}.jar"),
+            zipTree("fabric/build/libs/fabric-${project.version}.jar"),
+            zipTree("forge/build/libs/forge-${project.version}.jar")
 
-    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-        exclude module: "modmenu"
-    }
-    include "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand project.properties
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.compilerArgs = ['-Xlint:deprecation']
-
-    def targetVersion = 8
-    if (JavaVersion.current().isJava9Compatible()) {
-        it.options.release.set(targetVersion)
-    }
-}
-
-task sourcesJar(type: org.gradle.jvm.tasks.Jar, dependsOn: classes) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allSource
-}
-
-jar {
-    from "LICENSE"
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    repositories {
-        // mavenLocal()
+    manifest {
+        attributes([
+                "Specification-Title"     : project.modId,
+                "Specification-Vendor"    : "RakSrinaNa",
+                "Specification-Version"   : project.version,
+                "Implementation-Title"    : project.modName,
+                "Implementation-Version"  : "${project.version}",
+                "Implementation-Vendor"   : "RakSrinaNa",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }
 
@@ -103,89 +58,100 @@ curseforge {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
         addGameVersion project.minecraft_version
-        addGameVersion project.loader
-        changelog = getLatestChangeLog()
-        releaseType = "${project.curseforge_release_type}"
-        mainArtifact(remapJar) {
+        addGameVersion "forge"
+        addGameVersion "fabric"
+        changelog = generateChangelog()
+        releaseType = "${project.releaseType}"
+        mainArtifact(jar) {
             displayName = "${archivesBaseName}-${project.version}"
         }
-        afterEvaluate {
-            uploadTask.dependsOn('remapJar')
-        }
         relations {
+            //Fabric
             requiredDependency 'fabric-api'
             embeddedLibrary 'auto-config-updated-api'
             embeddedLibrary 'cloth-config'
+
+            //Forge
             optionalDependency 'modmenu'
+            optionalDependency 'cloth-config-forge'
         }
     }
     options {
-        forgeGradleIntegration = false
         javaVersionAutoDetect = false
+        javaIntegration = false
+        forgeGradleIntegration = false
     }
 }
 
 import com.modrinth.minotaur.TaskModrinthUpload
+import groovy.json.JsonOutput
 
 task publishModrinth(type: TaskModrinthUpload) {
-    onlyIf {
-        project.hasProperty('modrinthToken')
-    }
+    dependsOn buildJar
 
-    token = project.findProperty("modrinthToken")
-    projectId = "${project.modrinth_project_id}"
-    versionNumber = "${project.minecraft_version}-${project.version}-${project.loader}"
+    token = project.findProperty("modrinthToken") as String
+    projectId = project.modrinth_project_id
+    versionNumber = "${project.minecraft_version}-${project.version}"
     versionName = "${archivesBaseName}-${project.version}"
-    uploadFile = remapJar
+    uploadFile = jar
     addGameVersion(project.minecraft_version as String)
-    addLoader(project.loader.toLowerCase() as String)
-    versionType = "${project.curseforge_release_type}"
-    changelog = getLatestChangeLog()
-
-    afterEvaluate {
-        tasks.publishModrinth.dependsOn(remapJar)
-    }
+    addLoader("fabric")
+    addLoader("forge")
+    versionType = project.releaseType.toLowerCase()
+    changelog = generateChangelog()
 }
 
-githubRelease {
-    def tag = "${archivesBaseName}-${project.version}"
+// Update JSON management
 
-    owner = "RakSrinaNa"
-    repo.set(project.repoName as String)
-    token("${project.findProperty("githubReleaseToken")}")
-    tagName.set(tag)
-    releaseName.set(tag)
-    targetCommitish.set("${project.minecraft_version}-fabric")
-    body.set(getLatestChangeLog())
+import groovy.json.JsonSlurper
+
+def writeUpdateJson() {
+    def version = project.version
+    def slurper = new JsonSlurper()
+    def file = project.file('update.json')
+    def json = slurper.parse(file)
+    def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/blob/${project.minecraft_version}/CHANGELOG.md"
+
+    json['changelog'] = changelogUrl
+
+    // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
+    if (!json[project.minecraft_version].containsKey(version.toString()))
+        json[project.minecraft_version][version.toString()] = changelogUrl
+    json[project.minecraft_version] = json[project.minecraft_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)
+    json['promos']["${project.minecraft_version}-latest"] = version
+    json['promos']["${project.minecraft_version}-recommended"] = version
+
+    println(json)
+    file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
 }
 
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-
-String getLatestChangeLog() {
-    final def log_file = file("changes.md")
-    final def header_file = file("header.md")
-    def log = log_file.exists() ? log_file.text : "No change log provided."
-    def header = header_file.exists() ? header_file.text : ""
-    return header + System.lineSeparator() + log
-}
-
-task makeChangeLog() {
+task createUpdateJson {
     doLast {
-        moveOldLog()
+        println('Updating update.json...')
+        writeUpdateJson()
     }
 }
+build.finalizedBy createUpdateJson
 
-void moveOldLog() {
-    def new_log_file = file("changes.md")
-    def old_log_file = file("CHANGELOG.md")
+static String generateChangelog() {
+    def lastTag = "git describe --tags --abbrev=0".execute().text.trim()
+    def gitLogCmd = "git log $lastTag..HEAD --oneline --no-merges --pretty=format:\"%s\"".execute().text.trim()
 
-    if (new_log_file.exists()) {
-        if (!old_log_file.exists())
-            old_log_file.createNewFile()
-        def dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        def currDate = LocalDate.now()
-        def combined = "## [${project.loader}-${project.minecraft_version}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
-        old_log_file.setText(combined)
+    def changelog = ""
+    gitLogCmd.eachLine {line ->
+        def escapedLine = line.substring(1, line.length() - 1)
+        escapedLine = escapedLine.replaceAll(/(\\)/, "\\/")
+        escapedLine = escapedLine.replaceAll('"', '\\\\"')
+        changelog += "* $escapedLine \\n"
+    }
+    changelog += "\\n"
+    changelog = changelog.trim()
+
+    return changelog
+}
+
+task displayChangelog {
+    doLast {
+        println(generateChangelog())
     }
 }

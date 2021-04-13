@@ -1,0 +1,21 @@
+repositories {
+    mavenCentral()
+    maven {
+        name = "Minecraft Libraries"
+        url = "https://libraries.minecraft.net"
+    }
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter:5.7.0"
+    compile "org.apache.logging.log4j:log4j-api:2.8.1"
+    compile "org.lwjgl:lwjgl-glfw:3.2.2"
+    compile "com.google.guava:guava:21.0"
+    compile "org.apache.commons:commons-lang3:3.5"
+    compile "com.google.code.gson:gson:2.8.0"
+    compile "com.mojang:brigadier:1.0.17"
+}
+
+test {
+    useJUnitPlatform()
+}

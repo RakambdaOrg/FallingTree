@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: "type: \U0001F41B bug"
-assignees: RakSrinaNa
+labels: bug
+assignees: 'RakSrinaNa'
 
 ---
 
@@ -16,8 +16,8 @@ Steps to reproduce the behavior:
 2. 
 
 **Infos:**
- - Minecraft verson: [e.g. 1.14.4]
- - Mod loader: [Forge/Fabric]
+ - Minecraft version: [e.g. 1.0.0]
  - Mod version: [e.g. 1.0.0]
+ - Fabric/Forge version: [e.g. 1.0.0]
 
 If you provide a crash report please include it in a readable way (like pastebin or gist for example).

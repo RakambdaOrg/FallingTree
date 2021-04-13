@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${version}",
+  "name": "FallingTree",
+  "description": "Change the way you cut trees.",
+  "authors": [
+    "RakSrinaNa"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/falling-tree",
+    "issues": "https://github.com/RakSrinaNa/FallingTree/issues",
+    "sources": "https://github.com/RakSrinaNa/FallingTree"
+  },
+  "license": "GPL-3.0",
+  "icon": "logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "fr.raksrinana.fallingtree.fabric.FallingTree"
+    ],
+    "client": [],
+    "server": [],
+    "modmenu": [
+      "fr.raksrinana.fallingtree.fabric.ModMenuImpl"
+    ]
+  },
+  "mixins": [
+    "fallingtree.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric-resource-loader-v0": "*",
+    "fabric": ">=0.20"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

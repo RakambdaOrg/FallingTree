@@ -1,14 +1,21 @@
-*.zip
+# gradle
+.gradle/
+build/
+out/
+classes/
+
+# idea
+.idea/
 *.iml
+*.ipr
+*.iws
 
-.gradle
-.idea
-build
-eclipse
-/logs
-/run
-/run-client
-/run-server
+# vscode
+.settings/
+.vscode/
+bin/
+.classpath
+.project
 
-version.properties
-secrets.properties
+# minecraft
+run/

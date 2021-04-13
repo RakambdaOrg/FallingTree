@@ -1,0 +1,79 @@
+import net.minecraftforge.gradle.common.task.SignJar
+
+buildscript {
+    repositories {
+        maven {
+            name = "forge"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+    }
+}
+
+apply plugin: "net.minecraftforge.gradle"
+
+minecraft {
+    mappings channel: "${mappings_channel}", version: "${mappings_version}"
+    runs {
+        client {
+            workingDirectory project.file("../run")
+            property "forge.logging.console.level", "debug"
+            mods {
+                fallingtree {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('../run')
+            property "forge.logging.console.level", "debug"
+            mods {
+                fallingtree {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${forge_version}"
+    implementation project(":common")
+
+    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
+}
+
+repositories {
+    maven {
+        name = 'Cloth Config'
+        url = 'https://maven.shedaniel.me/'
+    }
+}
+
+processResources {
+    from "src/main/resources", "../common/src/main/resources"
+
+    filesMatching("META-INF/mods.toml") {
+        expand project.properties
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+task signJar(type: SignJar, dependsOn: rootProject.buildJar) {
+    onlyIf {
+        project.hasProperty('forgeKeyStore')
+    }
+
+    keyStore = project.findProperty('forgeKeyStore')
+    alias = project.findProperty('forgeKeyStoreAlias')
+    storePass = project.findProperty('forgeKeyStorePass')
+    keyPass = project.findProperty('forgeKeyStoreKeyPass')
+    inputFile = rootProject.jar.getArchiveFile()
+    outputFile = rootProject.jar.getArchiveFile()
+}

@@ -1,3 +1,5 @@
+Further release notes can be found [on the releases page](https://github.com/RakSrinaNa/FallingTree/releases).
+
 ## [Fabric-1.16.5-2.11.0] - 2021-03-24
 
 * Add configuration whitelistedNonDecayLeaves to add leaves that doesn't decay and need to be broken by the tool (uses durability) (#77)

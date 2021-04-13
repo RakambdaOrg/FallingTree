@@ -4,5 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    assignees:
+    reviewers:
+      - RakSrinaNa
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
       - RakSrinaNa
