@@ -6,3 +6,6 @@ contact_links:
   - name: Modrinth
     url: https://modrinth.com/mod/fallingtree/versions
     about: Find the downloadable JARs of the mod on Modrinth.
+  - name: Discussions
+    url: https://github.com/RakSrinaNa/FallingTree/discussions
+    about: Got a more generic thing to say that isn't an issue or feature request / need support? Start a discussion here
