@@ -1,133 +1,163 @@
-Further release notes can be found [on the releases page](https://github.com/RakSrinaNa/FallingTree/releases).
+# Changelog
 
-## [Fabric-1.16.5-2.11.0] - 2021-03-24
+## [Unreleased]
+### Changed
 
-* Add configuration whitelistedNonDecayLeaves to add leaves that doesn't decay and need to be broken by the tool (uses durability) (#77)
+## [1.16.5-2.11.1] - 2021-04-13
+### Changed
+- Jar is now the same for fabric and forge
 
-## [Fabric-1.16.5-2.10.2] - 2021-02-17
+## [1.16.5-2.11.0] - 2021-03-24
+### Changed
+- Add configuration whitelistedNonDecayLeaves to add leaves that doesn't decay and need to be broken by the tool (uses durability) (#77)
 
-* Cut trees from the branches towards the cut point (#71)
+## [1.16.5-2.10.2] - 2021-02-17
+### Changed
+- Cut trees from the branches towards the cut point (#71)
 
-## [Fabric-1.16.5-2.10.1] - 2021-02-11
+## [1.16.5-2.10.1] - 2021-02-11
+### Changed
+- Abort search as soon as max log count is reached (#70)
 
-* Abort search as soon as max log count is reached (#70)
+## [1.16.5-2.10.0] - 2021-01-13
+### Changed
+- Port to 1.16.5
 
-## [Fabric-1.16.5-rc1-2.10.0] - 2021-01-13
+## [1.16.4-2.10.0] - 2021-01-13
+### Changed
+- Cache configuration so white/black lists are not fetched all the time (#56)
+- Add a configuration to whitelist the blocks that can be adjacent to a trunk. By default (empty) this won't apply any restrictions (#54)
 
-* Port to 1.16.5
+## [1.16.4-2.9.0] - 2021-01-09
+### Changed
+- Break mode matches description text. Now only logs that are ABOVE the y value will be cut. See https://github.com/RakSrinaNa/FallingTree/issues/53#issuecomment-757332779 for a visual representation of each mode (#53)
+- Add a new option under `Tree > Search area radius` to only search a tree in a certain area. This can be configured to somehow define how "wide" a tree can be. By default there's no limit (#53)
 
-## [Fabric-1.16.4-2.10.0] - 2021-01-13
+## [1.16.4-2.8.0] - 2020-12-16
+### Changed
+- Add option to break only parts of the tree that are above the cut.
 
-* Cache configuration so white/black lists are not fetched all the time (#56)
-* Add a configuration to whitelist the blocks that can be adjacent to a trunk. By default (empty) this won't apply any restrictions (#54)
+## [1.16.4-2.7.0] - 2020-11-14
+### Changed
+- Allow to whitelist/blacklist by tags
 
-## [Fabric-1.16.4-2.9.0] - 2021-01-09
+## [1.16.4-2.6.0] - 2020-11-08
+### Changed
+- Add an option to disable tree cutting (so can only keep leaf decay activated)
 
-* Break mode matches description text. Now only logs that are ABOVE the y value will be cut. See https://github.com/RakSrinaNa/FallingTree/issues/53#issuecomment-757332779 for a visual representation of each mode (#53)
-* Add a new option under `Tree > Search area radius` to only search a tree in a certain area. This can be configured to somehow define how "wide" a tree can be. By default there's no limit (#53)
+## [1.16.4-2.5.1] - 2020-11-02
+### Changed
+- Port to 1.16.4
 
-## [Fabric-1.16.4-2.8.0] - 2020-12-16
+## [1.16.3-2.5.1] - 2020-10-02
+### Changed
+- Add Brazilian Portuguese language (@Eufranio)
 
-* Add option to break only parts of the tree that are above the cut.
+## [1.16.3-2.5.0] - 2020-09-29
+### Changed
+- Add option (activated by default) to break nether tree warts (leaves)
 
-## [Fabric-1.16.4-2.7.0] - 2020-11-14
+## [1.16.3-2.4.0] - 2020-09-21
+### Changed
+- Add option to cut trees with mixed log blocks
 
-* Allow to whitelist/blacklist by tags
+## [1.16.3-2.3.2] - 2020-09-10
+### Changed
+- Port to 1.16.3
+- Do not take into account "minimumLeavesAroundRequired" when using shift down mode
 
-## [Fabric-1.16.4-2.6.0] - 2020-11-08
+## [1.16.3-2.3.1] - 2020-09-07
+### Changed
+- Port to 1.16.3 release candidate 1
 
-* Add an option to disable tree cutting (so can only keep leaf decay activated)
+## [1.16.2-2.3.1] - 2020-09-04
+### Changed
+- Set minimum required fabric api (#22)
 
-## [Fabric-1.16.4-2.5.1] - 2020-11-02
+## [1.16.2-2.3.0] - 2020-09-04
+### Changed
+- Perform less ticking on leaves (#20)
 
-* Port to 1.16.4
+## [1.16.2-2.2.3] - 2020-09-01
+### Changed
+- Make break speed mixin cancellable, should fix #19
 
-## [Fabric-1.16.3-2.5.1] - 2020-10-02
+## [1.16.2-2.2.2] - 2020-08-29
+### Changed
+- Port to fabric
 
-* Add Brazilian Portuguese language (@Eufranio)
+## [1.16.2-2.2.2] - 2020-08-14
+### Changed
+- Update pack format
 
-## [Fabric-1.16.3-2.5.0] - 2020-09-29
-
-* Add option (activated by default) to break nether tree warts (leaves)
-
-## [Fabric-1.16.3-2.4.0] - 2020-09-21
-
-* Add option to cut trees with mixed log blocks
-
-## [Fabric-1.16.3-2.3.2] - 2020-09-10
-* Port to 1.16.3
-* Do not take into account "minimumLeavesAroundRequired" when using shift down mode
-
-## [Fabric-1.16.3-rc1-2.3.1] - 2020-09-07
-* Port to 1.16.3 release candidate 1
-
-## [Fabric-1.16.2-2.3.1] - 2020-09-04
-* Set minimum required fabric api (#22)
-
-## [Fabric-1.16.2-2.3.0] - 2020-09-04
-* Perform less ticking on leaves (#20)
-
-## [Fabric-1.16.2-2.2.3] - 2020-09-01
-* Make break speed mixin cancellable, should fix #19
-
-## [Fabric-1.16.2-2.2.2] - 2020-08-29
-* Port to fabric
-
-## [Forge-1.16.2-2.2.2] - 2020-08-14
-* Update pack format
-
-## [Forge-1.16.2-2.2.1] - 2020-08-13
-* Port to 1.16.2
+## [1.16.2-2.2.1] - 2020-08-13
+### Changed
+- Port to 1.16.2
 
 ## [1.16.1-2.2.1] - 2020-07-31
-* Remove some useless logs in the console.
-* Add an option `speed_multiplicand` to modify the breaking speed of the log.
-* Improve shift_down mode for big trees.
+### Changed
+- Remove some useless logs in the console.
+- Add an option `speed_multiplicand` to modify the breaking speed of the log.
+- Improve shift_down mode for big trees.
 
 ## [1.16.1-2.2.0] - 2020-07-31
-* Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
-* Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.
+### Changed
+- Add an option `ignore_tools` to ignore tool detection (this has the same effect as whitelisting everything, including empty hand).
+- Add an option `break_mode` to choose how to break the tree. INSTANTANEOUS is the default and what you have been using up to now. Though there is a new addition, SHIFT_DOWN, where instead of breaking everything, the log will slowly fall to the ground as you chop it.
 
 ## [1.16.1-2.1.8] - 2020-07-29
-* Add new `license` field in mod description
-* On servers the mod is now only required server-side (so clients can join without the mod)
+### Changed
+- Add new `license` field in mod description
+- On servers the mod is now only required server-side (so clients can join without the mod)
 
 ## [1.16.1-2.1.7] - 2020-07-23
+### Changed
 - Add an option (`minimum_leaves_around_required` default `0`) to tell how many leaves blocks should be at the top of the tree to apply the mod. This should be useful if you want to break only trees an not your houses. Set it to something like 3 and the whole log stack will be cut only if there's at least 3 leaves next to the top most log.
 
 ## [1.16.1-2.1.6] - 2020-07-18
+### Changed
 - Add option in the configuration (`break_in_creative`) to cut down trees even when in creative
 
 ## [1.16.1-2.1.5] - 2020-07-09
+### Changed
 - Remove ignoreDurabilityLoss, it wasn't working anyway since b5122b87c09e137e95402b14d2621b190bae646b as the event isn't cancelled anymore
 - Fix an issue where 1 more durability is applied on the tool
 - Setting damage multiplicand to 0 will have the effect of taking away 1 durability on the tool per cut (#12)
 
 ## [1.16.1-2.1.4] - 2020-06-26
+### Changed
 - Port to 1.16.1.
 
 ## [1.15.2-2.1.4] - 2020-06-08
+### Changed
 - Do not cancel event so other mods can see it. Project MMO should now gather stats about the broken log (#11).
 
 ## [1.15.2-2.1.3] - 2020-05-02
+### Changed
 - Add whitelist/blacklist for leaves.
 
 ## [1.15.2-2.1.2] - 2020-05-01
+### Changed
 - Apply silk touch effect (useful if whitelisting mushrooms for example).
 
 ## [1.15.2-2.1.1] - 2020-04-29
+### Changed
 - Add new configuration `tools > damage_multiplicand` to control how much damage the tools take (#9).
 
 ## [1.15.2-2.1.0] - 2020-03-08
+### Changed
 - Refactor configuration by using categories thus making it a bit clearer than having everything stacked up at the same place. (/!\ You may have to redo your configuration if you changed values so back up the configuration before updating in order to copy values after)
 - Break leaves without sound when using force breaking leaves (the option with the radius) to avoid breaking your ears (#7)
 
 ## [1.15.2-2.0.4] - 2020-02-29
+### Changed
 - Delay breaking leaves by a few ticks making (fixes #6)
 
 ## [1.15.2-2.0.3] - 2020-01-28
+### Changed
 - Added an option to force destroy leaves withing a certain radius. This will be applied from one of the top most log blocks and will destroy all leaves within it (including leaves that shouldn't despawn because another tree is too close, or because they've been placed by a player). (#5)
 
 ## [1.15.2-2.0.2] - 2020-01-23
+### Changed
 - Port to 1.15.2
 

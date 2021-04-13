@@ -1,3 +1,8 @@
+import com.modrinth.minotaur.TaskModrinthUpload
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import org.jetbrains.changelog.ExtensionsKt
+
 buildscript {
     repositories {
         mavenCentral()
@@ -14,6 +19,7 @@ plugins {
     id 'com.modrinth.minotaur' version '1.2.0'
     id "com.github.breadmoirai.github-release" version '2.2.12'
     id "com.github.ben-manes.versions" version "0.38.0"
+    id "org.jetbrains.changelog" version "1.1.1"
 }
 
 allprojects {
@@ -59,7 +65,7 @@ curseforge {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
         addGameVersion project.minecraft_version
-        changelog = generateChangelog()
+        changelog = project.changelog.getLatest().toText()
         releaseType = "${project.releaseType}"
         mainArtifact(jar) {
             displayName = "${archivesBaseName}-${project.version}"
@@ -81,9 +87,6 @@ curseforge {
     }
 }
 
-import com.modrinth.minotaur.TaskModrinthUpload
-import groovy.json.JsonOutput
-
 task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     dependsOn buildJar
 
@@ -96,7 +99,7 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     addLoader("fabric")
     addLoader("forge")
     versionType = project.releaseType.toLowerCase()
-    changelog = generateChangelog()
+    changelog = project.changelog.getLatest().toText()
 }
 
 githubRelease {
@@ -108,12 +111,8 @@ githubRelease {
     tagName.set(tag)
     releaseName.set(tag)
     targetCommitish.set("${project.minecraft_version}")
-    body.set(generateChangelog())
+    body.set(project.changelog.getLatest().toText())
 }
-
-// Update JSON management
-
-import groovy.json.JsonSlurper
 
 def writeUpdateJson() {
     def version = project.version
@@ -143,29 +142,13 @@ task createUpdateJson(group: "modding") {
 }
 build.finalizedBy createUpdateJson
 
-static String generateChangelog() {
-    def lastTag = "git describe --tags --abbrev=0".execute().text.trim()
-    def beforeLastTag = "git describe --abbrev=0 --tags $lastTag^".execute().text.trim()
-    def gitLogCmd = "git log $beforeLastTag...$lastTag --oneline --no-merges --pretty=format:\"%s\"".execute().text.trim()
-
-    def changelog = ""
-    gitLogCmd.eachLine { line ->
-        if (line.contains("[skip-changelog]")) {
-            return changelog
-        }
-
-        def escapedLine = line
-        changelog += "* $escapedLine \n"
-    }
-
-    changelog += "\\n"
-    changelog = changelog.trim()
-
-    return changelog
-}
-
-task displayChangelog(group: "modding") {
-    doLast {
-        println(generateChangelog())
-    }
+changelog {
+    version = "${project.minecraft_version}-${project.version}"
+    path = "${project.projectDir}/CHANGELOG.md"
+    header = { "[${project.minecraft_version}-${project.version}] - ${ExtensionsKt.date("yyyy-MM-dd")}" }
+    headerParserRegex = ~/\d+\.\d+\.\d+-\d+\.\d+\.\d+/
+    itemPrefix = "-"
+    keepUnreleasedSection = true
+    unreleasedTerm = "[Unreleased]"
+    groups = ["Changed"]
 }
