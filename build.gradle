@@ -30,7 +30,7 @@ allprojects {
 group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
-task buildJar(type: Jar) {
+task buildJar(type: Jar, group: "modding") {
     dependsOn ":common:jar", ":fabric:build", ":forge:build"
     finalizedBy ":forge:signJar"
 
@@ -84,7 +84,7 @@ curseforge {
 import com.modrinth.minotaur.TaskModrinthUpload
 import groovy.json.JsonOutput
 
-task publishModrinth(type: TaskModrinthUpload) {
+task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     dependsOn buildJar
 
     token = project.findProperty("modrinthToken") as String
@@ -135,7 +135,7 @@ def writeUpdateJson() {
     file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
 }
 
-task createUpdateJson {
+task createUpdateJson(group: "modding") {
     doLast {
         println('Updating update.json...')
         writeUpdateJson()
@@ -164,7 +164,7 @@ static String generateChangelog() {
     return changelog
 }
 
-task displayChangelog {
+task displayChangelog(group: "modding") {
     doLast {
         println(generateChangelog())
     }
