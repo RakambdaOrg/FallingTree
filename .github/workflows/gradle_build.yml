@@ -14,9 +14,14 @@ jobs:
         with:
           fetch-depth: 0
       - name: Restore keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 60
+          max_attempts: 3
+          retry_on: error
+          command: |
+            echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
+            gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -51,9 +56,14 @@ jobs:
         with:
           fetch-depth: 0
       - name: Restore keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 60
+          max_attempts: 3
+          retry_on: error
+          command: |
+            echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
+            gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
