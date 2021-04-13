@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Fabric bug report
 about: Create a report to help us improve the Fabric version
 title: ''
 labels: "modloader: Fabric, type: \U0001F41B bug"
