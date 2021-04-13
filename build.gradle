@@ -103,7 +103,7 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
 }
 
 githubRelease {
-    def tag = "${archivesBaseName}-${project.version}"
+    def tag = "${project.minecraft_version}-${project.version}"
 
     owner = project.repoUser
     repo.set(project.repoName as String)
