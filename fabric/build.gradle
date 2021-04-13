@@ -1,0 +1,64 @@
+plugins {
+    id "fabric-loom" version "${loom_version}"
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    implementation project(':common')
+
+    modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+        exclude module: "modmenu"
+    }
+    include "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
+}
+
+repositories {
+    maven {
+        name = 'CurseForge'
+        url = 'https://minecraft.curseforge.com/api/maven'
+    }
+    maven {
+        name = "ModMenu"
+        url = "https://maven.terraformersmc.com/releases/"
+    }
+    maven {
+        name = 'Cloth Config'
+        url = 'https://maven.shedaniel.me/'
+    }
+}
+
+processResources {
+    from "src/main/resources", "../common/src/main/resources"
+
+    filesMatching("fabric.mod.json") {
+        expand project.properties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+
+    def targetVersion = 8
+    if (JavaVersion.current().isJava9Compatible()) {
+        it.options.release = targetVersion
+    }
+}
+
+loom {
+    runs {
+        client {
+            vmArg "-Dfabric.log.level=debug"
+        }
+        server {
+            vmArg "-Dfabric.log.level=debug"
+        }
+    }
+}
