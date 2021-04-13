@@ -101,6 +101,18 @@ task publishModrinth(type: TaskModrinthUpload) {
     changelog = generateChangelog()
 }
 
+githubRelease {
+    def tag = "${archivesBaseName}-${project.version}"
+
+    owner = project.repoUser
+    repo.set(project.repoName as String)
+    token("${project.findProperty("githubReleaseToken")}")
+    tagName.set(tag)
+    releaseName.set(tag)
+    targetCommitish.set("${project.minecraft_version}")
+    body.set(generateChangelog())
+}
+
 // Update JSON management
 
 import groovy.json.JsonSlurper
