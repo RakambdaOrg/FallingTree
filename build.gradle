@@ -67,10 +67,10 @@ curseforge {
         relations {
             //Fabric
             requiredDependency 'fabric-api'
+            optionalDependency 'modmenu'
             embeddedLibrary 'cloth-config'
 
             //Forge
-            optionalDependency 'modmenu'
             optionalDependency 'cloth-config-forge'
         }
     }

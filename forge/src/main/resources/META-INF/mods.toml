@@ -11,7 +11,7 @@ license = "GPL-3.0"
 modId="${project.modId}"
 version="${project.version}"
 displayName = "${project.modName}"
-updateJSONURL = "https://raw.githubusercontent.com/${project.repoUser}/${project.repoName}/${project.minecraft_version}-forge/update.json"
+updateJSONURL = "https://raw.githubusercontent.com/${project.repoUser}/${project.repoName}/${project.minecraft_version}/update.json"
 description = '''Change the way you cut trees.'''
 
 [[dependencies.fallingtree]]
