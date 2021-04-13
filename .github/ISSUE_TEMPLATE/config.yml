@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Curseforge Releases
+    url: https://www.curseforge.com/minecraft/mc-mods/falling-tree/files
+    about: Find the downloadable JARs of the mod on Curseforge.
+  - name: Modrinth
+    url: https://modrinth.com/mod/fallingtree/versions
+    about: Find the downloadable JARs of the mod on Modrinth.
