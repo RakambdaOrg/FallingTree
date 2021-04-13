@@ -51,6 +51,7 @@ task buildJar(type: Jar) {
         ])
     }
 }
+assemble.finalizedBy("buildJar")
 
 curseforge {
     apiKey = "${project.findProperty("curseforgeApiKey")}"
@@ -58,8 +59,6 @@ curseforge {
         id = "${project.curseforge_project_id}"
         changelogType = 'markdown'
         addGameVersion project.minecraft_version
-        addGameVersion "forge"
-        addGameVersion "fabric"
         changelog = generateChangelog()
         releaseType = "${project.releaseType}"
         mainArtifact(jar) {
@@ -68,7 +67,6 @@ curseforge {
         relations {
             //Fabric
             requiredDependency 'fabric-api'
-            embeddedLibrary 'auto-config-updated-api'
             embeddedLibrary 'cloth-config'
 
             //Forge
@@ -147,15 +145,19 @@ build.finalizedBy createUpdateJson
 
 static String generateChangelog() {
     def lastTag = "git describe --tags --abbrev=0".execute().text.trim()
-    def gitLogCmd = "git log $lastTag..HEAD --oneline --no-merges --pretty=format:\"%s\"".execute().text.trim()
+    def beforeLastTag = "git describe --abbrev=0 --tags $lastTag^".execute().text.trim()
+    def gitLogCmd = "git log $beforeLastTag...$lastTag --oneline --no-merges --pretty=format:\"%s\"".execute().text.trim()
 
     def changelog = ""
-    gitLogCmd.eachLine {line ->
-        def escapedLine = line.substring(1, line.length() - 1)
-        escapedLine = escapedLine.replaceAll(/(\\)/, "\\/")
-        escapedLine = escapedLine.replaceAll('"', '\\\\"')
-        changelog += "* $escapedLine \\n"
+    gitLogCmd.eachLine { line ->
+        if (line.contains("[skip-changelog]")) {
+            return changelog
+        }
+
+        def escapedLine = line
+        changelog += "* $escapedLine \n"
     }
+
     changelog += "\\n"
     changelog = changelog.trim()
 
