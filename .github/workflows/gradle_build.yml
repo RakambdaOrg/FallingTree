@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Restore keystore
-        if: ${{ secrets.KEYSTORE_FORGE_MODS }}
+        env:
+          KEYSTORE_FORGE_MODS: ${{ secrets.KEYSTORE_FORGE_MODS }}
+        if: env.KEYSTORE_FORGE_MODS != null
         run: |
           echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
@@ -49,8 +49,6 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Restore keystore
         run: |
           echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
