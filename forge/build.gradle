@@ -67,7 +67,7 @@ jar.finalizedBy('reobfJar')
 
 task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
     onlyIf {
-        project.hasProperty('forgeKeyStore')
+        project.hasProperty('forgeKeyStore') && file(project.findProperty('forgeKeyStore')).exists()
     }
 
     keyStore = project.findProperty('forgeKeyStore')
