@@ -17,8 +17,8 @@ public class Config{
 		COMMON_SPEC = commonPair.getRight();
 	}
 	@SubscribeEvent
-	public static void onModConfigEvent(final ModConfig.ModConfigEvent configEvent){
-		if(configEvent.getConfig().getSpec() == Config.COMMON_SPEC){
+	public static void onModConfigEvent(ModConfig.ModConfigEvent configEvent){
+		if(configEvent.getConfig().getSpec() == COMMON_SPEC){
 			ConfigCache.getInstance().invalidate();
 		}
 	}
