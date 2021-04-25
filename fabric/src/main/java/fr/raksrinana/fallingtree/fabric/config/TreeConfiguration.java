@@ -6,7 +6,7 @@ import fr.raksrinana.fallingtree.fabric.config.validator.MinMax;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.Tooltip;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -124,15 +124,15 @@ public class TreeConfiguration{
 	}
 	
 	public int getLeavesBreakingForceRadius(){
-		return this.leavesBreakingForceRadius;
+		return leavesBreakingForceRadius;
 	}
 	
 	public int getMaxSize(){
-		return this.maxSize;
+		return maxSize;
 	}
 	
 	public int getMinimumLeavesAroundRequired(){
-		return this.minimumLeavesAroundRequired;
+		return minimumLeavesAroundRequired;
 	}
 	
 	public Collection<Block> getWhitelistedLeaves(){
@@ -156,15 +156,15 @@ public class TreeConfiguration{
 	}
 	
 	public boolean isLeavesBreaking(){
-		return this.leavesBreaking;
+		return leavesBreaking;
 	}
 	
 	public boolean isTreeBreaking(){
-		return this.treeBreaking;
+		return treeBreaking;
 	}
 	
 	public boolean isAllowMixedLogs(){
-		return this.allowMixedLogs;
+		return allowMixedLogs;
 	}
 	
 	public boolean isBreakNetherTreeWarts(){

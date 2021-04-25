@@ -1,15 +1,16 @@
 package fr.raksrinana.fallingtree.fabric.leaves;
 
 import io.netty.util.internal.ConcurrentSet;
-import net.minecraft.block.BlockState;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import java.util.Iterator;
 import java.util.Set;
 
-public class LeafBreakingHandler implements net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.EndTick{
+public class LeafBreakingHandler implements ServerTickEvents.EndTick{
 	public static final Set<LeafBreakingSchedule> scheduledLeavesBreaking = new ConcurrentSet<>();
 	
 	@Override
@@ -17,14 +18,14 @@ public class LeafBreakingHandler implements net.fabricmc.fabric.api.event.lifecy
 		Iterator<LeafBreakingSchedule> leavesBreak = scheduledLeavesBreaking.iterator();
 		while(leavesBreak.hasNext()){
 			LeafBreakingSchedule leafBreakingSchedule = leavesBreak.next();
-			ServerWorld world = leafBreakingSchedule.getWorld();
+			ServerLevel world = leafBreakingSchedule.getWorld();
 			if(leafBreakingSchedule.getRemainingTicks() <= 0){
-				Chunk chunk = world.getChunk(leafBreakingSchedule.getBlockPos());
+				ChunkAccess chunk = world.getChunk(leafBreakingSchedule.getBlockPos());
 				ChunkPos chunkPos = chunk.getPos();
-				if(world.isChunkLoaded(chunkPos.x, chunkPos.z)){
+				if(world.hasChunk(chunkPos.x, chunkPos.z)){
 					BlockState state = world.getBlockState(leafBreakingSchedule.getBlockPos());
-					state.scheduledTick(world, leafBreakingSchedule.getBlockPos(), world.getRandom());
-					if(state.hasRandomTicks()){
+					state.tick(world, leafBreakingSchedule.getBlockPos(), world.getRandom());
+					if(state.isRandomlyTicking()){
 						state.randomTick(world, leafBreakingSchedule.getBlockPos(), world.getRandom());
 					}
 				}

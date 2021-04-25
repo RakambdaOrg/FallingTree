@@ -3,8 +3,8 @@ package fr.raksrinana.fallingtree.fabric.tree.builder;
 import fr.raksrinana.fallingtree.fabric.tree.TreePart;
 import fr.raksrinana.fallingtree.fabric.tree.builder.position.IPositionFetcher;
 import fr.raksrinana.fallingtree.fabric.utils.TreePartType;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
 import java.util.Objects;
 
 public class ToAnalyzePos implements Comparable<ToAnalyzePos>{

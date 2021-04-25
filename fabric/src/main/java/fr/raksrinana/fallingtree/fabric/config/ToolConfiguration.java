@@ -5,7 +5,7 @@ import fr.raksrinana.fallingtree.fabric.config.validator.Min;
 import fr.raksrinana.fallingtree.fabric.config.validator.MinMax;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.Tooltip;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,18 +64,18 @@ public class ToolConfiguration{
 	}
 	
 	public int getDamageMultiplicand(){
-		return this.damageMultiplicand;
+		return damageMultiplicand;
 	}
 	
 	public double getSpeedMultiplicand(){
-		return this.speedMultiplicand;
+		return speedMultiplicand;
 	}
 	
 	public boolean isIgnoreTools(){
-		return this.ignoreTools;
+		return ignoreTools;
 	}
 	
 	public boolean isPreserve(){
-		return this.preserve;
+		return preserve;
 	}
 }

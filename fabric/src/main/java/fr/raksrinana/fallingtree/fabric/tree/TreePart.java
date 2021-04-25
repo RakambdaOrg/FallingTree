@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.tree;
 
 import fr.raksrinana.fallingtree.fabric.utils.TreePartType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 public class TreePart{
 	private final BlockPos blockPos;

@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.config.validator;
 
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
 
 public class BlockIdRunner implements ValidatorRunner<BlockId>{
 	private static final Pattern MINECRAFT_ID_PATTERN = Pattern.compile("#?[a-z0-9_.-]+:[a-z0-9/._-]+");
-	private static final Text errorText = new TranslatableText("text.autoconfig.fallingtree.error.invalidBlockResourceLocation");
+	private static final Component errorText = new TranslatableComponent("text.autoconfig.fallingtree.error.invalidBlockResourceLocation");
 	
 	@Override
-	public Optional<Text> apply(Object value, BlockId annotation){
+	public Optional<Component> apply(Object value, BlockId annotation){
 		if(value == null){
 			return Optional.of(errorText);
 		}

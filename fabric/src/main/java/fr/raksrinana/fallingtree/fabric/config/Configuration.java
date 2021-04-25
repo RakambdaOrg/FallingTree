@@ -10,7 +10,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.Tooltip;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.TransitiveObject;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
 
 @Config(name = "fallingtree")
 public class Configuration implements ConfigData{
@@ -31,11 +31,11 @@ public class Configuration implements ConfigData{
 		ConfigHolder<Configuration> configHolder = AutoConfig.register(Configuration.class, JanksonConfigSerializer::new);
 		configHolder.registerSaveListener((configHolder1, configuration) -> {
 			ConfigCache.getInstance().invalidate();
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		});
 		configHolder.registerLoadListener((configHolder1, configuration) -> {
 			ConfigCache.getInstance().invalidate();
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		});
 		
 		return configHolder.getConfig();

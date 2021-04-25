@@ -10,7 +10,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.1.+", changing: true
     }
 }
 
@@ -42,7 +42,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${forge_version}"
+    minecraft("net.minecraftforge:forge:${forge_version}")
     implementation project(":common")
 
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
@@ -67,13 +67,13 @@ jar.finalizedBy('reobfJar')
 
 task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
     onlyIf {
-        project.hasProperty('forgeKeyStore') && file(project.findProperty('forgeKeyStore')).exists()
+        project.hasProperty("forgeKeyStore") && file(project.findProperty("forgeKeyStore")).exists()
     }
 
-    keyStore = project.findProperty('forgeKeyStore')
-    alias = project.findProperty('forgeKeyStoreAlias')
-    storePass = project.findProperty('forgeKeyStorePass')
-    keyPass = project.findProperty('forgeKeyStoreKeyPass')
+    keyStore = project.findProperty("forgeKeyStore")
+    alias = project.findProperty("forgeKeyStoreAlias")
+    storePass = project.findProperty("forgeKeyStorePass")
+    keyPass = project.findProperty("forgeKeyStoreKeyPass")
     inputFile = rootProject.jar.getArchiveFile()
     outputFile = rootProject.jar.getArchiveFile()
 }

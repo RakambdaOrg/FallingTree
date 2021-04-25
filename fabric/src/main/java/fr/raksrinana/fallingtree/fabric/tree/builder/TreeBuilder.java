@@ -10,11 +10,11 @@ import fr.raksrinana.fallingtree.fabric.tree.builder.position.BasicPositionFetch
 import fr.raksrinana.fallingtree.fabric.tree.builder.position.IPositionFetcher;
 import fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils;
 import fr.raksrinana.fallingtree.fabric.utils.TreePartType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -25,7 +25,7 @@ import static java.util.Optional.empty;
 public class TreeBuilder{
 	private static final EnumSet<Direction> ALL_DIRECTIONS = EnumSet.allOf(Direction.class);
 	
-	public static Optional<Tree> getTree(World world, BlockPos originPos) throws TreeTooBigException{
+	public static Optional<Tree> getTree(Level world, BlockPos originPos) throws TreeTooBigException{
 		Block originBlock = world.getBlockState(originPos).getBlock();
 		if(!FallingTreeUtils.isLogBlock(originBlock)){
 			return empty();
@@ -59,7 +59,7 @@ public class TreeBuilder{
 			}
 		}
 		catch(AbortSearchException e){
-			return Optional.empty();
+			return empty();
 		}
 		
 		if(FallingTree.config.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
@@ -126,7 +126,7 @@ public class TreeBuilder{
 	
 	private static Collection<ToAnalyzePos> filterPotentialPos(Predicate<BlockPos> boundingBoxSearch,
 			Predicate<Block> adjacentPredicate,
-			World world,
+			Level world,
 			BlockPos originPos,
 			Block originBlock,
 			ToAnalyzePos parent,
@@ -136,16 +136,16 @@ public class TreeBuilder{
 				.filter(pos -> !analyzedPos.contains(pos))
 				.filter(pos -> shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos))
 				.filter(pos -> EnumSet.allOf(Direction.class).stream()
-						.map(direction -> pos.getCheckPos().offset(direction))
+						.map(direction -> pos.getCheckPos().relative(direction))
 						.map(world::getBlockState)
 						.map(BlockState::getBlock)
 						.allMatch(adjacentPredicate))
 				.collect(Collectors.toList());
 	}
 	
-	private static long getLeavesAround(World world, BlockPos blockPos){
+	private static long getLeavesAround(Level world, BlockPos blockPos){
 		return ALL_DIRECTIONS.stream()
-				.map(blockPos::offset)
+				.map(blockPos::relative)
 				.filter(testPos -> {
 					Block block = world.getBlockState(testPos).getBlock();
 					return FallingTreeUtils.isLeafBlock(block) || FallingTreeUtils.isNetherWartOrShroomlight(block) || FallingTreeUtils.isLeafNeedBreakBlock(block);

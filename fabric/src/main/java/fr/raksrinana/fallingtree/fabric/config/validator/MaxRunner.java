@@ -1,19 +1,19 @@
 package fr.raksrinana.fallingtree.fabric.config.validator;
 
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import java.util.Optional;
 import java.util.function.Function;
 
 public class MaxRunner implements ValidatorRunner<Max>{
-	private final Function<Integer, Text> errorTextBuilder;
+	private final Function<Integer, Component> errorTextBuilder;
 	
 	public MaxRunner(){
-		this.errorTextBuilder = max -> new TranslatableText("text.autoconfig.fallingtree.error.valueTooHigh", Integer.toString(max));
+		this.errorTextBuilder = max -> new TranslatableComponent("text.autoconfig.fallingtree.error.valueTooHigh", Integer.toString(max));
 	}
 	
 	@Override
-	public Optional<Text> apply(Object value, Max annotation){
+	public Optional<Component> apply(Object value, Max annotation){
 		int max = annotation.value();
 		if(value instanceof Integer){
 			if((Integer) value > max){

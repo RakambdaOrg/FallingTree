@@ -1,22 +1,22 @@
 package fr.raksrinana.fallingtree.fabric.leaves;
 
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import java.util.Objects;
 
 public class LeafBreakingSchedule{
-	private final ServerWorld world;
+	private final ServerLevel world;
 	private final BlockPos blockPos;
 	private int remainingTicks;
 	
-	public LeafBreakingSchedule(ServerWorld world, BlockPos blockPos, int remainingTicks){
+	public LeafBreakingSchedule(ServerLevel world, BlockPos blockPos, int remainingTicks){
 		this.world = world;
 		this.blockPos = blockPos;
 		this.remainingTicks = remainingTicks;
 	}
 	
 	public void tick(){
-		this.remainingTicks--;
+		remainingTicks--;
 	}
 	
 	public int getRemainingTicks(){
@@ -27,7 +27,7 @@ public class LeafBreakingSchedule{
 		return blockPos;
 	}
 	
-	public ServerWorld getWorld(){
+	public ServerLevel getWorld(){
 		return world;
 	}
 	

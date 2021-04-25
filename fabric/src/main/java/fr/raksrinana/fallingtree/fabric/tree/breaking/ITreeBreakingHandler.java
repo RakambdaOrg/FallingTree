@@ -1,8 +1,8 @@
 package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
 import fr.raksrinana.fallingtree.fabric.tree.Tree;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public interface ITreeBreakingHandler{
-	boolean breakTree(PlayerEntity player, Tree tree);
+	boolean breakTree(Player player, Tree tree);
 }

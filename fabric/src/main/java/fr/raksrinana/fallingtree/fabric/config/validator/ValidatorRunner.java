@@ -1,13 +1,13 @@
 package fr.raksrinana.fallingtree.fabric.config.validator;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Optional;
 import static java.util.Objects.nonNull;
 
 public interface ValidatorRunner<T extends Annotation>{
-	default Optional<Text> apply(Object value, Field field){
+	default Optional<Component> apply(Object value, Field field){
 		T annotation = getAnnotation(field);
 		return apply(value, annotation);
 	}
@@ -16,7 +16,7 @@ public interface ValidatorRunner<T extends Annotation>{
 		return field.getAnnotation(getAnnotationClass());
 	}
 	
-	Optional<Text> apply(Object value, T annotation);
+	Optional<Component> apply(Object value, T annotation);
 	
 	Class<T> getAnnotationClass();
 	

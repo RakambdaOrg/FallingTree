@@ -1,19 +1,19 @@
 package fr.raksrinana.fallingtree.fabric.config.validator;
 
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
 public class MinMaxRunner implements ValidatorRunner<MinMax>{
-	private final BiFunction<Integer, Integer, Text> errorTextBuilder;
+	private final BiFunction<Integer, Integer, Component> errorTextBuilder;
 	
 	public MinMaxRunner(){
-		this.errorTextBuilder = (min, max) -> new TranslatableText("text.autoconfig.fallingtree.error.valueNotInRange", Integer.toString(min), Integer.toString(max));
+		this.errorTextBuilder = (min, max) -> new TranslatableComponent("text.autoconfig.fallingtree.error.valueNotInRange", Integer.toString(min), Integer.toString(max));
 	}
 	
 	@Override
-	public Optional<Text> apply(Object value, MinMax annotation){
+	public Optional<Component> apply(Object value, MinMax annotation){
 		int min = annotation.min();
 		int max = annotation.max();
 		if(value instanceof Integer){

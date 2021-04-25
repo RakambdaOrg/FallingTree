@@ -15,11 +15,11 @@ buildscript {
 }
 
 plugins {
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id 'com.modrinth.minotaur' version '1.2.0'
-    id "com.github.breadmoirai.github-release" version '2.2.12'
-    id "com.github.ben-manes.versions" version "0.38.0"
-    id "org.jetbrains.changelog" version "1.1.2"
+    id("com.matthewprenger.cursegradle") version("1.4.0")
+    id("com.modrinth.minotaur") version("1.2.0")
+    id("com.github.breadmoirai.github-release") version("2.2.12")
+    id("com.github.ben-manes.versions") version("0.38.0")
+    id("org.jetbrains.changelog") version("1.1.2")
 }
 
 allprojects {
@@ -28,8 +28,8 @@ allprojects {
     java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
     tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-        options.compilerArgs = ['-Xlint:deprecation']
+        options.encoding = "UTF-8"
+        options.compilerArgs = ["-Xlint:deprecation"]
     }
 }
 
@@ -63,7 +63,7 @@ curseforge {
     apiKey = "${project.findProperty("curseforgeApiKey")}"
     project {
         id = "${project.curseforge_project_id}"
-        changelogType = 'markdown'
+        changelogType = "markdown"
         addGameVersion project.minecraft_version
         changelog = project.changelog.getLatest().toText()
         releaseType = "${project.releaseType}"
@@ -72,12 +72,12 @@ curseforge {
         }
         relations {
             //Fabric
-            requiredDependency 'fabric-api'
-            optionalDependency 'modmenu'
-            embeddedLibrary 'cloth-config'
+            requiredDependency "fabric-api"
+            optionalDependency "modmenu"
+            embeddedLibrary "cloth-config"
 
             //Forge
-            optionalDependency 'cloth-config-forge'
+            optionalDependency "cloth-config-forge"
         }
     }
     options {
@@ -117,7 +117,7 @@ githubRelease {
 def writeUpdateJson() {
     def version = project.version
     def slurper = new JsonSlurper()
-    def file = project.file('update.json')
+    def file = project.file("update.json")
     def json = slurper.parse(file)
     def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/blob/${project.minecraft_version}/CHANGELOG.md"
 
@@ -127,8 +127,8 @@ def writeUpdateJson() {
     if (!json[project.minecraft_version].containsKey(version.toString()))
         json[project.minecraft_version][version.toString()] = changelogUrl
     json[project.minecraft_version] = json[project.minecraft_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)
-    json['promos']["${project.minecraft_version}-latest"] = version
-    json['promos']["${project.minecraft_version}-recommended"] = version
+    json["promos"]["${project.minecraft_version}-latest"] = version
+    json["promos"]["${project.minecraft_version}-recommended"] = version
 
     println(json)
     file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
@@ -136,7 +136,7 @@ def writeUpdateJson() {
 
 task createUpdateJson(group: "modding") {
     doLast {
-        println('Updating update.json...')
+        println("Updating update.json...")
         writeUpdateJson()
     }
 }

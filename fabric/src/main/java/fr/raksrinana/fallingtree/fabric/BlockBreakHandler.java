@@ -7,18 +7,19 @@ import fr.raksrinana.fallingtree.fabric.tree.breaking.ShiftDownTreeBreakingHandl
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeBuilder;
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import static net.minecraft.util.Util.NIL_UUID;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import static net.minecraft.Util.NIL_UUID;
 
-public class BlockBreakHandler implements net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.Before{
+public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 	@Override
-	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
-		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && !world.isClient()){
+	public boolean beforeBlockBreak(Level world, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
+		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && !world.isClientSide()){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
 				try{
 					return TreeBuilder.getTree(world, blockPos).map(tree -> {
@@ -27,7 +28,7 @@ public class BlockBreakHandler implements net.fabricmc.fabric.api.event.player.P
 					}).orElse(true);
 				}
 				catch(TreeTooBigException e){
-					player.sendSystemMessage(new TranslatableText("chat.fallingtree.tree_too_big", FallingTree.config.getTreesConfiguration().getMaxSize()), NIL_UUID);
+					player.sendMessage(new TranslatableComponent("chat.fallingtree.tree_too_big", FallingTree.config.getTreesConfiguration().getMaxSize()), NIL_UUID);
 					return true;
 				}
 			}

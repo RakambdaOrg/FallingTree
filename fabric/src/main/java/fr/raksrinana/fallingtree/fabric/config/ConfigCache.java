@@ -1,10 +1,10 @@
 package fr.raksrinana.fallingtree.fabric.config;
 
 import fr.raksrinana.fallingtree.fabric.FallingTree;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.tag.BlockTags;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -83,8 +83,8 @@ public class ConfigCache{
 		if(Objects.isNull(adjacentBlocksBase)){
 			adjacentBlocksBase = new HashSet<>();
 			adjacentBlocksBase.add(Blocks.AIR);
-			adjacentBlocksBase.addAll(BlockTags.LEAVES.values());
-			adjacentBlocksBase.addAll(BlockTags.LOGS.values());
+			adjacentBlocksBase.addAll(BlockTags.LEAVES.getValues());
+			adjacentBlocksBase.addAll(BlockTags.LOGS.getValues());
 			adjacentBlocksBase.addAll(getWhitelistedLogs(FallingTree.config.getTreesConfiguration()::getWhitelistedLogsStr));
 			adjacentBlocksBase.addAll(getWhitelistedLeaves(FallingTree.config.getTreesConfiguration()::getWhitelistedLeavesStr));
 			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(FallingTree.config.getTreesConfiguration()::getWhitelistedNonDecayLeavesStr));

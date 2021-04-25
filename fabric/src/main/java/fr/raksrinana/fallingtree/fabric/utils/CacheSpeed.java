@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.utils;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import java.util.Objects;
 import static java.lang.System.currentTimeMillis;
 
@@ -12,7 +12,7 @@ public class CacheSpeed{
 	public CacheSpeed(BlockPos pos, float speed){
 		this.pos = pos;
 		this.speed = speed;
-		this.millis = currentTimeMillis();
+		millis = currentTimeMillis();
 	}
 	
 	public boolean isValid(BlockPos blockPos){
