@@ -64,5 +64,5 @@ loom {
 }
 
 minecraft {
-    refmapName = "fabric.fallingtree.refmap.json"
+    refmapName = "fabric.${project.modId}.refmap.json"
 }
