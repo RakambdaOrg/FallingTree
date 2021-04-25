@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "id": "${modId}",
   "version": "${version}",
-  "name": "FallingTree",
+  "name": "${modName}",
   "description": "Change the way you cut trees.",
   "authors": [
     "RakSrinaNa"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/falling-tree",
-    "issues": "https://github.com/RakSrinaNa/FallingTree/issues",
-    "sources": "https://github.com/RakSrinaNa/FallingTree"
+    "issues": "https://github.com/${repoUser}/${repoName}/issues",
+    "sources": "https://github.com/${repoUser}/${repoName}"
   },
   "license": "GPL-3.0",
   "icon": "logo.png",
