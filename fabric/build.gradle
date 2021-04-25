@@ -62,3 +62,7 @@ loom {
         }
     }
 }
+
+minecraft {
+    refmapName = "fabric.fallingtree.refmap.json"
+}
