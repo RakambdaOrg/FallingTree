@@ -72,7 +72,7 @@ curseforge {
         }
         relations {
             //Fabric
-            requiredDependency "fabric-api"
+            optionalDependency "fabric-api" //It's actually required
             optionalDependency "modmenu"
             embeddedLibrary "cloth-config"
 
