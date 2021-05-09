@@ -11,7 +11,7 @@ This mod will change the way you break trees. 2 modes are available:
 Several options are available in the config file:
 
 * Customize what is considered as a tree (log blocks & leave blocks).
-* Customize what tools can be used (add more axes, allow everything even your fist, ...).
+* Customize what tools can be used (add more axes, allow everything, ...).
 * Turn leaf breaking on/off.
 * Option to disable the effect of the mod by sneaking (can be reversed).
 * Change speed depending on the tree size.
