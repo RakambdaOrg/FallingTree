@@ -4,38 +4,39 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import java.util.Optional;
 import java.util.function.Function;
+import static java.util.Optional.empty;
 
 public class MinRunner implements ValidatorRunner<Min>{
 	private final Function<Integer, Component> errorTextBuilder;
 	
 	public MinRunner(){
-		this.errorTextBuilder = min -> new TranslatableComponent("text.autoconfig.fallingtree.error.valueTooLow", Integer.toString(min));
+		errorTextBuilder = min -> new TranslatableComponent("text.autoconfig.fallingtree.error.valueTooLow", Integer.toString(min));
 	}
 	
 	@Override
 	public Optional<Component> apply(Object value, Min annotation){
-		int min = annotation.value();
-		if(value instanceof Integer){
-			if((Integer) value < min){
+		var min = annotation.value();
+		if(value instanceof Integer val){
+			if(val < min){
 				return Optional.of(errorTextBuilder.apply(min));
 			}
 		}
-		else if(value instanceof Long){
-			if((Long) value < min){
+		else if(value instanceof Long val){
+			if(val < min){
 				return Optional.of(errorTextBuilder.apply(min));
 			}
 		}
-		else if(value instanceof Double){
-			if((Double) value < min){
+		else if(value instanceof Double val){
+			if(val < min){
 				return Optional.of(errorTextBuilder.apply(min));
 			}
 		}
-		else if(value instanceof Float){
-			if((Float) value < min){
+		else if(value instanceof Float val){
+			if(val < min){
 				return Optional.of(errorTextBuilder.apply(min));
 			}
 		}
-		return Optional.empty();
+		return empty();
 	}
 	
 	@Override

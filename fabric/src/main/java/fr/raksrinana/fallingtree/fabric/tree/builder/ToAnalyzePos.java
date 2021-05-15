@@ -68,10 +68,9 @@ public class ToAnalyzePos implements Comparable<ToAnalyzePos>{
 		if(this == o){
 			return true;
 		}
-		if(!(o instanceof ToAnalyzePos)){
+		if(!(o instanceof ToAnalyzePos that)){
 			return false;
 		}
-		ToAnalyzePos that = (ToAnalyzePos) o;
 		return Objects.equals(getCheckPos(), that.getCheckPos());
 	}
 	

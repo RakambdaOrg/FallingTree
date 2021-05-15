@@ -2,10 +2,10 @@
   "required": true,
   "minVersion": "0.8",
   "package": "fr.raksrinana.fallingtree.fabric.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
     "AbstractBlockMixin",
-    "WorldMixin"
+    "LevelMixin"
   ],
   "client": [],
   "server": [],

@@ -1,8 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.tree.builder;
 
-import fr.raksrinana.fallingtree.fabric.FallingTree;
 import fr.raksrinana.fallingtree.fabric.config.ConfigCache;
-import fr.raksrinana.fallingtree.fabric.config.DetectionMode;
 import fr.raksrinana.fallingtree.fabric.tree.Tree;
 import fr.raksrinana.fallingtree.fabric.tree.builder.position.AbovePositionFetcher;
 import fr.raksrinana.fallingtree.fabric.tree.builder.position.AboveYFetcher;
@@ -18,31 +16,30 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import static fr.raksrinana.fallingtree.fabric.config.DetectionMode.ABOVE_CUT;
-import static fr.raksrinana.fallingtree.fabric.config.DetectionMode.ABOVE_Y;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static java.util.Optional.empty;
 
 public class TreeBuilder{
 	private static final EnumSet<Direction> ALL_DIRECTIONS = EnumSet.allOf(Direction.class);
 	
-	public static Optional<Tree> getTree(Level world, BlockPos originPos) throws TreeTooBigException{
-		Block originBlock = world.getBlockState(originPos).getBlock();
+	public static Optional<Tree> getTree(Level level, BlockPos originPos) throws TreeTooBigException{
+		var originBlock = level.getBlockState(originPos).getBlock();
 		if(!FallingTreeUtils.isLogBlock(originBlock)){
 			return empty();
 		}
 		
-		int maxLogCount = FallingTree.config.getTreesConfiguration().getMaxSize();
-		Queue<ToAnalyzePos> toAnalyzePos = new PriorityQueue<>();
-		Set<ToAnalyzePos> analyzedPos = new HashSet<>();
-		Tree tree = new Tree(world, originPos);
+		var maxLogCount = config.getTreesConfiguration().getMaxSize();
+		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
+		var analyzedPos = new HashSet<ToAnalyzePos>();
+		var tree = new Tree(level, originPos);
 		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0));
 		
-		Predicate<BlockPos> boundingBoxSearch = getBoundingBoxSearch(originPos);
-		Predicate<Block> adjacentPredicate = getAdjacentPredicate();
+		var boundingBoxSearch = getBoundingBoxSearch(originPos);
+		var adjacentPredicate = getAdjacentPredicate();
 		
 		try{
 			while(!toAnalyzePos.isEmpty()){
-				ToAnalyzePos analyzingPos = toAnalyzePos.remove();
+				var analyzingPos = toAnalyzePos.remove();
 				tree.addPart(analyzingPos.toTreePart());
 				analyzedPos.add(analyzingPos);
 				
@@ -50,8 +47,8 @@ public class TreeBuilder{
 					throw new TreeTooBigException();
 				}
 				
-				Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, originPos, analyzingPos);
-				Collection<ToAnalyzePos> nextPositions = filterPotentialPos(boundingBoxSearch, adjacentPredicate, world, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
+				var potentialPositions = analyzingPos.getPositionFetcher().getPositions(level, originPos, analyzingPos);
+				var nextPositions = filterPotentialPos(boundingBoxSearch, adjacentPredicate, level, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
 				
 				nextPositions.removeAll(analyzedPos);
 				nextPositions.removeAll(toAnalyzePos);
@@ -62,10 +59,10 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		if(FallingTree.config.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
-			int aroundRequired = FallingTree.config.getTreesConfiguration().getMinimumLeavesAroundRequired();
+		if(config.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
+			var aroundRequired = config.getTreesConfiguration().getMinimumLeavesAroundRequired();
 			if(tree.getTopMostLog()
-					.map(topLog -> getLeavesAround(world, topLog) < aroundRequired)
+					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
 					.orElse(true)){
 				return empty();
 			}
@@ -75,37 +72,34 @@ public class TreeBuilder{
 	}
 	
 	private static Predicate<Block> getAdjacentPredicate(){
-		Collection<Block> whitelist = FallingTree.config.getTreesConfiguration().getWhitelistedAdjacentBlocks();
-		Collection<Block> base = ConfigCache.getInstance().getAdjacentBlocksBase();
+		var whitelist = config.getTreesConfiguration().getWhitelistedAdjacentBlocks();
+		var base = ConfigCache.getInstance().getAdjacentBlocksBase();
 		
 		if(whitelist.isEmpty()){
 			return block -> true;
 		}
-		switch(FallingTree.config.getTreesConfiguration().getAdjacentStopMode()){
-			case STOP_ALL:
-				return block -> {
-					boolean whitelisted = whitelist.contains(block) || base.contains(block);
-					if(!whitelisted){
-						throw new AbortSearchException("Found block " + block + " that isn't whitelisted");
-					}
-					return true;
-				};
-			case STOP_BRANCH:
-				return block -> whitelist.contains(block) || base.contains(block);
-		}
-		return block -> true;
+		return switch(config.getTreesConfiguration().getAdjacentStopMode()){
+			case STOP_ALL -> block -> {
+				var whitelisted = whitelist.contains(block) || base.contains(block);
+				if(!whitelisted){
+					throw new AbortSearchException("Found block " + block + " that isn't whitelisted");
+				}
+				return true;
+			};
+			case STOP_BRANCH -> block -> whitelist.contains(block) || base.contains(block);
+		};
 	}
 	
 	private static Predicate<BlockPos> getBoundingBoxSearch(BlockPos originPos){
-		int radius = FallingTree.config.getTreesConfiguration().getSearchAreaRadius();
+		var radius = config.getTreesConfiguration().getSearchAreaRadius();
 		if(radius < 0){
 			return pos -> true;
 		}
 		
-		int minX = originPos.getX() - radius;
-		int maxX = originPos.getX() + radius;
-		int minZ = originPos.getZ() - radius;
-		int maxZ = originPos.getZ() + radius;
+		var minX = originPos.getX() - radius;
+		var maxX = originPos.getX() + radius;
+		var minZ = originPos.getZ() - radius;
+		var maxZ = originPos.getZ() + radius;
 		
 		return pos -> minX <= pos.getX()
 				&& maxX >= pos.getX()
@@ -114,19 +108,17 @@ public class TreeBuilder{
 	}
 	
 	private static IPositionFetcher getFirstPositionFetcher(){
-		DetectionMode detectionMode = FallingTree.config.getTreesConfiguration().getDetectionMode();
-		if(detectionMode == ABOVE_CUT){
-			return AbovePositionFetcher.getInstance();
-		}
-		if(detectionMode == ABOVE_Y){
-			return AboveYFetcher.getInstance();
-		}
-		return BasicPositionFetcher.getInstance();
+		var detectionMode = config.getTreesConfiguration().getDetectionMode();
+		return switch(detectionMode){
+			case ABOVE_CUT -> AbovePositionFetcher.getInstance();
+			case ABOVE_Y -> AboveYFetcher.getInstance();
+			case WHOLE_TREE -> BasicPositionFetcher.getInstance();
+		};
 	}
 	
 	private static Collection<ToAnalyzePos> filterPotentialPos(Predicate<BlockPos> boundingBoxSearch,
 			Predicate<Block> adjacentPredicate,
-			Level world,
+			Level level,
 			BlockPos originPos,
 			Block originBlock,
 			ToAnalyzePos parent,
@@ -137,7 +129,7 @@ public class TreeBuilder{
 				.filter(pos -> shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos))
 				.filter(pos -> EnumSet.allOf(Direction.class).stream()
 						.map(direction -> pos.getCheckPos().relative(direction))
-						.map(world::getBlockState)
+						.map(level::getBlockState)
 						.map(BlockState::getBlock)
 						.allMatch(adjacentPredicate))
 				.collect(Collectors.toList());
@@ -147,7 +139,7 @@ public class TreeBuilder{
 		return ALL_DIRECTIONS.stream()
 				.map(blockPos::relative)
 				.filter(testPos -> {
-					Block block = world.getBlockState(testPos).getBlock();
+					var block = world.getBlockState(testPos).getBlock();
 					return FallingTreeUtils.isLeafBlock(block) || FallingTreeUtils.isNetherWartOrShroomlight(block) || FallingTreeUtils.isLeafNeedBreakBlock(block);
 				})
 				.count();
@@ -157,11 +149,11 @@ public class TreeBuilder{
 		if(parent.getTreePartType() == TreePartType.LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.getCheckPos())){
 			return true;
 		}
-		if(FallingTree.config.getTreesConfiguration().isBreakNetherTreeWarts()){
+		if(config.getTreesConfiguration().isBreakNetherTreeWarts()){
 			if(check.getTreePartType() == TreePartType.NETHER_WART){
-				BlockPos checkBlockPos = check.getCheckPos();
-				int dx = Math.abs(originPos.getX() - checkBlockPos.getX());
-				int dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
+				var checkBlockPos = check.getCheckPos();
+				var dx = Math.abs(originPos.getX() - checkBlockPos.getX());
+				var dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
 				return dx <= 4 && dz <= 4;
 			}
 		}
@@ -169,7 +161,7 @@ public class TreeBuilder{
 	}
 	
 	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){
-		if(FallingTree.config.getTreesConfiguration().isAllowMixedLogs()){
+		if(config.getTreesConfiguration().isAllowMixedLogs()){
 			return check.getTreePartType() == TreePartType.LOG;
 		}
 		else{

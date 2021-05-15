@@ -1,6 +1,5 @@
 package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
-import fr.raksrinana.fallingtree.fabric.FallingTree;
 import fr.raksrinana.fallingtree.fabric.tree.Tree;
 import fr.raksrinana.fallingtree.fabric.tree.TreePart;
 import fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils;
@@ -10,8 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import java.util.Comparator;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static java.util.Objects.isNull;
 import static net.minecraft.Util.NIL_UUID;
 
 public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
@@ -23,13 +23,13 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	private boolean destroyInstant(Tree tree, Player player, ItemStack tool){
-		Level world = tree.getWorld();
-		int breakableCount = tree.getBreakableCount();
-		int damageMultiplicand = FallingTree.config.getToolsConfiguration().getDamageMultiplicand();
-		int toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
+		var level = tree.getLevel();
+		var breakableCount = tree.getBreakableCount();
+		var damageMultiplicand = config.getToolsConfiguration().getDamageMultiplicand();
+		var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 		
-		double rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
-		if(FallingTree.config.getToolsConfiguration().isPreserve()){
+		var rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
+		if(config.getToolsConfiguration().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
 				player.sendMessage(new TranslatableComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
@@ -39,43 +39,43 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 			}
 		}
 		
-		int brokenCount = tree.getBreakableParts().stream()
+		var brokenCount = tree.getBreakableParts().stream()
 				.sorted(Comparator.comparingInt(TreePart::getSequence).reversed())
 				.limit((int) rawWeightedUsesLeft)
 				.map(TreePart::getBlockPos)
 				.mapToInt(logBlockPos -> {
-					BlockState logState = world.getBlockState(logBlockPos);
-					logState.getBlock().playerDestroy(world, player, logBlockPos, logState, world.getBlockEntity(logBlockPos), tool);
-					world.removeBlock(logBlockPos, false);
+					var logState = level.getBlockState(logBlockPos);
+					logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
+					level.removeBlock(logBlockPos, false);
 					return 1;
 				})
 				.sum();
 		
-		int toolDamage = damageMultiplicand * brokenCount - 1;
+		var toolDamage = damageMultiplicand * brokenCount - 1;
 		if(toolDamage > 0){
 			tool.hurtAndBreak(toolDamage, player, (entity) -> {});
 		}
 		
 		if(brokenCount >= breakableCount){
-			forceBreakDecayLeaves(tree, world);
+			forceBreakDecayLeaves(tree, level);
 		}
 		return true;
 	}
 	
-	private void forceBreakDecayLeaves(Tree tree, Level world){
-		int radius = FallingTree.config.getTreesConfiguration().getLeavesBreakingForceRadius();
+	private void forceBreakDecayLeaves(Tree tree, Level level){
+		var radius = config.getTreesConfiguration().getLeavesBreakingForceRadius();
 		if(radius > 0){
 			tree.getTopMostLog().ifPresent(topLog -> {
-				MutableBlockPos checkPos = new MutableBlockPos();
-				for(int dx = -radius; dx < radius; dx++){
-					for(int dy = -radius; dy < radius; dy++){
-						for(int dz = -radius; dz < radius; dz++){
+				var checkPos = new MutableBlockPos();
+				for(var dx = -radius; dx < radius; dx++){
+					for(var dy = -radius; dy < radius; dy++){
+						for(var dz = -radius; dz < radius; dz++){
 							checkPos.set(topLog.getX() + dx, topLog.getY() + dy, topLog.getZ() + dz);
-							BlockState checkState = world.getBlockState(checkPos);
-							Block checkBlock = checkState.getBlock();
+							var checkState = level.getBlockState(checkPos);
+							var checkBlock = checkState.getBlock();
 							if(FallingTreeUtils.isLeafBlock(checkBlock)){
-								Block.dropResources(checkState, world, checkPos);
-								world.removeBlock(checkPos, false);
+								Block.dropResources(checkState, level, checkPos);
+								level.removeBlock(checkPos, false);
 							}
 						}
 					}
@@ -85,7 +85,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	public static InstantaneousTreeBreakingHandler getInstance(){
-		if(INSTANCE == null){
+		if(isNull(INSTANCE)){
 			INSTANCE = new InstantaneousTreeBreakingHandler();
 		}
 		return INSTANCE;

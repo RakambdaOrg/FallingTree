@@ -24,7 +24,7 @@ public interface ValidatorRunner<T extends Annotation>{
 		T annotation = getAnnotation(field);
 		
 		if(nonNull(annotation)){
-			return !apply(field.get(category), annotation).isPresent();
+			return apply(field.get(category), annotation).isEmpty();
 		}
 		return true;
 	}

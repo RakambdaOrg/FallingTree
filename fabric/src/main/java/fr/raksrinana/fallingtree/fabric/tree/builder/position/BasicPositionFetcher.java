@@ -3,10 +3,9 @@ package fr.raksrinana.fallingtree.fabric.tree.builder.position;
 import fr.raksrinana.fallingtree.fabric.tree.builder.ToAnalyzePos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import java.util.Collection;
-import java.util.Objects;
 import static fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils.getTreePart;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
 
 public class BasicPositionFetcher implements IPositionFetcher{
@@ -16,19 +15,19 @@ public class BasicPositionFetcher implements IPositionFetcher{
 	}
 	
 	@Override
-	public Collection<ToAnalyzePos> getPositions(Level world, BlockPos originPos, ToAnalyzePos parent){
-		BlockPos parentPos = parent.getCheckPos();
-		Block parentBlock = world.getBlockState(parentPos).getBlock();
+	public Collection<ToAnalyzePos> getPositions(Level level, BlockPos originPos, ToAnalyzePos parent){
+		var parentPos = parent.getCheckPos();
+		var parentBlock = level.getBlockState(parentPos).getBlock();
 		return BlockPos.betweenClosedStream(parentPos.above().north().east(), parentPos.below().south().west())
 				.map(checkPos -> {
-					Block checkBlock = world.getBlockState(checkPos).getBlock();
+					var checkBlock = level.getBlockState(checkPos).getBlock();
 					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.immutable(), checkBlock, getTreePart(checkBlock), parent.getSequence() + 1);
 				})
 				.collect(toList());
 	}
 	
 	public static BasicPositionFetcher getInstance(){
-		if(Objects.isNull(INSTANCE)){
+		if(isNull(INSTANCE)){
 			INSTANCE = new BasicPositionFetcher();
 		}
 		return INSTANCE;

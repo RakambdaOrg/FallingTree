@@ -1,13 +1,12 @@
 package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
-import fr.raksrinana.fallingtree.fabric.FallingTree;
 import fr.raksrinana.fallingtree.fabric.tree.Tree;
 import fr.raksrinana.fallingtree.fabric.tree.TreePart;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static java.util.Objects.isNull;
 import static net.minecraft.Util.NIL_UUID;
 
 public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
@@ -19,11 +18,11 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	private boolean destroyShift(Tree tree, Player player, ItemStack tool){
-		Level world = tree.getWorld();
-		int damageMultiplicand = FallingTree.config.getToolsConfiguration().getDamageMultiplicand();
-		int toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
+		var level = tree.getLevel();
+		var damageMultiplicand = config.getToolsConfiguration().getDamageMultiplicand();
+		var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 		
-		if(FallingTree.config.getToolsConfiguration().isPreserve()){
+		if(config.getToolsConfiguration().isPreserve()){
 			if(toolUsesLeft <= damageMultiplicand){
 				player.sendMessage(new TranslatableComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
@@ -33,9 +32,9 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		tree.getLastSequencePart()
 				.map(TreePart::getBlockPos)
 				.ifPresent(logBlock -> {
-					BlockState logState = world.getBlockState(logBlock);
-					logState.getBlock().playerDestroy(world, player, tree.getHitPos(), logState, world.getBlockEntity(logBlock), tool);
-					world.removeBlock(logBlock, false);
+					var logState = level.getBlockState(logBlock);
+					logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(logBlock), tool);
+					level.removeBlock(logBlock, false);
 				});
 		
 		if(damageMultiplicand > 0){
@@ -45,7 +44,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	public static ShiftDownTreeBreakingHandler getInstance(){
-		if(INSTANCE == null){
+		if(isNull(INSTANCE)){
 			INSTANCE = new ShiftDownTreeBreakingHandler();
 		}
 		return INSTANCE;

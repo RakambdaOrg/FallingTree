@@ -9,6 +9,6 @@ public enum BreakMode{
 	}
 	
 	public boolean shouldCheckLeavesAround(){
-		return this.checkLeavesAround;
+		return checkLeavesAround;
 	}
 }

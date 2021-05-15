@@ -1,6 +1,5 @@
 package fr.raksrinana.fallingtree.fabric.mixin;
 
-import fr.raksrinana.fallingtree.fabric.FallingTree;
 import fr.raksrinana.fallingtree.fabric.config.BreakMode;
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeBuilder;
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeTooBigException;
@@ -17,24 +16,26 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Mixin(BlockBehaviour.class)
 public abstract class AbstractBlockMixin{
 	private static final Map<UUID, CacheSpeed> speedCache = new HashMap<>();
 	
 	@Inject(method = "getDestroyProgress", at = @At(value = "TAIL"), cancellable = true)
-	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
-		if(FallingTree.config.getTreesConfiguration().isTreeBreaking() && FallingTree.config.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
+	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
+		if(config.getTreesConfiguration().isTreeBreaking() && config.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
-				CacheSpeed cacheSpeed = speedCache.compute(player.getUUID(), (uuid, speed) -> {
-					if(Objects.isNull(speed) || !speed.isValid(pos)){
+				var cacheSpeed = speedCache.compute(player.getUUID(), (uuid, speed) -> {
+					if(isNull(speed) || !speed.isValid(pos)){
 						speed = getSpeed(player, pos, callbackInfoReturnable.getReturnValue());
 					}
 					return speed;
 				});
-				if(Objects.nonNull(cacheSpeed)){
+				if(nonNull(cacheSpeed)){
 					callbackInfoReturnable.setReturnValue(cacheSpeed.getSpeed());
 				}
 			}
@@ -42,7 +43,7 @@ public abstract class AbstractBlockMixin{
 	}
 	
 	private static CacheSpeed getSpeed(Player player, BlockPos pos, float originalSpeed){
-		double speedMultiplicand = FallingTree.config.getToolsConfiguration().getSpeedMultiplicand();
+		var speedMultiplicand = config.getToolsConfiguration().getSpeedMultiplicand();
 		try{
 			return speedMultiplicand <= 0 ? null :
 					TreeBuilder.getTree(player.getCommandSenderWorld(), pos)

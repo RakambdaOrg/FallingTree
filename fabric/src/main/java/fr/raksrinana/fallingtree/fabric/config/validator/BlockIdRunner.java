@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import static java.util.Objects.isNull;
+import static java.util.Optional.empty;
 
 public class BlockIdRunner implements ValidatorRunner<BlockId>{
 	private static final Pattern MINECRAFT_ID_PATTERN = Pattern.compile("#?[a-z0-9_.-]+:[a-z0-9/._-]+");
@@ -13,24 +15,18 @@ public class BlockIdRunner implements ValidatorRunner<BlockId>{
 	
 	@Override
 	public Optional<Component> apply(Object value, BlockId annotation){
-		if(value == null){
+		if(isNull(value)){
 			return Optional.of(errorText);
 		}
-		if(value instanceof String){
-			String val = value.toString();
-			if(annotation.allowEmpty() && val.isEmpty()){
-				// OK
-			}
-			else{
-				boolean valid = MINECRAFT_ID_PATTERN.matcher((String) value).matches();
-				if(!valid){
+		if(value instanceof String val){
+			if(!annotation.allowEmpty() || !val.isEmpty()){
+				if(!MINECRAFT_ID_PATTERN.matcher((String) value).matches()){
 					return Optional.of(errorText);
 				}
 			}
 		}
-		else if(value instanceof List){
-			List<?> list = (List<?>) value;
-			boolean valid = list.stream()
+		else if(value instanceof List<?> list){
+			var valid = list.stream()
 					.filter(Objects::nonNull)
 					.map(Object::toString)
 					.allMatch(val -> MINECRAFT_ID_PATTERN.matcher(val).matches());
@@ -38,7 +34,7 @@ public class BlockIdRunner implements ValidatorRunner<BlockId>{
 				return Optional.of(errorText);
 			}
 		}
-		return Optional.empty();
+		return empty();
 	}
 	
 	@Override

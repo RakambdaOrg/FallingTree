@@ -5,12 +5,12 @@ import net.minecraft.server.level.ServerLevel;
 import java.util.Objects;
 
 public class LeafBreakingSchedule{
-	private final ServerLevel world;
+	private final ServerLevel level;
 	private final BlockPos blockPos;
 	private int remainingTicks;
 	
-	public LeafBreakingSchedule(ServerLevel world, BlockPos blockPos, int remainingTicks){
-		this.world = world;
+	public LeafBreakingSchedule(ServerLevel level, BlockPos blockPos, int remainingTicks){
+		this.level = level;
 		this.blockPos = blockPos;
 		this.remainingTicks = remainingTicks;
 	}
@@ -27,8 +27,8 @@ public class LeafBreakingSchedule{
 		return blockPos;
 	}
 	
-	public ServerLevel getWorld(){
-		return world;
+	public ServerLevel getLevel(){
+		return level;
 	}
 	
 	@Override
@@ -36,15 +36,14 @@ public class LeafBreakingSchedule{
 		if(this == o){
 			return true;
 		}
-		if(!(o instanceof LeafBreakingSchedule)){
+		if(!(o instanceof LeafBreakingSchedule that)){
 			return false;
 		}
-		LeafBreakingSchedule that = (LeafBreakingSchedule) o;
-		return Objects.equals(getWorld(), that.getWorld()) && Objects.equals(getBlockPos(), that.getBlockPos());
+		return Objects.equals(getLevel(), that.getLevel()) && Objects.equals(getBlockPos(), that.getBlockPos());
 	}
 	
 	@Override
 	public int hashCode(){
-		return Objects.hash(getWorld(), getBlockPos());
+		return Objects.hash(getLevel(), getBlockPos());
 	}
 }

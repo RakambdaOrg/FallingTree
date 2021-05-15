@@ -31,7 +31,8 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric-resource-loader-v0": "*",
-    "fabric": ">=0.20"
+    "fabric": ">=0.20",
+    "java": ">=16"
   },
   "suggests": {
     "modmenu": "*"

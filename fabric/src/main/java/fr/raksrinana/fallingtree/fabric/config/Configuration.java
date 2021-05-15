@@ -3,7 +3,6 @@ package fr.raksrinana.fallingtree.fabric.config;
 import fr.raksrinana.fallingtree.fabric.config.validator.Validators;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Category;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.Tooltip;
@@ -28,7 +27,7 @@ public class Configuration implements ConfigData{
 	public ToolConfiguration tools = new ToolConfiguration();
 	
 	public static Configuration register(){
-		ConfigHolder<Configuration> configHolder = AutoConfig.register(Configuration.class, JanksonConfigSerializer::new);
+		var configHolder = AutoConfig.register(Configuration.class, JanksonConfigSerializer::new);
 		configHolder.registerSaveListener((configHolder1, configuration) -> {
 			ConfigCache.getInstance().invalidate();
 			return InteractionResult.PASS;

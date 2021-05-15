@@ -9,6 +9,7 @@ buildscript {
     }
 }
 
+
 import com.modrinth.minotaur.TaskModrinthUpload
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
@@ -25,11 +26,31 @@ plugins {
 allprojects {
     apply plugin: "java"
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         options.compilerArgs = ["-Xlint:deprecation"]
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = "Minecraft Libraries"
+            url = uri("https://libraries.minecraft.net")
+        }
+        maven {
+            name = 'CurseForge'
+            url = 'https://minecraft.curseforge.com/api/maven'
+        }
+        maven {
+            name = "ModMenu"
+            url = "https://maven.terraformersmc.com/releases/"
+        }
+        maven {
+            name = "Cloth Config"
+            url = "https://maven.shedaniel.me/"
+        }
     }
 }
 
@@ -65,6 +86,7 @@ curseforge {
         id = "${project.curseforge_project_id}"
         changelogType = "markdown"
         addGameVersion project.minecraft_version
+        addGameVersion "Java 16"
         changelog = project.changelog.getLatest().toText()
         releaseType = "${project.releaseType}"
         mainArtifact(jar) {
@@ -72,12 +94,12 @@ curseforge {
         }
         relations {
             //Fabric
-            optionalDependency "fabric-api" //It's actually required
-            optionalDependency "modmenu"
-            embeddedLibrary "cloth-config"
+            optionalDependency("fabric-api") //It's actually required
+            optionalDependency("modmenu")
+            embeddedLibrary("cloth-config")
 
             //Forge
-            optionalDependency "cloth-config-forge"
+            optionalDependency("cloth-config-forge")
         }
     }
     options {
@@ -124,6 +146,8 @@ def writeUpdateJson() {
     json["changelog"] = changelogUrl
 
     // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
+    if(!json.hasProperty(project.minecraft_version))
+        json[project.minecraft_version] = new HashMap<>()
     if (!json[project.minecraft_version].containsKey(version.toString()))
         json[project.minecraft_version][version.toString()] = changelogUrl
     json[project.minecraft_version] = json[project.minecraft_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)

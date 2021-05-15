@@ -1,7 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.config.validator;
 
 import me.shedaniel.autoconfig.ConfigData;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,8 +16,8 @@ public class Validators{
 	
 	public static <T> void runValidators(Class<T> categoryClass, T category, String categoryName) throws ConfigData.ValidationException{
 		try{
-			for(Field field : categoryClass.getDeclaredFields()){
-				for(ValidatorRunner<?> validator : RUNNERS){
+			for(var field : categoryClass.getDeclaredFields()){
+				for(var validator : RUNNERS){
 					if(!validator.validateIfAnnotated(field, category)){
 						throw new ConfigData.ValidationException("FallingTree config field " + categoryName + "." + field.getName() + " is invalid");
 					}

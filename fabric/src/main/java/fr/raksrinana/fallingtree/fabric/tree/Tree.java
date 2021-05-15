@@ -4,17 +4,20 @@ import fr.raksrinana.fallingtree.fabric.utils.TreePartType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import java.util.*;
+import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.LOG;
+import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.NETHER_WART;
 import static java.util.Comparator.comparingInt;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 
 public class Tree{
-	private final Level world;
+	private final Level level;
 	private final Set<TreePart> parts;
 	private final Map<TreePartType, Integer> partCounts;
 	private final BlockPos hitPos;
 	
-	public Tree(Level world, BlockPos blockPos){
-		this.world = world;
+	public Tree(Level level, BlockPos blockPos){
+		this.level = level;
 		hitPos = blockPos;
 		parts = new LinkedHashSet<>();
 		partCounts = new HashMap<>();
@@ -23,7 +26,7 @@ public class Tree{
 	public void addPart(TreePart treePart){
 		parts.add(treePart);
 		partCounts.compute(treePart.getTreePartType(), (key, value) -> {
-			if(Objects.isNull(value)){
+			if(isNull(value)){
 				return 1;
 			}
 			return value + 1;
@@ -48,7 +51,7 @@ public class Tree{
 	
 	public Collection<TreePart> getLogs(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == TreePartType.LOG)
+				.filter(part -> part.getTreePartType() == LOG)
 				.collect(toSet());
 	}
 	
@@ -59,7 +62,7 @@ public class Tree{
 	}
 	
 	public int getLogCount(){
-		return getPartCount(TreePartType.LOG);
+		return getPartCount(LOG);
 	}
 	
 	public Optional<BlockPos> getTopMostLog(){
@@ -76,7 +79,7 @@ public class Tree{
 	
 	public Collection<TreePart> getWarts(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == TreePartType.NETHER_WART)
+				.filter(part -> part.getTreePartType() == NETHER_WART)
 				.collect(toSet());
 	}
 	
@@ -84,8 +87,8 @@ public class Tree{
 		return hitPos;
 	}
 	
-	public Level getWorld(){
-		return world;
+	public Level getLevel(){
+		return level;
 	}
 	
 	public Collection<TreePart> getParts(){

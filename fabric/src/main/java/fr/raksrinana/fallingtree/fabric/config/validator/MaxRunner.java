@@ -4,38 +4,39 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import java.util.Optional;
 import java.util.function.Function;
+import static java.util.Optional.empty;
 
 public class MaxRunner implements ValidatorRunner<Max>{
 	private final Function<Integer, Component> errorTextBuilder;
 	
 	public MaxRunner(){
-		this.errorTextBuilder = max -> new TranslatableComponent("text.autoconfig.fallingtree.error.valueTooHigh", Integer.toString(max));
+		errorTextBuilder = max -> new TranslatableComponent("text.autoconfig.fallingtree.error.valueTooHigh", Integer.toString(max));
 	}
 	
 	@Override
 	public Optional<Component> apply(Object value, Max annotation){
-		int max = annotation.value();
-		if(value instanceof Integer){
-			if((Integer) value > max){
+		var max = annotation.value();
+		if(value instanceof Integer val){
+			if(val > max){
 				return Optional.of(errorTextBuilder.apply(max));
 			}
 		}
-		else if(value instanceof Long){
-			if((Long) value > max){
+		else if(value instanceof Long val){
+			if(val > max){
 				return Optional.of(errorTextBuilder.apply(max));
 			}
 		}
-		else if(value instanceof Double){
-			if((Double) value > max){
+		else if(value instanceof Double val){
+			if(val > max){
 				return Optional.of(errorTextBuilder.apply(max));
 			}
 		}
-		else if(value instanceof Float){
-			if((Float) value > max){
+		else if(value instanceof Float val){
+			if(val > max){
 				return Optional.of(errorTextBuilder.apply(max));
 			}
 		}
-		return Optional.empty();
+		return empty();
 	}
 	
 	@Override

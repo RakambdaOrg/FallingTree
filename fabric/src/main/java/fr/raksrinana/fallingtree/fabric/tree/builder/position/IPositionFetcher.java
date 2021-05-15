@@ -6,5 +6,5 @@ import net.minecraft.world.level.Level;
 import java.util.Collection;
 
 public interface IPositionFetcher{
-	Collection<ToAnalyzePos> getPositions(Level world, BlockPos originPos, ToAnalyzePos parent);
+	Collection<ToAnalyzePos> getPositions(Level level, BlockPos originPos, ToAnalyzePos parent);
 }
