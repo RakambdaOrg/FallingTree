@@ -24,7 +24,9 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	@Override
 	public void breakTree(BlockEvent.BreakEvent event, Tree tree){
 		if(!destroy(tree, event.getPlayer(), event.getPlayer().getItemInHand(MAIN_HAND))){
-			event.setCanceled(true);
+			if(event.isCancelable()){
+				event.setCanceled(true);
+			}
 		}
 	}
 	
