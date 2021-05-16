@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.forge.tree.breaking;
 
+import fr.raksrinana.fallingtree.forge.FallingTreeBlockBreakEvent;
 import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.tree.Tree;
 import fr.raksrinana.fallingtree.forge.tree.TreePart;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import javax.annotation.Nonnull;
 import java.util.Comparator;
@@ -57,6 +59,13 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 				.map(TreePart::getBlockPos)
 				.mapToInt(logBlockPos -> {
 					BlockState logState = world.getBlockState(logBlockPos);
+					if(!tree.getHitPos().equals(logBlockPos)){
+						boolean cancelled = MinecraftForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent(world, logBlockPos, logState, player));
+						if(cancelled){
+							return 0;
+						}
+					}
+					
 					player.awardStat(ITEM_USED.get(logState.getBlock().asItem()));
 					logState.getBlock().playerDestroy(world, player, logBlockPos, logState, world.getBlockEntity(logBlockPos), tool);
 					world.removeBlock(logBlockPos, false);

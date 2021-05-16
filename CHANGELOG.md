@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Changed
+- Forge - Fire events when blocks are broken by the mod. This should improve compatibility with other mods (Project MMO) (#107)
+
 ## [1.16.5-2.11.3] - 2021-04-26
 ### Changed
 - Fabric - Fixed incompatibility with Croptopia (and possibly other mods too) (#100)
