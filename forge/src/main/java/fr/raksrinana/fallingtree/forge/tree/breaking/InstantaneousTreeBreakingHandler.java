@@ -32,10 +32,6 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 	}
 	
-	private int getMaxSize(){
-		return Config.COMMON.getTreesConfiguration().getMaxSize();
-	}
-	
 	private boolean destroy(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
 		World world = tree.getWorld();
 		int breakableCount = tree.getBreakableCount();
