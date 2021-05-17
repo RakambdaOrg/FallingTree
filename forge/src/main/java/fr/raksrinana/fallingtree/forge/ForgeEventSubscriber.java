@@ -122,6 +122,9 @@ public final class ForgeEventSubscriber{
 	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
 		if(Config.COMMON.getTreesConfiguration().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isClientSide()){
+			if(event instanceof FallingTreeBlockBreakEvent){
+				return;
+			}
 			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
 				try{
 					TreeBuilder.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
