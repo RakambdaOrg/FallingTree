@@ -8,7 +8,7 @@ assignees: RakSrinaNa
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+<!--- A clear and concise description of what the bug is. -->
 
 **To Reproduce**
 Steps to reproduce the behavior:
@@ -16,8 +16,8 @@ Steps to reproduce the behavior:
 2. 
 
 **Infos:**
- - Minecraft version: [e.g. 1.0.0]
- - Mod version: [e.g. 1.0.0]
- - Fabric version: [e.g. 1.0.0]
+ - Minecraft version:      <!-- [e.g. 1.0.0] -->
+ - Mod version:            <!-- [e.g. 1.0.0] -->
+ - Fabric version:         <!-- [e.g. 1.0.0] -->
 
-If you provide a crash report please include it in a readable way (like pastebin or gist for example).
+<!-- If you provide a crash report please include it in a readable way (like pastebin or gist for example). -->
