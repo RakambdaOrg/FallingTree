@@ -5,11 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Validators{
-	public static final MinRunner MIN_RUNNER = new MinRunner();
-	public static final MaxRunner MAX_RUNNER = new MaxRunner();
-	public static final MinMaxRunner MIN_MAX_RUNNER = new MinMaxRunner();
-	public static final BlockIdRunner BLOCK_ID_RUNNER = new BlockIdRunner();
-	public static final ItemIdRunner ITEM_ID_RUNNER = new ItemIdRunner();
+	private static final MinRunner MIN_RUNNER = new MinRunner();
+	private static final MaxRunner MAX_RUNNER = new MaxRunner();
+	private static final MinMaxRunner MIN_MAX_RUNNER = new MinMaxRunner();
+	private static final BlockIdRunner BLOCK_ID_RUNNER = new BlockIdRunner();
+	private static final ItemIdRunner ITEM_ID_RUNNER = new ItemIdRunner();
+	
 	public static final List<ValidatorRunner<?>> RUNNERS = Arrays.asList(MIN_RUNNER, MAX_RUNNER, MIN_MAX_RUNNER, BLOCK_ID_RUNNER, ITEM_ID_RUNNER);
 	
 	private Validators(){}

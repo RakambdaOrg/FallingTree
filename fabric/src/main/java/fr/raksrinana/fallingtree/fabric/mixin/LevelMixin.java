@@ -28,7 +28,7 @@ public abstract class LevelMixin{
 	}
 	
 	private static void onUpdate(ServerLevel level, BlockPos eventPos, BlockState eventState, EnumSet<Direction> directions){
-		if(config.getTreesConfiguration().isLeavesBreaking()){
+		if(config.getTrees().isLeavesBreaking()){
 			var eventBlock = eventState.getBlock();
 			if(eventBlock.equals(AIR)){
 				for(var direction : directions){

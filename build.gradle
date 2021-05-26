@@ -5,7 +5,7 @@ buildscript {
 
     dependencies {
         classpath("com.google.guava:guava:30.1.1-jre")
-        classpath("commons-io:commons-io:2.8.0")
+        classpath("commons-io:commons-io:2.9.0")
     }
 }
 
@@ -17,7 +17,7 @@ import org.jetbrains.changelog.ExtensionsKt
 
 plugins {
     id("com.matthewprenger.cursegradle") version("1.4.0")
-    id("com.modrinth.minotaur") version("1.2.0")
+    id("com.modrinth.minotaur") version("1.2.1")
     id("com.github.breadmoirai.github-release") version("2.2.12")
     id("com.github.ben-manes.versions") version("0.38.0")
     id("org.jetbrains.changelog") version("1.1.2")
@@ -31,6 +31,11 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         options.compilerArgs = ["-Xlint:deprecation"]
+    }
+
+    dependencies {
+        compileOnly(libs.lombok)
+        annotationProcessor(libs.lombok)
     }
 
     repositories {
@@ -58,8 +63,8 @@ group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
 task buildJar(type: Jar, group: "modding") {
-    dependsOn ":common:jar", ":fabric:build", ":forge:build"
-    finalizedBy ":forge:signJar"
+    dependsOn ":common:jar", ":fabric:build"//, ":forge:build"
+    //finalizedBy ":forge:signJar"
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from zipTree("common/build/libs/common-${project.version}.jar"),
@@ -146,7 +151,7 @@ def writeUpdateJson() {
     json["changelog"] = changelogUrl
 
     // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
-    if(!json.hasProperty(project.minecraft_version))
+    if (!json.hasProperty(project.minecraft_version))
         json[project.minecraft_version] = new HashMap<>()
     if (!json[project.minecraft_version].containsKey(version.toString()))
         json[project.minecraft_version][version.toString()] = changelogUrl

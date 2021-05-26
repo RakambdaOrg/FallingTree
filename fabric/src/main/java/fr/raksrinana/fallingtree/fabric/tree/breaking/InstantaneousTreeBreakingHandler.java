@@ -25,11 +25,11 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private boolean destroyInstant(Tree tree, Player player, ItemStack tool){
 		var level = tree.getLevel();
 		var breakableCount = tree.getBreakableCount();
-		var damageMultiplicand = config.getToolsConfiguration().getDamageMultiplicand();
+		var damageMultiplicand = config.getTools().getDamageMultiplicand();
 		var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 		
 		var rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
-		if(config.getToolsConfiguration().isPreserve()){
+		if(config.getTools().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
 				player.sendMessage(new TranslatableComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
@@ -40,9 +40,9 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		var brokenCount = tree.getBreakableParts().stream()
-				.sorted(Comparator.comparingInt(TreePart::getSequence).reversed())
+				.sorted(Comparator.comparingInt(TreePart::sequence).reversed())
 				.limit((int) rawWeightedUsesLeft)
-				.map(TreePart::getBlockPos)
+				.map(TreePart::blockPos)
 				.mapToInt(logBlockPos -> {
 					var logState = level.getBlockState(logBlockPos);
 					logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
@@ -63,7 +63,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	private void forceBreakDecayLeaves(Tree tree, Level level){
-		var radius = config.getTreesConfiguration().getLeavesBreakingForceRadius();
+		var radius = config.getTrees().getLeavesBreakingForceRadius();
 		if(radius > 0){
 			tree.getTopMostLog().ifPresent(topLog -> {
 				var checkPos = new MutableBlockPos();

@@ -15,6 +15,7 @@ pluginManagement {
         id("fabric-loom").version(loom_version)
     }
 }
+
 rootProject.name = "FallingTree"
 include("common")
 include("fabric")

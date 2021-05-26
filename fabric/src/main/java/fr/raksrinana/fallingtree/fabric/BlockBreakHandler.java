@@ -20,16 +20,16 @@ import static net.minecraft.Util.NIL_UUID;
 public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 	@Override
 	public boolean beforeBlockBreak(Level world, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
-		if(config.getTreesConfiguration().isTreeBreaking() && !world.isClientSide()){
+		if(config.getTrees().isTreeBreaking() && !world.isClientSide()){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
 				try{
 					return TreeBuilder.getTree(world, blockPos).map(tree -> {
-						var breakMode = config.getTreesConfiguration().getBreakMode();
+						var breakMode = config.getTrees().getBreakMode();
 						return getBreakingHandler(breakMode).breakTree(player, tree);
 					}).orElse(true);
 				}
 				catch(TreeTooBigException e){
-					player.sendMessage(new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTreesConfiguration().getMaxSize()), NIL_UUID);
+					player.sendMessage(new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTrees().getMaxSize()), NIL_UUID);
 					return true;
 				}
 			}

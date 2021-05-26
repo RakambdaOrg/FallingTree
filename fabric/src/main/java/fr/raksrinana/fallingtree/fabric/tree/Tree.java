@@ -1,6 +1,8 @@
 package fr.raksrinana.fallingtree.fabric.tree;
 
 import fr.raksrinana.fallingtree.fabric.utils.TreePartType;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import java.util.*;
@@ -10,22 +12,19 @@ import static java.util.Comparator.comparingInt;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 
+@RequiredArgsConstructor
 public class Tree{
+	@Getter
 	private final Level level;
-	private final Set<TreePart> parts;
-	private final Map<TreePartType, Integer> partCounts;
+	@Getter
 	private final BlockPos hitPos;
-	
-	public Tree(Level level, BlockPos blockPos){
-		this.level = level;
-		hitPos = blockPos;
-		parts = new LinkedHashSet<>();
-		partCounts = new HashMap<>();
-	}
+	@Getter
+	private final Set<TreePart> parts = new LinkedHashSet<>();
+	private final Map<TreePartType, Integer> partCounts = new HashMap<>();
 	
 	public void addPart(TreePart treePart){
 		parts.add(treePart);
-		partCounts.compute(treePart.getTreePartType(), (key, value) -> {
+		partCounts.compute(treePart.treePartType(), (key, value) -> {
 			if(isNull(value)){
 				return 1;
 			}
@@ -46,18 +45,18 @@ public class Tree{
 	
 	public Optional<TreePart> getLastSequencePart(){
 		return getParts().stream()
-				.max(comparingInt(TreePart::getSequence));
+				.max(comparingInt(TreePart::sequence));
 	}
 	
 	public Collection<TreePart> getLogs(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == LOG)
+				.filter(part -> part.treePartType() == LOG)
 				.collect(toSet());
 	}
 	
 	public Collection<TreePart> getBreakableParts(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType().isBreakable())
+				.filter(part -> part.treePartType().isBreakable())
 				.collect(toSet());
 	}
 	
@@ -67,31 +66,19 @@ public class Tree{
 	
 	public Optional<BlockPos> getTopMostLog(){
 		return getLogs().stream()
-				.map(TreePart::getBlockPos)
+				.map(TreePart::blockPos)
 				.max(comparingInt(BlockPos::getY));
 	}
 	
 	private Optional<BlockPos> getTopMostPart(){
 		return getParts().stream()
-				.map(TreePart::getBlockPos)
+				.map(TreePart::blockPos)
 				.max(comparingInt(BlockPos::getY));
 	}
 	
 	public Collection<TreePart> getWarts(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == NETHER_WART)
+				.filter(part -> part.treePartType() == NETHER_WART)
 				.collect(toSet());
-	}
-	
-	public BlockPos getHitPos(){
-		return hitPos;
-	}
-	
-	public Level getLevel(){
-		return level;
-	}
-	
-	public Collection<TreePart> getParts(){
-		return parts;
 	}
 }

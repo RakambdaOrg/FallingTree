@@ -27,7 +27,7 @@ public abstract class AbstractBlockMixin{
 	
 	@Inject(method = "getDestroyProgress", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
-		if(config.getTreesConfiguration().isTreeBreaking() && config.getTreesConfiguration().getBreakMode() == BreakMode.INSTANTANEOUS){
+		if(config.getTrees().isTreeBreaking() && config.getTrees().getBreakMode() == BreakMode.INSTANTANEOUS){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
 				var cacheSpeed = speedCache.compute(player.getUUID(), (uuid, speed) -> {
 					if(isNull(speed) || !speed.isValid(pos)){
@@ -43,7 +43,7 @@ public abstract class AbstractBlockMixin{
 	}
 	
 	private static CacheSpeed getSpeed(Player player, BlockPos pos, float originalSpeed){
-		var speedMultiplicand = config.getToolsConfiguration().getSpeedMultiplicand();
+		var speedMultiplicand = config.getTools().getSpeedMultiplicand();
 		try{
 			return speedMultiplicand <= 0 ? null :
 					TreeBuilder.getTree(player.getCommandSenderWorld(), pos)

@@ -30,6 +30,7 @@ public class FallingTree implements ModInitializer{
 	private static void registerGui(){
 		var registry = AutoConfig.getGuiRegistry(Configuration.class);
 		
+		//noinspection unchecked
 		Validators.RUNNERS.forEach(runner -> registry.registerAnnotationTransformer((guis, i13n, field, config, defaults, guiProvider) -> guis.stream()
 				.peek(gui -> gui.setErrorSupplier(() -> runner.apply(gui.getValue(), field)))
 				.collect(toList()), runner.getAnnotationClass()));

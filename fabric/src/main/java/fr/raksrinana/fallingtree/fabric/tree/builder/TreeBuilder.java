@@ -28,7 +28,7 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		var maxLogCount = config.getTreesConfiguration().getMaxSize();
+		var maxLogCount = config.getTrees().getMaxSize();
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
 		var tree = new Tree(level, originPos);
@@ -47,7 +47,7 @@ public class TreeBuilder{
 					throw new TreeTooBigException();
 				}
 				
-				var potentialPositions = analyzingPos.getPositionFetcher().getPositions(level, originPos, analyzingPos);
+				var potentialPositions = analyzingPos.positionFetcher().getPositions(level, originPos, analyzingPos);
 				var nextPositions = filterPotentialPos(boundingBoxSearch, adjacentPredicate, level, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
 				
 				nextPositions.removeAll(analyzedPos);
@@ -59,8 +59,8 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		if(config.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
-			var aroundRequired = config.getTreesConfiguration().getMinimumLeavesAroundRequired();
+		if(config.getTrees().getBreakMode().isCheckLeavesAround()){
+			var aroundRequired = config.getTrees().getMinimumLeavesAroundRequired();
 			if(tree.getTopMostLog()
 					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
 					.orElse(true)){
@@ -72,13 +72,13 @@ public class TreeBuilder{
 	}
 	
 	private static Predicate<Block> getAdjacentPredicate(){
-		var whitelist = config.getTreesConfiguration().getWhitelistedAdjacentBlocks();
+		var whitelist = config.getTrees().getWhitelistedAdjacentBlockBLocks();
 		var base = ConfigCache.getInstance().getAdjacentBlocksBase();
 		
 		if(whitelist.isEmpty()){
 			return block -> true;
 		}
-		return switch(config.getTreesConfiguration().getAdjacentStopMode()){
+		return switch(config.getTrees().getAdjacentStopMode()){
 			case STOP_ALL -> block -> {
 				var whitelisted = whitelist.contains(block) || base.contains(block);
 				if(!whitelisted){
@@ -91,7 +91,7 @@ public class TreeBuilder{
 	}
 	
 	private static Predicate<BlockPos> getBoundingBoxSearch(BlockPos originPos){
-		var radius = config.getTreesConfiguration().getSearchAreaRadius();
+		var radius = config.getTrees().getSearchAreaRadius();
 		if(radius < 0){
 			return pos -> true;
 		}
@@ -108,7 +108,7 @@ public class TreeBuilder{
 	}
 	
 	private static IPositionFetcher getFirstPositionFetcher(){
-		var detectionMode = config.getTreesConfiguration().getDetectionMode();
+		var detectionMode = config.getTrees().getDetectionMode();
 		return switch(detectionMode){
 			case ABOVE_CUT -> AbovePositionFetcher.getInstance();
 			case ABOVE_Y -> AboveYFetcher.getInstance();
@@ -128,7 +128,7 @@ public class TreeBuilder{
 				.filter(pos -> !analyzedPos.contains(pos))
 				.filter(pos -> shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos))
 				.filter(pos -> EnumSet.allOf(Direction.class).stream()
-						.map(direction -> pos.getCheckPos().relative(direction))
+						.map(direction -> pos.checkPos().relative(direction))
 						.map(level::getBlockState)
 						.map(BlockState::getBlock)
 						.allMatch(adjacentPredicate))
@@ -146,26 +146,26 @@ public class TreeBuilder{
 	}
 	
 	private static boolean shouldIncludeInChain(Predicate<BlockPos> boundingBoxSearch, BlockPos originPos, Block originBlock, ToAnalyzePos parent, ToAnalyzePos check){
-		if(parent.getTreePartType() == TreePartType.LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.getCheckPos())){
+		if(parent.treePartType() == TreePartType.LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.checkPos())){
 			return true;
 		}
-		if(config.getTreesConfiguration().isBreakNetherTreeWarts()){
-			if(check.getTreePartType() == TreePartType.NETHER_WART){
-				var checkBlockPos = check.getCheckPos();
+		if(config.getTrees().isBreakNetherTreeWarts()){
+			if(check.treePartType() == TreePartType.NETHER_WART){
+				var checkBlockPos = check.checkPos();
 				var dx = Math.abs(originPos.getX() - checkBlockPos.getX());
 				var dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
 				return dx <= 4 && dz <= 4;
 			}
 		}
-		return check.getTreePartType() == TreePartType.LEAF_NEED_BREAK;
+		return check.treePartType() == TreePartType.LEAF_NEED_BREAK;
 	}
 	
 	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){
-		if(config.getTreesConfiguration().isAllowMixedLogs()){
-			return check.getTreePartType() == TreePartType.LOG;
+		if(config.getTrees().isAllowMixedLogs()){
+			return check.treePartType() == TreePartType.LOG;
 		}
 		else{
-			return check.getCheckBlock().equals(parentLogBlock);
+			return check.checkBlock().equals(parentLogBlock);
 		}
 	}
 }

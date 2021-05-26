@@ -1,34 +1,20 @@
 package fr.raksrinana.fallingtree.fabric.leaves;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import java.util.Objects;
 
+@Getter
+@AllArgsConstructor
 public class LeafBreakingSchedule{
 	private final ServerLevel level;
 	private final BlockPos blockPos;
 	private int remainingTicks;
 	
-	public LeafBreakingSchedule(ServerLevel level, BlockPos blockPos, int remainingTicks){
-		this.level = level;
-		this.blockPos = blockPos;
-		this.remainingTicks = remainingTicks;
-	}
-	
 	public void tick(){
 		remainingTicks--;
-	}
-	
-	public int getRemainingTicks(){
-		return remainingTicks;
-	}
-	
-	public BlockPos getBlockPos(){
-		return blockPos;
-	}
-	
-	public ServerLevel getLevel(){
-		return level;
 	}
 	
 	@Override

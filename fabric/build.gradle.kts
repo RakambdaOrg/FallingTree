@@ -3,14 +3,9 @@ plugins {
 }
 
 dependencies {
-    val minecraft_version: String by project
-    val loader_version: String by project
-    val fabric_version: String by project
-
-    minecraft("com.mojang:minecraft:${minecraft_version}")
+    minecraft(libs.minecraft)
     mappings(minecraft.officialMojangMappings())
-    modImplementation("net.fabricmc:fabric-loader:${loader_version}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+    modImplementation(libs.bundles.fabric)
     implementation(project(":common"))
 
     modImplementation(libs.modmenu) {
@@ -26,7 +21,8 @@ dependencies {
 
 tasks {
     processResources {
-//        duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
         from("src/main/resources", "../common/src/main/resources")
 
         filesMatching("fabric.mod.json") {

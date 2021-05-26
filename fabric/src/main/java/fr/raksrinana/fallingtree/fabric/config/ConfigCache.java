@@ -85,11 +85,11 @@ public class ConfigCache{
 			adjacentBlocksBase.add(Blocks.AIR);
 			adjacentBlocksBase.addAll(BlockTags.LEAVES.getValues());
 			adjacentBlocksBase.addAll(BlockTags.LOGS.getValues());
-			adjacentBlocksBase.addAll(getWhitelistedLogs(FallingTree.config.getTreesConfiguration()::getWhitelistedLogsStr));
-			adjacentBlocksBase.addAll(getWhitelistedLeaves(FallingTree.config.getTreesConfiguration()::getWhitelistedLeavesStr));
-			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(FallingTree.config.getTreesConfiguration()::getWhitelistedNonDecayLeavesStr));
-			adjacentBlocksBase.removeAll(getBlacklistedLogs(FallingTree.config.getTreesConfiguration()::getBlacklistedLogsStr));
-			adjacentBlocksBase.removeAll(getBlacklistedLeaves(FallingTree.config.getTreesConfiguration()::getBlacklistedLeavesStr));
+			adjacentBlocksBase.addAll(getWhitelistedLogs(FallingTree.config.getTrees()::getWhitelistedLogs));
+			adjacentBlocksBase.addAll(getWhitelistedLeaves(FallingTree.config.getTrees()::getWhitelistedLeaves));
+			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(FallingTree.config.getTrees()::getWhitelistedNonDecayLeaves));
+			adjacentBlocksBase.removeAll(getBlacklistedLogs(FallingTree.config.getTrees()::getBlacklistedLogs));
+			adjacentBlocksBase.removeAll(getBlacklistedLeaves(FallingTree.config.getTrees()::getBlacklistedLeaves));
 		}
 		return adjacentBlocksBase;
 	}

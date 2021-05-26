@@ -19,10 +19,10 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	private boolean destroyShift(Tree tree, Player player, ItemStack tool){
 		var level = tree.getLevel();
-		var damageMultiplicand = config.getToolsConfiguration().getDamageMultiplicand();
+		var damageMultiplicand = config.getTools().getDamageMultiplicand();
 		var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 		
-		if(config.getToolsConfiguration().isPreserve()){
+		if(config.getTools().isPreserve()){
 			if(toolUsesLeft <= damageMultiplicand){
 				player.sendMessage(new TranslatableComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
@@ -30,7 +30,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		tree.getLastSequencePart()
-				.map(TreePart::getBlockPos)
+				.map(TreePart::blockPos)
 				.ifPresent(logBlock -> {
 					var logState = level.getBlockState(logBlock);
 					logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(logBlock), tool);

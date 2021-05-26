@@ -72,22 +72,22 @@ public class FallingTreeUtils{
 	
 	public static boolean isLeafBlock(Block block){
 		var isWhitelistedBlock = LEAVES.contains(block)
-				|| config.getTreesConfiguration().getWhitelistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
+				|| config.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
-			var isBlacklistedBlock = config.getTreesConfiguration().getBlacklistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
+			var isBlacklistedBlock = config.getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
 	}
 	
 	public static boolean canPlayerBreakTree(Player player){
-		var toolConfiguration = config.getToolsConfiguration();
+		var toolConfiguration = config.getTools();
 		var heldItem = player.getMainHandItem().getItem();
 		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
 				|| AXES.contains(heldItem)
-				|| toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
+				|| toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
 		if(isWhitelistedTool){
-			var isBlacklistedTool = toolConfiguration.getBlacklisted().stream().anyMatch(tool -> tool.equals(heldItem));
+			var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
 			return !isBlacklistedTool;
 		}
 		return false;
@@ -107,8 +107,8 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafNeedBreakBlock(Block block){
-		return config.getTreesConfiguration()
-				.getWhitelistedNonDecayLeaves().stream()
+		return config.getTrees()
+				.getWhitelistedNonDecayLeaveBlocks().stream()
 				.anyMatch(log -> log.equals(block));
 	}
 	
@@ -124,9 +124,9 @@ public class FallingTreeUtils{
 	
 	public static boolean isLogBlock(Block block){
 		var isWhitelistedBlock = LOGS.contains(block)
-				|| config.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
+				|| config.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
-			var isBlacklistedBlock = config.getTreesConfiguration().getBlacklistedLogs().stream().anyMatch(log -> log.equals(block));
+			var isBlacklistedBlock = config.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
