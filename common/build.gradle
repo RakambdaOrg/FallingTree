@@ -9,7 +9,7 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
     implementation("org.apache.logging.log4j:log4j-api:2.14.1")
-    implementation("org.lwjgl:lwjgl-glfw:3.2.2")
+    implementation("org.lwjgl:lwjgl-glfw:3.2.3")
     implementation("com.google.guava:guava:21.0")
     implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("com.google.code.gson:gson:2.8.7")
