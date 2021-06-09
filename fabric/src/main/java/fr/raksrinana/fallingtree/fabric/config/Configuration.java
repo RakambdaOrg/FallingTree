@@ -17,16 +17,16 @@ import net.minecraft.world.InteractionResult;
 public class Configuration implements ConfigData{
 	@Tooltip(count = 2)
 	@Comment("When set to true, a tree will only be chopped down if the player is sneaking.")
-	private boolean reverseSneaking = false;
+	public boolean reverseSneaking = false;
 	@Tooltip(count = 2)
 	@Comment("When set to true, the mod will cut down trees in creative too.")
-	private boolean breakInCreative = false;
+	public boolean breakInCreative = false;
 	@Category("trees")
 	@TransitiveObject
-	private TreeConfiguration trees = new TreeConfiguration();
+	public TreeConfiguration trees = new TreeConfiguration();
 	@Category("tools")
 	@TransitiveObject
-	private ToolConfiguration tools = new ToolConfiguration();
+	public ToolConfiguration tools = new ToolConfiguration();
 	
 	public static Configuration register(){
 		var configHolder = AutoConfig.register(Configuration.class, JanksonConfigSerializer::new);
