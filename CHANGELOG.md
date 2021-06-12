@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Changed
+- Fix wrong tooltip (max tree size applies to every breaking mode) (#129)
+
+## [1.17.0-2.11.4] - 2021-06-10
+### Changed
 - Port to 1.17
 
 ## [1.16.5-2.11.4] - 2021-05-17

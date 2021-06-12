@@ -175,7 +175,7 @@ changelog {
     version = "${project.minecraft_version}-${project.version}"
     path = "${project.projectDir}/CHANGELOG.md"
     header = { "[${project.minecraft_version}-${project.version}] - ${ExtensionsKt.date("yyyy-MM-dd")}" }
-    headerParserRegex = ~/\d+\.\d+\.\d+-\d+\.\d+\.\d+/
+    headerParserRegex = ~/\d+\.\d+(\.\d+)?-\d+\.\d+\.\d+/
     itemPrefix = "-"
     keepUnreleasedSection = true
     unreleasedTerm = "[Unreleased]"
