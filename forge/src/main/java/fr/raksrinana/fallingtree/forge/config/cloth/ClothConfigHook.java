@@ -115,7 +115,7 @@ public class ClothConfigHook{
 				.startIntField(new TranslationTextComponent(getFieldName("trees", "maxSize")), config.getMaxSize())
 				.setDefaultValue(100)
 				.setMin(1)
-				.setTooltip(getTooltips("trees", "maxSize", 4))
+				.setTooltip(getTooltips("trees", "maxSize", 2))
 				.setSaveConsumer(config::setMaxSize)
 				.build();
 		BooleanListEntry treeBreakingEntry = builder.entryBuilder()
