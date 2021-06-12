@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Changed
+- Fix wrong tooltip (max tree size applies to every breaking mode) (#129)
+
+## [1.16.5-2.11.4] - 2021-06-12
+### Changed
 - Forge - Fire events when blocks are broken by the mod. This should improve compatibility with other mods (Project MMO) (#107)
 
 ## [1.16.5-2.11.3] - 2021-04-26
