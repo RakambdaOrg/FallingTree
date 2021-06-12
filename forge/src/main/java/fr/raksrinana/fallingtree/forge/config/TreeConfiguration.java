@@ -40,7 +40,6 @@ public class TreeConfiguration{
 	};
 	private static final String[] DESC_MAX_SIZE = {
 			"The maximum size of a tree. If there's more logs than this value the tree won't be cut.",
-			"INFO: Only in INSTANTANEOUS mode."
 	};
 	private static final String[] DESC_TREE_BREAKING = {
 			"When set to true, the mod will cut trees with one cut."
