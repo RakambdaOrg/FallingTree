@@ -5,7 +5,9 @@ import fr.raksrinana.fallingtree.fabric.tree.TreePart;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.NETHER_WART;
 import static java.util.Objects.isNull;
 import static net.minecraft.Util.NIL_UUID;
 
@@ -30,17 +32,29 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		tree.getLastSequencePart()
-				.map(TreePart::blockPos)
-				.ifPresent(logBlock -> {
-					var logState = level.getBlockState(logBlock);
-					logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(logBlock), tool);
-					level.removeBlock(logBlock, false);
+				.ifPresent(treePart -> {
+					var breakCount = 0;
+					if(treePart.treePartType() == NETHER_WART && config.getTrees().isInstantlyBreakWarts()){
+						breakCount = tree.getWarts().stream()
+								.mapToInt(wart -> breakPart(tree, wart, level, player, tool, damageMultiplicand))
+								.sum();
+					}
+					else{
+						breakCount = breakPart(tree, treePart, level, player, tool, damageMultiplicand);
+					}
+					
+					tool.hurtAndBreak(Math.max(1, damageMultiplicand * breakCount), player, (entity) -> {});
 				});
 		
-		if(damageMultiplicand > 0){
-			tool.hurtAndBreak(damageMultiplicand, player, (entity) -> {});
-		}
 		return false;
+	}
+	
+	private int breakPart(Tree tree, TreePart treePart, Level level, Player player, ItemStack tool, int damageMultiplicand){
+		var blockPos = treePart.blockPos();
+		var logState = level.getBlockState(blockPos);
+		logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(blockPos), tool);
+		level.removeBlock(blockPos, false);
+		return 1;
 	}
 	
 	public static ShiftDownTreeBreakingHandler getInstance(){

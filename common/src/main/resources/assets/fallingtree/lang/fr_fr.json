@@ -20,7 +20,6 @@
   "text.autoconfig.fallingtree.option.tools.whitelisted": "Outils autorisés",
   "text.autoconfig.fallingtree.option.tools.blacklisted": "Outils bannis",
   "text.autoconfig.fallingtree.option.tools.preserve": "Préserver les outils",
-  "text.autoconfig.fallingtree.option.tools.ignoreTools": "Ne pas casser les outils",
   "text.autoconfig.fallingtree.option.tools.damageMultiplicand": "Multiplicateur de dégats",
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand": "Multiplicateur de vitesse",
   "chat.fallingtree.tree_too_big": "Cet arbre est trop grand et ne peut être coupé en un coup (max: %d)",

@@ -24,10 +24,11 @@ public class ToolConfiguration{
 	@ItemId
 	public List<String> blacklisted = new ArrayList<>();
 	@Tooltip(count = 3)
-	@Comment("When set to true, when a tree is broken and the tool is about to break we will just break enough blocks so that the tool is left at 1 of durability.")
+	@Comment("When set to true, when a tree is broken and the tool is about to break we will just break enough blocks so that the tool is left at 1 of durability.\n" +
+			"INFO: Only in instantaneous mode")
 	public boolean preserve = false;
 	@Tooltip(count = 4)
-	@Comment("When set to true, the mod will be activated no matter what you have in your hand (or empty hand). \n" +
+	@Comment("When set to true, the mod will be activated no matter what you have in your hand. \n" +
 			"INFO: Blacklist still can be use to restrict some tools.")
 	public boolean ignoreTools = false;
 	@Tooltip(count = 7)
