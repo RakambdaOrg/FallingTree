@@ -1,10 +1,10 @@
 [versions]
-modmenu-version = "2.0.0-beta.7"
+modmenu-version = "2.0.2"
 cloth-config-fabric-version = "5.0.34"
 lombok-version = "1.18.20"
 minecraft-version = "1.17"
-fabric-loader-version = "0.11.3"
-fabric-api-version = "0.34.9+1.17"
+fabric-loader-version = "0.11.6"
+fabric-api-version = "0.35.2+1.17"
 
 [libraries]
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }

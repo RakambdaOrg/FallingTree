@@ -9,7 +9,7 @@ public enum TreePartType{
 	LOG(true),
 	NETHER_WART(true),
 	LEAF_NEED_BREAK(true),
+	LEAF(false),
 	OTHER(false);
-	
 	private final boolean breakable;
 }

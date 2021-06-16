@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.Block;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import static fr.raksrinana.fallingtree.fabric.config.BreakOrder.FURTHEST_FIRST;
+import static fr.raksrinana.fallingtree.fabric.config.MaxSizeAction.ABORT;
 
 @Getter
 public class TreeConfiguration{
@@ -53,10 +55,28 @@ public class TreeConfiguration{
 			ABOVE_Y will break only blocks that are above the y value of the cut point.""")
 	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public DetectionMode detectionMode = DetectionMode.WHOLE_TREE;
+	@Tooltip(count = 3)
+	@Comment("The maximum number of blocks to scan when trying to detect a tree. If there's more than this value the tree won't be cut.")
+	@Min(1)
+	public int maxScanSize = 500;
 	@Tooltip(count = 2)
 	@Comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.")
 	@Min(1)
 	public int maxSize = 100;
+	@Tooltip(count = 4)
+	@Comment("""
+            What to do when the max size of a tree is reached.\s
+            ABORT: Tree won't be cut.\s
+            CUT: Tree will still be cut leaving some of it untouched.""")
+	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
+	public MaxSizeAction maxSizeAction = ABORT;
+	@Tooltip(count = 3)
+	@Comment("""
+            In what order logs are broken.\s
+            FURTHEST_FIRST: The furthest log will be broken first.\s
+            CLOSEST_FIRST: The closest log will be broken first.""")
+	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
+	public BreakOrder breakOrder = FURTHEST_FIRST;
 	@Tooltip(count = 4)
 	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree. \n" +
 			"INFO: Only in INSTANTANEOUS mode.")

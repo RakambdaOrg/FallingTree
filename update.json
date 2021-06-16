@@ -10,10 +10,15 @@
         "2.10.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.5-forge/CHANGELOG.md",
         "2.0.0": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.5/CHANGELOG.md"
     },
-    "changelog": "https://github.com/RakSrinaNa/FallingTree/blob/1.16.5/CHANGELOG.md",
+    "changelog": "https://github.com/RakSrinaNa/FallingTree/blob/1.17/CHANGELOG.md",
     "homepage": "https://github.com/RakSrinaNa/FallingTree",
     "promos": {
         "1.16.5-latest": "2.11.4",
-        "1.16.5-recommended": "2.11.4"
+        "1.16.5-recommended": "2.11.4",
+        "1.17-latest": "2.11.5",
+        "1.17-recommended": "2.11.5"
+    },
+    "1.17": {
+        "2.11.5": "https://github.com/RakSrinaNa/FallingTree/blob/1.17/CHANGELOG.md"
     }
 }
