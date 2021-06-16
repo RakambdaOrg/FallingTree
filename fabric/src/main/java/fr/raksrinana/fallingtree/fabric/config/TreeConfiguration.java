@@ -60,7 +60,7 @@ public class TreeConfiguration{
 	@Min(1)
 	public int maxScanSize = 500;
 	@Tooltip(count = 2)
-	@Comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.")
+	@Comment("The maximum size of a tree. If there's more logs than this value the max size action will be applied.")
 	@Min(1)
 	public int maxSize = 100;
 	@Tooltip(count = 4)

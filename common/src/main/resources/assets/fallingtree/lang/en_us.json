@@ -58,7 +58,7 @@
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip[2]": "than this value the tree won't be cut.",
   "text.autoconfig.fallingtree.option.trees.maxSize": "Max size",
   "text.autoconfig.fallingtree.option.trees.maxSize.@Tooltip[0]": "The maximum size of a tree. If there's more logs",
-  "text.autoconfig.fallingtree.option.trees.maxSize.@Tooltip[1]": "than this value the tree won't be cut.",
+  "text.autoconfig.fallingtree.option.trees.maxSize.@Tooltip[1]": "than this value max size action will be applied.",
   "text.autoconfig.fallingtree.option.trees.maxSizeAction": "Max size action",
   "text.autoconfig.fallingtree.option.trees.maxSizeAction.@Tooltip[0]": "What to do when the max size of a tree is reached.",
   "text.autoconfig.fallingtree.option.trees.maxSizeAction.@Tooltip[1]": "",
