@@ -20,7 +20,6 @@
   "text.autoconfig.fallingtree.option.tools.whitelisted": "Ferramentas permitidas",
   "text.autoconfig.fallingtree.option.tools.blacklisted": "Ferramentas não permitidas",
   "text.autoconfig.fallingtree.option.tools.preserve": "Preserva ferramentas",
-  "text.autoconfig.fallingtree.option.tools.ignoreTools": "Não diminui a durabilidade de ferramentas",
   "text.autoconfig.fallingtree.option.tools.damageMultiplicand": "Multiplicador de dano (durabilidade)",
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand": "Multiplicador de sementes",
   "chat.fallingtree.tree_too_big": "Essa árvore é muito grande e não pode ser derrubada de uma vez! (max: %d)",

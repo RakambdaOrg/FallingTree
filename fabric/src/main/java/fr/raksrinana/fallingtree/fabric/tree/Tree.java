@@ -32,6 +32,16 @@ public class Tree{
 		});
 	}
 	
+	public void removePartsHigherThan(int y, TreePartType partType){
+		parts.removeIf(part -> {
+			if(part.treePartType() == partType && part.blockPos().getY() > y){
+				decrementPartCount(partType);
+				return true;
+			}
+			return false;
+		});
+	}
+	
 	public int getBreakableCount(){
 		return Arrays.stream(TreePartType.values())
 				.filter(TreePartType::isBreakable)
@@ -41,6 +51,10 @@ public class Tree{
 	
 	private int getPartCount(TreePartType treePartType){
 		return partCounts.computeIfAbsent(treePartType, key -> 0);
+	}
+	
+	private void decrementPartCount(TreePartType partType){
+		partCounts.computeIfPresent(partType, (type, count) -> Math.max(0, count - 1));
 	}
 	
 	public Optional<TreePart> getLastSequencePart(){

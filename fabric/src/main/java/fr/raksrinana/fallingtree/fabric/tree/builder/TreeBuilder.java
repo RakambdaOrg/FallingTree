@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.NETHER_WART;
 import static java.util.Optional.empty;
 
 public class TreeBuilder{
@@ -54,6 +55,8 @@ public class TreeBuilder{
 				nextPositions.removeAll(toAnalyzePos);
 				toAnalyzePos.addAll(nextPositions);
 			}
+			
+			postProcess(tree);
 		}
 		catch(AbortSearchException e){
 			return empty();
@@ -69,6 +72,10 @@ public class TreeBuilder{
 		}
 		
 		return Optional.of(tree);
+	}
+	
+	private static void postProcess(Tree tree){
+		tree.getTopMostLog().ifPresent(topMostLog -> tree.removePartsHigherThan(topMostLog.getY() + 1, NETHER_WART));
 	}
 	
 	private static Predicate<Block> getAdjacentPredicate(){
@@ -150,7 +157,7 @@ public class TreeBuilder{
 			return true;
 		}
 		if(config.getTrees().isBreakNetherTreeWarts()){
-			if(check.treePartType() == TreePartType.NETHER_WART){
+			if(check.treePartType() == NETHER_WART){
 				var checkBlockPos = check.checkPos();
 				var dx = Math.abs(originPos.getX() - checkBlockPos.getX());
 				var dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());

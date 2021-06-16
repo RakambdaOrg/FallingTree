@@ -83,6 +83,10 @@ public class TreeConfiguration{
 	@Tooltip(count = 2)
 	@Comment("When set to true nether tree warts (leaves) will be broken along with the trunk.")
 	public boolean breakNetherTreeWarts = true;
+	@Tooltip(count = 2)
+	@Comment("When set to true nether tree warts (leaves) will be broken with only one hit. \n" +
+			"INFO: Only in SHIFT_DOWN mode.")
+	public boolean instantlyBreakWarts = false;
 	@Tooltip(count = 5)
 	@Comment("""
 			This defines the area in which the tree is searched. If any branch is going out of this area it won't be cut.\s
