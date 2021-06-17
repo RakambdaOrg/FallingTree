@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 ### Changed
+- Split max size configuration into `maxSearchSize` and `maxTreeSize` (#133)
+- Define what action to perform when `maxTreeSize` is reached (#133)
+- Define the break order of logs in INSTANTANEOUS mode (#133)
+- Polish translations (#134 thanks to @goodideagiver)
+- Allow nether warts to be broken instantly in SHIFT DOWN mode (#126)
+
+## [1.17.0-2.11.5] - 2021-06-17
+### Changed
 - Fix wrong tooltip (max tree size applies to every breaking mode) (#129)
 
 ## [1.17.0-2.11.4] - 2021-06-10
