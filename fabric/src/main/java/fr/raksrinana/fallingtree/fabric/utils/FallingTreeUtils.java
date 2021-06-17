@@ -103,6 +103,9 @@ public class FallingTreeUtils{
 		if(isLeafNeedBreakBlock(checkBlock)){
 			return TreePartType.LEAF_NEED_BREAK;
 		}
+		if(isLeafBlock(checkBlock)){
+			return TreePartType.LEAF;
+		}
 		return TreePartType.OTHER;
 	}
 	

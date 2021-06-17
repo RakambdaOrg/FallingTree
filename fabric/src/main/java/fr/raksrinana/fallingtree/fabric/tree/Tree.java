@@ -53,6 +53,10 @@ public class Tree{
 		return partCounts.computeIfAbsent(treePartType, key -> 0);
 	}
 	
+	public int getSize(){
+		return partCounts.values().stream().mapToInt(i -> i).sum();
+	}
+	
 	private void decrementPartCount(TreePartType partType){
 		partCounts.computeIfPresent(partType, (type, count) -> Math.max(0, count - 1));
 	}

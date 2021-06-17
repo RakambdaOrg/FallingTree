@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import java.util.Comparator;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static java.util.Objects.isNull;
 import static net.minecraft.Util.NIL_UUID;
@@ -24,7 +23,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	private boolean destroyInstant(Tree tree, Player player, ItemStack tool){
 		var level = tree.getLevel();
-		var breakableCount = tree.getBreakableCount();
+		var breakableCount = Math.min(tree.getBreakableCount(), config.getTrees().getMaxSize());
 		var damageMultiplicand = config.getTools().getDamageMultiplicand();
 		var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 		
@@ -39,9 +38,10 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 			}
 		}
 		
+		var requestBreakCount = Math.min(rawWeightedUsesLeft, breakableCount);
 		var brokenCount = tree.getBreakableParts().stream()
-				.sorted(Comparator.comparingInt(TreePart::sequence).reversed())
-				.limit((int) rawWeightedUsesLeft)
+				.sorted(config.getTrees().getBreakOrder().getComparator())
+				.limit((int) requestBreakCount)
 				.map(TreePart::blockPos)
 				.mapToInt(logBlockPos -> {
 					var logState = level.getBlockState(logBlockPos);

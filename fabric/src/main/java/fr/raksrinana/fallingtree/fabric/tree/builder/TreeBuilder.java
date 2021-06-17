@@ -7,7 +7,6 @@ import fr.raksrinana.fallingtree.fabric.tree.builder.position.AboveYFetcher;
 import fr.raksrinana.fallingtree.fabric.tree.builder.position.BasicPositionFetcher;
 import fr.raksrinana.fallingtree.fabric.tree.builder.position.IPositionFetcher;
 import fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils;
-import fr.raksrinana.fallingtree.fabric.utils.TreePartType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -17,7 +16,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
-import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.NETHER_WART;
+import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.*;
 import static java.util.Optional.empty;
 
 public class TreeBuilder{
@@ -29,11 +28,11 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		var maxLogCount = config.getTrees().getMaxSize();
+		var maxLogCount = config.getTrees().getMaxScanSize();
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
 		var tree = new Tree(level, originPos);
-		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0));
+		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, LOG, 0));
 		
 		var boundingBoxSearch = getBoundingBoxSearch(originPos);
 		var adjacentPredicate = getAdjacentPredicate();
@@ -44,7 +43,7 @@ public class TreeBuilder{
 				tree.addPart(analyzingPos.toTreePart());
 				analyzedPos.add(analyzingPos);
 				
-				if(tree.getLogCount() > maxLogCount){
+				if(tree.getSize() > maxLogCount){
 					throw new TreeTooBigException();
 				}
 				
@@ -153,7 +152,7 @@ public class TreeBuilder{
 	}
 	
 	private static boolean shouldIncludeInChain(Predicate<BlockPos> boundingBoxSearch, BlockPos originPos, Block originBlock, ToAnalyzePos parent, ToAnalyzePos check){
-		if(parent.treePartType() == TreePartType.LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.checkPos())){
+		if(parent.treePartType() == LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.checkPos())){
 			return true;
 		}
 		if(config.getTrees().isBreakNetherTreeWarts()){
@@ -164,12 +163,12 @@ public class TreeBuilder{
 				return dx <= 4 && dz <= 4;
 			}
 		}
-		return check.treePartType() == TreePartType.LEAF_NEED_BREAK;
+		return check.treePartType() == LEAF_NEED_BREAK;
 	}
 	
 	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){
 		if(config.getTrees().isAllowMixedLogs()){
-			return check.treePartType() == TreePartType.LOG;
+			return check.treePartType() == LOG;
 		}
 		else{
 			return check.checkBlock().equals(parentLogBlock);
