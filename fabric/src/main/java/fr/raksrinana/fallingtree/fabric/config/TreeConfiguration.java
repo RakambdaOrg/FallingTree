@@ -53,9 +53,8 @@ public class TreeConfiguration{
 			ABOVE_Y will break only blocks that are above the y value of the cut point.""")
 	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public DetectionMode detectionMode = DetectionMode.WHOLE_TREE;
-	@Tooltip(count = 4)
-	@Comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut. \n" +
-			"INFO: Only in INSTANTANEOUS mode.")
+	@Tooltip(count = 2)
+	@Comment("The maximum size of a tree. If there's more logs than this value the tree won't be cut.")
 	@Min(1)
 	public int maxSize = 100;
 	@Tooltip(count = 4)
@@ -84,6 +83,10 @@ public class TreeConfiguration{
 	@Tooltip(count = 2)
 	@Comment("When set to true nether tree warts (leaves) will be broken along with the trunk.")
 	public boolean breakNetherTreeWarts = true;
+	@Tooltip(count = 2)
+	@Comment("When set to true nether tree warts (leaves) will be broken with only one hit. \n" +
+			"INFO: Only in SHIFT_DOWN mode.")
+	public boolean instantlyBreakWarts = false;
 	@Tooltip(count = 5)
 	@Comment("""
 			This defines the area in which the tree is searched. If any branch is going out of this area it won't be cut.\s

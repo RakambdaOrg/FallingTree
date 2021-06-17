@@ -5,7 +5,7 @@ buildscript {
 
     dependencies {
         classpath("com.google.guava:guava:30.1.1-jre")
-        classpath("commons-io:commons-io:2.9.0")
+        classpath("commons-io:commons-io:2.10.0")
     }
 }
 
@@ -175,7 +175,7 @@ changelog {
     version = "${project.minecraft_version}-${project.version}"
     path = "${project.projectDir}/CHANGELOG.md"
     header = { "[${project.minecraft_version}-${project.version}] - ${ExtensionsKt.date("yyyy-MM-dd")}" }
-    headerParserRegex = ~/\d+\.\d+\.\d+-\d+\.\d+\.\d+/
+    headerParserRegex = ~/\d+\.\d+(\.\d+)?-\d+\.\d+\.\d+/
     itemPrefix = "-"
     keepUnreleasedSection = true
     unreleasedTerm = "[Unreleased]"
