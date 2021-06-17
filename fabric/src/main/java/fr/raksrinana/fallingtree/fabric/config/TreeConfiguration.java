@@ -70,15 +70,17 @@ public class TreeConfiguration{
             CUT: Tree will still be cut leaving some of it untouched.""")
 	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public MaxSizeAction maxSizeAction = ABORT;
-	@Tooltip(count = 3)
+	@Tooltip(count = 6)
 	@Comment("""
-            In what order logs are broken.\s
-            FURTHEST_FIRST: The furthest log will be broken first.\s
-            CLOSEST_FIRST: The closest log will be broken first.""")
+			In what order logs are broken.\s
+			This only makes sense if maxSize < maxScanSize.\s
+			FURTHEST_FIRST: The furthest log will be broken first.\s
+			CLOSEST_FIRST: The closest log will be broken first.\s
+			INFO: Only in INSTANTANEOUS mode.""")
 	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public BreakOrder breakOrder = FURTHEST_FIRST;
 	@Tooltip(count = 4)
-	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree. \n" +
+	@Comment("The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.\n" +
 			"INFO: Only in INSTANTANEOUS mode.")
 	@MinMax(min = 0, max = 5)
 	public int minimumLeavesAroundRequired = 1;
