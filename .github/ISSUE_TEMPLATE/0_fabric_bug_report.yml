@@ -1,5 +1,5 @@
 name: Fabric bug report
-description: Create a report to help us improve the Fabric versio
+description: Create a report to help us improve the Fabric version
 title: "[BUG] "
 labels: ["modloader: Fabric", "type: 🐛 bug"]
 assignees:
