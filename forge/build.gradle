@@ -1,4 +1,4 @@
-import net.minecraftforge.gradle.common.task.SignJar
+//import net.minecraftforge.gradle.common.task.SignJar
 
 buildscript {
     repositories {
@@ -6,11 +6,10 @@ buildscript {
             name = "forge"
             url = "https://maven.minecraftforge.net"
         }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "4.1.+", changing: true
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.0.20", changing: true
     }
 }
 
@@ -42,20 +41,15 @@ minecraft {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:${forge_version}")
+    minecraft(libs.forge)
     implementation project(":common")
 
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
-}
-
-repositories {
-    maven {
-        name = 'Cloth Config'
-        url = 'https://maven.shedaniel.me/'
-    }
+    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:4.11.19"))
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     from "src/main/resources", "../common/src/main/resources"
 
     filesMatching("META-INF/mods.toml") {
@@ -65,11 +59,11 @@ processResources {
 
 jar.finalizedBy('reobfJar')
 
-task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
-    keyStore = project.findProperty("forgeKeyStore")
-    alias = project.findProperty("forgeKeyStoreAlias")
-    storePass = project.findProperty("forgeKeyStorePass")
-    keyPass = project.findProperty("forgeKeyStoreKeyPass")
-    inputFile = rootProject.jar.getArchiveFile()
-    outputFile = rootProject.jar.getArchiveFile()
-}
+//task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
+//    keyStore = project.findProperty("forgeKeyStore")
+//    alias = project.findProperty("forgeKeyStoreAlias")
+//    storePass = project.findProperty("forgeKeyStorePass")
+//    keyPass = project.findProperty("forgeKeyStoreKeyPass")
+//    inputFile = rootProject.jar.getArchiveFile()
+//    outputFile = rootProject.jar.getArchiveFile()
+//}

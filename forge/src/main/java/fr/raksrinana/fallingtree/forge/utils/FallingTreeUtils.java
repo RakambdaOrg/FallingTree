@@ -2,6 +2,8 @@ package fr.raksrinana.fallingtree.forge.utils;
 
 import fr.raksrinana.fallingtree.forge.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
@@ -18,6 +20,7 @@ import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
 import static net.minecraft.block.Blocks.SHROOMLIGHT;
 import static net.minecraft.tags.BlockTags.*;
+import static net.minecraft.util.Hand.MAIN_HAND;
 import static net.minecraftforge.registries.ForgeRegistries.BLOCKS;
 import static net.minecraftforge.registries.ForgeRegistries.ITEMS;
 
@@ -34,16 +37,16 @@ public class FallingTreeUtils{
 	@Nonnull
 	public static Stream<Item> getItem(String name){
 		try{
-			boolean isTag = name.startsWith("#");
+			var isTag = name.startsWith("#");
 			if(isTag){
 				name = name.substring(1);
 			}
-			ResourceLocation resourceLocation = new ResourceLocation(name);
+			var resourceLocation = new ResourceLocation(name);
 			if(isTag){
 				return Optional.ofNullable(ItemTags.getAllTags().getTag(resourceLocation))
+						.stream()
 						.map(ITag::getValues)
-						.map(Collection::stream)
-						.orElse(empty());
+						.flatMap(Collection::stream);
 			}
 			return Stream.of(ITEMS.getValue(resourceLocation));
 		}
@@ -64,16 +67,16 @@ public class FallingTreeUtils{
 	@Nonnull
 	public static Stream<Block> getBlock(String name){
 		try{
-			boolean isTag = name.startsWith("#");
+			var isTag = name.startsWith("#");
 			if(isTag){
 				name = name.substring(1);
 			}
-			ResourceLocation resourceLocation = new ResourceLocation(name);
+			var resourceLocation = new ResourceLocation(name);
 			if(isTag){
 				return Optional.ofNullable(BlockTags.getAllTags().getTag(resourceLocation))
+						.stream()
 						.map(ITag::getValues)
-						.map(Collection::stream)
-						.orElse(empty());
+						.flatMap(Collection::stream);
 			}
 			return Stream.of(BLOCKS.getValue(resourceLocation));
 		}
@@ -83,11 +86,24 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafBlock(@Nonnull Block block){
-		boolean isWhitelistedBlock = block.is(LEAVES)
-				|| Config.COMMON.getTreesConfiguration().getWhitelistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
+		var isWhitelistedBlock = block.is(LEAVES)
+				|| Config.COMMON.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
-			boolean isBlacklistedBlock = Config.COMMON.getTreesConfiguration().getBlacklistedLeaves().stream().anyMatch(leaf -> leaf.equals(block));
+			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 			return !isBlacklistedBlock;
+		}
+		return false;
+	}
+	
+	public static boolean canPlayerBreakTree(PlayerEntity player){
+		var toolConfiguration = Config.COMMON.getTools();
+		var heldItem = player.getItemInHand(MAIN_HAND).getItem();
+		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
+				|| heldItem instanceof AxeItem
+				|| toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(isWhitelistedTool){
+			var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+			return !isBlacklistedTool;
 		}
 		return false;
 	}
@@ -106,16 +122,17 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafNeedBreakBlock(Block block){
-		return Config.COMMON.getTreesConfiguration()
-				.getWhitelistedNonDecayLeaves().stream()
+		return Config.COMMON.getTrees()
+				.getWhitelistedNonDecayLeaveBlocks()
+				.stream()
 				.anyMatch(log -> log.equals(block));
 	}
 	
 	public static boolean isLogBlock(Block block){
-		boolean isWhitelistedBlock = block.is(LOGS)
-				|| Config.COMMON.getTreesConfiguration().getWhitelistedLogs().stream().anyMatch(log -> log.equals(block));
+		var isWhitelistedBlock = block.is(LOGS)
+				|| Config.COMMON.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
-			boolean isBlacklistedBlock = Config.COMMON.getTreesConfiguration().getBlacklistedLogs().stream().anyMatch(log -> log.equals(block));
+			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;

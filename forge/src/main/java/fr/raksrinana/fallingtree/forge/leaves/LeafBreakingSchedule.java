@@ -1,16 +1,16 @@
-package fr.raksrinana.fallingtree.fabric.leaves;
+package fr.raksrinana.fallingtree.forge.leaves;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
 
 @Getter
 @EqualsAndHashCode
 @AllArgsConstructor
 public class LeafBreakingSchedule{
-	private final ServerLevel level;
+	private final ServerWorld level;
 	private final BlockPos blockPos;
 	@EqualsAndHashCode.Exclude
 	private int remainingTicks;

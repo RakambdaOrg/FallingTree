@@ -1,12 +1,14 @@
 package fr.raksrinana.fallingtree.forge.config;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 public class TreeConfiguration{
 	private static final String[] DESC_BREAK_MODE = {
 			"How to break the tree.",
@@ -38,8 +40,23 @@ public class TreeConfiguration{
 			"List of blocks that should not be considered as leaves.",
 			"INFO: This wins over the whitelist."
 	};
+	private static final String[] DESC_MAX_SCAN_SIZE = {
+			"The maximum number of blocks to scan when trying to detect a tree. If there's more than this value the tree won't be cut."
+	};
 	private static final String[] DESC_MAX_SIZE = {
-			"The maximum size of a tree. If there's more logs than this value the tree won't be cut.",
+			"The maximum size of a tree. If there's more logs than this value the max size action will be applied."
+	};
+	private static final String[] DESC_MAX_SIZE_ACTION = {
+			"What to do when the max size of a tree is reached.",
+			"ABORT: Tree won't be cut.",
+			"CUT: Tree will still be cut leaving some of it untouched."
+	};
+	private static final String[] DESC_BREAK_ORDER = {
+			"In what order logs are broken.",
+			"This only makes sense if maxSize < maxScanSize.",
+			"FURTHEST_FIRST: The furthest log will be broken first.",
+			"CLOSEST_FIRST: The closest log will be broken first.",
+			"INFO: Only in INSTANTANEOUS mode."
 	};
 	private static final String[] DESC_TREE_BREAKING = {
 			"When set to true, the mod will cut trees with one cut."
@@ -65,6 +82,10 @@ public class TreeConfiguration{
 	private static final String[] DESC_BREAK_NETHER_TREE_WARTS = {
 			"When set to true nether tree warts (leaves) will be broken along with the trunk."
 	};
+	private static final String[] DESC_INSTANTLY_BREAK_WARTS = {
+			"When set to true nether tree warts (leaves) will be broken with only one hit.",
+			"INFO: Only in SHIFT_DOWN mode."
+	};
 	private static final String[] DESC_SEARCH_AROUND_RADIUS = {
 			"This defines the area in which the tree is searched. If any branch is going out of this area it won't be cut.",
 			"This value is the radius of the area.",
@@ -87,13 +108,17 @@ public class TreeConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedLeaves;
 	private final ForgeConfigSpec.ConfigValue<BreakMode> breakMode;
 	private final ForgeConfigSpec.ConfigValue<DetectionMode> detectionMode;
+	private final ForgeConfigSpec.IntValue maxScanSize;
 	private final ForgeConfigSpec.IntValue maxSize;
+	private final ForgeConfigSpec.ConfigValue<MaxSizeAction> maxSizeAction;
+	private final ForgeConfigSpec.ConfigValue<BreakOrder> breakOrder;
 	private final ForgeConfigSpec.IntValue minimumLeavesAroundRequired;
 	private final ForgeConfigSpec.BooleanValue treeBreaking;
 	private final ForgeConfigSpec.BooleanValue leavesBreaking;
 	private final ForgeConfigSpec.IntValue leavesBreakingForceRadius;
 	private final ForgeConfigSpec.BooleanValue allowMixedLogs;
 	private final ForgeConfigSpec.BooleanValue breakNetherTreeWarts;
+	private final ForgeConfigSpec.BooleanValue instantlyBreakWarts;
 	private final ForgeConfigSpec.IntValue searchAreaRadius;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistedAdjacentBlocks;
 	private final ForgeConfigSpec.ConfigValue<AdjacentStopMode> adjacentStopMode;
@@ -113,8 +138,14 @@ public class TreeConfiguration{
 				.defineList("leaves_non_decay_whitelisted", Lists.newArrayList(), Objects::nonNull);
 		blacklistedLeaves = builder.comment(DESC_BLACKLISTED_LEAVES)
 				.defineList("leaves_blacklisted", Lists.newArrayList(), Objects::nonNull);
+		maxScanSize = builder.comment(DESC_MAX_SCAN_SIZE)
+				.defineInRange("max_scan_size", 500, 1, Integer.MAX_VALUE);
 		maxSize = builder.comment(DESC_MAX_SIZE)
 				.defineInRange("logs_max_count", 100, 1, Integer.MAX_VALUE);
+		maxSizeAction = builder.comment(DESC_MAX_SIZE_ACTION)
+				.defineEnum("max_size_action", MaxSizeAction.ABORT);
+		breakOrder = builder.comment(DESC_BREAK_ORDER)
+				.defineEnum("break_order", BreakOrder.FURTHEST_FIRST);
 		treeBreaking = builder.comment(DESC_TREE_BREAKING)
 				.define("tree_breaking", true);
 		leavesBreaking = builder.comment(DESC_LEAVES_BREAKING)
@@ -127,6 +158,8 @@ public class TreeConfiguration{
 				.define("allow_mixed_logs", false);
 		breakNetherTreeWarts = builder.comment(DESC_BREAK_NETHER_TREE_WARTS)
 				.define("break_nether_tree_warts", true);
+		instantlyBreakWarts = builder.comment(DESC_INSTANTLY_BREAK_WARTS)
+				.define("instantly_break_warts", false);
 		searchAreaRadius = builder.comment(DESC_SEARCH_AROUND_RADIUS)
 				.defineInRange("search_around_radius", -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		whitelistedAdjacentBlocks = builder.comment(DESC_WHITELISTED_ADJACENT_BLOCKS)
@@ -140,30 +173,30 @@ public class TreeConfiguration{
 	}
 	
 	public void setAdjacentStopMode(AdjacentStopMode value){
-		this.adjacentStopMode.set(value);
+		adjacentStopMode.set(value);
 	}
 	
 	public int getSearchAreaRadius(){
 		return searchAreaRadius.get();
 	}
 	
-	public List<String> getBlacklistedLeavesStr(){
+	public List<String> getBlacklistedLeaves(){
 		return (List<String>) blacklistedLeaves.get();
 	}
 	
-	public List<String> getBlacklistedLogsStr(){
+	public List<String> getBlacklistedLogs(){
 		return (List<String>) blacklistedLogs.get();
 	}
 	
-	public List<String> getWhitelistedLeavesStr(){
+	public List<String> getWhitelistedLeaves(){
 		return (List<String>) whitelistedLeaves.get();
 	}
 	
-	public Collection<Block> getWhitelistedNonDecayLeaves(){
-		return ConfigCache.getInstance().getWhitelistedNonDecayLeaves(this::getWhitelistedNonDecayLeavesStr);
+	public Collection<Block> getWhitelistedNonDecayLeaveBlocks(){
+		return ConfigCache.getInstance().getWhitelistedNonDecayLeaves(this::getWhitelistedNonDecayLeaves);
 	}
 	
-	public List<String> getWhitelistedLogsStr(){
+	public List<String> getWhitelistedLogs(){
 		return (List<String>) whitelistedLogs.get();
 	}
 	
@@ -187,8 +220,20 @@ public class TreeConfiguration{
 		breakNetherTreeWarts.set(value);
 	}
 	
+	public void setInstantlyBreakWarts(Boolean value){
+		instantlyBreakWarts.set(value);
+	}
+	
 	public void setDetectionMode(DetectionMode value){
 		detectionMode.set(value);
+	}
+	
+	public void setMaxSizeAction(MaxSizeAction value){
+		maxSizeAction.set(value);
+	}
+	
+	public void setBreakOrder(BreakOrder value){
+		breakOrder.set(value);
 	}
 	
 	public void setLeavesBreaking(Boolean value){
@@ -203,6 +248,10 @@ public class TreeConfiguration{
 		maxSize.set(value);
 	}
 	
+	public void setMaxScanSize(Integer value){
+		maxScanSize.set(value);
+	}
+	
 	public void setMinimumLeavesAroundRequired(Integer value){
 		minimumLeavesAroundRequired.set(value);
 	}
@@ -215,7 +264,7 @@ public class TreeConfiguration{
 		whitelistedLeaves.set(value);
 	}
 	
-	public List<String> getWhitelistedNonDecayLeavesStr(){
+	public List<String> getWhitelistedNonDecayLeaves(){
 		return (List<String>) whitelistedNonDecayLeaves.get();
 	}
 	
@@ -223,44 +272,48 @@ public class TreeConfiguration{
 		whitelistedLogs.set(value);
 	}
 	
-	public Collection<Block> getBlacklistedLeaves(){
-		return ConfigCache.getInstance().getBlacklistedLeaves(this::getBlacklistedLeavesStr);
+	public Collection<Block> getBlacklistedLeaveBlocks(){
+		return ConfigCache.getInstance().getBlacklistedLeaves(this::getBlacklistedLeaves);
 	}
 	
-	public Collection<Block> getBlacklistedLogs(){
-		return ConfigCache.getInstance().getBlacklistedLogs(this::getBlacklistedLogsStr);
+	public Collection<Block> getBlacklistedLogBlocks(){
+		return ConfigCache.getInstance().getBlacklistedLogs(this::getBlacklistedLogs);
 	}
 	
 	public boolean isLeavesBreaking(){
-		return this.leavesBreaking.get();
+		return leavesBreaking.get();
 	}
 	
 	public boolean isTreeBreaking(){
-		return this.treeBreaking.get();
+		return treeBreaking.get();
 	}
 	
 	public int getMaxSize(){
-		return this.maxSize.get();
+		return maxSize.get();
+	}
+	
+	public int getMaxScanSize(){
+		return maxScanSize.get();
 	}
 	
 	public int getMinimumLeavesAroundRequired(){
-		return this.minimumLeavesAroundRequired.get();
+		return minimumLeavesAroundRequired.get();
 	}
 	
-	public Collection<Block> getWhitelistedLeaves(){
-		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeavesStr);
+	public Collection<Block> getWhitelistedLeaveBlocks(){
+		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeaves);
 	}
 	
 	public void setWhitelistedNonDecayLeaves(List<String> value){
 		whitelistedNonDecayLeaves.set(value);
 	}
 	
-	public Collection<Block> getWhitelistedLogs(){
-		return ConfigCache.getInstance().getWhitelistedLogs(this::getWhitelistedLogsStr);
+	public Collection<Block> getWhitelistedLogBlocks(){
+		return ConfigCache.getInstance().getWhitelistedLogs(this::getWhitelistedLogs);
 	}
 	
 	public int getLeavesBreakingForceRadius(){
-		return this.leavesBreakingForceRadius.get();
+		return leavesBreakingForceRadius.get();
 	}
 	
 	public BreakMode getBreakMode(){
@@ -272,26 +325,38 @@ public class TreeConfiguration{
 	}
 	
 	public boolean isAllowMixedLogs(){
-		return this.allowMixedLogs.get();
+		return allowMixedLogs.get();
 	}
 	
 	public boolean isBreakNetherTreeWarts(){
 		return breakNetherTreeWarts.get();
 	}
 	
+	public boolean isInstantlyBreakWarts(){
+		return instantlyBreakWarts.get();
+	}
+	
 	public void setSearchAreaRadius(Integer value){
 		searchAreaRadius.set(value);
 	}
 	
-	public Collection<Block> getWhitelistedAdjacentBlocks(){
-		return ConfigCache.getInstance().getWhitelistedAdjacentBlocks(this::getWhitelistedAdjacentBlocksStr);
+	public Collection<Block> getWhitelistedAdjacentBlockBlocks(){
+		return ConfigCache.getInstance().getWhitelistedAdjacentBlocks(this::getWhitelistedAdjacentBlocks);
 	}
 	
 	public void setWhitelistedAdjacentBlocks(List<String> value){
-		this.whitelistedAdjacentBlocks.set(value);
+		whitelistedAdjacentBlocks.set(value);
 	}
 	
-	public List<String> getWhitelistedAdjacentBlocksStr(){
+	public List<String> getWhitelistedAdjacentBlocks(){
 		return (List<String>) whitelistedAdjacentBlocks.get();
+	}
+	
+	public MaxSizeAction getMaxSizeAction(){
+		return maxSizeAction.get();
+	}
+	
+	public BreakOrder getBreakOrder(){
+		return breakOrder.get();
 	}
 }

@@ -1,15 +1,17 @@
 package fr.raksrinana.fallingtree.forge.config;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 public class ToolConfiguration{
 	private static final String[] DESC_IGNORE_TOOLS = {
-			"When set to true, the mod will be activated no matter what you have in your hand (or empty hand).",
+			"When set to true, the mod will be activated no matter what you have in your hand.",
 			"INFO: Blacklist still can be use to restrict some tools."
 	};
 	private static final String[] DESC_WHITELISTED = {
@@ -36,7 +38,8 @@ public class ToolConfiguration{
 			"WARNING: If you are on a server, this either has to be set to 0 or every player should have the mod. Else they'll have a weird effect of breaking the block but the block is still there."
 	};
 	private static final String[] DESC_PRESERVE = {
-			"When set to true, when a tree is broken and the tool is about to break we will just break enough blocks so that the tool is left at 1 of durability."
+			"When set to true, when a tree is broken and the tool is about to break we will just break enough blocks so that the tool is left at 1 of durability.",
+			"INFO: Only in instantaneous mode"
 	};
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelisted;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklisted;
@@ -60,11 +63,19 @@ public class ToolConfiguration{
 				.define("preserve", false);
 	}
 	
-	public List<String> getBlacklistedStr(){
+	public Collection<Item> getBlacklistedItems(){
+		return ConfigCache.getInstance().getToolsBlacklisted(this::getBlacklisted);
+	}
+	
+	public Collection<Item> getWhitelistedItems(){
+		return ConfigCache.getInstance().getToolsWhitelisted(this::getWhitelisted);
+	}
+	
+	public List<String> getBlacklisted(){
 		return (List<String>) blacklisted.get();
 	}
 	
-	public List<String> getWhitelistedStr(){
+	public List<String> getWhitelisted(){
 		return (List<String>) whitelisted.get();
 	}
 	
@@ -92,27 +103,19 @@ public class ToolConfiguration{
 		whitelisted.set(value);
 	}
 	
-	public Collection<Item> getBlacklisted(){
-		return ConfigCache.getInstance().getToolsBlacklisted(this::getBlacklistedStr);
-	}
-	
-	public Collection<Item> getWhitelisted(){
-		return ConfigCache.getInstance().getToolsWhitelisted(this::getWhitelistedStr);
-	}
-	
 	public boolean isPreserve(){
-		return this.preserve.get();
+		return preserve.get();
 	}
 	
 	public boolean isIgnoreTools(){
-		return this.ignoreTools.get();
+		return ignoreTools.get();
 	}
 	
 	public int getDamageMultiplicand(){
-		return this.damageMultiplicand.get();
+		return damageMultiplicand.get();
 	}
 	
 	public double getSpeedMultiplicand(){
-		return this.speedMultiplicand.get();
+		return speedMultiplicand.get();
 	}
 }

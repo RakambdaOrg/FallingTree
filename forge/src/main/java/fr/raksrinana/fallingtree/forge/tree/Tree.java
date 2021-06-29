@@ -1,32 +1,44 @@
 package fr.raksrinana.fallingtree.forge.tree;
 
 import fr.raksrinana.fallingtree.forge.utils.TreePartType;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import java.util.*;
+import static fr.raksrinana.fallingtree.forge.utils.TreePartType.LOG;
+import static fr.raksrinana.fallingtree.forge.utils.TreePartType.NETHER_WART;
 import static java.util.Comparator.comparingInt;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 
+@RequiredArgsConstructor
 public class Tree{
-	private final World world;
-	private final Set<TreePart> parts;
-	private final Map<TreePartType, Integer> partCounts;
+	@Getter
+	private final World level;
+	@Getter
 	private final BlockPos hitPos;
-	
-	public Tree(World world, BlockPos blockPos){
-		this.world = world;
-		this.hitPos = blockPos;
-		this.parts = new LinkedHashSet<>();
-		this.partCounts = new HashMap<>();
-	}
+	@Getter
+	private final Set<TreePart> parts = new LinkedHashSet<>();
+	private final Map<TreePartType, Integer> partCounts = new LinkedHashMap<>();
 	
 	public void addPart(TreePart treePart){
-		this.parts.add(treePart);
-		this.partCounts.compute(treePart.getTreePartType(), (key, value) -> {
-			if(Objects.isNull(value)){
+		parts.add(treePart);
+		partCounts.compute(treePart.treePartType(), (key, value) -> {
+			if(isNull(value)){
 				return 1;
 			}
 			return value + 1;
+		});
+	}
+	
+	public void removePartsHigherThan(int y, TreePartType partType){
+		parts.removeIf(part -> {
+			if(part.treePartType() == partType && part.blockPos().getY() > y){
+				decrementPartCount(partType);
+				return true;
+			}
+			return false;
 		});
 	}
 	
@@ -38,57 +50,53 @@ public class Tree{
 	}
 	
 	private int getPartCount(TreePartType treePartType){
-		return this.partCounts.computeIfAbsent(treePartType, key -> 0);
+		return partCounts.computeIfAbsent(treePartType, key -> 0);
+	}
+	
+	public int getSize(){
+		return partCounts.values().stream().mapToInt(i -> i).sum();
+	}
+	
+	private void decrementPartCount(TreePartType partType){
+		partCounts.computeIfPresent(partType, (type, count) -> Math.max(0, count - 1));
 	}
 	
 	public Optional<TreePart> getLastSequencePart(){
 		return getParts().stream()
-				.max(comparingInt(TreePart::getSequence));
+				.max(comparingInt(TreePart::sequence));
 	}
 	
 	public Collection<TreePart> getLogs(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == TreePartType.LOG)
+				.filter(part -> part.treePartType() == LOG)
 				.collect(toSet());
 	}
 	
 	public Collection<TreePart> getBreakableParts(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType().isBreakable())
+				.filter(part -> part.treePartType().isBreakable())
 				.collect(toSet());
 	}
 	
 	public int getLogCount(){
-		return getPartCount(TreePartType.LOG);
+		return getPartCount(LOG);
 	}
 	
 	public Optional<BlockPos> getTopMostLog(){
 		return getLogs().stream()
-				.map(TreePart::getBlockPos)
+				.map(TreePart::blockPos)
 				.max(comparingInt(BlockPos::getY));
 	}
 	
 	private Optional<BlockPos> getTopMostPart(){
 		return getParts().stream()
-				.map(TreePart::getBlockPos)
+				.map(TreePart::blockPos)
 				.max(comparingInt(BlockPos::getY));
 	}
 	
 	public Collection<TreePart> getWarts(){
 		return getParts().stream()
-				.filter(part -> part.getTreePartType() == TreePartType.NETHER_WART)
+				.filter(part -> part.treePartType() == NETHER_WART)
 				.collect(toSet());
-	}
-	
-	public BlockPos getHitPos(){
-		return this.hitPos;
-	}
-	
-	public World getWorld(){
-		return this.world;
-	}
-	
-	public Collection<TreePart> getParts(){
-		return this.parts;
 	}
 }

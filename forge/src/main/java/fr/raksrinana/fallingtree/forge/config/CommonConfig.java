@@ -1,7 +1,9 @@
 package fr.raksrinana.fallingtree.forge.config;
 
+import lombok.Getter;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+@Getter
 public class CommonConfig{
 	private static final String[] DESC_REVERSE_SNEAKING = {
 			"When set to true, a tree will, only be chopped down if the player is sneaking."
@@ -34,19 +36,11 @@ public class CommonConfig{
 		reverseSneaking.set(value);
 	}
 	
-	public ToolConfiguration getToolsConfiguration(){
-		return this.tools;
-	}
-	
-	public TreeConfiguration getTreesConfiguration(){
-		return this.trees;
-	}
-	
 	public boolean isReverseSneaking(){
-		return this.reverseSneaking.get();
+		return reverseSneaking.get();
 	}
 	
 	public boolean isBreakInCreative(){
-		return this.breakInCreative.get();
+		return breakInCreative.get();
 	}
 }

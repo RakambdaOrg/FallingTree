@@ -2,14 +2,13 @@ package fr.raksrinana.fallingtree.forge.tree.builder;
 
 import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.config.ConfigCache;
-import fr.raksrinana.fallingtree.forge.config.DetectionMode;
 import fr.raksrinana.fallingtree.forge.tree.Tree;
 import fr.raksrinana.fallingtree.forge.tree.builder.position.AbovePositionFetcher;
 import fr.raksrinana.fallingtree.forge.tree.builder.position.AboveYFetcher;
 import fr.raksrinana.fallingtree.forge.tree.builder.position.BasicPositionFetcher;
+import fr.raksrinana.fallingtree.forge.tree.builder.position.IPositionFetcher;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import fr.raksrinana.fallingtree.forge.utils.TreePartType;
-import fr.raksrinana.fallingtree.forge.tree.builder.position.IPositionFetcher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
@@ -18,54 +17,56 @@ import net.minecraft.world.World;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import static fr.raksrinana.fallingtree.forge.config.DetectionMode.ABOVE_CUT;
-import static fr.raksrinana.fallingtree.forge.config.DetectionMode.ABOVE_Y;
+import static fr.raksrinana.fallingtree.forge.utils.TreePartType.LOG;
+import static fr.raksrinana.fallingtree.forge.utils.TreePartType.NETHER_WART;
 import static java.util.Optional.empty;
 
 public class TreeBuilder{
 	private static final EnumSet<Direction> ALL_DIRECTIONS = EnumSet.allOf(Direction.class);
 	
-	public static Optional<Tree> getTree(World world, BlockPos originPos) throws TreeTooBigException{
-		Block originBlock = world.getBlockState(originPos).getBlock();
+	public static Optional<Tree> getTree(World level, BlockPos originPos) throws TreeTooBigException{
+		var originBlock = level.getBlockState(originPos).getBlock();
 		if(!FallingTreeUtils.isLogBlock(originBlock)){
 			return empty();
 		}
 		
-		int maxLogCount = Config.COMMON.getTreesConfiguration().getMaxSize();
-		Queue<ToAnalyzePos> toAnalyzePos = new PriorityQueue<>();
-		Set<ToAnalyzePos> analyzedPos = new HashSet<>();
-		Tree tree = new Tree(world, originPos);
-		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0));
+		var maxLogCount = Config.COMMON.getTrees().getMaxScanSize();
+		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
+		var analyzedPos = new HashSet<ToAnalyzePos>();
+		var tree = new Tree(level, originPos);
+		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, LOG, 0));
 		
-		Predicate<BlockPos> boundingBoxSearch = getBoundingBoxSearch(originPos);
-		Predicate<Block> adjacentPredicate = getAdjacentPredicate();
+		var boundingBoxSearch = getBoundingBoxSearch(originPos);
+		var adjacentPredicate = getAdjacentPredicate();
 		
 		try{
 			while(!toAnalyzePos.isEmpty()){
-				ToAnalyzePos analyzingPos = toAnalyzePos.remove();
+				var analyzingPos = toAnalyzePos.remove();
 				tree.addPart(analyzingPos.toTreePart());
 				analyzedPos.add(analyzingPos);
 				
-				if(tree.getLogCount() > maxLogCount){
+				if(tree.getSize() > maxLogCount){
 					throw new TreeTooBigException();
 				}
 				
-				Collection<ToAnalyzePos> potentialPositions = analyzingPos.getPositionFetcher().getPositions(world, originPos, analyzingPos);
-				Collection<ToAnalyzePos> nextPositions = filterPotentialPos(boundingBoxSearch, adjacentPredicate, world, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
+				var potentialPositions = analyzingPos.positionFetcher().getPositions(level, originPos, analyzingPos);
+				var nextPositions = filterPotentialPos(boundingBoxSearch, adjacentPredicate, level, originPos, originBlock, analyzingPos, potentialPositions, analyzedPos);
 				
 				nextPositions.removeAll(analyzedPos);
 				nextPositions.removeAll(toAnalyzePos);
 				toAnalyzePos.addAll(nextPositions);
 			}
+			
+			postProcess(tree);
 		}
 		catch(AbortSearchException e){
-			return Optional.empty();
+			return empty();
 		}
 		
-		if(Config.COMMON.getTreesConfiguration().getBreakMode().shouldCheckLeavesAround()){
-			int aroundRequired = Config.COMMON.getTreesConfiguration().getMinimumLeavesAroundRequired();
+		if(Config.COMMON.getTrees().getBreakMode().isCheckLeavesAround()){
+			var aroundRequired = Config.COMMON.getTrees().getMinimumLeavesAroundRequired();
 			if(tree.getTopMostLog()
-					.map(topLog -> getLeavesAround(world, topLog) < aroundRequired)
+					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
 					.orElse(true)){
 				return empty();
 			}
@@ -74,38 +75,39 @@ public class TreeBuilder{
 		return Optional.of(tree);
 	}
 	
+	private static void postProcess(Tree tree){
+		tree.getTopMostLog().ifPresent(topMostLog -> tree.removePartsHigherThan(topMostLog.getY() + 1, NETHER_WART));
+	}
+	
 	private static Predicate<Block> getAdjacentPredicate(){
-		Collection<Block> whitelist = Config.COMMON.getTreesConfiguration().getWhitelistedAdjacentBlocks();
-		Collection<Block> base = ConfigCache.getInstance().getAdjacentBlocksBase();
+		var whitelist = Config.COMMON.getTrees().getWhitelistedAdjacentBlockBlocks();
+		var base = ConfigCache.getInstance().getAdjacentBlocksBase();
 		
 		if(whitelist.isEmpty()){
 			return block -> true;
 		}
-		switch(Config.COMMON.getTreesConfiguration().getAdjacentStopMode()){
-			case STOP_ALL:
-				return block -> {
-					boolean whitelisted = whitelist.contains(block) || base.contains(block);
-					if(!whitelisted){
-						throw new AbortSearchException("Found block " + block + " that isn't whitelisted");
-					}
-					return true;
-				};
-			case STOP_BRANCH:
-				return block -> whitelist.contains(block) || base.contains(block);
-		}
-		return block -> true;
+		return switch(Config.COMMON.getTrees().getAdjacentStopMode()){
+			case STOP_ALL -> block -> {
+				var whitelisted = whitelist.contains(block) || base.contains(block);
+				if(!whitelisted){
+					throw new AbortSearchException("Found block " + block + " that isn't whitelisted");
+				}
+				return true;
+			};
+			case STOP_BRANCH -> block -> whitelist.contains(block) || base.contains(block);
+		};
 	}
 	
 	private static Predicate<BlockPos> getBoundingBoxSearch(BlockPos originPos){
-		int radius = Config.COMMON.getTreesConfiguration().getSearchAreaRadius();
+		var radius = Config.COMMON.getTrees().getSearchAreaRadius();
 		if(radius < 0){
 			return pos -> true;
 		}
 		
-		int minX = originPos.getX() - radius;
-		int maxX = originPos.getX() + radius;
-		int minZ = originPos.getZ() - radius;
-		int maxZ = originPos.getZ() + radius;
+		var minX = originPos.getX() - radius;
+		var maxX = originPos.getX() + radius;
+		var minZ = originPos.getZ() - radius;
+		var maxZ = originPos.getZ() + radius;
 		
 		return pos -> minX <= pos.getX()
 				&& maxX >= pos.getX()
@@ -114,19 +116,17 @@ public class TreeBuilder{
 	}
 	
 	private static IPositionFetcher getFirstPositionFetcher(){
-		DetectionMode detectionMode = Config.COMMON.getTreesConfiguration().getDetectionMode();
-		if(detectionMode == ABOVE_CUT){
-			return AbovePositionFetcher.getInstance();
-		}
-		if(detectionMode == ABOVE_Y){
-			return AboveYFetcher.getInstance();
-		}
-		return BasicPositionFetcher.getInstance();
+		var detectionMode = Config.COMMON.getTrees().getDetectionMode();
+		return switch(detectionMode){
+			case ABOVE_CUT -> AbovePositionFetcher.getInstance();
+			case ABOVE_Y -> AboveYFetcher.getInstance();
+			case WHOLE_TREE -> BasicPositionFetcher.getInstance();
+		};
 	}
 	
 	private static Collection<ToAnalyzePos> filterPotentialPos(Predicate<BlockPos> boundingBoxSearch,
 			Predicate<Block> adjacentPredicate,
-			World world,
+			World level,
 			BlockPos originPos,
 			Block originBlock,
 			ToAnalyzePos parent,
@@ -136,44 +136,44 @@ public class TreeBuilder{
 				.filter(pos -> !analyzedPos.contains(pos))
 				.filter(pos -> shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos))
 				.filter(pos -> EnumSet.allOf(Direction.class).stream()
-						.map(direction -> pos.getCheckPos().relative(direction))
-						.map(world::getBlockState)
+						.map(direction -> pos.checkPos().relative(direction))
+						.map(level::getBlockState)
 						.map(BlockState::getBlock)
 						.allMatch(adjacentPredicate))
 				.collect(Collectors.toList());
 	}
 	
-	private static long getLeavesAround(World world, BlockPos blockPos){
+	private static long getLeavesAround(World level, BlockPos blockPos){
 		return ALL_DIRECTIONS.stream()
 				.map(blockPos::relative)
 				.filter(testPos -> {
-					Block block = world.getBlockState(testPos).getBlock();
+					var block = level.getBlockState(testPos).getBlock();
 					return FallingTreeUtils.isLeafBlock(block) || FallingTreeUtils.isNetherWartOrShroomlight(block) || FallingTreeUtils.isLeafNeedBreakBlock(block);
 				})
 				.count();
 	}
 	
 	private static boolean shouldIncludeInChain(Predicate<BlockPos> boundingBoxSearch, BlockPos originPos, Block originBlock, ToAnalyzePos parent, ToAnalyzePos check){
-		if(parent.getTreePartType() == TreePartType.LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.getCheckPos())){
+		if(parent.treePartType() == LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.checkPos())){
 			return true;
 		}
-		if(Config.COMMON.getTreesConfiguration().isBreakNetherTreeWarts()){
-			if(check.getTreePartType() == TreePartType.NETHER_WART){
-				BlockPos checkBlockPos = check.getCheckPos();
-				int dx = Math.abs(originPos.getX() - checkBlockPos.getX());
-				int dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
+		if(Config.COMMON.getTrees().isBreakNetherTreeWarts()){
+			if(check.treePartType() == NETHER_WART){
+				var checkBlockPos = check.checkPos();
+				var dx = Math.abs(originPos.getX() - checkBlockPos.getX());
+				var dz = Math.abs(originPos.getZ() - checkBlockPos.getZ());
 				return dx <= 4 && dz <= 4;
 			}
 		}
-		return check.getTreePartType() == TreePartType.LEAF_NEED_BREAK;
+		return check.treePartType() == TreePartType.LEAF_NEED_BREAK;
 	}
 	
 	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){
-		if(Config.COMMON.getTreesConfiguration().isAllowMixedLogs()){
-			return check.getTreePartType() == TreePartType.LOG;
+		if(Config.COMMON.getTrees().isAllowMixedLogs()){
+			return check.treePartType() == LOG;
 		}
 		else{
-			return check.getCheckBlock().equals(parentLogBlock);
+			return check.checkBlock().equals(parentLogBlock);
 		}
 	}
 }

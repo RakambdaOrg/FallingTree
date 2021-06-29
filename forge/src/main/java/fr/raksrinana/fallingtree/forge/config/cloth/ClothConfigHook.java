@@ -3,8 +3,6 @@ package fr.raksrinana.fallingtree.forge.config.cloth;
 import com.google.common.collect.Lists;
 import fr.raksrinana.fallingtree.forge.config.*;
 import me.shedaniel.clothconfig2.forge.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.forge.api.ConfigCategory;
-import me.shedaniel.clothconfig2.forge.gui.entries.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -13,7 +11,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -23,7 +20,7 @@ public class ClothConfigHook{
 	
 	public void load(){
 		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, parent) -> {
-			ConfigBuilder builder = ConfigBuilder.create()
+			var builder = ConfigBuilder.create()
 					.setParentScreen(parent)
 					.setTitle(new StringTextComponent("FallingTree"));
 			
@@ -37,22 +34,22 @@ public class ClothConfigHook{
 	
 	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(ConfigBuilder builder){
-		CommonConfig config = Config.COMMON;
+		var config = Config.COMMON;
 		
-		BooleanListEntry reverseSneakingEntry = builder.entryBuilder()
+		var reverseSneakingEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName(null, "reverseSneaking")), config.isReverseSneaking())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips(null, "reverseSneaking", 2))
 				.setSaveConsumer(config::setReverseSneaking)
 				.build();
-		BooleanListEntry breakInCreativeEntry = builder.entryBuilder()
+		var breakInCreativeEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName(null, "breakInCreative")), config.isBreakInCreative())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips(null, "breakInCreative", 2))
 				.setSaveConsumer(config::setBreakInCreative)
 				.build();
 		
-		ConfigCategory general = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.default"));
+		var general = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.default"));
 		general.addEntry(reverseSneakingEntry);
 		general.addEntry(breakInCreativeEntry);
 		
@@ -62,75 +59,94 @@ public class ClothConfigHook{
 	
 	@OnlyIn(Dist.CLIENT)
 	private void fillTreesConfigScreen(ConfigBuilder builder){
-		TreeConfiguration config = Config.COMMON.getTreesConfiguration();
+		TreeConfiguration config = Config.COMMON.getTrees();
 		
-		EnumListEntry<BreakMode> breakModeEntry = builder.entryBuilder()
+		var breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslationTextComponent(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
 				.setDefaultValue(BreakMode.INSTANTANEOUS)
 				.setTooltip(getTooltips("trees", "breakMode", 7))
 				.setSaveConsumer(config::setBreakMode)
 				.build();
-		EnumListEntry<DetectionMode> detectionModeEntry = builder.entryBuilder()
+		var detectionModeEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslationTextComponent(getFieldName("trees", "detectionMode")), DetectionMode.class, config.getDetectionMode())
 				.setDefaultValue(DetectionMode.WHOLE_TREE)
 				.setTooltip(getTooltips("trees", "detectionMode", 9))
 				.setSaveConsumer(config::setDetectionMode)
 				.build();
-		StringListListEntry whitelistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedLogs")), config.getWhitelistedLogsStr())
+		var whitelistedLogsEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedLogs")), config.getWhitelistedLogs())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("trees", "whitelistedLogs", 5))
 				.setSaveConsumer(config::setWhitelistedLogs)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		StringListListEntry blacklistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("trees", "blacklistedLogs")), config.getBlacklistedLogsStr())
+		var blacklistedLogsEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "blacklistedLogs")), config.getBlacklistedLogs())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("trees", "blacklistedLogs", 3))
 				.setSaveConsumer(config::setBlacklistedLogs)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		StringListListEntry whitelistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedLeaves")), config.getWhitelistedLeavesStr())
+		var whitelistedLeavesEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedLeaves")), config.getWhitelistedLeaves())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("trees", "whitelistedLeaves", 5))
 				.setSaveConsumer(config::setWhitelistedLeaves)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		StringListListEntry whitelistedNonDecayLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedNonDecayLeaves")), config.getWhitelistedNonDecayLeavesStr())
+		var whitelistedNonDecayLeavesEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedNonDecayLeaves")), config.getWhitelistedNonDecayLeaves())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("trees", "whitelistedNonDecayLeaves", 2))
 				.setSaveConsumer(config::setWhitelistedNonDecayLeaves)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		StringListListEntry blacklistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("trees", "blacklistedLeaves")), config.getBlacklistedLeavesStr())
+		var blacklistedLeavesEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "blacklistedLeaves")), config.getBlacklistedLeaves())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("trees", "blacklistedLeaves", 3))
 				.setSaveConsumer(config::setBlacklistedLeaves)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		IntegerListEntry maxSizeEntry = builder.entryBuilder()
+		var maxScanSizeEntry = builder.entryBuilder()
+				.startIntField(new TranslationTextComponent(getFieldName("trees", "maxScanSize")), config.getMaxScanSize())
+				.setDefaultValue(500)
+				.setMin(1)
+				.setTooltip(getTooltips("trees", "maxScanSize", 3))
+				.setSaveConsumer(config::setMaxScanSize)
+				.build();
+		var maxSizeEntry = builder.entryBuilder()
 				.startIntField(new TranslationTextComponent(getFieldName("trees", "maxSize")), config.getMaxSize())
 				.setDefaultValue(100)
 				.setMin(1)
 				.setTooltip(getTooltips("trees", "maxSize", 2))
 				.setSaveConsumer(config::setMaxSize)
 				.build();
-		BooleanListEntry treeBreakingEntry = builder.entryBuilder()
+		var maxSizeActionEntry = builder.entryBuilder()
+				.startEnumSelector(new TranslationTextComponent(getFieldName("trees", "maxSizeAction")), MaxSizeAction.class, config.getMaxSizeAction())
+				.setDefaultValue(MaxSizeAction.ABORT)
+				.setTooltip(getTooltips("trees", "maxSizeAction", 6))
+				.setSaveConsumer(config::setMaxSizeAction)
+				.build();
+		var breakOrderEntry = builder.entryBuilder()
+				.startEnumSelector(new TranslationTextComponent(getFieldName("trees", "breakOrder")), BreakOrder.class, config.getBreakOrder())
+				.setDefaultValue(BreakOrder.FURTHEST_FIRST)
+				.setTooltip(getTooltips("trees", "breakOrder", 4))
+				.setSaveConsumer(config::setBreakOrder)
+				.build();
+		var treeBreakingEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName("trees", "treeBreaking")), config.isTreeBreaking())
 				.setDefaultValue(true)
 				.setTooltip(getTooltips("trees", "treeBreaking", 1))
 				.setSaveConsumer(config::setTreeBreaking)
 				.build();
-		BooleanListEntry leavesBreakingEntry = builder.entryBuilder()
+		var leavesBreakingEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName("trees", "leavesBreaking")), config.isLeavesBreaking())
 				.setDefaultValue(true)
 				.setTooltip(getTooltips("trees", "leavesBreaking", 2))
 				.setSaveConsumer(config::setLeavesBreaking)
 				.build();
-		IntegerListEntry leavesBreakingForceRadiusEntry = builder.entryBuilder()
+		var leavesBreakingForceRadiusEntry = builder.entryBuilder()
 				.startIntField(new TranslationTextComponent(getFieldName("trees", "leavesBreakingForceRadius")), config.getLeavesBreakingForceRadius())
 				.setDefaultValue(0)
 				.setMin(0)
@@ -138,7 +154,7 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "leavesBreakingForceRadius", 8))
 				.setSaveConsumer(config::setLeavesBreakingForceRadius)
 				.build();
-		IntegerListEntry minimumLeavesAroundRequiredEntry = builder.entryBuilder()
+		var minimumLeavesAroundRequiredEntry = builder.entryBuilder()
 				.startIntField(new TranslationTextComponent(getFieldName("trees", "minimumLeavesAroundRequired")), config.getMinimumLeavesAroundRequired())
 				.setDefaultValue(1)
 				.setMin(0)
@@ -146,39 +162,45 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "minimumLeavesAroundRequired", 4))
 				.setSaveConsumer(config::setMinimumLeavesAroundRequired)
 				.build();
-		BooleanListEntry allowMixedLogsEntry = builder.entryBuilder()
+		var allowMixedLogsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName("trees", "allowMixedLogs")), config.isAllowMixedLogs())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips("trees", "allowMixedLogs", 4))
 				.setSaveConsumer(config::setAllowMixedLogs)
 				.build();
-		BooleanListEntry breakNetherTreeWartsEntry = builder.entryBuilder()
+		var breakNetherTreeWartsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName("trees", "breakNetherTreeWarts")), config.isBreakNetherTreeWarts())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips("trees", "breakNetherTreeWarts", 2))
 				.setSaveConsumer(config::setBreakNetherTreeWarts)
 				.build();
-		IntegerListEntry searchAreaRadiusEntry = builder.entryBuilder()
+		var instantlyBreakWartsEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslationTextComponent(getFieldName("trees", "instantlyBreakWarts")), config.isInstantlyBreakWarts())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("trees", "instantlyBreakWarts", 2))
+				.setSaveConsumer(config::setInstantlyBreakWarts)
+				.build();
+		var searchAreaRadiusEntry = builder.entryBuilder()
 				.startIntField(new TranslationTextComponent(getFieldName("trees", "searchAreaRadius")), config.getSearchAreaRadius())
 				.setDefaultValue(-1)
 				.setTooltip(getTooltips("trees", "searchAreaRadius", 5))
 				.setSaveConsumer(config::setSearchAreaRadius)
 				.build();
-		StringListListEntry whitelistedAdjacentBlocks = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedAdjacentBlocks")), config.getWhitelistedAdjacentBlocksStr())
+		var whitelistedAdjacentBlocks = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("trees", "whitelistedAdjacentBlocks")), config.getWhitelistedAdjacentBlocks())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("trees", "whitelistedAdjacentBlocks", 9))
 				.setSaveConsumer(config::setWhitelistedAdjacentBlocks)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		EnumListEntry<AdjacentStopMode> adjacentStopModeEntry = builder.entryBuilder()
+		var adjacentStopModeEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslationTextComponent(getFieldName("trees", "adjacentStopMode")), AdjacentStopMode.class, config.getAdjacentStopMode())
 				.setDefaultValue(AdjacentStopMode.STOP_ALL)
 				.setTooltip(getTooltips("trees", "adjacentStopMode", 9))
 				.setSaveConsumer(config::setAdjacentStopMode)
 				.build();
 		
-		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.trees"));
+		var tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.trees"));
 		tools.addEntry(breakModeEntry);
 		tools.addEntry(detectionModeEntry);
 		tools.addEntry(whitelistedLogsEntry);
@@ -186,13 +208,17 @@ public class ClothConfigHook{
 		tools.addEntry(whitelistedLeavesEntry);
 		tools.addEntry(whitelistedNonDecayLeavesEntry);
 		tools.addEntry(blacklistedLeavesEntry);
+		tools.addEntry(maxScanSizeEntry);
 		tools.addEntry(maxSizeEntry);
+		tools.addEntry(maxSizeActionEntry);
+		tools.addEntry(breakOrderEntry);
 		tools.addEntry(treeBreakingEntry);
 		tools.addEntry(leavesBreakingEntry);
 		tools.addEntry(leavesBreakingForceRadiusEntry);
 		tools.addEntry(minimumLeavesAroundRequiredEntry);
 		tools.addEntry(allowMixedLogsEntry);
 		tools.addEntry(breakNetherTreeWartsEntry);
+		tools.addEntry(instantlyBreakWartsEntry);
 		tools.addEntry(searchAreaRadiusEntry);
 		tools.addEntry(whitelistedAdjacentBlocks);
 		tools.addEntry(adjacentStopModeEntry);
@@ -200,36 +226,36 @@ public class ClothConfigHook{
 	
 	@OnlyIn(Dist.CLIENT)
 	private void fillToolsConfigScreen(ConfigBuilder builder){
-		ToolConfiguration config = Config.COMMON.getToolsConfiguration();
+		var config = Config.COMMON.getTools();
 		
-		BooleanListEntry ignoreToolsEntry = builder.entryBuilder()
+		var ignoreToolsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips("tools", "ignoreTools", 4))
 				.setSaveConsumer(config::setIgnoreTools)
 				.build();
-		StringListListEntry whitelistedEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("tools", "whitelisted")), config.getWhitelistedStr())
+		var whitelistedEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("tools", "whitelisted")), config.getWhitelisted())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("tools", "whitelisted", 3))
 				.setSaveConsumer(config::setWhitelisted)
 				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
-		StringListListEntry blacklistedEntry = builder.entryBuilder()
-				.startStrList(new TranslationTextComponent(getFieldName("tools", "blacklisted")), config.getBlacklistedStr())
+		var blacklistedEntry = builder.entryBuilder()
+				.startStrList(new TranslationTextComponent(getFieldName("tools", "blacklisted")), config.getBlacklisted())
 				.setDefaultValue(Lists.newArrayList())
 				.setTooltip(getTooltips("tools", "blacklisted", 3))
 				.setSaveConsumer(config::setBlacklisted)
 				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
-		IntegerListEntry damageMultiplicandEntry = builder.entryBuilder()
+		var damageMultiplicandEntry = builder.entryBuilder()
 				.startIntField(new TranslationTextComponent(getFieldName("tools", "damageMultiplicand")), config.getDamageMultiplicand())
 				.setDefaultValue(1)
 				.setMin(0)
 				.setTooltip(getTooltips("tools", "damageMultiplicand", 7))
 				.setSaveConsumer(config::setDamageMultiplicand)
 				.build();
-		DoubleListEntry speedMultiplicandEntry = builder.entryBuilder()
+		var speedMultiplicandEntry = builder.entryBuilder()
 				.startDoubleField(new TranslationTextComponent(getFieldName("tools", "speedMultiplicand")), config.getSpeedMultiplicand())
 				.setDefaultValue(0)
 				.setMin(0)
@@ -237,14 +263,14 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("tools", "speedMultiplicand", 15))
 				.setSaveConsumer(config::setSpeedMultiplicand)
 				.build();
-		BooleanListEntry preserveEntry = builder.entryBuilder()
+		var preserveEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslationTextComponent(getFieldName("tools", "preserve")), config.isPreserve())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips("tools", "preserve", 3))
 				.setSaveConsumer(config::setPreserve)
 				.build();
 		
-		ConfigCategory tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.tools"));
+		var tools = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.tools"));
 		tools.addEntry(ignoreToolsEntry);
 		tools.addEntry(whitelistedEntry);
 		tools.addEntry(blacklistedEntry);
@@ -254,15 +280,15 @@ public class ClothConfigHook{
 	}
 	
 	private String getFieldName(String category, String fieldName){
-		if(category == null || category.isEmpty()){
-			return "text.autoconfig.fallingtree.option." + fieldName;
-		}
-		return "text.autoconfig.fallingtree.option." + category + "." + fieldName;
+		return Optional.ofNullable(category)
+				.filter(c -> !c.isBlank())
+				.map(c -> "text.autoconfig.fallingtree.option." + c + "." + fieldName)
+				.orElseGet(() -> "text.autoconfig.fallingtree.option." + fieldName);
 	}
 	
 	private ITextComponent[] getTooltips(String category, String fieldName, int count){
-		String tooltipKey = getFieldName(category, fieldName) + ".@Tooltip";
-		List<String> keys = new LinkedList<>();
+		var tooltipKey = getFieldName(category, fieldName) + ".@Tooltip";
+		var keys = new LinkedList<String>();
 		if(count <= 1){
 			keys.add(tooltipKey);
 		}
@@ -277,28 +303,16 @@ public class ClothConfigHook{
 	}
 	
 	public static Function<String, Optional<ITextComponent>> getMinecraftBlockIdCellError(){
-		return value -> {
-			boolean valid = false;
-			if(value != null){
-				valid = MINECRAFT_ID_PATTERN.matcher(value).matches();
-			}
-			if(!valid){
-				return Optional.of(new TranslationTextComponent("text.autoconfig.fallingtree.error.invalidBlockResourceLocation"));
-			}
-			return Optional.empty();
-		};
+		return value -> Optional.ofNullable(value)
+				.map(v -> MINECRAFT_ID_PATTERN.matcher(v).matches())
+				.filter(v -> !v)
+				.map(v -> new TranslationTextComponent("text.autoconfig.fallingtree.error.invalidBlockResourceLocation"));
 	}
 	
 	public static Function<String, Optional<ITextComponent>> getMinecraftItemIdCellError(){
-		return value -> {
-			boolean valid = false;
-			if(value != null){
-				valid = MINECRAFT_ID_PATTERN.matcher(value).matches();
-			}
-			if(!valid){
-				return Optional.of(new TranslationTextComponent("text.autoconfig.fallingtree.error.invalidItemResourceLocation"));
-			}
-			return Optional.empty();
-		};
+		return value -> Optional.ofNullable(value)
+				.map(v -> MINECRAFT_ID_PATTERN.matcher(v).matches())
+				.filter(v -> !v)
+				.map(v -> new TranslationTextComponent("text.autoconfig.fallingtree.error.invalidItemResourceLocation"));
 	}
 }
