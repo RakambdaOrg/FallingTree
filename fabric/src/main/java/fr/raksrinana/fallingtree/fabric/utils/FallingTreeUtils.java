@@ -2,8 +2,10 @@ package fr.raksrinana.fallingtree.fabric.utils;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -142,6 +144,14 @@ public class FallingTreeUtils{
 	}
 	
 	public static void notifyPlayer(Player player, Component text){
-		player.sendMessage(text, NIL_UUID);
+		if(player instanceof ServerPlayer serverPlayer){
+			switch(config.getNotificationMode()){
+				case CHAT -> player.sendMessage(text, NIL_UUID);
+				case ACTION_BAR -> serverPlayer.sendMessage(text, ChatType.GAME_INFO, NIL_UUID);
+			}
+		}
+		else{
+			player.sendMessage(text, NIL_UUID);
+		}
 	}
 }

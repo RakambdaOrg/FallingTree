@@ -48,10 +48,17 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips(null, "breakInCreative", 2))
 				.setSaveConsumer(config::setBreakInCreative)
 				.build();
+		var notificationModeEntry = builder.entryBuilder()
+				.startEnumSelector(new TranslationTextComponent(getFieldName(null, "notificationMode")), NotificationMode.class, config.getNotificationMode())
+				.setDefaultValue(NotificationMode.ACTION_BAR)
+				.setTooltip(getTooltips(null, "notificationMode", 4))
+				.setSaveConsumer(config::setNotificationMode)
+				.build();
 		
 		var general = builder.getOrCreateCategory(new TranslationTextComponent("text.autoconfig.fallingtree.category.default"));
 		general.addEntry(reverseSneakingEntry);
 		general.addEntry(breakInCreativeEntry);
+		general.addEntry(notificationModeEntry);
 		
 		fillTreesConfigScreen(builder);
 		fillToolsConfigScreen(builder);

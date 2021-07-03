@@ -6,11 +6,13 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Category;
+import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.Tooltip;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.TransitiveObject;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.minecraft.world.InteractionResult;
+import static me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON;
 
 @Config(name = "fallingtree")
 @Getter
@@ -21,6 +23,14 @@ public class Configuration implements ConfigData{
 	@Tooltip(count = 2)
 	@Comment("When set to true, the mod will cut down trees in creative too.")
 	public boolean breakInCreative = false;
+	@Tooltip(count = 4)
+	@Comment("""
+			How messages are sent to the player.\s
+			CHAT: Messages are sent in the chat.\s
+			ACTION_BAR: Messages are displayed in the player's action bar."""
+	)
+	@EnumHandler(option = BUTTON)
+	public NotificationMode notificationMode = NotificationMode.ACTION_BAR;
 	@Category("trees")
 	@TransitiveObject
 	public TreeConfiguration trees = new TreeConfiguration();

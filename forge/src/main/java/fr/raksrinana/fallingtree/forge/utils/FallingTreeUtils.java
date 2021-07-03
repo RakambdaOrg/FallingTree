@@ -3,12 +3,14 @@ package fr.raksrinana.fallingtree.forge.utils;
 import fr.raksrinana.fallingtree.forge.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -145,6 +147,14 @@ public class FallingTreeUtils{
 	}
 	
 	public static void notifyPlayer(PlayerEntity player, ITextComponent text){
-		player.sendMessage(text, NIL_UUID);
+		if(player instanceof ServerPlayerEntity serverPlayer){
+			switch(Config.COMMON.getNotificationMode()){
+				case CHAT -> player.sendMessage(text, NIL_UUID);
+				case ACTION_BAR -> serverPlayer.sendMessage(text, ChatType.GAME_INFO, NIL_UUID);
+			}
+		}
+		else{
+			player.sendMessage(text, NIL_UUID);
+		}
 	}
 }

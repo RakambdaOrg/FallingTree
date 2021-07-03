@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 ### Changed
+- Added some logs
+- Added a configuration `notificationMode` to choose how messages are sent to the player. Values are CHAT or ACTION_BAR
+
+## [1.17-2.12.0] - 2021-06-24
+### Changed
 - Split max size configuration into `maxSearchSize` and `maxTreeSize` (#133)
 - Define what action to perform when `maxTreeSize` is reached (#133)
 - Define the break order of logs in INSTANTANEOUS mode (#133)
