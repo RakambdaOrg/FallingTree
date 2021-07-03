@@ -41,6 +41,8 @@ public class TreeBuilder{
 		var adjacentPredicate = getAdjacentPredicate();
 		
 		try{
+			checkAdjacent(adjacentPredicate, level, originPos);
+			
 			while(!toAnalyzePos.isEmpty()){
 				var analyzingPos = toAnalyzePos.remove();
 				tree.addPart(analyzingPos.toTreePart());
@@ -147,12 +149,16 @@ public class TreeBuilder{
 		return potentialPos.stream()
 				.filter(pos -> !analyzedPos.contains(pos))
 				.filter(pos -> shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos))
-				.filter(pos -> EnumSet.allOf(Direction.class).stream()
-						.map(direction -> pos.checkPos().relative(direction))
-						.map(level::getBlockState)
-						.map(BlockState::getBlock)
-						.allMatch(adjacentPredicate))
+				.filter(pos -> checkAdjacent(adjacentPredicate, level, pos.checkPos()))
 				.collect(Collectors.toList());
+	}
+	
+	private static boolean checkAdjacent(Predicate<Block> adjacentPredicate, Level level, BlockPos pos){
+		return EnumSet.allOf(Direction.class).stream()
+				.map(pos::relative)
+				.map(level::getBlockState)
+				.map(BlockState::getBlock)
+				.allMatch(adjacentPredicate);
 	}
 	
 	private static long getLeavesAround(Level world, BlockPos blockPos){

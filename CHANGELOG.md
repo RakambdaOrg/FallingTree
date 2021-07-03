@@ -2,10 +2,11 @@
 
 ## [Unreleased]
 ### Changed
-- Added some logs
-- Added a configuration `notificationMode` to choose how messages are sent to the player. Values are CHAT or ACTION_BAR
+- Added some logs (#145)
+- Added a configuration `notificationMode` to choose how messages are sent to the player. Values are CHAT or ACTION_BAR (#146)
+- Fixed adjacent blocks not being checked around the hit log (#147)
 
-## [1.17-2.12.0] - 2021-06-24
+## [1.17.0-2.12.0] - 2021-06-24
 ### Changed
 - Split max size configuration into `maxSearchSize` and `maxTreeSize` (#133)
 - Define what action to perform when `maxTreeSize` is reached (#133)
