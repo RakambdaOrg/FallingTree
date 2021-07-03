@@ -46,7 +46,7 @@ public abstract class AbstractBlockMixin{
 		var speedMultiplicand = config.getTools().getSpeedMultiplicand();
 		try{
 			return speedMultiplicand <= 0 ? null :
-					TreeBuilder.getTree(player.getCommandSenderWorld(), pos)
+					TreeBuilder.getTree(player, player.getCommandSenderWorld(), pos)
 							.map(tree -> new CacheSpeed(pos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
 							.orElse(null);
 		}

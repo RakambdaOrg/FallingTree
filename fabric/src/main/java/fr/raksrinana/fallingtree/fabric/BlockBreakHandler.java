@@ -15,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
-import static net.minecraft.Util.NIL_UUID;
 
 public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 	@Override
@@ -23,13 +22,13 @@ public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 		if(config.getTrees().isTreeBreaking() && !world.isClientSide()){
 			if(FallingTreeUtils.isPlayerInRightState(player)){
 				try{
-					return TreeBuilder.getTree(world, blockPos).map(tree -> {
+					return TreeBuilder.getTree(player, world, blockPos).map(tree -> {
 						var breakMode = config.getTrees().getBreakMode();
 						return getBreakingHandler(breakMode).breakTree(player, tree);
 					}).orElse(true);
 				}
 				catch(TreeTooBigException e){
-					player.sendMessage(new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTrees().getMaxSize()), NIL_UUID);
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTrees().getMaxSize()));
 					return true;
 				}
 			}

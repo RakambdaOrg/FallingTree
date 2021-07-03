@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
 import fr.raksrinana.fallingtree.fabric.tree.Tree;
 import fr.raksrinana.fallingtree.fabric.tree.TreePart;
+import fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +13,6 @@ import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.logger;
 import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.NETHER_WART;
 import static java.util.Objects.isNull;
-import static net.minecraft.Util.NIL_UUID;
 
 public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private static ShiftDownTreeBreakingHandler INSTANCE;
@@ -59,7 +59,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 			var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 			if(toolUsesLeft <= (damageMultiplicand * count)){
 				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
-				player.sendMessage(new TranslatableComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
+				FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
 				return false;
 			}
 		}

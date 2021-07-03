@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.fabric.utils;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -14,6 +15,7 @@ import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
 import static net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags.AXES;
+import static net.minecraft.Util.NIL_UUID;
 import static net.minecraft.tags.BlockTags.*;
 import static net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
 
@@ -137,5 +139,9 @@ public class FallingTreeUtils{
 	
 	public static boolean isNetherWartOrShroomlight(Block block){
 		return WART_BLOCKS.contains(block) || block.equals(SHROOMLIGHT);
+	}
+	
+	public static void notifyPlayer(Player player, Component text){
+		player.sendMessage(text, NIL_UUID);
 	}
 }

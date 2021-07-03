@@ -9,6 +9,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import static java.util.stream.Stream.empty;
 import static net.minecraft.block.Blocks.SHROOMLIGHT;
 import static net.minecraft.tags.BlockTags.*;
 import static net.minecraft.util.Hand.MAIN_HAND;
+import static net.minecraft.util.Util.NIL_UUID;
 import static net.minecraftforge.registries.ForgeRegistries.BLOCKS;
 import static net.minecraftforge.registries.ForgeRegistries.ITEMS;
 
@@ -140,5 +142,9 @@ public class FallingTreeUtils{
 	
 	public static boolean isNetherWartOrShroomlight(Block block){
 		return block.is(WART_BLOCKS) || block.equals(SHROOMLIGHT);
+	}
+	
+	public static void notifyPlayer(PlayerEntity player, ITextComponent text){
+		player.sendMessage(text, NIL_UUID);
 	}
 }

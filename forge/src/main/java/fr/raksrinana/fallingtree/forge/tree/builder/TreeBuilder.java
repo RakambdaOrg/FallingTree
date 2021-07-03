@@ -11,8 +11,10 @@ import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import fr.raksrinana.fallingtree.forge.utils.TreePartType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import java.util.*;
 import java.util.function.Predicate;
@@ -25,7 +27,7 @@ import static java.util.Optional.empty;
 public class TreeBuilder{
 	private static final EnumSet<Direction> ALL_DIRECTIONS = EnumSet.allOf(Direction.class);
 	
-	public static Optional<Tree> getTree(World level, BlockPos originPos) throws TreeTooBigException{
+	public static Optional<Tree> getTree(PlayerEntity player, World level, BlockPos originPos) throws TreeTooBigException{
 		var originBlock = level.getBlockState(originPos).getBlock();
 		if(!FallingTreeUtils.isLogBlock(originBlock)){
 			return empty();
@@ -63,6 +65,7 @@ public class TreeBuilder{
 		}
 		catch(AbortSearchException e){
 			logger.info("Didn't cut tree at {}, reason: {}", originPos, e.getMessage());
+			FallingTreeUtils.notifyPlayer(player, new TranslationTextComponent("chat.fallingtree.search_aborted").append(e.getComponent()));
 			return empty();
 		}
 		
@@ -94,7 +97,7 @@ public class TreeBuilder{
 			case STOP_ALL -> block -> {
 				var whitelisted = whitelist.contains(block) || base.contains(block);
 				if(!whitelisted){
-					throw new AbortSearchException("Found block " + block + " that isn't whitelisted in the adjacent blocks");
+					throw new AdjacentAbortSearchException(block);
 				}
 				return true;
 			};

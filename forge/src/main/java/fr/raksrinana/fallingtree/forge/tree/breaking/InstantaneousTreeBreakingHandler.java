@@ -18,7 +18,6 @@ import static fr.raksrinana.fallingtree.forge.FallingTree.logger;
 import static java.util.Objects.isNull;
 import static net.minecraft.stats.Stats.ITEM_USED;
 import static net.minecraft.util.Hand.MAIN_HAND;
-import static net.minecraft.util.Util.NIL_UUID;
 
 public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private static InstantaneousTreeBreakingHandler INSTANCE;
@@ -42,7 +41,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		if(Config.COMMON.getTools().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
 				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
-				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
+				FallingTreeUtils.notifyPlayer(player, new TranslationTextComponent("chat.fallingtree.prevented_break_tool"));
 				return false;
 			}
 			if(breakableCount >= rawWeightedUsesLeft){

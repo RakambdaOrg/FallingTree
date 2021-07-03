@@ -10,6 +10,7 @@ import fr.raksrinana.fallingtree.forge.tree.breaking.ShiftDownTreeBreakingHandle
 import fr.raksrinana.fallingtree.forge.tree.builder.TreeBuilder;
 import fr.raksrinana.fallingtree.forge.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.forge.utils.CacheSpeed;
+import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -24,7 +25,6 @@ import java.util.UUID;
 import static fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils.canPlayerBreakTree;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static net.minecraft.util.Util.NIL_UUID;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BreakingHandler{
@@ -55,15 +55,16 @@ public class BreakingHandler{
 			if(event instanceof FallingTreeBlockBreakEvent){
 				return;
 			}
-			if(isPlayerInRightState(event.getPlayer()) && event.getWorld() instanceof World){
+			var player = event.getPlayer();
+			if(isPlayerInRightState(player) && event.getWorld() instanceof World){
 				try{
-					TreeBuilder.getTree((World) event.getWorld(), event.getPos()).ifPresent(tree -> {
+					TreeBuilder.getTree(player, (World) event.getWorld(), event.getPos()).ifPresent(tree -> {
 						var breakMode = Config.COMMON.getTrees().getBreakMode();
 						getBreakingHandler(breakMode).breakTree(event, tree);
 					});
 				}
 				catch(TreeTooBigException e){
-					event.getPlayer().sendMessage(new TranslationTextComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTrees().getMaxSize()), NIL_UUID);
+					FallingTreeUtils.notifyPlayer(player, new TranslationTextComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTrees().getMaxSize()));
 				}
 			}
 		}
@@ -89,8 +90,9 @@ public class BreakingHandler{
 	private static CacheSpeed getSpeed(PlayerEvent.BreakSpeed event){
 		var speedMultiplicand = Config.COMMON.getTools().getSpeedMultiplicand();
 		try{
+			var player = event.getPlayer();
 			return speedMultiplicand <= 0 ? null :
-					TreeBuilder.getTree(event.getEntity().getCommandSenderWorld(), event.getPos())
+					TreeBuilder.getTree(player, player.getCommandSenderWorld(), event.getPos())
 							.map(tree -> new CacheSpeed(event.getPos(), event.getNewSpeed() / ((float) speedMultiplicand * tree.getLogCount())))
 							.orElse(null);
 		}

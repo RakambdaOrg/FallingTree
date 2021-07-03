@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Block;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.logger;
 import static java.util.Objects.isNull;
-import static net.minecraft.Util.NIL_UUID;
 
 public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private static InstantaneousTreeBreakingHandler INSTANCE;
@@ -32,7 +31,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		if(config.getTools().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
 				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
-				player.sendMessage(new TranslatableComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
+				FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
 				return false;
 			}
 			if(breakableCount >= rawWeightedUsesLeft){
