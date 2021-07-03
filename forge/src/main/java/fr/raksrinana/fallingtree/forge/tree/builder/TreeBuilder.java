@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import static fr.raksrinana.fallingtree.forge.FallingTree.logger;
 import static fr.raksrinana.fallingtree.forge.utils.TreePartType.LOG;
 import static fr.raksrinana.fallingtree.forge.utils.TreePartType.NETHER_WART;
 import static java.util.Optional.empty;
@@ -60,6 +61,7 @@ public class TreeBuilder{
 			postProcess(tree);
 		}
 		catch(AbortSearchException e){
+			logger.info("Didn't cut tree at {}, reason: {}", originPos, e.getMessage());
 			return empty();
 		}
 		

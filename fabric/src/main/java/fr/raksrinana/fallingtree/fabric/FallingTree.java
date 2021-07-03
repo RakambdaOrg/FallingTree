@@ -10,9 +10,13 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import static java.util.stream.Collectors.toList;
 
 public class FallingTree implements ModInitializer{
+	public static final String MOD_ID = "fallingtree";
+	public static final Logger logger = LogManager.getLogger(MOD_ID);
 	public static Configuration config;
 	
 	@Override

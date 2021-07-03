@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.logger;
 import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.*;
 import static java.util.Optional.empty;
 
@@ -58,6 +59,7 @@ public class TreeBuilder{
 			postProcess(tree);
 		}
 		catch(AbortSearchException e){
+			logger.info("Didn't cut tree at {}, reason: {}", originBlock, e.getMessage());
 			return empty();
 		}
 		
