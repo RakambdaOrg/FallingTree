@@ -13,6 +13,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
+import static fr.raksrinana.fallingtree.forge.FallingTree.logger;
 import static fr.raksrinana.fallingtree.forge.utils.TreePartType.NETHER_WART;
 import static java.util.Objects.isNull;
 import static net.minecraft.stats.Stats.ITEM_USED;
@@ -35,21 +36,21 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 				.map(treePart -> {
 					var level = tree.getLevel();
 					if(treePart.treePartType() == NETHER_WART && Config.COMMON.getTrees().isInstantlyBreakWarts()){
-						return breakElements(level, player, tool, tree, tree.getWarts());
+						return breakElements(tree, level, player, tool, tree.getWarts());
 					}
 					else{
-						return breakElements(level, player, tool, tree, List.of(treePart));
+						return breakElements(tree, level, player, tool, List.of(treePart));
 					}
 				});
 		
 		return false;
 	}
 	
-	private boolean breakElements(World level, PlayerEntity player, ItemStack tool, Tree tree, Collection<TreePart> parts){
+	private boolean breakElements(Tree tree, World level, PlayerEntity player, ItemStack tool, Collection<TreePart> parts){
 		var count = parts.size();
 		var damageMultiplicand = Config.COMMON.getTools().getDamageMultiplicand();
 		
-		if(checkTools(player, tool, damageMultiplicand, count)){
+		if(checkTools(tree, player, tool, damageMultiplicand, count)){
 			var breakCount = parts.stream()
 					.mapToInt(wart -> breakPart(tree, wart, level, player, tool, damageMultiplicand))
 					.sum();
@@ -63,10 +64,11 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		return false;
 	}
 	
-	private boolean checkTools(PlayerEntity player, ItemStack tool, int damageMultiplicand, int count){
+	private boolean checkTools(Tree tree, PlayerEntity player, ItemStack tool, int damageMultiplicand, int count){
 		if(Config.COMMON.getTools().isPreserve()){
 			var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 			if(toolUsesLeft <= (damageMultiplicand * count)){
+				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
 				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
 			}

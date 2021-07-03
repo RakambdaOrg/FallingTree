@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import javax.annotation.Nonnull;
+import static fr.raksrinana.fallingtree.forge.FallingTree.logger;
 import static java.util.Objects.isNull;
 import static net.minecraft.stats.Stats.ITEM_USED;
 import static net.minecraft.util.Hand.MAIN_HAND;
@@ -40,6 +41,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		var rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
 		if(Config.COMMON.getTools().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
+				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
 				player.sendMessage(new TranslationTextComponent("chat.fallingtree.prevented_break_tool"), NIL_UUID);
 				return false;
 			}

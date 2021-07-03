@@ -29,7 +29,7 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		var maxLogCount = config.getTrees().getMaxScanSize();
+		var maxScanSize = config.getTrees().getMaxScanSize();
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
 		var tree = new Tree(level, originPos);
@@ -44,7 +44,8 @@ public class TreeBuilder{
 				tree.addPart(analyzingPos.toTreePart());
 				analyzedPos.add(analyzingPos);
 				
-				if(tree.getSize() > maxLogCount){
+				if(tree.getSize() > maxScanSize){
+					logger.info("Tree at {} reached max scan size of {}", tree.getHitPos(), maxScanSize);
 					throw new TreeTooBigException();
 				}
 				
@@ -68,6 +69,7 @@ public class TreeBuilder{
 			if(tree.getTopMostLog()
 					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
 					.orElse(true)){
+				logger.info("Tree at {} doesn't have enough leaves around top most log", originPos);
 				return empty();
 			}
 		}
@@ -94,7 +96,14 @@ public class TreeBuilder{
 				}
 				return true;
 			};
-			case STOP_BRANCH -> block -> whitelist.contains(block) || base.contains(block);
+			case STOP_BRANCH -> block -> {
+				var whitelisted = whitelist.contains(block) || base.contains(block);
+				if(!whitelisted){
+					logger.info("Found block {} that isn't whitelisted in the adjacent blocks, branch will be ignored further", block);
+					return false;
+				}
+				return true;
+			};
 		};
 	}
 	
