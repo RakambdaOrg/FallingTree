@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Changed
+
+
+## [1.17.0-2.12.1] - 2021-07-03
+### Changed
 - Added some logs (#145)
 - Added a configuration `notificationMode` to choose how messages are sent to the player. Values are CHAT or ACTION_BAR (#146)
 - Fixed adjacent blocks not being checked around the hit log (#147)
