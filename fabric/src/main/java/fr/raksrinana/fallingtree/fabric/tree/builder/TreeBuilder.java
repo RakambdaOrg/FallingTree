@@ -59,7 +59,7 @@ public class TreeBuilder{
 			postProcess(tree);
 		}
 		catch(AbortSearchException e){
-			logger.info("Didn't cut tree at {}, reason: {}", originBlock, e.getMessage());
+			logger.info("Didn't cut tree at {}, reason: {}", originPos, e.getMessage());
 			return empty();
 		}
 		
@@ -90,7 +90,7 @@ public class TreeBuilder{
 			case STOP_ALL -> block -> {
 				var whitelisted = whitelist.contains(block) || base.contains(block);
 				if(!whitelisted){
-					throw new AbortSearchException("Found block " + block + " that isn't whitelisted");
+					throw new AbortSearchException("Found block " + block + " that isn't whitelisted in the adjacent blocks");
 				}
 				return true;
 			};
