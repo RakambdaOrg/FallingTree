@@ -20,7 +20,7 @@ plugins {
     id("com.modrinth.minotaur") version("1.2.1")
     id("com.github.breadmoirai.github-release") version("2.2.12")
     id("com.github.ben-manes.versions") version("0.39.0")
-    id("org.jetbrains.changelog") version("1.1.2")
+    id("org.jetbrains.changelog") version("1.2.0")
 }
 
 allprojects {
@@ -49,9 +49,13 @@ allprojects {
             url = 'https://minecraft.curseforge.com/api/maven'
         }
         maven {
-            name = "ModMenu"
-            url = "https://maven.terraformersmc.com/releases/"
+            name "ModMenu Github"
+            url = "https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases/"
         }
+//        maven {
+//            name = "ModMenu"
+//            url = "https://maven.terraformersmc.com/releases/"
+//        }
         maven {
             name = "Cloth Config"
             url = "https://maven.shedaniel.me/"
@@ -174,7 +178,7 @@ build.finalizedBy createUpdateJson
 changelog {
     version = "${project.minecraft_version}-${project.version}"
     path = "${project.projectDir}/CHANGELOG.md"
-    header = { "[${project.minecraft_version}-${project.version}] - ${ExtensionsKt.date("yyyy-MM-dd")}" }
+    header = "[${project.minecraft_version}-${project.version}] - ${ExtensionsKt.date("yyyy-MM-dd")}"
     headerParserRegex = ~/\d+\.\d+(\.\d+)?-\d+\.\d+\.\d+/
     itemPrefix = "-"
     keepUnreleasedSection = true
