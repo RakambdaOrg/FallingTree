@@ -9,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.0.25", changing: true
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.0.27", changing: true
     }
 }
 
