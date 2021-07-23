@@ -4,9 +4,9 @@ import fr.raksrinana.fallingtree.forge.tree.builder.ToAnalyzePos;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import java.util.Collection;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
@@ -16,7 +16,7 @@ public class AboveYFetcher implements IPositionFetcher{
 	private static AboveYFetcher INSTANCE;
 	
 	@Override
-	public Collection<ToAnalyzePos> getPositions(World level, BlockPos originPos, ToAnalyzePos parent){
+	public Collection<ToAnalyzePos> getPositions(Level level, BlockPos originPos, ToAnalyzePos parent){
 		var parentPos = parent.checkPos();
 		var parentBlock = level.getBlockState(parentPos).getBlock();
 		return BlockPos.betweenClosedStream(parentPos.above().north().east(), parentPos.below().south().west())

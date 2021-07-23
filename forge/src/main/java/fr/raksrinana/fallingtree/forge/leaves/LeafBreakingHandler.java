@@ -4,12 +4,13 @@ import fr.raksrinana.fallingtree.forge.FallingTree;
 import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import io.netty.util.internal.ConcurrentSet;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import java.util.Set;
+import static net.minecraft.world.level.block.Blocks.AIR;
 import static net.minecraftforge.event.TickEvent.Phase.END;
 import static net.minecraftforge.fml.LogicalSide.SERVER;
 
@@ -45,11 +46,11 @@ public class LeafBreakingHandler{
 	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
 		if(Config.COMMON.getTrees().isLeavesBreaking()
 				&& !event.getWorld().isClientSide()
-				&& event.getWorld() instanceof ServerWorld level){
+				&& event.getWorld() instanceof ServerLevel level){
 			var eventState = event.getState();
 			var eventBlock = eventState.getBlock();
 			var eventPos = event.getPos();
-			if(eventBlock.isAir(eventState, level, eventPos)){
+			if(eventBlock.equals(AIR)){
 				for(var facing : event.getNotifiedSides()){
 					var neighborPos = eventPos.relative(facing);
 					if(level.isAreaLoaded(neighborPos, 1)){

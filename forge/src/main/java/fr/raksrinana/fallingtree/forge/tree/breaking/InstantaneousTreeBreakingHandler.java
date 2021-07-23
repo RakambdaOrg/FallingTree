@@ -5,19 +5,19 @@ import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.tree.Tree;
 import fr.raksrinana.fallingtree.forge.tree.TreePart;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import javax.annotation.Nonnull;
 import static fr.raksrinana.fallingtree.forge.FallingTree.logger;
 import static java.util.Objects.isNull;
 import static net.minecraft.stats.Stats.ITEM_USED;
-import static net.minecraft.util.Hand.MAIN_HAND;
+import static net.minecraft.world.InteractionHand.MAIN_HAND;
 
 public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private static InstantaneousTreeBreakingHandler INSTANCE;
@@ -31,7 +31,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 	}
 	
-	private boolean destroyInstant(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
+	private boolean destroyInstant(@Nonnull Tree tree, @Nonnull Player player, @Nonnull ItemStack tool){
 		var level = tree.getLevel();
 		var breakableCount = Math.min(tree.getBreakableCount(), Config.COMMON.getTrees().getMaxSize());
 		var damageMultiplicand = Config.COMMON.getTools().getDamageMultiplicand();
@@ -41,7 +41,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		if(Config.COMMON.getTools().isPreserve()){
 			if(rawWeightedUsesLeft <= 1){
 				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
-				FallingTreeUtils.notifyPlayer(player, new TranslationTextComponent("chat.fallingtree.prevented_break_tool"));
+				FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
 				return false;
 			}
 			if(breakableCount >= rawWeightedUsesLeft){
@@ -81,11 +81,11 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		return true;
 	}
 	
-	private static void forceBreakDecayLeaves(@Nonnull Tree tree, World level){
+	private static void forceBreakDecayLeaves(@Nonnull Tree tree, Level level){
 		var radius = Config.COMMON.getTrees().getLeavesBreakingForceRadius();
 		if(radius > 0){
 			tree.getTopMostLog().ifPresent(topLog -> {
-				var checkPos = new BlockPos.Mutable();
+				var checkPos = new BlockPos.MutableBlockPos();
 				for(var dx = -radius; dx < radius; dx++){
 					for(var dy = -radius; dy < radius; dy++){
 						for(var dz = -radius; dz < radius; dz++){

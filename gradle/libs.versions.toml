@@ -6,7 +6,7 @@ lombok-version = "1.18.20"
 minecraft-version = "1.17.1"
 fabric-loader-version = "0.11.6"
 fabric-api-version = "0.37.1+1.17"
-forge-version = "1.16.5-36.1.12"
+forge-version = "1.17.1-37.0.17"
 
 [libraries]
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }

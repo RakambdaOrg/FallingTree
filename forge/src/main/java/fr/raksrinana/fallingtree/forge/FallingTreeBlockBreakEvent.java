@@ -1,14 +1,14 @@
 package fr.raksrinana.fallingtree.forge;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.world.BlockEvent;
 
 public class FallingTreeBlockBreakEvent extends BlockEvent.BreakEvent{
-	public FallingTreeBlockBreakEvent(World world, BlockPos pos, BlockState state, PlayerEntity player){
-		super(world, pos, state, player);
+	public FallingTreeBlockBreakEvent(Level level, BlockPos pos, BlockState state, Player player){
+		super(level, pos, state, player);
 	}
 	
 	@Override

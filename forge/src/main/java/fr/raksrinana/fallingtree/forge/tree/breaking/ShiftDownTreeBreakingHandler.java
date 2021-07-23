@@ -5,10 +5,10 @@ import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.tree.Tree;
 import fr.raksrinana.fallingtree.forge.tree.TreePart;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import javax.annotation.Nonnull;
@@ -18,7 +18,7 @@ import static fr.raksrinana.fallingtree.forge.FallingTree.logger;
 import static fr.raksrinana.fallingtree.forge.utils.TreePartType.NETHER_WART;
 import static java.util.Objects.isNull;
 import static net.minecraft.stats.Stats.ITEM_USED;
-import static net.minecraft.util.Hand.MAIN_HAND;
+import static net.minecraft.world.InteractionHand.MAIN_HAND;
 
 public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private static ShiftDownTreeBreakingHandler INSTANCE;
@@ -31,7 +31,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 	}
 	
-	private boolean destroyShift(@Nonnull Tree tree, @Nonnull PlayerEntity player, @Nonnull ItemStack tool){
+	private boolean destroyShift(@Nonnull Tree tree, @Nonnull Player player, @Nonnull ItemStack tool){
 		tree.getLastSequencePart()
 				.map(treePart -> {
 					var level = tree.getLevel();
@@ -46,7 +46,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		return false;
 	}
 	
-	private boolean breakElements(Tree tree, World level, PlayerEntity player, ItemStack tool, Collection<TreePart> parts){
+	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts){
 		var count = parts.size();
 		var damageMultiplicand = Config.COMMON.getTools().getDamageMultiplicand();
 		
@@ -64,19 +64,19 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		return false;
 	}
 	
-	private boolean checkTools(Tree tree, PlayerEntity player, ItemStack tool, int damageMultiplicand, int count){
+	private boolean checkTools(Tree tree, Player player, ItemStack tool, int damageMultiplicand, int count){
 		if(Config.COMMON.getTools().isPreserve()){
 			var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
 			if(toolUsesLeft <= (damageMultiplicand * count)){
 				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
-				FallingTreeUtils.notifyPlayer(player, new TranslationTextComponent("chat.fallingtree.prevented_break_tool"));
+				FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	private int breakPart(Tree tree, TreePart treePart, World level, PlayerEntity player, ItemStack tool, int damageMultiplicand){
+	private int breakPart(Tree tree, TreePart treePart, Level level, Player player, ItemStack tool, int damageMultiplicand){
 		var blockPos = treePart.blockPos();
 		var logState = level.getBlockState(blockPos);
 		

@@ -1,11 +1,11 @@
 package fr.raksrinana.fallingtree.forge.tree.builder;
 
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 public abstract class AbortSearchException extends RuntimeException{
 	public AbortSearchException(String reason){
 		super(reason);
 	}
 	
-	public abstract ITextComponent getComponent();
+	public abstract Component getComponent();
 }

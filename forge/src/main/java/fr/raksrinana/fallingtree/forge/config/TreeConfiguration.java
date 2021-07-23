@@ -2,7 +2,7 @@ package fr.raksrinana.fallingtree.forge.config;
 
 import com.google.common.collect.Lists;
 import lombok.Getter;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Collection;
 import java.util.List;
