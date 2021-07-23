@@ -1,10 +1,10 @@
 package fr.raksrinana.fallingtree.forge.tree.builder.position;
 
 import fr.raksrinana.fallingtree.forge.tree.builder.ToAnalyzePos;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import java.util.Collection;
 
 public interface IPositionFetcher{
-	Collection<ToAnalyzePos> getPositions(World level, BlockPos originPos, ToAnalyzePos parent);
+	Collection<ToAnalyzePos> getPositions(Level level, BlockPos originPos, ToAnalyzePos parent);
 }

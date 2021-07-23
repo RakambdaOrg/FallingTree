@@ -4,7 +4,7 @@ import fr.raksrinana.fallingtree.forge.FallingTree;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Config{
@@ -15,8 +15,9 @@ public class Config{
 		COMMON = commonPair.getLeft();
 		COMMON_SPEC = commonPair.getRight();
 	}
+	
 	@SubscribeEvent
-	public static void onModConfigEvent(ModConfig.ModConfigEvent configEvent){
+	public static void onModConfigEvent(ModConfigEvent configEvent){
 		if(configEvent.getConfig().getSpec() == COMMON_SPEC){
 			ConfigCache.getInstance().invalidate();
 		}

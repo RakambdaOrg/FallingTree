@@ -20,7 +20,7 @@ plugins {
     id("com.modrinth.minotaur") version("1.2.1")
     id("com.github.breadmoirai.github-release") version("2.2.12")
     id("com.github.ben-manes.versions") version("0.39.0")
-    id("org.jetbrains.changelog") version("1.2.0")
+    id("org.jetbrains.changelog") version("1.2.1")
 }
 
 allprojects {
@@ -73,7 +73,7 @@ task buildJar(type: Jar, group: "modding") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from zipTree("common/build/libs/common-${project.version}.jar"),
             zipTree("fabric/build/libs/fabric-${project.version}.jar")
-//            zipTree("forge/build/libs/forge-${project.version}.jar")
+            zipTree("forge/build/libs/forge-${project.version}.jar")
 
     manifest {
         attributes([

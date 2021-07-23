@@ -1,10 +1,10 @@
 package fr.raksrinana.fallingtree.forge.config;
 
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;

@@ -1,8 +1,8 @@
 package fr.raksrinana.fallingtree.forge.tree.builder;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.Block;
 
 public class AdjacentAbortSearchException extends AbortSearchException{
 	private final Block block;
@@ -13,7 +13,7 @@ public class AdjacentAbortSearchException extends AbortSearchException{
 	}
 	
 	@Override
-	public ITextComponent getComponent(){
-		return new TranslationTextComponent("chat.fallingtree.search_aborted.adjacent", block);
+	public Component getComponent(){
+		return new TranslatableComponent("chat.fallingtree.search_aborted.adjacent", block);
 	}
 }

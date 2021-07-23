@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.utils;
 
 import lombok.Getter;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import java.util.Objects;
 import static java.lang.System.currentTimeMillis;
 

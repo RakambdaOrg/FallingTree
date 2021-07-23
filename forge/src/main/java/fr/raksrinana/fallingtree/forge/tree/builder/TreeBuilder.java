@@ -9,13 +9,13 @@ import fr.raksrinana.fallingtree.forge.tree.builder.position.BasicPositionFetche
 import fr.raksrinana.fallingtree.forge.tree.builder.position.IPositionFetcher;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import fr.raksrinana.fallingtree.forge.utils.TreePartType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -27,7 +27,7 @@ import static java.util.Optional.empty;
 public class TreeBuilder{
 	private static final EnumSet<Direction> ALL_DIRECTIONS = EnumSet.allOf(Direction.class);
 	
-	public static Optional<Tree> getTree(PlayerEntity player, World level, BlockPos originPos) throws TreeTooBigException{
+	public static Optional<Tree> getTree(Player player, Level level, BlockPos originPos) throws TreeTooBigException{
 		var originBlock = level.getBlockState(originPos).getBlock();
 		if(!FallingTreeUtils.isLogBlock(originBlock)){
 			return empty();
@@ -67,7 +67,7 @@ public class TreeBuilder{
 		}
 		catch(AbortSearchException e){
 			logger.info("Didn't cut tree at {}, reason: {}", originPos, e.getMessage());
-			FallingTreeUtils.notifyPlayer(player, new TranslationTextComponent("chat.fallingtree.search_aborted").append(e.getComponent()));
+			FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.search_aborted").append(e.getComponent()));
 			return empty();
 		}
 		
@@ -142,7 +142,7 @@ public class TreeBuilder{
 	
 	private static Collection<ToAnalyzePos> filterPotentialPos(Predicate<BlockPos> boundingBoxSearch,
 			Predicate<Block> adjacentPredicate,
-			World level,
+			Level level,
 			BlockPos originPos,
 			Block originBlock,
 			ToAnalyzePos parent,
@@ -155,7 +155,7 @@ public class TreeBuilder{
 				.collect(Collectors.toList());
 	}
 	
-	private static boolean checkAdjacent(Predicate<Block> adjacentPredicate, World level, BlockPos pos){
+	private static boolean checkAdjacent(Predicate<Block> adjacentPredicate, Level level, BlockPos pos){
 		return EnumSet.allOf(Direction.class).stream()
 				.map(pos::relative)
 				.map(level::getBlockState)
@@ -163,7 +163,7 @@ public class TreeBuilder{
 				.allMatch(adjacentPredicate);
 	}
 	
-	private static long getLeavesAround(World level, BlockPos blockPos){
+	private static long getLeavesAround(Level level, BlockPos blockPos){
 		return ALL_DIRECTIONS.stream()
 				.map(blockPos::relative)
 				.filter(testPos -> {

@@ -1,17 +1,17 @@
 package fr.raksrinana.fallingtree.forge.utils;
 
 import fr.raksrinana.fallingtree.forge.config.Config;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.Item;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Objects;
@@ -21,10 +21,10 @@ import java.util.stream.Stream;
 import static fr.raksrinana.fallingtree.forge.utils.TreePartType.*;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
-import static net.minecraft.block.Blocks.SHROOMLIGHT;
+import static net.minecraft.Util.NIL_UUID;
 import static net.minecraft.tags.BlockTags.*;
-import static net.minecraft.util.Hand.MAIN_HAND;
-import static net.minecraft.util.Util.NIL_UUID;
+import static net.minecraft.world.InteractionHand.MAIN_HAND;
+import static net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
 import static net.minecraftforge.registries.ForgeRegistries.BLOCKS;
 import static net.minecraftforge.registries.ForgeRegistries.ITEMS;
 
@@ -49,7 +49,7 @@ public class FallingTreeUtils{
 			if(isTag){
 				return Optional.ofNullable(ItemTags.getAllTags().getTag(resourceLocation))
 						.stream()
-						.map(ITag::getValues)
+						.map(Tag::getValues)
 						.flatMap(Collection::stream);
 			}
 			return Stream.of(ITEMS.getValue(resourceLocation));
@@ -79,7 +79,7 @@ public class FallingTreeUtils{
 			if(isTag){
 				return Optional.ofNullable(BlockTags.getAllTags().getTag(resourceLocation))
 						.stream()
-						.map(ITag::getValues)
+						.map(Tag::getValues)
 						.flatMap(Collection::stream);
 			}
 			return Stream.of(BLOCKS.getValue(resourceLocation));
@@ -90,7 +90,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafBlock(@Nonnull Block block){
-		var isWhitelistedBlock = block.is(LEAVES)
+		var isWhitelistedBlock = LEAVES.contains(block)
 				|| Config.COMMON.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
@@ -99,7 +99,7 @@ public class FallingTreeUtils{
 		return false;
 	}
 	
-	public static boolean canPlayerBreakTree(PlayerEntity player){
+	public static boolean canPlayerBreakTree(Player player){
 		var toolConfiguration = Config.COMMON.getTools();
 		var heldItem = player.getItemInHand(MAIN_HAND).getItem();
 		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
@@ -133,7 +133,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLogBlock(Block block){
-		var isWhitelistedBlock = block.is(LOGS)
+		var isWhitelistedBlock = LOGS.contains(block)
 				|| Config.COMMON.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
@@ -143,11 +143,11 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isNetherWartOrShroomlight(Block block){
-		return block.is(WART_BLOCKS) || block.equals(SHROOMLIGHT);
+		return WART_BLOCKS.contains(block) || block.equals(SHROOMLIGHT);
 	}
 	
-	public static void notifyPlayer(PlayerEntity player, ITextComponent text){
-		if(player instanceof ServerPlayerEntity serverPlayer){
+	public static void notifyPlayer(Player player, Component text){
+		if(player instanceof ServerPlayer serverPlayer){
 			switch(Config.COMMON.getNotificationMode()){
 				case CHAT -> player.sendMessage(text, NIL_UUID);
 				case ACTION_BAR -> serverPlayer.sendMessage(text, ChatType.GAME_INFO, NIL_UUID);

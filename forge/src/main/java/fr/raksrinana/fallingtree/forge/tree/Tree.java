@@ -3,8 +3,8 @@ package fr.raksrinana.fallingtree.forge.tree;
 import fr.raksrinana.fallingtree.forge.utils.TreePartType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import java.util.*;
 import static fr.raksrinana.fallingtree.forge.utils.TreePartType.LOG;
 import static fr.raksrinana.fallingtree.forge.utils.TreePartType.NETHER_WART;
@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 public class Tree{
 	@Getter
-	private final World level;
+	private final Level level;
 	@Getter
 	private final BlockPos hitPos;
 	@Getter

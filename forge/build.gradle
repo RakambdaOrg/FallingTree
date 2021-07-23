@@ -20,6 +20,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file("../run")
+            property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
             mods {
                 fallingtree {
@@ -29,8 +30,22 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('../run')
+            workingDirectory project.file("../run")
+            property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
+            mods {
+                fallingtree {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file("../run")
+            property "forge.logging.markers", "REGISTRIES"
+            property "forge.logging.console.level", "debug"
+            args '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
             mods {
                 fallingtree {
                     source sourceSets.main
@@ -40,11 +55,13 @@ minecraft {
     }
 }
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 dependencies {
     minecraft(libs.forge)
     implementation project(":common")
 
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:4.11.19"))
+    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:4.11.26"))
 }
 
 processResources {
