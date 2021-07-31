@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Changed
+## [1.17.1-2.12.2] - 2021-07-31
+### Changed
 - Add forge support
 
 ## [1.17.1-2.12.1] - 2021-07-06
