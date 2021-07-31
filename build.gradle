@@ -70,9 +70,9 @@ task buildJar(type: Jar, group: "modding") {
     dependsOn ":common:jar", ":fabric:build", ":forge:build"
     finalizedBy ":forge:signJar"
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    duplicatesStrategy = DuplicatesStrategy.WARN
     from zipTree("common/build/libs/common-${project.version}.jar"),
-            zipTree("fabric/build/libs/fabric-${project.version}.jar")
+            zipTree("fabric/build/libs/fabric-${project.version}.jar"),
             zipTree("forge/build/libs/forge-${project.version}.jar")
 
     manifest {
