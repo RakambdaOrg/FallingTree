@@ -1,12 +1,7 @@
 package fr.raksrinana.fallingtree.forge.config.cloth;
 
-import fr.raksrinana.fallingtree.forge.config.Config;
-import fr.raksrinana.fallingtree.forge.config.TreeConfiguration;
-import me.shedaniel.clothconfig2.forge.api.ConfigBuilder;
 import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.Function;
@@ -29,10 +24,10 @@ public class ClothConfigHook{
 		// }));
 	}
 	
-	@OnlyIn(Dist.CLIENT)
-	public void fillConfigScreen(ConfigBuilder builder){
-		var config = Config.COMMON;
-		
+	// @OnlyIn(Dist.CLIENT)
+	// public void fillConfigScreen(ConfigBuilder builder){
+	// 	var config = Config.COMMON;
+	//
 		// var reverseSneakingEntry = builder.entryBuilder()
 		// 		.startBooleanToggle(new TranslationTextComponent(getFieldName(null, "reverseSneaking")), config.isReverseSneaking())
 		// 		.setDefaultValue(false)
@@ -57,14 +52,14 @@ public class ClothConfigHook{
 		// general.addEntry(breakInCreativeEntry);
 		// general.addEntry(notificationModeEntry);
 		
-		fillTreesConfigScreen(builder);
-		fillToolsConfigScreen(builder);
-	}
+		// fillTreesConfigScreen(builder);
+		// fillToolsConfigScreen(builder);
+	// }
 	
-	@OnlyIn(Dist.CLIENT)
-	private void fillTreesConfigScreen(ConfigBuilder builder){
-		TreeConfiguration config = Config.COMMON.getTrees();
-		
+	// @OnlyIn(Dist.CLIENT)
+	// private void fillTreesConfigScreen(ConfigBuilder builder){
+	// 	TreeConfiguration config = Config.COMMON.getTrees();
+	//
 		// var breakModeEntry = builder.entryBuilder()
 		// 		.startEnumSelector(new TranslationTextComponent(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
 		// 		.setDefaultValue(BreakMode.INSTANTANEOUS)
@@ -226,12 +221,12 @@ public class ClothConfigHook{
 		// tools.addEntry(searchAreaRadiusEntry);
 		// tools.addEntry(whitelistedAdjacentBlocks);
 		// tools.addEntry(adjacentStopModeEntry);
-	}
+	// }
 	
-	@OnlyIn(Dist.CLIENT)
-	private void fillToolsConfigScreen(ConfigBuilder builder){
-		var config = Config.COMMON.getTools();
-		
+	// @OnlyIn(Dist.CLIENT)
+	// private void fillToolsConfigScreen(ConfigBuilder builder){
+	// 	var config = Config.COMMON.getTools();
+	//
 		// var ignoreToolsEntry = builder.entryBuilder()
 		// 		.startBooleanToggle(new TranslationTextComponent(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())
 		// 		.setDefaultValue(false)
@@ -281,7 +276,7 @@ public class ClothConfigHook{
 		// tools.addEntry(damageMultiplicandEntry);
 		// tools.addEntry(speedMultiplicandEntry);
 		// tools.addEntry(preserveEntry);
-	}
+	// }
 	
 	private String getFieldName(String category, String fieldName){
 		return Optional.ofNullable(category)
