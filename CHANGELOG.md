@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Changed
+- Add forge support
+
 ## [1.17.1-2.12.1] - 2021-07-06
 ### Changed
 - Port to 1.17.1
