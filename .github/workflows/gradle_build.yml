@@ -23,20 +23,20 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: ${{ env.APP_JAVA_VERSION }}
-      - uses: actions/cache@v2.1.6
-        name: Restore gradle cache
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ runner.OS }}-gradle-${{ env.cache-name }}-
-            ${{ runner.OS }}-gradle-
-            ${{ runner.OS }}-
-      - uses: actions/cache@v2.1.6
-        name: Cache gradle wrapper
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+#      - uses: actions/cache@v2.1.6
+#        name: Restore gradle cache
+#        with:
+#          path: ~/.gradle/caches
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-gradle-${{ env.cache-name }}-
+#            ${{ runner.OS }}-gradle-
+#            ${{ runner.OS }}-
+#      - uses: actions/cache@v2.1.6
+#        name: Cache gradle wrapper
+#        with:
+#          path: ~/.gradle/wrapper
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
       - name: Set gradle permissions
         run: chmod +x gradlew
       - name: Check project
