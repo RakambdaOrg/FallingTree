@@ -58,23 +58,21 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: ${{ env.APP_JAVA_VERSION }}
-      - uses: actions/cache@v2.1.6
-        name: Restore gradle cache
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ runner.OS }}-gradle-${{ env.cache-name }}-
-            ${{ runner.OS }}-gradle-
-            ${{ runner.OS }}-
-      - uses: actions/cache@v2.1.6
-        name: Cache gradle wrapper
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+#      - uses: actions/cache@v2.1.6
+#        name: Restore gradle cache
+#        with:
+#          path: ~/.gradle/caches
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-gradle-${{ env.cache-name }}-
+#            ${{ runner.OS }}-gradle-
+#            ${{ runner.OS }}-
+#      - uses: actions/cache@v2.1.6
+#        name: Cache gradle wrapper
+#        with:
+#          path: ~/.gradle/wrapper
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
       - name: Set gradle permissions
         run: chmod +x gradlew
-      - name: Push on CurseForge
-        run: ./gradlew build curseforge -PcurseforgeApiKey="${{ secrets.CURSEFORGE_API_KEY }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
-      - name: Push on Modrinth
-        run: ./gradlew build publishModrinth -DmodrinthToken="${{ secrets.MODRINTH_TOKEN }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+      - name: Push on stores
+        run: ./gradlew build curseforge publishModrinth -PcurseforgeApiKey="${{ secrets.CURSEFORGE_API_KEY }}" -DmodrinthToken="${{ secrets.MODRINTH_TOKEN }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62

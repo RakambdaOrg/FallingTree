@@ -1,7 +1,7 @@
 [versions]
 modmenu-version = "2.0.2"
-cloth-config-fabric-version = "5.0.34"
-cloth-config-forge-version = "4.11.26"
+cloth-config-fabric-version = "5.0.38"
+cloth-config-forge-version = "5.0.38"
 lombok-version = "1.18.20"
 minecraft-version = "1.17.1"
 fabric-loader-version = "0.11.6"

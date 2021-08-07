@@ -21,7 +21,7 @@ public class FallingTree{
 		ModLoadingContext.get().registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
 		
-		if(ModList.get().isLoaded("cloth-config")){
+		if(ModList.get().isLoaded("cloth_config")){
 			try{
 				Class.forName("fr.raksrinana.fallingtree.forge.config.cloth.ClothConfigHook")
 						.asSubclass(ClothConfigHook.class)
