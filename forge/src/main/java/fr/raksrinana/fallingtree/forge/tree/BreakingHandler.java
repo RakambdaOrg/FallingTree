@@ -19,16 +19,16 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import static fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils.canPlayerBreakTree;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BreakingHandler{
-	private static final Map<UUID, CacheSpeed> speedCache = new HashMap<>();
+	private static final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
 	@SubscribeEvent
 	public static void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
