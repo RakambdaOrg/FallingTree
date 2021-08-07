@@ -67,7 +67,7 @@ group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
 task buildJar(type: Jar, group: "modding") {
-    dependsOn ":common:jar", ":fabric:build", ":forge:build"
+    dependsOn ":common:build", ":fabric:build", ":forge:build"
     finalizedBy ":forge:signJar"
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
