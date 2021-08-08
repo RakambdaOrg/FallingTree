@@ -75,4 +75,4 @@ jobs:
       - name: Set gradle permissions
         run: chmod +x gradlew
       - name: Push on stores
-        run: ./gradlew build curseforge publishModrinth -PcurseforgeApiKey="${{ secrets.CURSEFORGE_API_KEY }}" -DmodrinthToken="${{ secrets.MODRINTH_TOKEN }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62 --debug
+        run: ./gradlew build curseforge publishModrinth -PcurseforgeApiKey="${{ secrets.CURSEFORGE_API_KEY }}" -DmodrinthToken="${{ secrets.MODRINTH_TOKEN }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62

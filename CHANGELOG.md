@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Changed
+## [1.17.1-2.12.3] - 2021-08-08
+### Changed
 - ClothConfig is supported again for forge
 - Fix concurrency issue with breaking speed (#180)
 
