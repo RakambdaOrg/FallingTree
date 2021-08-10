@@ -49,34 +49,26 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts){
 		var count = parts.size();
 		var damageMultiplicand = Config.COMMON.getTools().getDamageMultiplicand();
+		var toolHandler = new ToolDamageHandler(tool, damageMultiplicand, Config.COMMON.getTools().isPreserve(), count);
 		
-		if(checkTools(tree, player, tool, damageMultiplicand, count)){
-			var breakCount = parts.stream()
-					.mapToInt(wart -> breakPart(tree, wart, level, player, tool, damageMultiplicand))
-					.sum();
-			
-			if(damageMultiplicand > 0){
-				tool.hurtAndBreak(Math.max(1, damageMultiplicand * breakCount), player, (entity) -> {});
-			}
-			return true;
+		if(toolHandler.shouldPreserveTool()){
+			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
+			FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
+			return false;
 		}
 		
-		return false;
-	}
-	
-	private boolean checkTools(Tree tree, Player player, ItemStack tool, int damageMultiplicand, int count){
-		if(Config.COMMON.getTools().isPreserve()){
-			var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
-			if(toolUsesLeft <= (damageMultiplicand * count)){
-				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
-				FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
-				return false;
-			}
+		var breakCount = parts.stream()
+				.mapToInt(wart -> breakPart(wart, level, player))
+				.sum();
+		
+		var damage = toolHandler.getActualDamage(breakCount);
+		if(damageMultiplicand > 0 && damage > 0){
+			tool.hurtAndBreak(damage, player, (entity) -> {});
 		}
 		return true;
 	}
 	
-	private int breakPart(Tree tree, TreePart treePart, Level level, Player player, ItemStack tool, int damageMultiplicand){
+	private int breakPart(TreePart treePart, Level level, Player player){
 		var blockPos = treePart.blockPos();
 		var logState = level.getBlockState(blockPos);
 		
