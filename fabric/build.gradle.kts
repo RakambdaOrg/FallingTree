@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     minecraft(libs.minecraft)
-    mappings(minecraft.officialMojangMappings())
+    mappings(loom.officialMojangMappings())
     modImplementation(libs.bundles.fabric)
     implementation(project(":common"))
 
