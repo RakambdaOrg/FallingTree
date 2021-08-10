@@ -262,6 +262,12 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("tools", "damageMultiplicand", 7))
 				.setSaveConsumer(config::setDamageMultiplicand)
 				.build();
+		var damageRoundingEntry = builder.entryBuilder()
+				.startEnumSelector(new TranslatableComponent(getFieldName("tools", "damageRounding")), DamageRounding.class, config.getDamageRounding())
+				.setDefaultValue(DamageRounding.ROUND_DOWN)
+				.setTooltip(getTooltips("tools", "damageRounding", 4))
+				.setSaveConsumer(config::setDamageRounding)
+				.build();
 		var speedMultiplicandEntry = builder.entryBuilder()
 				.startDoubleField(new TranslatableComponent(getFieldName("tools", "speedMultiplicand")), config.getSpeedMultiplicand())
 				.setDefaultValue(0)
@@ -282,6 +288,7 @@ public class ClothConfigHook{
 		tools.addEntry(whitelistedEntry);
 		tools.addEntry(blacklistedEntry);
 		tools.addEntry(damageMultiplicandEntry);
+		tools.addEntry(damageRoundingEntry);
 		tools.addEntry(speedMultiplicandEntry);
 		tools.addEntry(preserveEntry);
 	}

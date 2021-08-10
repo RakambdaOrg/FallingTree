@@ -4,12 +4,14 @@ import fr.raksrinana.fallingtree.fabric.config.validator.ItemId;
 import fr.raksrinana.fallingtree.fabric.config.validator.Min;
 import fr.raksrinana.fallingtree.fabric.config.validator.MinMax;
 import lombok.Getter;
+import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.Tooltip;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.minecraft.world.item.Item;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import static fr.raksrinana.fallingtree.fabric.config.DamageRounding.ROUND_DOWN;
 
 @Getter
 public class ToolConfiguration{
@@ -37,9 +39,18 @@ public class ToolConfiguration{
 			ie: if set to 1 then breaking 5 logs will give 5 damage.\s
 			ie: if set to 2 then breaking 5 logs will give 10 damage.\s
 			If set to 0, it'll still apply 1 damage for every cut.\s
-			INFO: This only applies when the tree is cut when using the mod.""")
+			INFO: This only applies when the tree is cut when using the mod.
+			INFO: If damage is not a whole number then damageRounding will be used to determine what the final damage is.""")
 	@Min(0)
 	public int damageMultiplicand = 1;
+	@Tooltip(count = 4)
+	@Comment("""
+			How damage taken should be rounded if it isn't a whole number.\s
+			ROUNDING will round to the closest whole number.\s
+			ROUND_DOWN will round down.\s
+			ROUND_UP will round up.""")
+	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
+	public DamageRounding damageRounding = ROUND_DOWN;
 	@Tooltip(count = 15)
 	@Comment("""
 			Applies a speed modifier when breaking the tree.\s
