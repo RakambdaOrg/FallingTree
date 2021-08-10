@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.fabric;
 import fr.raksrinana.fallingtree.fabric.config.BreakMode;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.ITreeBreakingHandler;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.InstantaneousTreeBreakingHandler;
+import fr.raksrinana.fallingtree.fabric.tree.breaking.PreventToolBreakingException;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.ShiftDownTreeBreakingHandler;
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeBuilder;
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeTooBigException;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.logger;
 
 public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 	@Override
@@ -30,6 +32,11 @@ public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 				catch(TreeTooBigException e){
 					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTrees().getMaxSize()));
 					return true;
+				}
+				catch(PreventToolBreakingException e){
+					logger.debug("Didn't break tree at {} as {}'s tool was about to break", blockEntity, player);
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
+					return false;
 				}
 			}
 		}
