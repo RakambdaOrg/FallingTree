@@ -256,9 +256,10 @@ public class ClothConfigHook{
 				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
 		var damageMultiplicandEntry = builder.entryBuilder()
-				.startIntField(new TranslatableComponent(getFieldName("tools", "damageMultiplicand")), config.getDamageMultiplicand())
+				.startDoubleField(new TranslatableComponent(getFieldName("tools", "damageMultiplicand")), config.getDamageMultiplicand())
 				.setDefaultValue(1)
 				.setMin(0)
+				.setMax(100)
 				.setTooltip(getTooltips("tools", "damageMultiplicand", 7))
 				.setSaveConsumer(config::setDamageMultiplicand)
 				.build();

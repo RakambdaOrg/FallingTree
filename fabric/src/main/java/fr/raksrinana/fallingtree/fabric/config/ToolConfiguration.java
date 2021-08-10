@@ -42,7 +42,7 @@ public class ToolConfiguration{
 			INFO: This only applies when the tree is cut when using the mod.
 			INFO: If damage is not a whole number then damageRounding will be used to determine what the final damage is.""")
 	@Min(0)
-	public int damageMultiplicand = 1;
+	public double damageMultiplicand = 1;
 	@Tooltip(count = 4)
 	@Comment("""
 			How damage taken should be rounded if it isn't a whole number.\s

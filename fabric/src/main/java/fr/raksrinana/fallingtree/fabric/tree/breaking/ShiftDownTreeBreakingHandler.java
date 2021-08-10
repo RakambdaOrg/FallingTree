@@ -40,8 +40,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts){
 		var count = parts.size();
-		var damageMultiplicand = config.getTools().getDamageMultiplicand();
-		var toolHandler = new ToolDamageHandler(tool, damageMultiplicand, config.getTools().isPreserve(), count);
+		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), count);
 		
 		if(toolHandler.shouldPreserveTool()){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);

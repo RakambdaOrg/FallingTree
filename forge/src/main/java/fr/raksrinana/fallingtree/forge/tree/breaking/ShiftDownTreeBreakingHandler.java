@@ -62,7 +62,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 				.sum();
 		
 		var damage = toolHandler.getActualDamage(breakCount);
-		if(damageMultiplicand > 0 && damage > 0){
+		if(Double.compare(damageMultiplicand, 0) > 0 && damage > 0){
 			tool.hurtAndBreak(damage, player, (entity) -> {});
 		}
 		return true;

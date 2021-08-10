@@ -51,7 +51,7 @@ public class ToolConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklisted;
 	private final ForgeConfigSpec.BooleanValue preserve;
 	private final ForgeConfigSpec.BooleanValue ignoreTools;
-	private final ForgeConfigSpec.IntValue damageMultiplicand;
+	private final ForgeConfigSpec.DoubleValue damageMultiplicand;
 	private final ForgeConfigSpec.EnumValue<DamageRounding> damageRounding;
 	private final ForgeConfigSpec.DoubleValue speedMultiplicand;
 	
@@ -63,7 +63,7 @@ public class ToolConfiguration{
 		blacklisted = builder.comment(DESC_BLACKLISTED)
 				.defineList("blacklisted", Lists.newArrayList(), Objects::nonNull);
 		damageMultiplicand = builder.comment(DESC_DAMAGE_MULTIPLICAND)
-				.defineInRange("damage_multiplicand", 1, 0, Integer.MAX_VALUE);
+				.defineInRange("damage_multiplicand", 1d, 0d, 100d);
 		damageRounding = builder.comment(DESC_DAMAGE_ROUNDING)
 				.defineEnum("damage_rounding", DamageRounding.ROUND_DOWN);
 		speedMultiplicand = builder.comment(DESC_SPEED_MULTIPLICAND)
@@ -92,7 +92,7 @@ public class ToolConfiguration{
 		blacklisted.set(value);
 	}
 	
-	public void setDamageMultiplicand(Integer value){
+	public void setDamageMultiplicand(Double value){
 		damageMultiplicand.set(value);
 	}
 	
@@ -124,7 +124,7 @@ public class ToolConfiguration{
 		return ignoreTools.get();
 	}
 	
-	public int getDamageMultiplicand(){
+	public double getDamageMultiplicand(){
 		return damageMultiplicand.get();
 	}
 	

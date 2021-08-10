@@ -22,7 +22,7 @@ public class ToolDamageHandler{
 	}
 	
 	private int getDamage(long count){
-		if(damageMultiplicand == 0){
+		if(Double.compare(damageMultiplicand, 0) <= 0){
 			return 1;
 		}
 		var rawDamage = count * damageMultiplicand;
