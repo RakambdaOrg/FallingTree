@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
 import lombok.Getter;
 import net.minecraft.world.item.ItemStack;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 
 public class ToolDamageHandler{
 	private final ItemStack tool;
@@ -24,7 +25,13 @@ public class ToolDamageHandler{
 		if(damageMultiplicand == 0){
 			return 1;
 		}
-		return (int) (count * damageMultiplicand);
+		var rawDamage = count * damageMultiplicand;
+		
+		return (int) switch(config.getTools().getDamageRounding()){
+			case ROUND_DOWN -> Math.floor(rawDamage);
+			case ROUND_UP -> Math.ceil(rawDamage);
+			case ROUNDING -> Math.round(rawDamage);
+		};
 	}
 	
 	public boolean shouldPreserveTool(){
