@@ -77,6 +77,10 @@ processResources {
 jar.finalizedBy('reobfJar')
 
 task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
+    onlyIf {
+        project.hasProperty("forgeKeyStore") && project.hasProperty("forgeKeyStoreAlias") && project.hasProperty("forgeKeyStorePass") && project.hasProperty("forgeKeyStoreKeyPass")
+    }
+
     keyStore = project.findProperty("forgeKeyStore")
     alias = project.findProperty("forgeKeyStoreAlias")
     storePass = project.findProperty("forgeKeyStorePass")
