@@ -43,7 +43,7 @@ public class ToolConfiguration{
 			INFO: If damage is not a whole number then damageRounding will be used to determine what the final damage is.""")
 	@Min(0)
 	public double damageMultiplicand = 1;
-	@Tooltip(count = 4)
+	@Tooltip(count = 5)
 	@Comment("""
 			How damage taken should be rounded if it isn't a whole number.\s
 			ROUNDING will round to the closest whole number.\s
