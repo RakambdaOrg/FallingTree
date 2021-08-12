@@ -31,7 +31,7 @@ public class ToolDamageHandler{
 			case ROUND_DOWN -> Math.floor(rawDamage);
 			case ROUND_UP -> Math.ceil(rawDamage);
 			case ROUNDING -> Math.round(rawDamage);
-			case PROBABILISTIC -> this.getProbabilisticDamage(rawDamage);
+			case PROBABILISTIC -> getProbabilisticDamage(rawDamage);
 		};
 	}
 
