@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 ### Changed
+- Added Russian translations
+- Made damage multiplicand accept float values
+- Added 4 new damage multiplicand rounding options: mathematical rounding, round up (ceil), round down (floor), and probabilistic
+- Fixed config tooltips
+
 ## [1.17.1-2.12.3] - 2021-08-08
 ### Changed
 - ClothConfig is supported again for forge
