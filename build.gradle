@@ -13,7 +13,6 @@ buildscript {
 import com.modrinth.minotaur.TaskModrinthUpload
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.jetbrains.changelog.ExtensionsKt
 
 plugins {
     id("com.matthewprenger.cursegradle") version("1.4.0")
