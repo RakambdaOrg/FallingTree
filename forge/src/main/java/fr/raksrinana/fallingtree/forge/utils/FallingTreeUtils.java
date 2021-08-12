@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.forge.utils;
 
 import fr.raksrinana.fallingtree.forge.config.Config;
+import fr.raksrinana.fallingtree.forge.config.ConfigCache;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -133,7 +134,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLogBlock(Block block){
-		var isWhitelistedBlock = LOGS.contains(block)
+		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
 				|| Config.COMMON.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));

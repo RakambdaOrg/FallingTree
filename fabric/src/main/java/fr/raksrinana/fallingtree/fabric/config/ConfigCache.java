@@ -2,12 +2,14 @@ package fr.raksrinana.fallingtree.fabric.config;
 
 import fr.raksrinana.fallingtree.fabric.FallingTree;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -86,7 +88,10 @@ public class ConfigCache{
 	public Collection<Block> getDefaultLogs(){
 		if(isNull(defaultLogs)){
 			defaultLogs = BlockTags.LOGS.getValues().stream()
-					.filter(block -> !Registry.BLOCK.getKey(block).getPath().startsWith("stripped"))
+					.filter(block -> !Optional.of(Registry.BLOCK.getKey(block))
+							.map(ResourceLocation::getPath)
+							.map(name -> name.startsWith("stripped"))
+							.orElse(false))
 					.collect(Collectors.toSet());
 		}
 		return defaultLogs;
