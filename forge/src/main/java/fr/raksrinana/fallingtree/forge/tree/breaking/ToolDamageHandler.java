@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 public class ToolDamageHandler{
 	private final ItemStack tool;
 	private final double damageMultiplicand;
-	private final boolean preserve;
 	private final int maxDurabilityTaken;
 	@Getter
 	private final int maxBreakCount;
@@ -15,9 +14,13 @@ public class ToolDamageHandler{
 	public ToolDamageHandler(ItemStack tool, double damageMultiplicand, boolean preserve, int breakableCount){
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
-		this.preserve = preserve;
 		
-		maxBreakCount = damageMultiplicand == 0 ? breakableCount : (int) Math.floor(getToolDurability() / damageMultiplicand);
+		var breakCount = damageMultiplicand == 0 ? Config.COMMON.getTrees().getMaxSize() : (int) Math.floor(getToolDurability() / damageMultiplicand);
+		if(preserve && breakCount <= breakableCount){
+			breakCount--;
+		}
+		
+		maxBreakCount = breakCount;
 		maxDurabilityTaken = getDamage(maxBreakCount);
 	}
 	
@@ -43,13 +46,6 @@ public class ToolDamageHandler{
 			finalDamage++;
 		}
 		return finalDamage;
-	}
-	
-	public boolean shouldPreserveTool(){
-		if(!preserve){
-			return false;
-		}
-		return getToolDurability() <= maxDurabilityTaken;
 	}
 	
 	public int getActualDamage(int brokenCount){

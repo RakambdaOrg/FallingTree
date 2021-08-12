@@ -51,7 +51,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		var damageMultiplicand = Config.COMMON.getTools().getDamageMultiplicand();
 		var toolHandler = new ToolDamageHandler(tool, damageMultiplicand, Config.COMMON.getTools().isPreserve(), count);
 		
-		if(toolHandler.shouldPreserveTool()){
+		if(toolHandler.getMaxBreakCount() <= 0){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
 			FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
 			return false;

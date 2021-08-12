@@ -26,7 +26,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		var breakableCount = Math.min(tree.getBreakableCount(), config.getTrees().getMaxSize());
 		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), breakableCount);
 		
-		if(toolHandler.shouldPreserveTool()){
+		if(toolHandler.getMaxBreakCount() <= 0){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
 			FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
 			return false;
