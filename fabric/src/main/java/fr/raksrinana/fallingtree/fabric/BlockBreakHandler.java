@@ -20,7 +20,7 @@ public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 	@Override
 	public boolean beforeBlockBreak(Level world, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
 		if(config.getTrees().isTreeBreaking() && !world.isClientSide()){
-			if(FallingTreeUtils.isPlayerInRightState(player)){
+			if(FallingTreeUtils.isPlayerInRightState(player, blockState)){
 				try{
 					return TreeBuilder.getTree(player, world, blockPos).map(tree -> {
 						var breakMode = config.getTrees().getBreakMode();
