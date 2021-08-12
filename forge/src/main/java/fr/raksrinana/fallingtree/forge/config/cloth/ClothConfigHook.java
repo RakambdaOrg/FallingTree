@@ -132,7 +132,7 @@ public class ClothConfigHook{
 		var maxSizeActionEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslatableComponent(getFieldName("trees", "maxSizeAction")), MaxSizeAction.class, config.getMaxSizeAction())
 				.setDefaultValue(MaxSizeAction.ABORT)
-				.setTooltip(getTooltips("trees", "maxSizeAction", 6))
+				.setTooltip(getTooltips("trees", "maxSizeAction", 4))
 				.setSaveConsumer(config::setMaxSizeAction)
 				.build();
 		var breakOrderEntry = builder.entryBuilder()
