@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.config;
 
 import fr.raksrinana.fallingtree.fabric.FallingTree;
+import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import static fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils.getAsBlocks;
 import static fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils.getAsItems;
 import static java.util.Objects.isNull;
@@ -24,6 +26,7 @@ public class ConfigCache{
 	private Set<Block> logsWhitelist;
 	private Set<Block> adjacentBlocksWhitelist;
 	private Set<Block> adjacentBlocksBase;
+	private Set<Block> defaultLogs;
 	
 	public void invalidate(){
 		toolsBlacklist = null;
@@ -35,6 +38,7 @@ public class ConfigCache{
 		logsWhitelist = null;
 		adjacentBlocksWhitelist = null;
 		adjacentBlocksBase = null;
+		defaultLogs = null;
 	}
 	
 	public Collection<Item> getToolsWhitelisted(Supplier<Collection<String>> collectionSupplier){
@@ -79,12 +83,21 @@ public class ConfigCache{
 		return adjacentBlocksWhitelist;
 	}
 	
+	public Collection<Block> getDefaultLogs(){
+		if(isNull(defaultLogs)){
+			defaultLogs = BlockTags.LOGS.getValues().stream()
+					.filter(block -> !Registry.BLOCK.getKey(block).getPath().startsWith("stripped"))
+					.collect(Collectors.toSet());
+		}
+		return defaultLogs;
+	}
+	
 	public Collection<Block> getAdjacentBlocksBase(){
 		if(isNull(adjacentBlocksBase)){
 			adjacentBlocksBase = new HashSet<>();
 			adjacentBlocksBase.add(Blocks.AIR);
 			adjacentBlocksBase.addAll(BlockTags.LEAVES.getValues());
-			adjacentBlocksBase.addAll(BlockTags.LOGS.getValues());
+			adjacentBlocksBase.addAll(getDefaultLogs());
 			adjacentBlocksBase.addAll(getWhitelistedLogs(FallingTree.config.getTrees()::getWhitelistedLogs));
 			adjacentBlocksBase.addAll(getWhitelistedLeaves(FallingTree.config.getTrees()::getWhitelistedLeaves));
 			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(FallingTree.config.getTrees()::getWhitelistedNonDecayLeaves));
