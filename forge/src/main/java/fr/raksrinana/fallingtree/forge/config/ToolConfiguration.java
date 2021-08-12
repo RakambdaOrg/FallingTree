@@ -33,7 +33,9 @@ public class ToolConfiguration{
 			"How damage taken should be rounded if it isn't a whole number.",
 			"ROUNDING will round to the closest whole number.",
 			"ROUND_DOWN will round down.",
-			"ROUND_UP will round up."
+			"ROUND_UP will round up.",
+			"PROBABILISTIC will treat decimal fraction as a probability of rounding up.",
+			"ie: 9.45 will have 45% chance of being rounded up to 10 and 55% chance of being rounded down to 9."
 	};
 	private static final String[] DESC_SPEED_MULTIPLICAND = {
 			"Applies a speed modifier when breaking the tree.",

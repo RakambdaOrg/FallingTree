@@ -31,7 +31,18 @@ public class ToolDamageHandler{
 			case ROUND_DOWN -> Math.floor(rawDamage);
 			case ROUND_UP -> Math.ceil(rawDamage);
 			case ROUNDING -> Math.round(rawDamage);
+			case PROBABILISTIC -> this.getProbabilisticDamage(rawDamage);
 		};
+	}
+
+	private int getProbabilisticDamage(double rawDamage) {
+		var damage = Math.floor(rawDamage);
+		var finalDamage = (int) damage;
+		var probability = rawDamage - damage;
+		if (Math.random() < probability) {
+			finalDamage++;
+		}
+		return finalDamage;
 	}
 	
 	public boolean shouldPreserveTool(){

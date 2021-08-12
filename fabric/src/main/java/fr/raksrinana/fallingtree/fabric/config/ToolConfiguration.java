@@ -43,12 +43,14 @@ public class ToolConfiguration{
 			INFO: If damage is not a whole number then damageRounding will be used to determine what the final damage is.""")
 	@Min(0)
 	public double damageMultiplicand = 1;
-	@Tooltip(count = 4)
+	@Tooltip(count = 8)
 	@Comment("""
 			How damage taken should be rounded if it isn't a whole number.\s
 			ROUNDING will round to the closest whole number.\s
 			ROUND_DOWN will round down.\s
-			ROUND_UP will round up.""")
+			ROUND_UP will round up.\s
+			PROBABILISTIC will treat decimal fraction as a probability of rounding up.\s
+			ie: 9.45 will have 45% chance of being rounded up to 10 and 55% chance of being rounded down to 9.""")
 	@EnumHandler(option = EnumHandler.EnumDisplayOption.BUTTON)
 	public DamageRounding damageRounding = ROUND_DOWN;
 	@Tooltip(count = 15)
