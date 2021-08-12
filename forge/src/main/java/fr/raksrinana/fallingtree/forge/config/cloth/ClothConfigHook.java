@@ -280,7 +280,7 @@ public class ClothConfigHook{
 		var preserveEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("tools", "preserve")), config.isPreserve())
 				.setDefaultValue(false)
-				.setTooltip(getTooltips("tools", "preserve", 2))
+				.setTooltip(getTooltips("tools", "preserve", 3))
 				.setSaveConsumer(config::setPreserve)
 				.build();
 
