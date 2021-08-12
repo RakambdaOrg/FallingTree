@@ -266,7 +266,7 @@ public class ClothConfigHook{
 		var damageRoundingEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslatableComponent(getFieldName("tools", "damageRounding")), DamageRounding.class, config.getDamageRounding())
 				.setDefaultValue(DamageRounding.ROUND_DOWN)
-				.setTooltip(getTooltips("tools", "damageRounding", 5))
+				.setTooltip(getTooltips("tools", "damageRounding", 8))
 				.setSaveConsumer(config::setDamageRounding)
 				.build();
 		var speedMultiplicandEntry = builder.entryBuilder()
