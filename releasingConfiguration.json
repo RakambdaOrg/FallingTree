@@ -9,7 +9,9 @@
         "labels": ["type: 🐛 bug"]
       }
     ],
-    "ignore_labels": [],
+    "ignore_labels": [
+        "type: 📚 dependencies"
+    ],
     "sort": "ASC",
     "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
     "pr_template": "- ${{TITLE}} (#${{NUMBER}} by @${{AUTHOR}})",
