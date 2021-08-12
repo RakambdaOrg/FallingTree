@@ -53,7 +53,7 @@ public class ToolDamageHandler{
 	}
 	
 	public int getActualDamage(int brokenCount){
-		return brokenCount == maxBreakCount ? maxDurabilityTaken : getDamage(brokenCount);
+		return brokenCount == maxBreakCount ? maxDurabilityTaken : Math.min(maxDurabilityTaken, getDamage(brokenCount));
 	}
 	
 	private int getToolDurability(){
