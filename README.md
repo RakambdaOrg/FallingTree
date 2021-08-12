@@ -16,6 +16,6 @@ Several options are available in the config file:
 * Option to disable the effect of the mod by sneaking (can be reversed).
 * Change speed depending on the tree size.
 * Damage tools or not (can set it to break the tool by the amount of blocks there were in the tree).
-* Let tools at 1 durability if it's going to break.
+* Do not break the tree if tool is going to break.
 
 NOTE: On servers this mod can be server-side only, client isn't required (except if you use the change speed feature).
