@@ -14,6 +14,7 @@ import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,7 +35,7 @@ public class BreakingHandler{
 	public static void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
 		if(Config.COMMON.getTrees().isTreeBreaking() && !event.isCanceled()){
 			if(Config.COMMON.getTrees().getBreakMode() == BreakMode.INSTANTANEOUS){
-				if(isPlayerInRightState(event.getPlayer())){
+				if(isPlayerInRightState(event.getPlayer(), event.getState())){
 					var cacheSpeed = speedCache.compute(event.getPlayer().getUUID(), (pos, speed) -> {
 						if(isNull(speed) || !speed.isValid(event.getPos())){
 							speed = getSpeed(event);
@@ -56,7 +57,7 @@ public class BreakingHandler{
 				return;
 			}
 			var player = event.getPlayer();
-			if(isPlayerInRightState(player) && event.getWorld() instanceof Level level){
+			if(isPlayerInRightState(player, event.getState()) && event.getWorld() instanceof Level level){
 				try{
 					TreeBuilder.getTree(player, level, event.getPos()).ifPresent(tree -> {
 						var breakMode = Config.COMMON.getTrees().getBreakMode();
@@ -77,14 +78,14 @@ public class BreakingHandler{
 		};
 	}
 	
-	private static boolean isPlayerInRightState(Player player){
+	private static boolean isPlayerInRightState(Player player, BlockState aimedBlockState){
 		if(player.isCreative() && !Config.COMMON.isBreakInCreative()){
 			return false;
 		}
 		if(Config.COMMON.isReverseSneaking() != player.isCrouching()){
 			return false;
 		}
-		return canPlayerBreakTree(player);
+		return canPlayerBreakTree(player, aimedBlockState);
 	}
 	
 	private static CacheSpeed getSpeed(PlayerEvent.BreakSpeed event){
