@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.utils;
 
+import fr.raksrinana.fallingtree.fabric.config.ConfigCache;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.ChatType;
@@ -18,7 +19,8 @@ import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
 import static net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags.AXES;
 import static net.minecraft.Util.NIL_UUID;
-import static net.minecraft.tags.BlockTags.*;
+import static net.minecraft.tags.BlockTags.LEAVES;
+import static net.minecraft.tags.BlockTags.WART_BLOCKS;
 import static net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
 
 public class FallingTreeUtils{
@@ -130,7 +132,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLogBlock(Block block){
-		var isWhitelistedBlock = LOGS.contains(block)
+		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
 				|| config.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = config.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
