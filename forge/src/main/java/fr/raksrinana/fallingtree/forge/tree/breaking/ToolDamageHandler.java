@@ -36,12 +36,13 @@ public class ToolDamageHandler{
 	}
 
 	private int getProbabilisticDamage(double rawDamage) {
-		int damage = (int)Math.floor(rawDamage);
-		double probability = rawDamage - Math.floor(rawDamage);
+		var damage = Math.floor(rawDamage);
+		var finalDamage = (int) damage;
+		var probability = rawDamage - damage;
 		if (Math.random() < probability) {
-			damage += 1;
+			finalDamage++;
 		}
-		return damage;
+		return finalDamage;
 	}
 	
 	public boolean shouldPreserveTool(){
