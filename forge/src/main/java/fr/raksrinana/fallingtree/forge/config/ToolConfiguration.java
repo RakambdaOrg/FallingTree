@@ -46,8 +46,7 @@ public class ToolConfiguration{
 			"WARNING: If you are on a server, this either has to be set to 0 or every player should have the mod. Else they'll have a weird effect of breaking the block but the block is still there."
 	};
 	private static final String[] DESC_PRESERVE = {
-			"When set to true, when a tree is broken and the tool is about to break we will just break enough blocks so that the tool is left at 1 of durability.",
-			"INFO: Only in instantaneous mode"
+			"When set to true, when a tree is broken and the tool is about to break then nothing will happen."
 	};
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelisted;
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklisted;

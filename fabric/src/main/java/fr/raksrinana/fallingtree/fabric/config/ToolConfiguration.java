@@ -25,8 +25,8 @@ public class ToolConfiguration{
 			"INFO: This wins over the whitelist.")
 	@ItemId
 	public List<String> blacklisted = new ArrayList<>();
-	@Tooltip(count = 3)
-	@Comment("When set to true, when a tree is broken and the tool is about to break we will just break enough blocks so that the tool is left at 1 of durability.\n" +
+	@Tooltip(count = 2)
+	@Comment("When set to true, when a tree is broken and the tool is about to break then nothing will happen.\n" +
 			"INFO: Only in instantaneous mode")
 	public boolean preserve = false;
 	@Tooltip(count = 4)
