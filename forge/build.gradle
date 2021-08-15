@@ -80,7 +80,6 @@ task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
     onlyIf {
         project.hasProperty("forgeKeyStore") && project.hasProperty("forgeKeyStoreAlias") && project.hasProperty("forgeKeyStorePass") && project.hasProperty("forgeKeyStoreKeyPass")
     }
-    options.failOnError(false)
 
     keyStore = project.findProperty("forgeKeyStore")
     alias = project.findProperty("forgeKeyStoreAlias")
