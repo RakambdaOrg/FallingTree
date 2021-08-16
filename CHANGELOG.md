@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Changed
-- Added Russian translations
+- Added Russian and Ukrainian translations
 - Made damage multiplicand accept float values
 - Added 4 new damage multiplicand rounding options: mathematical rounding, round up (ceil), round down (floor), and probabilistic
 - Fixed config tooltips
