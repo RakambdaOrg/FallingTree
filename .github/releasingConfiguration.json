@@ -26,6 +26,6 @@
       "method": "semver"
     },
     "base_branches": [
-      "dev"
+      "\\d+\\.\\d+\\.\\d+"
     ]
 }
