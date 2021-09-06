@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.utils;
 
+import fr.raksrinana.fallingtree.fabric.config.ConfigCache;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.ChatType;
@@ -9,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -16,9 +18,9 @@ import java.util.stream.Stream;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
-import static net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags.AXES;
 import static net.minecraft.Util.NIL_UUID;
-import static net.minecraft.tags.BlockTags.*;
+import static net.minecraft.tags.BlockTags.LEAVES;
+import static net.minecraft.tags.BlockTags.WART_BLOCKS;
 import static net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
 
 public class FallingTreeUtils{
@@ -84,11 +86,12 @@ public class FallingTreeUtils{
 		return false;
 	}
 	
-	public static boolean canPlayerBreakTree(Player player){
+	public static boolean canPlayerBreakTree(Player player, BlockState aimedBlockState){
 		var toolConfiguration = config.getTools();
-		var heldItem = player.getMainHandItem().getItem();
+		var heldItemStack = player.getMainHandItem();
+		var heldItem = heldItemStack.getItem();
 		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
-				|| AXES.contains(heldItem)
+				|| heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1.0f
 				|| toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
 		if(isWhitelistedTool){
 			var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
@@ -119,18 +122,18 @@ public class FallingTreeUtils{
 				.anyMatch(log -> log.equals(block));
 	}
 	
-	public static boolean isPlayerInRightState(Player player){
+	public static boolean isPlayerInRightState(Player player, BlockState aimedBlockState){
 		if(player.isCreative() && !config.isBreakInCreative()){
 			return false;
 		}
 		if(config.isReverseSneaking() != player.isCrouching()){
 			return false;
 		}
-		return canPlayerBreakTree(player);
+		return canPlayerBreakTree(player, aimedBlockState);
 	}
 	
 	public static boolean isLogBlock(Block block){
-		var isWhitelistedBlock = LOGS.contains(block)
+		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
 				|| config.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = config.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));

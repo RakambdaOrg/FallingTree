@@ -1,14 +1,18 @@
 package fr.raksrinana.fallingtree.forge.config;
 
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 
 public class ConfigCache{
@@ -22,6 +26,7 @@ public class ConfigCache{
 	private Set<Block> logsWhitelist;
 	private Set<Block> adjacentBlocksWhitelist;
 	private Set<Block> adjacentBlocksBase;
+	private Set<Block> defaultLogs;
 	
 	public void invalidate(){
 		toolsBlacklist = null;
@@ -33,6 +38,7 @@ public class ConfigCache{
 		logsWhitelist = null;
 		adjacentBlocksWhitelist = null;
 		adjacentBlocksBase = null;
+		defaultLogs = null;
 	}
 	
 	public Collection<Item> getToolsWhitelisted(Supplier<Collection<String>> collectionSupplier){
@@ -77,12 +83,24 @@ public class ConfigCache{
 		return adjacentBlocksWhitelist;
 	}
 	
+	public Collection<Block> getDefaultLogs(){
+		if(isNull(defaultLogs)){
+			defaultLogs = BlockTags.LOGS.getValues().stream()
+					.filter(block -> !Optional.ofNullable(ForgeRegistries.BLOCKS.getKey(block))
+							.map(ResourceLocation::getPath)
+							.map(name -> name.startsWith("stripped"))
+							.orElse(false))
+					.collect(Collectors.toSet());
+		}
+		return defaultLogs;
+	}
+	
 	public Collection<Block> getAdjacentBlocksBase(){
 		if(isNull(adjacentBlocksBase)){
 			adjacentBlocksBase = new HashSet<>();
 			adjacentBlocksBase.add(Blocks.AIR);
 			adjacentBlocksBase.addAll(BlockTags.LEAVES.getValues());
-			adjacentBlocksBase.addAll(BlockTags.LOGS.getValues());
+			adjacentBlocksBase.addAll(getDefaultLogs());
 			adjacentBlocksBase.addAll(getWhitelistedLogs(Config.COMMON.getTrees()::getWhitelistedLogs));
 			adjacentBlocksBase.addAll(getWhitelistedLeaves(Config.COMMON.getTrees()::getWhitelistedLeaves));
 			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(Config.COMMON.getTrees()::getWhitelistedNonDecayLeaves));

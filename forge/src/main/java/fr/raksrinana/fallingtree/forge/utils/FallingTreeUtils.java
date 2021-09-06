@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.forge.utils;
 
 import fr.raksrinana.fallingtree.forge.config.Config;
+import fr.raksrinana.fallingtree.forge.config.ConfigCache;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -9,9 +10,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Objects;
@@ -22,7 +23,8 @@ import static fr.raksrinana.fallingtree.forge.utils.TreePartType.*;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
 import static net.minecraft.Util.NIL_UUID;
-import static net.minecraft.tags.BlockTags.*;
+import static net.minecraft.tags.BlockTags.LEAVES;
+import static net.minecraft.tags.BlockTags.WART_BLOCKS;
 import static net.minecraft.world.InteractionHand.MAIN_HAND;
 import static net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
 import static net.minecraftforge.registries.ForgeRegistries.BLOCKS;
@@ -99,11 +101,12 @@ public class FallingTreeUtils{
 		return false;
 	}
 	
-	public static boolean canPlayerBreakTree(Player player){
+	public static boolean canPlayerBreakTree(Player player, BlockState aimedBlockState){
 		var toolConfiguration = Config.COMMON.getTools();
-		var heldItem = player.getItemInHand(MAIN_HAND).getItem();
+		var heldItemStack = player.getItemInHand(MAIN_HAND);
+		var heldItem = heldItemStack.getItem();
 		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
-				|| heldItem instanceof AxeItem
+				|| heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1f
 				|| toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
 		if(isWhitelistedTool){
 			var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
@@ -133,7 +136,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLogBlock(Block block){
-		var isWhitelistedBlock = LOGS.contains(block)
+		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
 				|| Config.COMMON.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));

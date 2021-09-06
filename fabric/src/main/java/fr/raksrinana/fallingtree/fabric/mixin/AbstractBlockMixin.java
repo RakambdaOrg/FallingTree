@@ -28,7 +28,7 @@ public abstract class AbstractBlockMixin{
 	@Inject(method = "getDestroyProgress", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
 		if(config.getTrees().isTreeBreaking() && config.getTrees().getBreakMode() == BreakMode.INSTANTANEOUS){
-			if(FallingTreeUtils.isPlayerInRightState(player)){
+			if(FallingTreeUtils.isPlayerInRightState(player, state)){
 				var cacheSpeed = speedCache.compute(player.getUUID(), (uuid, speed) -> {
 					if(isNull(speed) || !speed.isValid(pos)){
 						speed = getSpeed(player, pos, callbackInfoReturnable.getReturnValue());
