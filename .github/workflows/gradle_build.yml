@@ -11,13 +11,13 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2.3.4
-      - name: Restore keystore
-        env:
-          KEYSTORE_FORGE_MODS: ${{ secrets.KEYSTORE_FORGE_MODS }}
-        if: env.KEYSTORE_FORGE_MODS != null
-        run: |
-          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+#      - name: Restore keystore
+#        env:
+#          KEYSTORE_FORGE_MODS: ${{ secrets.KEYSTORE_FORGE_MODS }}
+#        if: env.KEYSTORE_FORGE_MODS != null
+#        run: |
+#          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
+#          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -36,10 +36,10 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2.3.4
-      - name: Restore keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+#      - name: Restore keystore
+#        run: |
+#          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
+#          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -65,4 +65,3 @@ jobs:
         run: chmod +x gradlew
       - name: Push on stores
         run: ./gradlew build curseforge publishModrinth -Pchangelog="${{ steps.github_release.outputs.changelog }}" -PcurseforgeApiKey="${{ secrets.CURSEFORGE_API_KEY }}" -DmodrinthToken="${{ secrets.MODRINTH_TOKEN }}" -PforgeKeyStore=keystoreForgeMods.jks -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }} -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }} -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }} -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
-        
