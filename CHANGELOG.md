@@ -1,11 +1,6 @@
 # Changelog
 
-## [Unreleased]
-### Changed
-- Added Russian and Ukrainian translations
-- Made damage multiplicand accept float values
-- Added 4 new damage multiplicand rounding options: mathematical rounding, round up (ceil), round down (floor), and probabilistic
-- Fixed config tooltips
+For newer releases see the [releases section](https://github.com/RakSrinaNa/FallingTree/releases).
 
 ## [1.17.1-2.12.3] - 2021-08-08
 ### Changed

@@ -1,12 +1,16 @@
 [versions]
-modmenu-version = "2.0.2"
+modmenu-version = "2.0.10"
 cloth-config-fabric-version = "5.0.38"
 cloth-config-forge-version = "5.0.38"
 lombok-version = "1.18.20"
 minecraft-version = "1.17.1"
 fabric-loader-version = "0.11.6"
-fabric-api-version = "0.37.1+1.17"
-forge-version = "1.17.1-37.0.27"
+fabric-api-version = "0.40.1+1.17"
+forge-version = "1.17.1-37.0.59"
+
+curse-version = "1.4.0"
+modrinth-version = "1.2.1"
+names-version = "0.39.0"
 
 [libraries]
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
@@ -20,3 +24,8 @@ forge = { group = "net.minecraftforge", name = "forge", version.ref = "forge-ver
 
 [bundles]
 fabric = ["fabric-loader", "fabric-api"]
+
+[plugins]
+curse = { id = "com.matthewprenger.cursegradle", version.ref = "curse-version"}
+modrinth = { id = "com.modrinth.minotaur", version.ref = "modrinth-version"}
+names = { id = "com.github.ben-manes.versions", version.ref = "names-version" }

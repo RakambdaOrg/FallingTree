@@ -17,11 +17,12 @@
         "1.16.5-recommended": "2.11.4",
         "1.17-latest": "2.12.0",
         "1.17-recommended": "2.12.0",
-        "1.17.1-latest": "2.13.0",
-        "1.17.1-recommended": "2.13.0"
+        "1.17.1-latest": "2.14.0",
+        "1.17.1-recommended": "2.14.0"
     },
     "1.17.1": {
         "2.12.3": "https://github.com/RakSrinaNa/FallingTree/blob/1.17.1/CHANGELOG.md",
-        "2.13.0": "https://github.com/RakSrinaNa/FallingTree/releases/2.13.0"
+        "2.13.0": "https://github.com/RakSrinaNa/FallingTree/releases/2.13.0",
+        "2.14.0": "https://github.com/RakSrinaNa/FallingTree/releases/2.14.0"
     }
 }
