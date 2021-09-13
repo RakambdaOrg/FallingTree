@@ -132,7 +132,7 @@ public class ClothConfigHook{
 		var maxSizeActionEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslatableComponent(getFieldName("trees", "maxSizeAction")), MaxSizeAction.class, config.getMaxSizeAction())
 				.setDefaultValue(MaxSizeAction.ABORT)
-				.setTooltip(getTooltips("trees", "maxSizeAction", 6))
+				.setTooltip(getTooltips("trees", "maxSizeAction", 4))
 				.setSaveConsumer(config::setMaxSizeAction)
 				.build();
 		var breakOrderEntry = builder.entryBuilder()
@@ -256,11 +256,18 @@ public class ClothConfigHook{
 				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
 		var damageMultiplicandEntry = builder.entryBuilder()
-				.startIntField(new TranslatableComponent(getFieldName("tools", "damageMultiplicand")), config.getDamageMultiplicand())
+				.startDoubleField(new TranslatableComponent(getFieldName("tools", "damageMultiplicand")), config.getDamageMultiplicand())
 				.setDefaultValue(1)
 				.setMin(0)
+				.setMax(100)
 				.setTooltip(getTooltips("tools", "damageMultiplicand", 7))
 				.setSaveConsumer(config::setDamageMultiplicand)
+				.build();
+		var damageRoundingEntry = builder.entryBuilder()
+				.startEnumSelector(new TranslatableComponent(getFieldName("tools", "damageRounding")), DamageRounding.class, config.getDamageRounding())
+				.setDefaultValue(DamageRounding.ROUND_DOWN)
+				.setTooltip(getTooltips("tools", "damageRounding", 8))
+				.setSaveConsumer(config::setDamageRounding)
 				.build();
 		var speedMultiplicandEntry = builder.entryBuilder()
 				.startDoubleField(new TranslatableComponent(getFieldName("tools", "speedMultiplicand")), config.getSpeedMultiplicand())
@@ -282,6 +289,7 @@ public class ClothConfigHook{
 		tools.addEntry(whitelistedEntry);
 		tools.addEntry(blacklistedEntry);
 		tools.addEntry(damageMultiplicandEntry);
+		tools.addEntry(damageRoundingEntry);
 		tools.addEntry(speedMultiplicandEntry);
 		tools.addEntry(preserveEntry);
 	}

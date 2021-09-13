@@ -29,6 +29,14 @@ public class ToolConfiguration{
 			"If set to 0, it'll still apply 1 damage for every cut.",
 			"INFO: This only applies when the tree is cut when using the mod."
 	};
+	private static final String[] DESC_DAMAGE_ROUNDING = {
+			"How damage taken should be rounded if it isn't a whole number.",
+			"ROUNDING will round to the closest whole number.",
+			"ROUND_DOWN will round down.",
+			"ROUND_UP will round up.",
+			"PROBABILISTIC will treat decimal fraction as a probability of rounding up.",
+			"ie: 9.45 will have 45% chance of being rounded up to 10 and 55% chance of being rounded down to 9."
+	};
 	private static final String[] DESC_SPEED_MULTIPLICAND = {
 			"Applies a speed modifier when breaking the tree.",
 			"0 will disable this, so the speed will be the default one of breaking a block.",
@@ -45,7 +53,8 @@ public class ToolConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklisted;
 	private final ForgeConfigSpec.BooleanValue preserve;
 	private final ForgeConfigSpec.BooleanValue ignoreTools;
-	private final ForgeConfigSpec.IntValue damageMultiplicand;
+	private final ForgeConfigSpec.DoubleValue damageMultiplicand;
+	private final ForgeConfigSpec.EnumValue<DamageRounding> damageRounding;
 	private final ForgeConfigSpec.DoubleValue speedMultiplicand;
 	
 	public ToolConfiguration(ForgeConfigSpec.Builder builder){
@@ -56,7 +65,9 @@ public class ToolConfiguration{
 		blacklisted = builder.comment(DESC_BLACKLISTED)
 				.defineList("blacklisted", Lists.newArrayList(), Objects::nonNull);
 		damageMultiplicand = builder.comment(DESC_DAMAGE_MULTIPLICAND)
-				.defineInRange("damage_multiplicand", 1, 0, Integer.MAX_VALUE);
+				.defineInRange("damage_multiplicand", 1d, 0d, 100d);
+		damageRounding = builder.comment(DESC_DAMAGE_ROUNDING)
+				.defineEnum("damage_rounding", DamageRounding.ROUND_DOWN);
 		speedMultiplicand = builder.comment(DESC_SPEED_MULTIPLICAND)
 				.defineInRange("speed_multiplicand", 0d, 0d, 50d);
 		preserve = builder.comment(DESC_PRESERVE)
@@ -83,8 +94,12 @@ public class ToolConfiguration{
 		blacklisted.set(value);
 	}
 	
-	public void setDamageMultiplicand(Integer value){
+	public void setDamageMultiplicand(Double value){
 		damageMultiplicand.set(value);
+	}
+	
+	public void setDamageRounding(DamageRounding value){
+		damageRounding.set(value);
 	}
 	
 	public void setIgnoreTools(Boolean value){
@@ -111,8 +126,12 @@ public class ToolConfiguration{
 		return ignoreTools.get();
 	}
 	
-	public int getDamageMultiplicand(){
+	public double getDamageMultiplicand(){
 		return damageMultiplicand.get();
+	}
+	
+	public DamageRounding getDamageRounding(){
+		return damageRounding.get();
 	}
 	
 	public double getSpeedMultiplicand(){

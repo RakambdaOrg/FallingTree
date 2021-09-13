@@ -24,25 +24,17 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private boolean destroyInstant(Tree tree, Player player, ItemStack tool){
 		var level = tree.getLevel();
 		var breakableCount = Math.min(tree.getBreakableCount(), config.getTrees().getMaxSize());
-		var damageMultiplicand = config.getTools().getDamageMultiplicand();
-		var toolUsesLeft = tool.isDamageableItem() ? (tool.getMaxDamage() - tool.getDamageValue()) : Integer.MAX_VALUE;
+		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), breakableCount);
 		
-		var rawWeightedUsesLeft = damageMultiplicand == 0 ? (toolUsesLeft - 1) : ((1d * toolUsesLeft) / damageMultiplicand);
-		if(config.getTools().isPreserve()){
-			if(rawWeightedUsesLeft <= 1){
-				logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
-				FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
-				return false;
-			}
-			if(breakableCount >= rawWeightedUsesLeft){
-				rawWeightedUsesLeft = Math.ceil(rawWeightedUsesLeft) - 1;
-			}
+		if(toolHandler.getMaxBreakCount() <= 0){
+			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
+			FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.prevented_break_tool"));
+			return false;
 		}
 		
-		var requestBreakCount = Math.min(rawWeightedUsesLeft, breakableCount);
 		var brokenCount = tree.getBreakableParts().stream()
 				.sorted(config.getTrees().getBreakOrder().getComparator())
-				.limit((int) requestBreakCount)
+				.limit(toolHandler.getMaxBreakCount())
 				.map(TreePart::blockPos)
 				.mapToInt(logBlockPos -> {
 					var logState = level.getBlockState(logBlockPos);
@@ -52,7 +44,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 				})
 				.sum();
 		
-		var toolDamage = damageMultiplicand * brokenCount - 1;
+		var toolDamage = toolHandler.getActualDamage(brokenCount) - 1;
 		if(toolDamage > 0){
 			tool.hurtAndBreak(toolDamage, player, (entity) -> {});
 		}
