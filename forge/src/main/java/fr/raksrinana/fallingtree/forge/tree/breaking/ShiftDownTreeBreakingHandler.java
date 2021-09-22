@@ -58,7 +58,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		var breakCount = parts.stream()
-				.mapToInt(wart -> breakPart(wart, level, player))
+				.mapToInt(wart -> breakPart(wart, level, player, tool))
 				.sum();
 		
 		var damage = toolHandler.getActualDamage(breakCount);
@@ -68,15 +68,17 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		return true;
 	}
 	
-	private int breakPart(TreePart treePart, Level level, Player player){
+	private int breakPart(TreePart treePart, Level level, Player player, ItemStack tool){
 		var blockPos = treePart.blockPos();
-		var logState = level.getBlockState(blockPos);
+		var blockState = level.getBlockState(blockPos);
 		
-		if(MinecraftForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent(level, blockPos, logState, player))){
+		if(MinecraftForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent(level, blockPos, blockState, player))){
 			return 0;
 		}
 		
-		player.awardStat(ITEM_USED.get(logState.getBlock().asItem()));
+		player.awardStat(ITEM_USED.get(blockState.getBlock().asItem()));
+		blockState.getBlock().playerDestroy(level, player, blockPos, blockState, level.getBlockEntity(blockPos), tool);
+		level.removeBlock(blockPos, false);
 		return 1;
 	}
 	
