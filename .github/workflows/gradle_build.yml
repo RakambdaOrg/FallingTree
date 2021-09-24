@@ -48,7 +48,7 @@ jobs:
           cache: 'gradle'
       - name: Build Changelog
         id: github_release
-        uses: mikepenz/release-changelog-builder-action@v2.4.1
+        uses: mikepenz/release-changelog-builder-action@v2.4.2
         with:
           configuration: ".github/releasingConfiguration.json"
         env:
