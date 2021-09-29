@@ -82,10 +82,10 @@ task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
                 && project.hasProperty("forgeKeyStoreAlias")
                 && project.hasProperty("forgeKeyStorePass")
                 && project.hasProperty("forgeKeyStoreKeyPass")
-                && file(project.findProperty("forgeKeyStore")).exists()
+                && rootProject.file(project.findProperty("forgeKeyStore")).exists()
     }
 
-    keyStore = project.findProperty("forgeKeyStore")
+    keyStore = rootProject.file(project.findProperty("forgeKeyStore")).absolutePath
     alias = project.findProperty("forgeKeyStoreAlias")
     storePass = project.findProperty("forgeKeyStorePass")
     keyPass = project.findProperty("forgeKeyStoreKeyPass")
