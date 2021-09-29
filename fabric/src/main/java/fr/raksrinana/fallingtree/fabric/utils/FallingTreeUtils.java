@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.utils;
 
 import fr.raksrinana.fallingtree.fabric.config.ConfigCache;
-import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
@@ -9,7 +9,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import java.util.Collection;
 import java.util.Objects;
@@ -30,6 +32,7 @@ public class FallingTreeUtils{
 				.filter(val -> !val.isEmpty())
 				.flatMap(FallingTreeUtils::getItem)
 				.filter(Objects::nonNull)
+				.filter(item -> !Items.AIR.equals(item))
 				.collect(toSet());
 	}
 	
@@ -41,7 +44,7 @@ public class FallingTreeUtils{
 			}
 			var identifier = new ResourceLocation(name);
 			if(isTag){
-				return TagRegistry.item(identifier).getValues().stream();
+				return TagFactory.ITEM.create(identifier).getValues().stream();
 			}
 			return Stream.of(Registry.ITEM.get(identifier));
 		}
@@ -56,6 +59,7 @@ public class FallingTreeUtils{
 				.filter(val -> !val.isEmpty())
 				.flatMap(FallingTreeUtils::getBlock)
 				.filter(Objects::nonNull)
+				.filter(block -> !Blocks.AIR.equals(block))
 				.collect(toSet());
 	}
 	
@@ -67,7 +71,7 @@ public class FallingTreeUtils{
 			}
 			var identifier = new ResourceLocation(name);
 			if(isTag){
-				return TagRegistry.block(identifier).getValues().stream();
+				return TagFactory.BLOCK.create(identifier).getValues().stream();
 			}
 			return Stream.of(Registry.BLOCK.get(identifier));
 		}
