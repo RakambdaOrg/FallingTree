@@ -11,7 +11,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -37,6 +39,7 @@ public class FallingTreeUtils{
 				.filter(val -> !val.isEmpty())
 				.flatMap(FallingTreeUtils::getItem)
 				.filter(Objects::nonNull)
+				.filter(item -> !Items.AIR.equals(item))
 				.collect(toSet());
 	}
 	
@@ -67,6 +70,7 @@ public class FallingTreeUtils{
 				.filter(val -> !val.isEmpty())
 				.flatMap(FallingTreeUtils::getBlock)
 				.filter(Objects::nonNull)
+				.filter(block -> !Blocks.AIR.equals(block))
 				.collect(toSet());
 	}
 	
