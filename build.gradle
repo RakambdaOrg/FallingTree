@@ -137,17 +137,19 @@ def writeUpdateJson() {
     def json = slurper.parse(file)
     def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/releases"
 
-    json["changelog"] = changelogUrl
+    if(!mcVersion.contains("w")) {
+        json["changelog"] = changelogUrl
 
-    // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
-    json.putIfAbsent(mcVersion, new HashMap<>())
-    json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
-    json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
-    json["promos"]["${mcVersion}-latest"] = version
-    json["promos"]["${mcVersion}-recommended"] = version
+        // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
+        json.putIfAbsent(mcVersion, new HashMap<>())
+        json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
+        json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
+        json["promos"]["${mcVersion}-latest"] = version
+        json["promos"]["${mcVersion}-recommended"] = version
 
-    println(json)
-    file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
+        println(json)
+        file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
+    }
 }
 
 task createUpdateJson(group: "modding") {
