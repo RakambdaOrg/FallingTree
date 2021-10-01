@@ -1,5 +1,5 @@
 plugins {
-    id("fabric-loom")
+    alias(libs.plugins.loom)
 }
 
 dependencies {
