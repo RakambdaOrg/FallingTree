@@ -60,13 +60,15 @@ group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
 task buildJar(type: Jar, group: "modding") {
-    dependsOn assemble, ":common:build", ":fabric:build", ":forge:build"
-    finalizedBy ":forge:signJar"
+    dependsOn assemble, ":common:build",
+            ":fabric:build"//,
+//            ":forge:build" //TODO: Renable for 1.18
+//    finalizedBy ":forge:signJar" //TODO: Renable for 1.18
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from zipTree("common/build/libs/common-${project.version}.jar"),
-            zipTree("fabric/build/libs/fabric-${project.version}.jar"),
-            zipTree("forge/build/libs/forge-${project.version}.jar")
+            zipTree("fabric/build/libs/fabric-${project.version}.jar")//,
+//            zipTree("forge/build/libs/forge-${project.version}.jar") //TODO: Renable for 1.18
 
     manifest {
         attributes([
@@ -87,7 +89,8 @@ curseforge {
     project {
         id = "${project.curseforge_project_id}"
         changelogType = "markdown"
-        addGameVersion project.minecraft_version
+//        addGameVersion project.minecraft_version //TODO: Renable for 1.18
+        addGameVersion "1.18-Snapshot"
         addGameVersion "Java 16"
         changelog = project.findProperty("changelog") ?: "No changelog provided"
         releaseType = "${project.releaseType}"
@@ -121,7 +124,7 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     uploadFile = jar
     addGameVersion(project.minecraft_version as String)
     addLoader("fabric")
-    addLoader("forge")
+//    addLoader("forge") //TODO: Renable for 1.18
     versionType = project.releaseType.toLowerCase()
     changelog = project.findProperty("changelog") ?: "No changelog provided"
 }
