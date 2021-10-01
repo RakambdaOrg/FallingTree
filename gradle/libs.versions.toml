@@ -1,16 +1,19 @@
+# Fabric https://modmuss50.me/fabric.html
+
 [versions]
 modmenu-version = "2.0.10"
 cloth-config-fabric-version = "5.0.38"
 cloth-config-forge-version = "5.0.38"
-lombok-version = "1.18.22"
+lombok-version = "1.18.20"
 minecraft-version = "1.17.1"
-fabric-loader-version = "0.12.3"
-fabric-api-version = "0.41.0+1.17"
-forge-version = "1.17.1-37.0.103"
+fabric-loader-version = "0.11.6"
+fabric-api-version = "0.40.1+1.17"
+forge-version = "1.17.1-37.0.59"
 
 curse-version = "1.4.0"
 modrinth-version = "1.2.1"
 names-version = "0.39.0"
+fabric-loom-version = "0.10-SNAPSHOT"
 
 [libraries]
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
@@ -29,3 +32,4 @@ fabric = ["fabric-loader", "fabric-api"]
 curse = { id = "com.matthewprenger.cursegradle", version.ref = "curse-version"}
 modrinth = { id = "com.modrinth.minotaur", version.ref = "modrinth-version"}
 names = { id = "com.github.ben-manes.versions", version.ref = "names-version" }
+loom = { id = "fabric-loom", version.ref = "fabric-loom-version" }
