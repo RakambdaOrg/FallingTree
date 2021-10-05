@@ -1,0 +1,14 @@
+changelog:
+  exclude:
+    labels:
+      - "type: 📚 dependencies"
+  categories:
+  - title: "🚀 Features"
+    labels:
+    - "type: 🧱 enhancement"
+  - title: "🐛 Fixes"
+    labels:
+    - "type: 🐛 bug"
+  - title: Other Changes
+    labels:
+       - "*"
