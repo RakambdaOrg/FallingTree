@@ -15,13 +15,19 @@ public class ToolDamageHandler{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		
-		var breakCount = damageMultiplicand == 0 ? Config.COMMON.getTrees().getMaxSize() : (int) Math.floor(getToolDurability() / damageMultiplicand);
-		if(preserve && breakCount <= breakableCount){
-			breakCount--;
+		if(tool.isDamageableItem()){
+			var breakCount = damageMultiplicand == 0 ? Config.COMMON.getTrees().getMaxSize() : (int) Math.floor(getToolDurability() / damageMultiplicand);
+			if(preserve && breakCount <= breakableCount){
+				breakCount--;
+			}
+			
+			maxBreakCount = breakCount;
+			maxDurabilityTaken = getDamage(maxBreakCount);
 		}
-		
-		maxBreakCount = breakCount;
-		maxDurabilityTaken = getDamage(maxBreakCount);
+		else{
+			maxBreakCount = Config.COMMON.getTrees().getMaxSize();
+			maxDurabilityTaken = Integer.MAX_VALUE;
+		}
 	}
 	
 	private int getDamage(long count){
@@ -37,22 +43,28 @@ public class ToolDamageHandler{
 			case PROBABILISTIC -> getProbabilisticDamage(rawDamage);
 		};
 	}
-
-	private int getProbabilisticDamage(double rawDamage) {
+	
+	private int getProbabilisticDamage(double rawDamage){
 		var damage = Math.floor(rawDamage);
 		var finalDamage = (int) damage;
 		var probability = rawDamage - damage;
-		if (Math.random() < probability) {
+		if(Math.random() < probability){
 			finalDamage++;
 		}
 		return finalDamage;
 	}
 	
 	public int getActualDamage(int brokenCount){
-		return brokenCount == maxBreakCount ? maxDurabilityTaken : Math.min(maxDurabilityTaken, getDamage(brokenCount));
+		if(tool.isDamageableItem()){
+			return brokenCount == maxBreakCount ? maxDurabilityTaken : Math.min(maxDurabilityTaken, getDamage(brokenCount));
+		}
+		return 0;
 	}
 	
 	private int getToolDurability(){
-		return tool.getMaxDamage() - tool.getDamageValue();
+		if(tool.isDamageableItem()){
+			return tool.getMaxDamage() - tool.getDamageValue();
+		}
+		return Integer.MAX_VALUE;
 	}
 }

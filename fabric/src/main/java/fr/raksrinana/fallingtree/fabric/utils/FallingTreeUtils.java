@@ -9,9 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import java.util.Collection;
 import java.util.Objects;
@@ -32,7 +30,6 @@ public class FallingTreeUtils{
 				.filter(val -> !val.isEmpty())
 				.flatMap(FallingTreeUtils::getItem)
 				.filter(Objects::nonNull)
-				.filter(item -> !Items.AIR.equals(item))
 				.collect(toSet());
 	}
 	
@@ -46,7 +43,7 @@ public class FallingTreeUtils{
 			if(isTag){
 				return TagFactory.ITEM.create(identifier).getValues().stream();
 			}
-			return Stream.of(Registry.ITEM.get(identifier));
+			return Registry.ITEM.getOptional(identifier).stream();
 		}
 		catch(Exception e){
 			return empty();
@@ -59,7 +56,6 @@ public class FallingTreeUtils{
 				.filter(val -> !val.isEmpty())
 				.flatMap(FallingTreeUtils::getBlock)
 				.filter(Objects::nonNull)
-				.filter(block -> !Blocks.AIR.equals(block))
 				.collect(toSet());
 	}
 	
@@ -73,7 +69,7 @@ public class FallingTreeUtils{
 			if(isTag){
 				return TagFactory.BLOCK.create(identifier).getValues().stream();
 			}
-			return Stream.of(Registry.BLOCK.get(identifier));
+			return Registry.BLOCK.getOptional(identifier).stream();
 		}
 		catch(Exception e){
 			return empty();
