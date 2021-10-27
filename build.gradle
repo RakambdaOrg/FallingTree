@@ -92,6 +92,8 @@ curseforge {
 //        addGameVersion project.minecraft_version //TODO: Renable for 1.18
         addGameVersion "1.18-Snapshot"
         addGameVersion "Java 16"
+        addGameVersion "Fabric"
+//        addGameVersion "Forge" //TODO: Renable for 1.18
         changelog = project.findProperty("changelog") ?: "No changelog provided"
         releaseType = "${project.releaseType}"
         mainArtifact(jar) {
