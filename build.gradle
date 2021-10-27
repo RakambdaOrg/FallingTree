@@ -88,7 +88,6 @@ curseforge {
     apiKey = "${project.findProperty("curseforgeApiKey")}"
     project {
         id = "${project.curseforge_project_id}"
-        version = "${project.minecraft_version}-${project.version}"
         changelogType = "markdown"
 //        addGameVersion project.minecraft_version //TODO: Renable for 1.18
         addGameVersion "1.18-Snapshot"

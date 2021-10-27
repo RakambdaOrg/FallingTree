@@ -33,12 +33,13 @@ jobs:
 
       - name: Check project
         uses: gradle/gradle-build-action@v2.0-beta.4
+        env:
+          ORG_GRADLE_PROJECT_forgeKeyStore: keystoreForgeMods.jks
+          ORG_GRADLE_PROJECT_forgeKeyStoreAlias: ${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
+          ORG_GRADLE_PROJECT_forgeKeyStorePass: ${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
+          ORG_GRADLE_PROJECT_forgeKeyStoreKeyPass: ${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
+          ORG_GRADLE_PROJECT_forgeSignSHA1: f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
         with:
           arguments: |
             clean
             check
-            -PforgeKeyStore=keystoreForgeMods.jks
-            -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
-            -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
-            -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
-            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
