@@ -39,7 +39,7 @@ jobs:
       - name: Push on stores
         uses: gradle/gradle-build-action@v2.0-beta.4
         env:
-          ORG_GRADLE_PROJECT_changelog: "[Changelog](${{ steps.get_release.outputs.html_url }})"
+          ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
           ORG_GRADLE_PROJECT_curseforgeApiKey: ${{ secrets.CURSEFORGE_API_KEY }}
           ORG_GRADLE_PROJECT_modrinthToken: ${{ secrets.MODRINTH_TOKEN }}
           ORG_GRADLE_PROJECT_forgeKeyStore: keystoreForgeMods.jks
