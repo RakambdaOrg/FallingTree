@@ -23,7 +23,7 @@ plugins {
 allprojects {
     apply plugin: "java"
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
@@ -91,7 +91,7 @@ curseforge {
         changelogType = "markdown"
 //        addGameVersion project.minecraft_version //TODO: Renable for 1.18
         addGameVersion "1.18-Snapshot"
-        addGameVersion "Java 16"
+        addGameVersion "Java 17"
         addGameVersion "Fabric"
 //        addGameVersion "Forge" //TODO: Renable for 1.18
         changelog = project.findProperty("changelog") ?: "No changelog provided"

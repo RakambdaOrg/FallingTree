@@ -5,7 +5,7 @@ on:
     types: [created]
 
 env:
-  APP_JAVA_VERSION: 16
+  APP_JAVA_VERSION: 17
 
 jobs:
   publish:
@@ -25,7 +25,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ env.APP_JAVA_VERSION }}
-          cache: 'gradle'
+#          cache: 'gradle'
 
       - name: Get release
         id: get_release
@@ -37,7 +37,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Push on stores
-        uses: gradle/gradle-build-action@v2.0-beta.4
+        uses: gradle/gradle-build-action@v2.0.0
         env:
           ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
           ORG_GRADLE_PROJECT_curseforgeApiKey: ${{ secrets.CURSEFORGE_API_KEY }}
@@ -48,6 +48,7 @@ jobs:
           ORG_GRADLE_PROJECT_forgeKeyStoreKeyPass: ${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
           ORG_GRADLE_PROJECT_forgeSignSHA1: f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
         with:
+          cache-disabled: true
           arguments: |
             build
             curseforge
