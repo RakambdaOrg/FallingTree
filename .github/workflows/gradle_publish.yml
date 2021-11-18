@@ -37,7 +37,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Push on stores
-        uses: gradle/gradle-build-action@v2.0.0
+        uses: gradle/gradle-build-action@v2.0.1
         env:
           ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
           ORG_GRADLE_PROJECT_curseforgeApiKey: ${{ secrets.CURSEFORGE_API_KEY }}
