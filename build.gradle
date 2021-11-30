@@ -89,8 +89,7 @@ curseforge {
     project {
         id = "${project.curseforge_project_id}"
         changelogType = "markdown"
-//        addGameVersion project.minecraft_version //TODO: Renable for 1.18
-        addGameVersion "1.18-Snapshot"
+        addGameVersion project.minecraft_version
         addGameVersion "Java 17"
         addGameVersion "Fabric"
 //        addGameVersion "Forge" //TODO: Renable for 1.18
