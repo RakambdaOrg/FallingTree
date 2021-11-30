@@ -1,5 +1,5 @@
 plugins {
-    id("fabric-loom")
+    alias(libs.plugins.loom)
 }
 
 dependencies {
@@ -33,7 +33,7 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
         options.isDeprecation = true
-        options.release.set(16)
+        options.release.set(17)
     }
 }
 

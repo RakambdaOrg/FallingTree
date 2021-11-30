@@ -1,12 +1,12 @@
 package fr.raksrinana.fallingtree.fabric.leaves;
 
-import io.netty.util.internal.ConcurrentSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LeafBreakingHandler implements ServerTickEvents.EndTick{
-	public static final Set<LeafBreakingSchedule> scheduledLeavesBreaking = new ConcurrentSet<>();
+	public static final Set<LeafBreakingSchedule> scheduledLeavesBreaking = ConcurrentHashMap.newKeySet();
 	
 	@Override
 	public void onEndTick(MinecraftServer minecraftServer){

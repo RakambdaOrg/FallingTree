@@ -1,22 +1,21 @@
-name: CI
+name: Release
 
 on:
-  push:
+  release:
+    types: [created]
 
 env:
   APP_JAVA_VERSION: 17
 
 jobs:
-  build:
+  publish:
+    name: Publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@v2.4.0
 
       - name: Restore keystore
-        env:
-          KEYSTORE_FORGE_MODS: ${{ secrets.KEYSTORE_FORGE_MODS }}
-        if: env.KEYSTORE_FORGE_MODS != null
         run: |
           echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
@@ -28,12 +27,21 @@ jobs:
           java-version: ${{ env.APP_JAVA_VERSION }}
 #          cache: 'gradle'
 
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
       - name: Set gradle permissions
         run: chmod +x gradlew
 
-      - name: Check project
+      - name: Push on stores
         uses: gradle/gradle-build-action@v2.0.0
         env:
+          ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
+          ORG_GRADLE_PROJECT_curseforgeApiKey: ${{ secrets.CURSEFORGE_API_KEY }}
+          ORG_GRADLE_PROJECT_modrinthToken: ${{ secrets.MODRINTH_TOKEN }}
           ORG_GRADLE_PROJECT_forgeKeyStore: keystoreForgeMods.jks
           ORG_GRADLE_PROJECT_forgeKeyStoreAlias: ${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
           ORG_GRADLE_PROJECT_forgeKeyStorePass: ${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
@@ -42,5 +50,6 @@ jobs:
         with:
           cache-disabled: true
           arguments: |
-            clean
-            assemble
+            build
+            curseforge
+            publishModrinth

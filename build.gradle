@@ -23,7 +23,7 @@ plugins {
 allprojects {
     apply plugin: "java"
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
@@ -60,13 +60,15 @@ group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
 task buildJar(type: Jar, group: "modding") {
-    dependsOn assemble, ":common:build", ":fabric:build", ":forge:build"
-    finalizedBy ":forge:signJar"
+    dependsOn assemble, ":common:build",
+            ":fabric:build"//,
+//            ":forge:build" //TODO: Renable for 1.18
+//    finalizedBy ":forge:signJar" //TODO: Renable for 1.18
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from zipTree("common/build/libs/common-${project.version}.jar"),
-            zipTree("fabric/build/libs/fabric-${project.version}.jar"),
-            zipTree("forge/build/libs/forge-${project.version}.jar")
+            zipTree("fabric/build/libs/fabric-${project.version}.jar")//,
+//            zipTree("forge/build/libs/forge-${project.version}.jar") //TODO: Renable for 1.18
 
     manifest {
         attributes([
@@ -87,8 +89,11 @@ curseforge {
     project {
         id = "${project.curseforge_project_id}"
         changelogType = "markdown"
-        addGameVersion project.minecraft_version
-        addGameVersion "Java 16"
+//        addGameVersion project.minecraft_version //TODO: Renable for 1.18
+        addGameVersion "1.18-Snapshot"
+        addGameVersion "Java 17"
+        addGameVersion "Fabric"
+//        addGameVersion "Forge" //TODO: Renable for 1.18
         changelog = project.findProperty("changelog") ?: "No changelog provided"
         releaseType = "${project.releaseType}"
         mainArtifact(jar) {
@@ -116,12 +121,12 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
 
     token = project.findProperty("modrinthToken") as String
     projectId = project.modrinth_project_id
-    versionNumber = "${project.version}"
+    versionNumber = "${project.minecraft_version}-${project.version}"
     versionName = "${project.minecraft_version}-${project.version}"
     uploadFile = jar
     addGameVersion(project.minecraft_version as String)
     addLoader("fabric")
-    addLoader("forge")
+//    addLoader("forge") //TODO: Renable for 1.18
     versionType = project.releaseType.toLowerCase()
     changelog = project.findProperty("changelog") ?: "No changelog provided"
 }
@@ -134,17 +139,19 @@ def writeUpdateJson() {
     def json = slurper.parse(file)
     def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/releases"
 
-    json["changelog"] = changelogUrl
+    if(!mcVersion.contains("w")) {
+        json["changelog"] = changelogUrl
 
-    // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
-    json.putIfAbsent(mcVersion, new HashMap<>())
-    json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
-    json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
-    json["promos"]["${mcVersion}-latest"] = version
-    json["promos"]["${mcVersion}-recommended"] = version
+        // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
+        json.putIfAbsent(mcVersion, new HashMap<>())
+        json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
+        json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
+        json["promos"]["${mcVersion}-latest"] = version
+        json["promos"]["${mcVersion}-recommended"] = version
 
-    println(json)
-    file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
+        println(json)
+        file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
+    }
 }
 
 task createUpdateJson(group: "modding") {
