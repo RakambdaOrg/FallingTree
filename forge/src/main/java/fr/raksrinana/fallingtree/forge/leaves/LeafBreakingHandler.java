@@ -26,7 +26,9 @@ public class LeafBreakingHandler{
 				var leafBreakingSchedule = leavesBreak.next();
 				var level = leafBreakingSchedule.getLevel();
 				if(leafBreakingSchedule.getRemainingTicks() <= 0){
-					if(level.isAreaLoaded(leafBreakingSchedule.getBlockPos(), 1)){
+					var chunk = level.getChunk(leafBreakingSchedule.getBlockPos());
+					var chunkPos = chunk.getPos();
+					if(level.hasChunk(chunkPos.x, chunkPos.z)){
 						var state = level.getBlockState(leafBreakingSchedule.getBlockPos());
 						state.tick(level, leafBreakingSchedule.getBlockPos(), level.getRandom());
 						if(state.isRandomlyTicking()){
@@ -45,15 +47,17 @@ public class LeafBreakingHandler{
 	@SubscribeEvent
 	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
 		if(Config.COMMON.getTrees().isLeavesBreaking()
-				&& !event.getWorld().isClientSide()
-				&& event.getWorld() instanceof ServerLevel level){
+		   && !event.getWorld().isClientSide()
+		   && event.getWorld() instanceof ServerLevel level){
 			var eventState = event.getState();
 			var eventBlock = eventState.getBlock();
 			var eventPos = event.getPos();
 			if(eventBlock.equals(AIR)){
 				for(var facing : event.getNotifiedSides()){
 					var neighborPos = eventPos.relative(facing);
-					if(level.isAreaLoaded(neighborPos, 1)){
+					var chunk = level.getChunk(neighborPos);
+					var chunkPos = chunk.getPos();
+					if(level.hasChunk(chunkPos.x, chunkPos.z)){
 						var neighborState = event.getWorld().getBlockState(neighborPos);
 						if(FallingTreeUtils.isLeafBlock(neighborState.getBlock())){
 							scheduledLeavesBreaking.add(new LeafBreakingSchedule(level, neighborPos, 4));
