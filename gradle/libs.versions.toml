@@ -8,7 +8,7 @@ lombok-version = "1.18.22"
 minecraft-version = "1.18"
 fabric-loader-version = "0.12.6"
 fabric-api-version = "0.43.1+1.18"
-forge-version = "1.17.1-37.0.103"
+forge-version = "1.18-38.0.5"
 
 curse-version = "1.4.0"
 modrinth-version = "1.2.1"

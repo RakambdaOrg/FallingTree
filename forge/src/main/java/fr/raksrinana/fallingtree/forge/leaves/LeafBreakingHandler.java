@@ -3,20 +3,20 @@ package fr.raksrinana.fallingtree.forge.leaves;
 import fr.raksrinana.fallingtree.forge.FallingTree;
 import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
-import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import static net.minecraft.world.level.block.Blocks.AIR;
 import static net.minecraftforge.event.TickEvent.Phase.END;
 import static net.minecraftforge.fml.LogicalSide.SERVER;
 
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LeafBreakingHandler{
-	private static final Set<LeafBreakingSchedule> scheduledLeavesBreaking = new ConcurrentSet<>();
+	private static final Set<LeafBreakingSchedule> scheduledLeavesBreaking = ConcurrentHashMap.newKeySet();
 	
 	@SubscribeEvent
 	public static void onServerTick(TickEvent.ServerTickEvent event){

@@ -61,14 +61,14 @@ archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
 task buildJar(type: Jar, group: "modding") {
     dependsOn assemble, ":common:build",
-            ":fabric:build"//,
-//            ":forge:build" //TODO: Renable for 1.18
-//    finalizedBy ":forge:signJar" //TODO: Renable for 1.18
+            ":fabric:build",
+            ":forge:build"
+    finalizedBy ":forge:signJar"
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from zipTree("common/build/libs/common-${project.version}.jar"),
-            zipTree("fabric/build/libs/fabric-${project.version}.jar")//,
-//            zipTree("forge/build/libs/forge-${project.version}.jar") //TODO: Renable for 1.18
+            zipTree("fabric/build/libs/fabric-${project.version}.jar"),
+            zipTree("forge/build/libs/forge-${project.version}.jar")
 
     manifest {
         attributes([
@@ -92,7 +92,7 @@ curseforge {
         addGameVersion project.minecraft_version
         addGameVersion "Java 17"
         addGameVersion "Fabric"
-//        addGameVersion "Forge" //TODO: Renable for 1.18
+        addGameVersion "Forge"
         changelog = project.findProperty("changelog") ?: "No changelog provided"
         releaseType = "${project.releaseType}"
         mainArtifact(jar) {
@@ -125,7 +125,7 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     uploadFile = jar
     addGameVersion(project.minecraft_version as String)
     addLoader("fabric")
-//    addLoader("forge") //TODO: Renable for 1.18
+    addLoader("forge")
     versionType = project.releaseType.toLowerCase()
     changelog = project.findProperty("changelog") ?: "No changelog provided"
 }
