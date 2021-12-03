@@ -4,6 +4,7 @@ import fr.raksrinana.fallingtree.forge.FallingTree;
 import fr.raksrinana.fallingtree.forge.FallingTreeBlockBreakEvent;
 import fr.raksrinana.fallingtree.forge.config.BreakMode;
 import fr.raksrinana.fallingtree.forge.config.Config;
+import fr.raksrinana.fallingtree.forge.tree.breaking.BreakTreeTooBigException;
 import fr.raksrinana.fallingtree.forge.tree.breaking.ITreeBreakingHandler;
 import fr.raksrinana.fallingtree.forge.tree.breaking.InstantaneousTreeBreakingHandler;
 import fr.raksrinana.fallingtree.forge.tree.breaking.ShiftDownTreeBreakingHandler;
@@ -59,13 +60,19 @@ public class BreakingHandler{
 			var player = event.getPlayer();
 			if(isPlayerInRightState(player, event.getState()) && event.getWorld() instanceof Level level){
 				try{
-					TreeBuilder.getTree(player, level, event.getPos()).ifPresent(tree -> {
-						var breakMode = Config.COMMON.getTrees().getBreakMode();
-						getBreakingHandler(breakMode).breakTree(event, tree);
-					});
+					var treeOptional = TreeBuilder.getTree(player, level, event.getPos());
+					if(treeOptional.isEmpty()){
+						return;
+					}
+					var tree = treeOptional.get();
+					var breakMode = Config.COMMON.getTrees().getBreakMode();
+					getBreakingHandler(breakMode).breakTree(event, tree);
 				}
 				catch(TreeTooBigException e){
-					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTrees().getMaxSize()));
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTrees().getMaxScanSize()));
+				}
+				catch(BreakTreeTooBigException e){
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.break_tree_too_big", Config.COMMON.getTrees().getMaxSize()));
 				}
 			}
 		}

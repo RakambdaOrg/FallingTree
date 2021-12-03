@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.fabric;
 
 import fr.raksrinana.fallingtree.fabric.config.BreakMode;
+import fr.raksrinana.fallingtree.fabric.tree.breaking.BreakTreeTooBigException;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.ITreeBreakingHandler;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.InstantaneousTreeBreakingHandler;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.ShiftDownTreeBreakingHandler;
@@ -22,13 +23,20 @@ public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 		if(config.getTrees().isTreeBreaking() && !world.isClientSide()){
 			if(FallingTreeUtils.isPlayerInRightState(player, blockState)){
 				try{
-					return TreeBuilder.getTree(player, world, blockPos).map(tree -> {
-						var breakMode = config.getTrees().getBreakMode();
-						return getBreakingHandler(breakMode).breakTree(player, tree);
-					}).orElse(true);
+					var treeOptional = TreeBuilder.getTree(player, world, blockPos);
+					if(treeOptional.isEmpty()){
+						return true;
+					}
+					var tree = treeOptional.get();
+					var breakMode = config.getTrees().getBreakMode();
+					return getBreakingHandler(breakMode).breakTree(player, tree);
 				}
 				catch(TreeTooBigException e){
-					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTrees().getMaxSize()));
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTrees().getMaxScanSize()));
+					return true;
+				}
+				catch(BreakTreeTooBigException e){
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.break_tree_too_big", config.getTrees().getMaxSize()));
 					return true;
 				}
 			}
