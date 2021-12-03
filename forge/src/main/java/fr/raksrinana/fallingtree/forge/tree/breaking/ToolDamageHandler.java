@@ -15,19 +15,21 @@ public class ToolDamageHandler{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		
+		int tempMaxBreakCount;
 		if(tool.isDamageableItem()){
 			var breakCount = damageMultiplicand == 0 ? Config.COMMON.getTrees().getMaxSize() : (int) Math.floor(getToolDurability() / damageMultiplicand);
 			if(preserve && breakCount <= breakableCount){
 				breakCount--;
 			}
 			
-			maxBreakCount = breakCount;
-			maxDurabilityTaken = getDamage(maxBreakCount);
+			tempMaxBreakCount = breakCount;
 		}
 		else{
-			maxBreakCount = Config.COMMON.getTrees().getMaxSize();
-			maxDurabilityTaken = Integer.MAX_VALUE;
+			tempMaxBreakCount = Config.COMMON.getTrees().getMaxSize();
 		}
+		
+		maxBreakCount = Math.min(Config.COMMON.getTrees().getMaxSize(), tempMaxBreakCount);
+		maxDurabilityTaken = getDamage(maxBreakCount);
 	}
 	
 	private int getDamage(long count){
