@@ -51,7 +51,7 @@ public class ClothConfigHook{
 		var notificationModeEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslatableComponent(getFieldName(null, "notificationMode")), NotificationMode.class, config.getNotificationMode())
 				.setDefaultValue(NotificationMode.ACTION_BAR)
-				.setTooltip(getTooltips(null, "notificationMode", 4))
+				.setTooltip(getTooltips(null, "notificationMode", 5))
 				.setSaveConsumer(config::setNotificationMode)
 				.build();
 
