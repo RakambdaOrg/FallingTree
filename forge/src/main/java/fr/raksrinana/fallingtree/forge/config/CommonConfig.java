@@ -14,7 +14,8 @@ public class CommonConfig{
 	private static final String[] DESC_NOTIFICATION_MODE = {
 			"How messages are sent to the player.",
 			"CHAT: Messages are sent in the chat.",
-			"ACTION_BAR: Messages are displayed in the player's action bar."
+			"ACTION_BAR: Messages are displayed in the player's action bar.",
+			"NONE: No notifications will appear."
 	};
 	private final TreeConfiguration trees;
 	private final ToolConfiguration tools;

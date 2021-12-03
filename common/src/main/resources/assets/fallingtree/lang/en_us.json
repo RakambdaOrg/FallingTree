@@ -16,6 +16,7 @@
   "text.autoconfig.fallingtree.option.notificationMode.@Tooltip[1]": "",
   "text.autoconfig.fallingtree.option.notificationMode.@Tooltip[2]": "CHAT: Messages are sent in the chat.",
   "text.autoconfig.fallingtree.option.notificationMode.@Tooltip[3]": "ACTION_BAR: Messages are sent to the player's action bar.",
+  "text.autoconfig.fallingtree.option.notificationMode.@Tooltip[4]": "NONE: No notifications will appear.",
   "text.autoconfig.fallingtree.option.trees.whitelistedLogs": "Whitelisted logs",
   "text.autoconfig.fallingtree.option.trees.whitelistedLogs.@Tooltip[0]": "Additional list of blocks considered as logs and that",
   "text.autoconfig.fallingtree.option.trees.whitelistedLogs.@Tooltip[1]": "will be destroyed by the mod.",

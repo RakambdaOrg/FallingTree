@@ -23,11 +23,12 @@ public class Configuration implements ConfigData{
 	@Tooltip(count = 2)
 	@Comment("When set to true, the mod will cut down trees in creative too.")
 	public boolean breakInCreative = false;
-	@Tooltip(count = 4)
+	@Tooltip(count = 5)
 	@Comment("""
 			How messages are sent to the player.\s
 			CHAT: Messages are sent in the chat.\s
-			ACTION_BAR: Messages are displayed in the player's action bar."""
+			ACTION_BAR: Messages are displayed in the player's action bar.\s
+			NONE: No notifications will appear."""
 	)
 	@EnumHandler(option = BUTTON)
 	public NotificationMode notificationMode = NotificationMode.ACTION_BAR;
