@@ -24,29 +24,30 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private static ShiftDownTreeBreakingHandler INSTANCE;
 	
 	@Override
-	public void breakTree(BlockEvent.BreakEvent event, Tree tree){
+	public void breakTree(BlockEvent.BreakEvent event, Tree tree) throws BreakTreeTooBigException{
 		destroyShift(tree, event.getPlayer(), event.getPlayer().getItemInHand(MAIN_HAND));
 		if(event.isCancelable()){
 			event.setCanceled(true);
 		}
 	}
 	
-	private boolean destroyShift(@Nonnull Tree tree, @Nonnull Player player, @Nonnull ItemStack tool){
-		tree.getLastSequencePart()
-				.map(treePart -> {
-					var level = tree.getLevel();
-					if(treePart.treePartType() == NETHER_WART && Config.COMMON.getTrees().isInstantlyBreakWarts()){
-						return breakElements(tree, level, player, tool, tree.getWarts());
-					}
-					else{
-						return breakElements(tree, level, player, tool, List.of(treePart));
-					}
-				});
+	private boolean destroyShift(@Nonnull Tree tree, @Nonnull Player player, @Nonnull ItemStack tool) throws BreakTreeTooBigException{
+		var treePartOptional = tree.getLastSequencePart();
+		if(treePartOptional.isPresent()){
+			var treePart = treePartOptional.get();
+			var level = tree.getLevel();
+			if(treePart.treePartType() == NETHER_WART && Config.COMMON.getTrees().isInstantlyBreakWarts()){
+				return breakElements(tree, level, player, tool, tree.getWarts());
+			}
+			else{
+				return breakElements(tree, level, player, tool, List.of(treePart));
+			}
+		}
 		
 		return false;
 	}
 	
-	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts){
+	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts) throws BreakTreeTooBigException{
 		var count = parts.size();
 		var damageMultiplicand = Config.COMMON.getTools().getDamageMultiplicand();
 		var toolHandler = new ToolDamageHandler(tool, damageMultiplicand, Config.COMMON.getTools().isPreserve(), count);

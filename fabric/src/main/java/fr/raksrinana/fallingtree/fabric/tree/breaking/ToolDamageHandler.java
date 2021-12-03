@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
+import fr.raksrinana.fallingtree.fabric.config.MaxSizeAction;
 import lombok.Getter;
 import net.minecraft.world.item.ItemStack;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
@@ -11,9 +12,13 @@ public class ToolDamageHandler{
 	@Getter
 	private final int maxBreakCount;
 	
-	public ToolDamageHandler(ItemStack tool, double damageMultiplicand, boolean preserve, int breakableCount){
+	public ToolDamageHandler(ItemStack tool, double damageMultiplicand, boolean preserve, int breakableCount) throws BreakTreeTooBigException{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
+		
+		if(breakableCount > config.getTrees().getMaxSize() && config.getTrees().getMaxSizeAction() == MaxSizeAction.ABORT){
+			throw new BreakTreeTooBigException();
+		}
 		
 		int tempMaxBreakCount;
 		if(tool.isDamageableItem()){

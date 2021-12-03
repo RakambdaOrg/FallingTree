@@ -23,7 +23,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private static InstantaneousTreeBreakingHandler INSTANCE;
 	
 	@Override
-	public void breakTree(BlockEvent.BreakEvent event, Tree tree){
+	public void breakTree(BlockEvent.BreakEvent event, Tree tree) throws BreakTreeTooBigException{
 		if(!destroyInstant(tree, event.getPlayer(), event.getPlayer().getItemInHand(MAIN_HAND))){
 			if(event.isCancelable()){
 				event.setCanceled(true);
@@ -31,10 +31,9 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 	}
 	
-	private boolean destroyInstant(@Nonnull Tree tree, @Nonnull Player player, @Nonnull ItemStack tool){
+	private boolean destroyInstant(@Nonnull Tree tree, @Nonnull Player player, @Nonnull ItemStack tool) throws BreakTreeTooBigException{
 		var level = tree.getLevel();
-		var breakableCount = Math.min(tree.getBreakableCount(), Config.COMMON.getTrees().getMaxSize());
-		var toolHandler = new ToolDamageHandler(tool, Config.COMMON.getTools().getDamageMultiplicand(), Config.COMMON.getTools().isPreserve(), breakableCount);
+		var toolHandler = new ToolDamageHandler(tool, Config.COMMON.getTools().getDamageMultiplicand(), Config.COMMON.getTools().isPreserve(), tree.getBreakableCount());
 		
 		if(toolHandler.getMaxBreakCount() <= 0){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
@@ -67,7 +66,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 			tool.hurtAndBreak(toolDamage, player, (entity) -> {});
 		}
 		
-		if(brokenCount >= breakableCount){
+		if(brokenCount >= toolHandler.getMaxBreakCount()){
 			forceBreakDecayLeaves(tree, level);
 		}
 		return true;
