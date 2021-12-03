@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.forge.tree.breaking;
 
+import fr.raksrinana.fallingtree.forge.FallingTree;
 import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.config.MaxSizeAction;
 import lombok.Getter;
@@ -16,13 +17,15 @@ public class ToolDamageHandler{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		
-		if(breakableCount > Config.COMMON.getTrees().getMaxSize() && Config.COMMON.getTrees().getMaxSizeAction() == MaxSizeAction.ABORT){
+		var maxSize = Config.COMMON.getTrees().getMaxSize();
+		if(breakableCount > maxSize && Config.COMMON.getTrees().getMaxSizeAction() == MaxSizeAction.ABORT){
+			FallingTree.logger.debug("Tree reached max size of {}", maxSize);
 			throw new BreakTreeTooBigException();
 		}
 		
 		int tempMaxBreakCount;
 		if(tool.isDamageableItem()){
-			var breakCount = damageMultiplicand == 0 ? Config.COMMON.getTrees().getMaxSize() : (int) Math.floor(getToolDurability() / damageMultiplicand);
+			var breakCount = damageMultiplicand == 0 ? maxSize : (int) Math.floor(getToolDurability() / damageMultiplicand);
 			if(preserve && breakCount <= breakableCount){
 				breakCount--;
 			}
@@ -30,10 +33,10 @@ public class ToolDamageHandler{
 			tempMaxBreakCount = breakCount;
 		}
 		else{
-			tempMaxBreakCount = Config.COMMON.getTrees().getMaxSize();
+			tempMaxBreakCount = maxSize;
 		}
 		
-		maxBreakCount = Math.min(Config.COMMON.getTrees().getMaxSize(), tempMaxBreakCount);
+		maxBreakCount = Math.min(maxSize, tempMaxBreakCount);
 		maxDurabilityTaken = getDamage(maxBreakCount);
 	}
 	
