@@ -4,6 +4,7 @@ import fr.raksrinana.fallingtree.fabric.config.MaxSizeAction;
 import lombok.Getter;
 import net.minecraft.world.item.ItemStack;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.logger;
 
 public class ToolDamageHandler{
 	private final ItemStack tool;
@@ -16,13 +17,15 @@ public class ToolDamageHandler{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		
-		if(breakableCount > config.getTrees().getMaxSize() && config.getTrees().getMaxSizeAction() == MaxSizeAction.ABORT){
+		var maxSize = config.getTrees().getMaxSize();
+		if(breakableCount > maxSize && config.getTrees().getMaxSizeAction() == MaxSizeAction.ABORT){
+			logger.debug("Tree reached max size of {}", maxSize);
 			throw new BreakTreeTooBigException();
 		}
 		
 		int tempMaxBreakCount;
 		if(tool.isDamageableItem()){
-			var breakCount = damageMultiplicand == 0 ? config.getTrees().getMaxSize() : (int) Math.floor(getToolDurability() / damageMultiplicand);
+			var breakCount = damageMultiplicand == 0 ? maxSize : (int) Math.floor(getToolDurability() / damageMultiplicand);
 			if(preserve && breakCount <= breakableCount){
 				breakCount--;
 			}
@@ -30,10 +33,10 @@ public class ToolDamageHandler{
 			tempMaxBreakCount = breakCount;
 		}
 		else{
-			tempMaxBreakCount = config.getTrees().getMaxSize();
+			tempMaxBreakCount = maxSize;
 		}
 		
-		maxBreakCount = Math.min(config.getTrees().getMaxSize(), tempMaxBreakCount);
+		maxBreakCount = Math.min(maxSize, tempMaxBreakCount);
 		maxDurabilityTaken = getDamage(maxBreakCount);
 	}
 	
