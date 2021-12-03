@@ -17,14 +17,13 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private static InstantaneousTreeBreakingHandler INSTANCE;
 	
 	@Override
-	public boolean breakTree(Player player, Tree tree){
+	public boolean breakTree(Player player, Tree tree) throws BreakTreeTooBigException{
 		return destroyInstant(tree, player, player.getMainHandItem());
 	}
 	
-	private boolean destroyInstant(Tree tree, Player player, ItemStack tool){
+	private boolean destroyInstant(Tree tree, Player player, ItemStack tool) throws BreakTreeTooBigException{
 		var level = tree.getLevel();
-		var breakableCount = Math.min(tree.getBreakableCount(), config.getTrees().getMaxSize());
-		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), breakableCount);
+		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), tree.getBreakableCount());
 		
 		if(toolHandler.getMaxBreakCount() <= 0){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
@@ -49,7 +48,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 			tool.hurtAndBreak(toolDamage, player, (entity) -> {});
 		}
 		
-		if(brokenCount >= breakableCount){
+		if(brokenCount >= toolHandler.getMaxBreakCount()){
 			forceBreakDecayLeaves(tree, level);
 		}
 		return true;

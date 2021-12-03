@@ -18,27 +18,28 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private static ShiftDownTreeBreakingHandler INSTANCE;
 	
 	@Override
-	public boolean breakTree(Player player, Tree tree){
+	public boolean breakTree(Player player, Tree tree) throws BreakTreeTooBigException{
 		return destroyShift(tree, player, player.getMainHandItem());
 	}
 	
-	private boolean destroyShift(Tree tree, Player player, ItemStack tool){
+	private boolean destroyShift(Tree tree, Player player, ItemStack tool) throws BreakTreeTooBigException{
 		
-		tree.getLastSequencePart()
-				.map(treePart -> {
-					var level = tree.getLevel();
-					if(treePart.treePartType() == NETHER_WART && config.getTrees().isInstantlyBreakWarts()){
-						return breakElements(tree, level, player, tool, tree.getWarts());
-					}
-					else{
-						return breakElements(tree, level, player, tool, List.of(treePart));
-					}
-				});
+		var treePartOptional = tree.getLastSequencePart();
+		if(treePartOptional.isPresent()){
+			var treePart = treePartOptional.get();
+			var level = tree.getLevel();
+			if(treePart.treePartType() == NETHER_WART && config.getTrees().isInstantlyBreakWarts()){
+				return breakElements(tree, level, player, tool, tree.getWarts());
+			}
+			else{
+				return breakElements(tree, level, player, tool, List.of(treePart));
+			}
+		}
 		
 		return false;
 	}
 	
-	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts){
+	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts) throws BreakTreeTooBigException{
 		var count = parts.size();
 		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), count);
 		

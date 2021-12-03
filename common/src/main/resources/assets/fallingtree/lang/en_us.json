@@ -185,7 +185,8 @@
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand.@Tooltip[12]": "WARNING: If you are on a server, this either has to be set to 0",
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand.@Tooltip[13]": "or every player should have the mod. Else they'll have a weird",
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand.@Tooltip[14]": "effect of breaking the block but the block is still there.",
-  "chat.fallingtree.tree_too_big": "This tree is too big and can't be broken in one hit (max: %d)",
+  "chat.fallingtree.tree_too_big": "This tree is too big won't be scanned further (max scan size: %d)",
+  "chat.fallingtree.break_tree_too_big": "This tree is too big and can't be broken in one hit (max tree size: %d)",
   "chat.fallingtree.prevented_break_tool": "Your tool is about to break, go repair it or get a new one.",
   "chat.fallingtree.search_aborted": "Tree detection stopped, reason: ",
   "chat.fallingtree.search_aborted.adjacent": "Found block %s that isn't whitelisted in the adjacent blocks."
