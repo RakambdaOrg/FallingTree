@@ -2,18 +2,18 @@
 
 [versions]
 modmenu-version = "3.0.0"
-cloth-config-fabric-version = "6.0.43"
-cloth-config-forge-version = "6.0.43"
+cloth-config-fabric-version = "6.0.45"
+cloth-config-forge-version = "6.0.45"
 lombok-version = "1.18.22"
 minecraft-version = "1.18"
 fabric-loader-version = "0.12.8"
-fabric-api-version = "0.43.1+1.18"
-forge-version = "1.18-38.0.5"
+fabric-api-version = "0.44.0+1.18"
+forge-version = "1.18-38.0.12"
 
 curse-version = "1.4.0"
 modrinth-version = "1.2.1"
 names-version = "0.39.0"
-fabric-loom-version = "0.10.62"
+fabric-loom-version = "0.10.63"
 
 [libraries]
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
