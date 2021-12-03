@@ -51,7 +51,7 @@ public class TreeBuilder{
 				analyzedPos.add(analyzingPos);
 				
 				if(tree.getSize() > maxScanSize){
-					logger.info("Tree at {} reached max scan size of {}", tree.getHitPos(), maxScanSize);
+					logger.debug("Tree at {} reached max scan size of {}", tree.getHitPos(), maxScanSize);
 					throw new TreeTooBigException();
 				}
 				
@@ -66,7 +66,7 @@ public class TreeBuilder{
 			postProcess(tree);
 		}
 		catch(AbortSearchException e){
-			logger.info("Didn't cut tree at {}, reason: {}", originPos, e.getMessage());
+			logger.debug("Didn't cut tree at {}, reason: {}", originPos, e.getMessage());
 			FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.search_aborted").append(e.getComponent()));
 			return empty();
 		}
@@ -76,7 +76,7 @@ public class TreeBuilder{
 			if(tree.getTopMostLog()
 					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
 					.orElse(true)){
-				logger.info("Tree at {} doesn't have enough leaves around top most log", originPos);
+				logger.debug("Tree at {} doesn't have enough leaves around top most log", originPos);
 				return empty();
 			}
 		}
@@ -106,7 +106,7 @@ public class TreeBuilder{
 			case STOP_BRANCH -> block -> {
 				var whitelisted = whitelist.contains(block) || base.contains(block);
 				if(!whitelisted){
-					logger.info("Found block {} that isn't whitelisted in the adjacent blocks, branch will be ignored further", block);
+					logger.debug("Found block {} that isn't whitelisted in the adjacent blocks, branch will be ignored further", block);
 					return false;
 				}
 				return true;
