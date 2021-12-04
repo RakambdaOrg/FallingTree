@@ -59,6 +59,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		var breakCount = parts.stream()
+				.limit(toolHandler.getMaxBreakCount())
 				.mapToInt(wart -> breakPart(wart, level, player, tool))
 				.sum();
 		
