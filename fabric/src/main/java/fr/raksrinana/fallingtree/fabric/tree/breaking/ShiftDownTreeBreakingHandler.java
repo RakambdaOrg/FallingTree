@@ -23,7 +23,6 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	private boolean destroyShift(Tree tree, Player player, ItemStack tool) throws BreakTreeTooBigException{
-		
 		var treePartOptional = tree.getLastSequencePart();
 		if(treePartOptional.isPresent()){
 			var treePart = treePartOptional.get();
@@ -50,6 +49,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		var breakCount = parts.stream()
+				.limit(toolHandler.getMaxBreakCount())
 				.mapToInt(wart -> breakPart(tree, wart, level, player, tool))
 				.sum();
 		
@@ -57,7 +57,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		if(damage > 0){
 			tool.hurtAndBreak(damage, player, (entity) -> {});
 		}
-		return true;
+		return false;
 	}
 	
 	private int breakPart(Tree tree, TreePart treePart, Level level, Player player, ItemStack tool){
