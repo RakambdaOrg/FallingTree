@@ -21,8 +21,8 @@
         "1.17.1-recommended": "2.14.3",
         "1.18-latest": "2.15.2",
         "1.18-recommended": "2.15.2",
-        "1.18.1-latest": "2.16.0",
-        "1.18.1-recommended": "2.16.0"
+        "1.18.1-latest": "2.16.1",
+        "1.18.1-recommended": "2.16.1"
     },
     "1.17.1": {
         "2.12.3": "https://github.com/RakSrinaNa/FallingTree/blob/1.17.1/CHANGELOG.md",
@@ -36,6 +36,7 @@
         "2.15.2": "https://github.com/RakSrinaNa/FallingTree/releases/2.15.2"
     },
     "1.18.1": {
-        "2.16.0": "https://github.com/RakSrinaNa/FallingTree/releases/2.16.0"
+        "2.16.0": "https://github.com/RakSrinaNa/FallingTree/releases/2.16.0",
+        "2.16.1": "https://github.com/RakSrinaNa/FallingTree/releases/2.16.1"
     }
 }
