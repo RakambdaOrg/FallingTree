@@ -1,7 +1,8 @@
 package fr.raksrinana.fallingtree.forge.utils;
 
-import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.config.ConfigCache;
+import fr.raksrinana.fallingtree.forge.config.Configuration;
+import fr.raksrinana.fallingtree.forge.enchant.FallingTreeEnchantments;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +13,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -96,27 +98,38 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafBlock(@Nonnull Block block){
-		var isWhitelistedBlock = LEAVES.contains(block)
-				|| Config.COMMON.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
-		if(isWhitelistedBlock){
-			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
-			return !isBlacklistedBlock;
+		var isAllowedBlock = LEAVES.contains(block)
+		                         || Configuration.getInstance().getTrees().getAllowedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+		if(isAllowedBlock){
+			var isDeniedBlock = Configuration.getInstance().getTrees().getDeniedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+			return !isDeniedBlock;
 		}
 		return false;
 	}
 	
 	public static boolean canPlayerBreakTree(Player player, BlockState aimedBlockState){
-		var toolConfiguration = Config.COMMON.getTools();
+		var toolConfiguration = Configuration.getInstance().getTools();
 		var heldItemStack = player.getItemInHand(MAIN_HAND);
 		var heldItem = heldItemStack.getItem();
-		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
-				|| heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1f
-				|| toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
-		if(isWhitelistedTool){
-			var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
-			return !isBlacklistedTool;
+		
+		var isAllowedTool = toolConfiguration.isIgnoreTools()
+		                        || heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1f
+		                        || toolConfiguration.getAllowedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(!isAllowedTool){
+			return false;
 		}
-		return false;
+		
+		var isDeniedTool = toolConfiguration.getDeniedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(isDeniedTool){
+			return false;
+		}
+		
+		var isToolChopperEnchanted = EnchantmentHelper.getItemEnchantmentLevel(FallingTreeEnchantments.CHOPPER_ENCHANTMENT.get(), heldItemStack) > 0;
+		if(toolConfiguration.isRequireEnchant() && !isToolChopperEnchanted){
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public static TreePartType getTreePart(Block checkBlock){
@@ -133,18 +146,18 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafNeedBreakBlock(Block block){
-		return Config.COMMON.getTrees()
-				.getWhitelistedNonDecayLeaveBlocks()
+		return Configuration.getInstance().getTrees()
+				.getAllowedNonDecayLeaveBlocks()
 				.stream()
 				.anyMatch(log -> log.equals(block));
 	}
 	
 	public static boolean isLogBlock(Block block){
-		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
-				|| Config.COMMON.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
-		if(isWhitelistedBlock){
-			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
-			return !isBlacklistedBlock;
+		var isAllowedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
+		                         || Configuration.getInstance().getTrees().getAllowedLogBlocks().stream().anyMatch(log -> log.equals(block));
+		if(isAllowedBlock){
+			var isDeniedBlock = Configuration.getInstance().getTrees().getDeniedLogBlocks().stream().anyMatch(log -> log.equals(block));
+			return !isDeniedBlock;
 		}
 		return false;
 	}
@@ -155,7 +168,7 @@ public class FallingTreeUtils{
 	
 	public static void notifyPlayer(Player player, Component text){
 		if(player instanceof ServerPlayer serverPlayer){
-			switch(Config.COMMON.getNotificationMode()){
+			switch(Configuration.getInstance().getNotificationMode()){
 				case CHAT -> player.sendMessage(text, NIL_UUID);
 				case ACTION_BAR -> serverPlayer.sendMessage(text, ChatType.GAME_INFO, NIL_UUID);
 			}

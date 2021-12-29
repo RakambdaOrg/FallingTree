@@ -5,7 +5,9 @@ plugins {
 dependencies {
     minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
+
     modImplementation(libs.bundles.fabric)
+
     implementation(project(":common"))
 
     modImplementation(libs.modmenu) {
@@ -16,7 +18,6 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(module = "modmenu")
     }
-    include(libs.clothConfigFabric)
 }
 
 tasks {

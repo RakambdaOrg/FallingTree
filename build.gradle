@@ -102,7 +102,7 @@ curseforge {
             //Fabric
             optionalDependency("fabric-api") //It's actually required
             optionalDependency("modmenu")
-            embeddedLibrary("cloth-config")
+            optionalDependency("cloth-config")
 
             //Forge
             optionalDependency("cloth-config-forge")

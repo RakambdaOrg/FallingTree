@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.tree.breaking;
 
 import fr.raksrinana.fallingtree.forge.FallingTreeBlockBreakEvent;
-import fr.raksrinana.fallingtree.forge.config.Config;
+import fr.raksrinana.fallingtree.forge.config.Configuration;
 import fr.raksrinana.fallingtree.forge.tree.Tree;
 import fr.raksrinana.fallingtree.forge.tree.TreePart;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
@@ -36,7 +36,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		if(treePartOptional.isPresent()){
 			var treePart = treePartOptional.get();
 			var level = tree.getLevel();
-			if(treePart.treePartType() == NETHER_WART && Config.COMMON.getTrees().isInstantlyBreakWarts()){
+			if(treePart.treePartType() == NETHER_WART && Configuration.getInstance().getTrees().isInstantlyBreakWarts()){
 				return breakElements(tree, level, player, tool, tree.getWarts());
 			}
 			else{
@@ -49,8 +49,8 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts) throws BreakTreeTooBigException{
 		var count = parts.size();
-		var damageMultiplicand = Config.COMMON.getTools().getDamageMultiplicand();
-		var toolHandler = new ToolDamageHandler(tool, damageMultiplicand, Config.COMMON.getTools().isPreserve(), count);
+		var damageMultiplicand = Configuration.getInstance().getTools().getDamageMultiplicand();
+		var toolHandler = new ToolDamageHandler(tool, damageMultiplicand, Configuration.getInstance().getTools().isPreserve(), count);
 		
 		if(toolHandler.getMaxBreakCount() <= 0){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);

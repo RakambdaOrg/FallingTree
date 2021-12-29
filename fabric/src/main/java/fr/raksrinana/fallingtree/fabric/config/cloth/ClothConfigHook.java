@@ -1,15 +1,14 @@
-package fr.raksrinana.fallingtree.forge.config.cloth;
+package fr.raksrinana.fallingtree.fabric.config.cloth;
 
 import com.google.common.collect.Lists;
-import fr.raksrinana.fallingtree.forge.config.*;
+import fr.raksrinana.fallingtree.fabric.config.*;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ConfigGuiHandler;
-import net.minecraftforge.fml.ModLoadingContext;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,8 +17,8 @@ import java.util.regex.Pattern;
 public class ClothConfigHook{
 	private static final Pattern MINECRAFT_ID_PATTERN = Pattern.compile("#?[a-z0-9_.-]+:[a-z0-9/._-]+");
 	
-	public void load(){
-		ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () -> new ConfigGuiHandler.ConfigGuiFactory((minecraft, screen) -> {
+	public Function<Screen, Screen> load(){
+		return (screen) -> {
 			var builder = ConfigBuilder.create()
 					.setParentScreen(screen)
 					.setTitle(new TextComponent("FallingTree"));
@@ -30,10 +29,10 @@ public class ClothConfigHook{
 			fillConfigScreen(builder, configuration);
 			
 			return builder.build();
-		}));
+		};
 	}
 	
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void fillConfigScreen(ConfigBuilder builder, Configuration config){
 		var reverseSneakingEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "reverseSneaking")), config.isReverseSneaking())
@@ -63,7 +62,7 @@ public class ClothConfigHook{
 		fillToolsConfigScreen(builder, config.getTools());
 	}
 	
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private void fillTreesConfigScreen(ConfigBuilder builder, TreeConfiguration config){
 		var breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslatableComponent(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
@@ -228,7 +227,7 @@ public class ClothConfigHook{
 		trees.addEntry(adjacentStopModeEntry);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private void fillToolsConfigScreen(ConfigBuilder builder, ToolConfiguration config){
 		var ignoreToolsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())

@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.leaves;
 
 import fr.raksrinana.fallingtree.forge.FallingTree;
-import fr.raksrinana.fallingtree.forge.config.Config;
+import fr.raksrinana.fallingtree.forge.config.Configuration;
 import fr.raksrinana.fallingtree.forge.utils.FallingTreeUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
@@ -46,7 +46,7 @@ public class LeafBreakingHandler{
 	
 	@SubscribeEvent
 	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
-		if(Config.COMMON.getTrees().isLeavesBreaking()
+		if(Configuration.getInstance().getTrees().isLeavesBreaking()
 		   && !event.getWorld().isClientSide()
 		   && event.getWorld() instanceof ServerLevel level){
 			var eventState = event.getState();

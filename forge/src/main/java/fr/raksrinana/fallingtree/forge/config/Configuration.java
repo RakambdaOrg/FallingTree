@@ -1,7 +1,7 @@
-package fr.raksrinana.fallingtree.fabric.config;
+package fr.raksrinana.fallingtree.forge.config;
 
 import com.google.gson.annotations.Expose;
-import fr.raksrinana.fallingtree.fabric.FallingTree;
+import fr.raksrinana.fallingtree.forge.FallingTree;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
