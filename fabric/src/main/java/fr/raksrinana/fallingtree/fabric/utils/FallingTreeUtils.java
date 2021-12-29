@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.utils;
 
 import fr.raksrinana.fallingtree.fabric.config.ConfigCache;
+import fr.raksrinana.fallingtree.fabric.config.Configuration;
 import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.ChatType;
@@ -19,7 +20,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.CHOPPER_ENCHANTMENT;
-import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
 import static net.minecraft.Util.NIL_UUID;
@@ -84,16 +84,16 @@ public class FallingTreeUtils{
 	
 	public static boolean isLeafBlock(Block block){
 		var isWhitelistedBlock = LEAVES.contains(block)
-		                         || config.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+		                         || Configuration.getInstance().getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
-			var isBlacklistedBlock = config.getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+			var isBlacklistedBlock = Configuration.getInstance().getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
 	}
 	
 	public static boolean canPlayerBreakTree(Player player, BlockState aimedBlockState){
-		var toolConfiguration = config.getTools();
+		var toolConfiguration = Configuration.getInstance().getTools();
 		var heldItemStack = player.getMainHandItem();
 		var heldItem = heldItemStack.getItem();
 		
@@ -134,16 +134,16 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafNeedBreakBlock(Block block){
-		return config.getTrees()
+		return Configuration.getInstance().getTrees()
 				.getWhitelistedNonDecayLeaveBlocks().stream()
 				.anyMatch(log -> log.equals(block));
 	}
 	
 	public static boolean isPlayerInRightState(Player player, BlockState aimedBlockState){
-		if(player.isCreative() && !config.isBreakInCreative()){
+		if(player.isCreative() && !Configuration.getInstance().isBreakInCreative()){
 			return false;
 		}
-		if(config.isReverseSneaking() != player.isCrouching()){
+		if(Configuration.getInstance().isReverseSneaking() != player.isCrouching()){
 			return false;
 		}
 		return canPlayerBreakTree(player, aimedBlockState);
@@ -151,9 +151,9 @@ public class FallingTreeUtils{
 	
 	public static boolean isLogBlock(Block block){
 		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
-		                         || config.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
+		                         || Configuration.getInstance().getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
-			var isBlacklistedBlock = config.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
+			var isBlacklistedBlock = Configuration.getInstance().getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
@@ -165,7 +165,7 @@ public class FallingTreeUtils{
 	
 	public static void notifyPlayer(Player player, Component text){
 		if(player instanceof ServerPlayer serverPlayer){
-			switch(config.getNotificationMode()){
+			switch(Configuration.getInstance().getNotificationMode()){
 				case CHAT -> player.sendMessage(text, NIL_UUID);
 				case ACTION_BAR -> serverPlayer.sendMessage(text, ChatType.GAME_INFO, NIL_UUID);
 			}

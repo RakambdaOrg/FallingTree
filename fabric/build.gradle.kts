@@ -18,7 +18,6 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(module = "modmenu")
     }
-    include(libs.clothConfigFabric)
 }
 
 tasks {

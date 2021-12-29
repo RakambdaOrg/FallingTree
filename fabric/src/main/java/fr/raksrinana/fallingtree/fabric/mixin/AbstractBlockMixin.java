@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.mixin;
 
 import fr.raksrinana.fallingtree.fabric.config.BreakMode;
+import fr.raksrinana.fallingtree.fabric.config.Configuration;
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeBuilder;
 import fr.raksrinana.fallingtree.fabric.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.fabric.utils.CacheSpeed;
@@ -17,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -27,7 +27,7 @@ public abstract class AbstractBlockMixin{
 	
 	@Inject(method = "getDestroyProgress", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
-		if(config.getTrees().isTreeBreaking() && config.getTrees().getBreakMode() == BreakMode.INSTANTANEOUS){
+		if(Configuration.getInstance().getTrees().isTreeBreaking() && Configuration.getInstance().getTrees().getBreakMode() == BreakMode.INSTANTANEOUS){
 			if(FallingTreeUtils.isPlayerInRightState(player, state)){
 				var cacheSpeed = speedCache.compute(player.getUUID(), (uuid, speed) -> {
 					if(isNull(speed) || !speed.isValid(pos)){
@@ -43,7 +43,7 @@ public abstract class AbstractBlockMixin{
 	}
 	
 	private static CacheSpeed getSpeed(Player player, BlockPos pos, float originalSpeed){
-		var speedMultiplicand = config.getTools().getSpeedMultiplicand();
+		var speedMultiplicand = Configuration.getInstance().getTools().getSpeedMultiplicand();
 		try{
 			return speedMultiplicand <= 0 ? null :
 					TreeBuilder.getTree(player, player.getCommandSenderWorld(), pos)

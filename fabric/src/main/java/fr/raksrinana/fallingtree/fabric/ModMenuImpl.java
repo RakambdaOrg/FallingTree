@@ -2,16 +2,12 @@ package fr.raksrinana.fallingtree.fabric;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import fr.raksrinana.fallingtree.fabric.config.Configuration;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigManager;
-import me.shedaniel.autoconfig.gui.ConfigScreenProvider;
+import fr.raksrinana.fallingtree.fabric.config.cloth.ClothConfigHook;
 import me.shedaniel.autoconfig.gui.DefaultGuiProviders;
 import me.shedaniel.autoconfig.gui.DefaultGuiTransformers;
-import me.shedaniel.autoconfig.gui.registry.ComposedGuiRegistryAccess;
-import me.shedaniel.autoconfig.gui.registry.DefaultGuiRegistryAccess;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
-import me.shedaniel.autoconfig.gui.registry.api.GuiRegistryAccess;
+import net.fabricmc.loader.api.FabricLoader;
+import java.lang.reflect.InvocationTargetException;
 
 @SuppressWarnings("unused")
 public class ModMenuImpl implements ModMenuApi{
@@ -19,12 +15,22 @@ public class ModMenuImpl implements ModMenuApi{
 	
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory(){
-		return screen -> new ConfigScreenProvider<>(
-				(ConfigManager<Configuration>) AutoConfig.getConfigHolder(Configuration.class), getGuiRegistryAccess(), screen)
-				.get();
-	}
-	
-	private static GuiRegistryAccess getGuiRegistryAccess(){
-		return new ComposedGuiRegistryAccess(defaultGuiRegistry, AutoConfig.getGuiRegistry(Configuration.class), new DefaultGuiRegistryAccess());
+		if(FabricLoader.getInstance().isModLoaded("cloth-config")){
+			return (screen) -> {
+				try{
+					return Class.forName("fr.raksrinana.fallingtree.fabric.config.cloth.ClothConfigHook")
+							.asSubclass(ClothConfigHook.class)
+							.getConstructor()
+							.newInstance()
+							.load()
+							.apply(screen);
+				}
+				catch(ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e){
+					FallingTree.logger.error("Failed to hook into ClothConfig", e);
+				}
+				return null;
+			};
+		}
+		return screen -> null;
 	}
 }

@@ -35,6 +35,7 @@
     "java": ">=17"
   },
   "suggests": {
-    "modmenu": "*"
+    "modmenu": "*",
+    "cloth-config": "*"
   }
 }

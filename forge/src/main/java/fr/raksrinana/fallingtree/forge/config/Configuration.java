@@ -53,6 +53,6 @@ public class Configuration{
 	}
 	
 	private static Path getConfigPath(){
-		return Paths.get(".").resolve("config").resolve("fallingtree.test.json");
+		return Paths.get(".").resolve("config").resolve("fallingtree.json");
 	}
 }

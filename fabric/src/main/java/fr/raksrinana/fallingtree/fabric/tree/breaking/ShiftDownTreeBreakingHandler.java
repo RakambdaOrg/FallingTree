@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
+import fr.raksrinana.fallingtree.fabric.config.Configuration;
 import fr.raksrinana.fallingtree.fabric.tree.Tree;
 import fr.raksrinana.fallingtree.fabric.tree.TreePart;
 import fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils;
@@ -9,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import java.util.Collection;
 import java.util.List;
-import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.logger;
 import static fr.raksrinana.fallingtree.fabric.utils.TreePartType.NETHER_WART;
 import static java.util.Objects.isNull;
@@ -27,7 +27,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		if(treePartOptional.isPresent()){
 			var treePart = treePartOptional.get();
 			var level = tree.getLevel();
-			if(treePart.treePartType() == NETHER_WART && config.getTrees().isInstantlyBreakWarts()){
+			if(treePart.treePartType() == NETHER_WART && Configuration.getInstance().getTrees().isInstantlyBreakWarts()){
 				return breakElements(tree, level, player, tool, tree.getWarts());
 			}
 			else{
@@ -40,7 +40,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	private boolean breakElements(Tree tree, Level level, Player player, ItemStack tool, Collection<TreePart> parts) throws BreakTreeTooBigException{
 		var count = parts.size();
-		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), count);
+		var toolHandler = new ToolDamageHandler(tool, Configuration.getInstance().getTools().getDamageMultiplicand(), Configuration.getInstance().getTools().isPreserve(), count);
 		
 		if(toolHandler.getMaxBreakCount() <= 0){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);

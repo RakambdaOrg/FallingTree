@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.tree.breaking;
 
+import fr.raksrinana.fallingtree.fabric.config.Configuration;
 import fr.raksrinana.fallingtree.fabric.tree.Tree;
 import fr.raksrinana.fallingtree.fabric.tree.TreePart;
 import fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils;
@@ -9,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.logger;
 import static java.util.Objects.isNull;
 
@@ -23,7 +23,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	private boolean destroyInstant(Tree tree, Player player, ItemStack tool) throws BreakTreeTooBigException{
 		var level = tree.getLevel();
-		var toolHandler = new ToolDamageHandler(tool, config.getTools().getDamageMultiplicand(), config.getTools().isPreserve(), tree.getBreakableCount());
+		var toolHandler = new ToolDamageHandler(tool, Configuration.getInstance().getTools().getDamageMultiplicand(), Configuration.getInstance().getTools().isPreserve(), tree.getBreakableCount());
 		
 		if(toolHandler.getMaxBreakCount() <= 0){
 			logger.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
@@ -32,7 +32,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		var brokenCount = tree.getBreakableParts().stream()
-				.sorted(config.getTrees().getBreakOrder().getComparator())
+				.sorted(Configuration.getInstance().getTrees().getBreakOrder().getComparator())
 				.limit(toolHandler.getMaxBreakCount())
 				.map(TreePart::blockPos)
 				.mapToInt(logBlockPos -> {
@@ -55,7 +55,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	private void forceBreakDecayLeaves(Tree tree, Level level){
-		var radius = config.getTrees().getLeavesBreakingForceRadius();
+		var radius = Configuration.getInstance().getTrees().getLeavesBreakingForceRadius();
 		if(radius > 0){
 			tree.getTopMostLog().ifPresent(topLog -> {
 				var checkPos = new MutableBlockPos();
