@@ -2,23 +2,17 @@ package fr.raksrinana.fallingtree.forge.enchant;
 
 import fr.raksrinana.fallingtree.forge.FallingTree;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-@ObjectHolder(FallingTree.MOD_ID)
 public class FallingTreeEnchantments{
-	public static final Enchantment chopper = null;
+	public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, FallingTree.MOD_ID);
 	
-	@Mod.EventBusSubscriber(modid = FallingTree.MOD_ID)
-	public static class RegistrationHandler
-	{
-		@SubscribeEvent
-		public static void onEvent(RegistryEvent.Register<Enchantment> event)
-		{
-			var registry = event.getRegistry();
-			registry.register(new ChopperEnchantment());
-		}
+	public static RegistryObject<Enchantment> CHOPPER_ENCHANTMENT = ENCHANTMENTS.register("chopper", ChopperEnchantment::new);
+	
+	public static void register(IEventBus eventBus) {
+		ENCHANTMENTS.register(eventBus);
 	}
 }

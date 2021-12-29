@@ -124,7 +124,7 @@ public class FallingTreeUtils{
 			return false;
 		}
 		
-		var isToolChopperEnchanted = EnchantmentHelper.getItemEnchantmentLevel(FallingTreeEnchantments.chopper, heldItemStack) > 0;
+		var isToolChopperEnchanted = EnchantmentHelper.getItemEnchantmentLevel(FallingTreeEnchantments.CHOPPER_ENCHANTMENT.get(), heldItemStack) > 0;
 		if(toolConfiguration.isRequireEnchant() && !isToolChopperEnchanted){
 			return false;
 		}
