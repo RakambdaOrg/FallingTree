@@ -10,9 +10,9 @@ import java.util.List;
 @Data
 public class ToolConfiguration{
 	@Expose
-	private List<String> whitelisted = new ArrayList<>();
+	private List<String> allowed = new ArrayList<>();
 	@Expose
-	private List<String> blacklisted = new ArrayList<>();
+	private List<String> denied = new ArrayList<>();
 	@Expose
 	private boolean preserve = false;
 	@Expose
@@ -26,11 +26,11 @@ public class ToolConfiguration{
 	@Expose
 	private double speedMultiplicand = 0d;
 	
-	public Collection<Item> getBlacklistedItems(){
-		return ConfigCache.getInstance().getToolsBlacklisted(this::getBlacklisted);
+	public Collection<Item> getDeniedItems(){
+		return ConfigCache.getInstance().getToolsDenied(this::getDenied);
 	}
 	
-	public Collection<Item> getWhitelistedItems(){
-		return ConfigCache.getInstance().getToolsWhitelisted(this::getWhitelisted);
+	public Collection<Item> getAllowedItems(){
+		return ConfigCache.getInstance().getToolsAllowed(this::getAllowed);
 	}
 }
