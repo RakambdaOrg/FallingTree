@@ -10,15 +10,15 @@ import java.util.List;
 @Data
 public class TreeConfiguration{
 	@Expose
-	private List<String> whitelistedLogs = new ArrayList<>();
+	private List<String> allowedLogs = new ArrayList<>();
 	@Expose
-	private List<String> blacklistedLogs = new ArrayList<>();
+	private List<String> deniedLogs = new ArrayList<>();
 	@Expose
-	private List<String> whitelistedLeaves = new ArrayList<>();
+	private List<String> allowedLeaves = new ArrayList<>();
 	@Expose
-	private List<String> whitelistedNonDecayLeaves = new ArrayList<>();
+	private List<String> allowedNonDecayLeaves = new ArrayList<>();
 	@Expose
-	private List<String> blacklistedLeaves = new ArrayList<>();
+	private List<String> deniedLeaves = new ArrayList<>();
 	@Expose
 	private BreakMode breakMode = BreakMode.INSTANTANEOUS;
 	@Expose
@@ -48,31 +48,31 @@ public class TreeConfiguration{
 	@Expose
 	private int searchAreaRadius = -1;
 	@Expose
-	private List<String> whitelistedAdjacentBlocks = new ArrayList<>();
+	private List<String> allowedAdjacentBlocks = new ArrayList<>();
 	@Expose
 	private AdjacentStopMode adjacentStopMode = AdjacentStopMode.STOP_ALL;
 	
-	public Collection<Block> getWhitelistedNonDecayLeaveBlocks(){
-		return ConfigCache.getInstance().getWhitelistedNonDecayLeaves(this::getWhitelistedNonDecayLeaves);
+	public Collection<Block> getAllowedNonDecayLeaveBlocks(){
+		return ConfigCache.getInstance().getNonDecayLeavesAllowed(this::getAllowedNonDecayLeaves);
 	}
 	
-	public Collection<Block> getBlacklistedLeaveBlocks(){
-		return ConfigCache.getInstance().getBlacklistedLeaves(this::getBlacklistedLeaves);
+	public Collection<Block> getDeniedLeaveBlocks(){
+		return ConfigCache.getInstance().getLeavesDenied(this::getDeniedLeaves);
 	}
 	
-	public Collection<Block> getBlacklistedLogBlocks(){
-		return ConfigCache.getInstance().getBlacklistedLogs(this::getBlacklistedLogs);
+	public Collection<Block> getDeniedLogBlocks(){
+		return ConfigCache.getInstance().getLogsDenied(this::getDeniedLogs);
 	}
 	
-	public Collection<Block> getWhitelistedLeaveBlocks(){
-		return ConfigCache.getInstance().getWhitelistedLeaves(this::getWhitelistedLeaves);
+	public Collection<Block> getAllowedLeaveBlocks(){
+		return ConfigCache.getInstance().getLeavesAllowed(this::getAllowedLeaves);
 	}
 	
-	public Collection<Block> getWhitelistedLogBlocks(){
-		return ConfigCache.getInstance().getWhitelistedLogs(this::getWhitelistedLogs);
+	public Collection<Block> getAllowedLogBlocks(){
+		return ConfigCache.getInstance().getLogsAllowed(this::getAllowedLogs);
 	}
 	
-	public Collection<Block> getWhitelistedAdjacentBlockBlocks(){
-		return ConfigCache.getInstance().getWhitelistedAdjacentBlocks(this::getWhitelistedAdjacentBlocks);
+	public Collection<Block> getAllowedAdjacentBlockBlocks(){
+		return ConfigCache.getInstance().getAdjacentBlocksAllowed(this::getAllowedAdjacentBlocks);
 	}
 }

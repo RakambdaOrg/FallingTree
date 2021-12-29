@@ -98,11 +98,11 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafBlock(@Nonnull Block block){
-		var isWhitelistedBlock = LEAVES.contains(block)
-		                         || Configuration.getInstance().getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
-		if(isWhitelistedBlock){
-			var isBlacklistedBlock = Configuration.getInstance().getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
-			return !isBlacklistedBlock;
+		var isAllowedBlock = LEAVES.contains(block)
+		                         || Configuration.getInstance().getTrees().getAllowedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+		if(isAllowedBlock){
+			var isDeniedBlock = Configuration.getInstance().getTrees().getDeniedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+			return !isDeniedBlock;
 		}
 		return false;
 	}
@@ -112,15 +112,15 @@ public class FallingTreeUtils{
 		var heldItemStack = player.getItemInHand(MAIN_HAND);
 		var heldItem = heldItemStack.getItem();
 		
-		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
+		var isAllowedTool = toolConfiguration.isIgnoreTools()
 		                        || heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1f
-		                        || toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
-		if(!isWhitelistedTool){
+		                        || toolConfiguration.getAllowedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(!isAllowedTool){
 			return false;
 		}
 		
-		var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
-		if(isBlacklistedTool){
+		var isDeniedTool = toolConfiguration.getDeniedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(isDeniedTool){
 			return false;
 		}
 		
@@ -147,17 +147,17 @@ public class FallingTreeUtils{
 	
 	public static boolean isLeafNeedBreakBlock(Block block){
 		return Configuration.getInstance().getTrees()
-				.getWhitelistedNonDecayLeaveBlocks()
+				.getAllowedNonDecayLeaveBlocks()
 				.stream()
 				.anyMatch(log -> log.equals(block));
 	}
 	
 	public static boolean isLogBlock(Block block){
-		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
-		                         || Configuration.getInstance().getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
-		if(isWhitelistedBlock){
-			var isBlacklistedBlock = Configuration.getInstance().getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
-			return !isBlacklistedBlock;
+		var isAllowedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
+		                         || Configuration.getInstance().getTrees().getAllowedLogBlocks().stream().anyMatch(log -> log.equals(block));
+		if(isAllowedBlock){
+			var isDeniedBlock = Configuration.getInstance().getTrees().getDeniedLogBlocks().stream().anyMatch(log -> log.equals(block));
+			return !isDeniedBlock;
 		}
 		return false;
 	}
