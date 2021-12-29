@@ -8,7 +8,7 @@ public class AdjacentAbortSearchException extends AbortSearchException{
 	private final Block block;
 	
 	public AdjacentAbortSearchException(Block block){
-		super("Found block " + block + " that isn't whitelisted in the adjacent blocks");
+		super("Found block " + block + " that isn't allowed in the adjacent blocks");
 		this.block = block;
 	}
 	

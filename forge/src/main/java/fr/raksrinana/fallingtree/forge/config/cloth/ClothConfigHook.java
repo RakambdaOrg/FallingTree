@@ -77,39 +77,39 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "detectionMode", 9))
 				.setSaveConsumer(config::setDetectionMode)
 				.build();
-		var whitelistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("trees", "whitelistedLogs")), config.getWhitelistedLogs())
+		var allowedLogsEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("trees", "allowedLogs")), config.getAllowedLogs())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("trees", "whitelistedLogs", 5))
-				.setSaveConsumer(config::setWhitelistedLogs)
+				.setTooltip(getTooltips("trees", "allowedLogs", 5))
+				.setSaveConsumer(config::setAllowedLogs)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		var blacklistedLogsEntry = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("trees", "blacklistedLogs")), config.getBlacklistedLogs())
+		var deniedLogsEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("trees", "deniedLogs")), config.getDeniedLogs())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("trees", "blacklistedLogs", 3))
-				.setSaveConsumer(config::setBlacklistedLogs)
+				.setTooltip(getTooltips("trees", "deniedLogs", 3))
+				.setSaveConsumer(config::setDeniedLogs)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		var whitelistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("trees", "whitelistedLeaves")), config.getWhitelistedLeaves())
+		var allowedLeavesEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("trees", "allowedLeaves")), config.getAllowedLeaves())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("trees", "whitelistedLeaves", 5))
-				.setSaveConsumer(config::setWhitelistedLeaves)
+				.setTooltip(getTooltips("trees", "allowedLeaves", 5))
+				.setSaveConsumer(config::setAllowedLeaves)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		var whitelistedNonDecayLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("trees", "whitelistedNonDecayLeaves")), config.getWhitelistedNonDecayLeaves())
+		var allowedNonDecayLeavesEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("trees", "allowedNonDecayLeaves")), config.getAllowedNonDecayLeaves())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("trees", "whitelistedNonDecayLeaves", 2))
-				.setSaveConsumer(config::setWhitelistedNonDecayLeaves)
+				.setTooltip(getTooltips("trees", "allowedNonDecayLeaves", 2))
+				.setSaveConsumer(config::setAllowedNonDecayLeaves)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
-		var blacklistedLeavesEntry = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("trees", "blacklistedLeaves")), config.getBlacklistedLeaves())
+		var deniedLeavesEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("trees", "deniedLeaves")), config.getDeniedLeaves())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("trees", "blacklistedLeaves", 3))
-				.setSaveConsumer(config::setBlacklistedLeaves)
+				.setTooltip(getTooltips("trees", "deniedLeaves", 3))
+				.setSaveConsumer(config::setDeniedLeaves)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
 		var maxScanSizeEntry = builder.entryBuilder()
@@ -190,11 +190,11 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "searchAreaRadius", 5))
 				.setSaveConsumer(config::setSearchAreaRadius)
 				.build();
-		var whitelistedAdjacentBlocks = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("trees", "whitelistedAdjacentBlocks")), config.getWhitelistedAdjacentBlocks())
+		var allowedAdjacentBlocks = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("trees", "allowedAdjacentBlocks")), config.getAllowedAdjacentBlocks())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("trees", "whitelistedAdjacentBlocks", 9))
-				.setSaveConsumer(config::setWhitelistedAdjacentBlocks)
+				.setTooltip(getTooltips("trees", "allowedAdjacentBlocks", 9))
+				.setSaveConsumer(config::setAllowedAdjacentBlocks)
 				.setCellErrorSupplier(getMinecraftBlockIdCellError())
 				.build();
 		var adjacentStopModeEntry = builder.entryBuilder()
@@ -207,11 +207,11 @@ public class ClothConfigHook{
 		var trees = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.trees"));
 		trees.addEntry(breakModeEntry);
 		trees.addEntry(detectionModeEntry);
-		trees.addEntry(whitelistedLogsEntry);
-		trees.addEntry(blacklistedLogsEntry);
-		trees.addEntry(whitelistedLeavesEntry);
-		trees.addEntry(whitelistedNonDecayLeavesEntry);
-		trees.addEntry(blacklistedLeavesEntry);
+		trees.addEntry(allowedLogsEntry);
+		trees.addEntry(deniedLogsEntry);
+		trees.addEntry(allowedLeavesEntry);
+		trees.addEntry(allowedNonDecayLeavesEntry);
+		trees.addEntry(deniedLeavesEntry);
 		trees.addEntry(maxScanSizeEntry);
 		trees.addEntry(maxSizeEntry);
 		trees.addEntry(maxSizeActionEntry);
@@ -224,7 +224,7 @@ public class ClothConfigHook{
 		trees.addEntry(breakNetherTreeWartsEntry);
 		trees.addEntry(instantlyBreakWartsEntry);
 		trees.addEntry(searchAreaRadiusEntry);
-		trees.addEntry(whitelistedAdjacentBlocks);
+		trees.addEntry(allowedAdjacentBlocks);
 		trees.addEntry(adjacentStopModeEntry);
 	}
 	
@@ -242,18 +242,18 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("tools", "requireEnchant", 2))
 				.setSaveConsumer(config::setRequireEnchant)
 				.build();
-		var whitelistedEntry = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("tools", "whitelisted")), config.getWhitelisted())
+		var allowedEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("tools", "allowed")), config.getAllowed())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("tools", "whitelisted", 3))
-				.setSaveConsumer(config::setWhitelisted)
+				.setTooltip(getTooltips("tools", "allowed", 3))
+				.setSaveConsumer(config::setAllowed)
 				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
-		var blacklistedEntry = builder.entryBuilder()
-				.startStrList(new TranslatableComponent(getFieldName("tools", "blacklisted")), config.getBlacklisted())
+		var deniedEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("tools", "denied")), config.getDenied())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("tools", "blacklisted", 3))
-				.setSaveConsumer(config::setBlacklisted)
+				.setTooltip(getTooltips("tools", "denied", 3))
+				.setSaveConsumer(config::setDenied)
 				.setCellErrorSupplier(getMinecraftItemIdCellError())
 				.build();
 		var damageMultiplicandEntry = builder.entryBuilder()
@@ -288,8 +288,8 @@ public class ClothConfigHook{
 		var tools = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.tools"));
 		tools.addEntry(ignoreToolsEntry);
 		tools.addEntry(requireEnchantEntry);
-		tools.addEntry(whitelistedEntry);
-		tools.addEntry(blacklistedEntry);
+		tools.addEntry(allowedEntry);
+		tools.addEntry(deniedEntry);
 		tools.addEntry(damageMultiplicandEntry);
 		tools.addEntry(damageRoundingEntry);
 		tools.addEntry(speedMultiplicandEntry);

@@ -89,24 +89,24 @@ public class TreeBuilder{
 	}
 	
 	private static Predicate<Block> getAdjacentPredicate(){
-		var whitelist = Configuration.getInstance().getTrees().getWhitelistedAdjacentBlockBlocks();
+		var allowed = Configuration.getInstance().getTrees().getAllowedAdjacentBlockBlocks();
 		var base = ConfigCache.getInstance().getAdjacentBlocksBase();
 		
-		if(whitelist.isEmpty()){
+		if(allowed.isEmpty()){
 			return block -> true;
 		}
 		return switch(Configuration.getInstance().getTrees().getAdjacentStopMode()){
 			case STOP_ALL -> block -> {
-				var whitelisted = whitelist.contains(block) || base.contains(block);
-				if(!whitelisted){
+				var isAllowed = allowed.contains(block) || base.contains(block);
+				if(!isAllowed){
 					throw new AdjacentAbortSearchException(block);
 				}
 				return true;
 			};
 			case STOP_BRANCH -> block -> {
-				var whitelisted = whitelist.contains(block) || base.contains(block);
-				if(!whitelisted){
-					logger.debug("Found block {} that isn't whitelisted in the adjacent blocks, branch will be ignored further", block);
+				var isAllowed = allowed.contains(block) || base.contains(block);
+				if(!isAllowed){
+					logger.debug("Found block {} that isn't allowed in the adjacent blocks, branch will be ignored further", block);
 					return false;
 				}
 				return true;
