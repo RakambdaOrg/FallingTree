@@ -1,5 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.mixin;
 
+import fr.raksrinana.fallingtree.fabric.config.Configuration;
 import fr.raksrinana.fallingtree.fabric.leaves.LeafBreakingHandler;
 import fr.raksrinana.fallingtree.fabric.leaves.LeafBreakingSchedule;
 import net.minecraft.core.BlockPos;
@@ -13,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.EnumSet;
-import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static fr.raksrinana.fallingtree.fabric.utils.FallingTreeUtils.isLeafBlock;
 import static net.minecraft.world.level.block.Blocks.AIR;
 
@@ -28,7 +28,7 @@ public abstract class LevelMixin{
 	}
 	
 	private static void onUpdate(ServerLevel level, BlockPos eventPos, BlockState eventState, EnumSet<Direction> directions){
-		if(config.getTrees().isLeavesBreaking()){
+		if(Configuration.getInstance().getTrees().isLeavesBreaking()){
 			var eventBlock = eventState.getBlock();
 			if(eventBlock.equals(AIR)){
 				for(var direction : directions){

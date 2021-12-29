@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.fabric;
 
 import fr.raksrinana.fallingtree.fabric.config.BreakMode;
+import fr.raksrinana.fallingtree.fabric.config.Configuration;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.BreakTreeTooBigException;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.ITreeBreakingHandler;
 import fr.raksrinana.fallingtree.fabric.tree.breaking.InstantaneousTreeBreakingHandler;
@@ -15,12 +16,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 
 public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 	@Override
 	public boolean beforeBlockBreak(Level world, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
-		if(config.getTrees().isTreeBreaking() && !world.isClientSide()){
+		if(Configuration.getInstance().getTrees().isTreeBreaking() && !world.isClientSide()){
 			if(FallingTreeUtils.isPlayerInRightState(player, blockState)){
 				try{
 					var treeOptional = TreeBuilder.getTree(player, world, blockPos);
@@ -28,15 +28,15 @@ public class BlockBreakHandler implements PlayerBlockBreakEvents.Before{
 						return true;
 					}
 					var tree = treeOptional.get();
-					var breakMode = config.getTrees().getBreakMode();
+					var breakMode = Configuration.getInstance().getTrees().getBreakMode();
 					return getBreakingHandler(breakMode).breakTree(player, tree);
 				}
 				catch(TreeTooBigException e){
-					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", config.getTrees().getMaxScanSize()));
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", Configuration.getInstance().getTrees().getMaxScanSize()));
 					return true;
 				}
 				catch(BreakTreeTooBigException e){
-					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.break_tree_too_big", config.getTrees().getMaxSize()));
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.break_tree_too_big", Configuration.getInstance().getTrees().getMaxSize()));
 					return true;
 				}
 			}

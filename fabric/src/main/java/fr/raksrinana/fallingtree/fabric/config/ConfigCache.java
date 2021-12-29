@@ -1,6 +1,5 @@
 package fr.raksrinana.fallingtree.fabric.config;
 
-import fr.raksrinana.fallingtree.fabric.FallingTree;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -103,11 +102,11 @@ public class ConfigCache{
 			adjacentBlocksBase.add(Blocks.AIR);
 			adjacentBlocksBase.addAll(BlockTags.LEAVES.getValues());
 			adjacentBlocksBase.addAll(getDefaultLogs());
-			adjacentBlocksBase.addAll(getWhitelistedLogs(FallingTree.config.getTrees()::getWhitelistedLogs));
-			adjacentBlocksBase.addAll(getWhitelistedLeaves(FallingTree.config.getTrees()::getWhitelistedLeaves));
-			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(FallingTree.config.getTrees()::getWhitelistedNonDecayLeaves));
-			adjacentBlocksBase.removeAll(getBlacklistedLogs(FallingTree.config.getTrees()::getBlacklistedLogs));
-			adjacentBlocksBase.removeAll(getBlacklistedLeaves(FallingTree.config.getTrees()::getBlacklistedLeaves));
+			adjacentBlocksBase.addAll(getWhitelistedLogs(Configuration.getInstance().getTrees()::getWhitelistedLogs));
+			adjacentBlocksBase.addAll(getWhitelistedLeaves(Configuration.getInstance().getTrees()::getWhitelistedLeaves));
+			adjacentBlocksBase.addAll(getWhitelistedNonDecayLeaves(Configuration.getInstance().getTrees()::getWhitelistedNonDecayLeaves));
+			adjacentBlocksBase.removeAll(getBlacklistedLogs(Configuration.getInstance().getTrees()::getBlacklistedLogs));
+			adjacentBlocksBase.removeAll(getBlacklistedLeaves(Configuration.getInstance().getTrees()::getBlacklistedLeaves));
 		}
 		return adjacentBlocksBase;
 	}
