@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.CHOPPER_ENCHANTMENT;
 import static fr.raksrinana.fallingtree.fabric.FallingTree.config;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.empty;
@@ -82,7 +84,7 @@ public class FallingTreeUtils{
 	
 	public static boolean isLeafBlock(Block block){
 		var isWhitelistedBlock = LEAVES.contains(block)
-				|| config.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+		                         || config.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = config.getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 			return !isBlacklistedBlock;
@@ -94,14 +96,25 @@ public class FallingTreeUtils{
 		var toolConfiguration = config.getTools();
 		var heldItemStack = player.getMainHandItem();
 		var heldItem = heldItemStack.getItem();
+		
 		var isWhitelistedTool = toolConfiguration.isIgnoreTools()
-				|| heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1.0f
-				|| toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
-		if(isWhitelistedTool){
-			var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
-			return !isBlacklistedTool;
+		                        || heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1.0f
+		                        || toolConfiguration.getWhitelistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(!isWhitelistedTool){
+			return false;
 		}
-		return false;
+		
+		var isBlacklistedTool = toolConfiguration.getBlacklistedItems().stream().anyMatch(tool -> tool.equals(heldItem));
+		if(isBlacklistedTool){
+			return false;
+		}
+		
+		var isToolChopperEnchanted = EnchantmentHelper.getItemEnchantmentLevel(CHOPPER_ENCHANTMENT, heldItemStack) > 0;
+		if(toolConfiguration.isRequireEnchant() && !isToolChopperEnchanted){
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public static TreePartType getTreePart(Block checkBlock){
@@ -138,7 +151,7 @@ public class FallingTreeUtils{
 	
 	public static boolean isLogBlock(Block block){
 		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
-				|| config.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
+		                         || config.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
 			var isBlacklistedBlock = config.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 			return !isBlacklistedBlock;

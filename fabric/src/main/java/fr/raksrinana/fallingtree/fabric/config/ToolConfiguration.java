@@ -30,9 +30,12 @@ public class ToolConfiguration{
 			"INFO: Only in instantaneous mode")
 	public boolean preserve = false;
 	@Tooltip(count = 4)
-	@Comment("When set to true, the mod will be activated no matter what you have in your hand. \n" +
+	@Comment("When set to true, the mod will be activated no matter what you have in your hand.\n" +
 			"INFO: Blacklist still can be use to restrict some tools.")
 	public boolean ignoreTools = false;
+	@Tooltip(count = 2)
+	@Comment("Define if the tool must be enchanted in order to be able to chop trees with it (whitelist/blacklist still applies).")
+	public boolean requireEnchant = true;
 	@Tooltip(count = 7)
 	@Comment("""
 			Defines the number of times the damage is applied to the tool.\s
