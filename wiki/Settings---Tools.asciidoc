@@ -2,10 +2,10 @@
 |===
 |Name |Description
 
-|Whitelisted tools
-|Allows you to define a list of whitelisted tools that are considered as axes by the mod. By default every tool that extends an axe will be recognized by default. If it doesn't, you'll have to add it yourself.
+|Allowed tools
+|Allows you to define a list of allowed tools that are considered as axes by the mod. By default, every tool that extends an axe will be recognized by default. If it doesn't, you'll have to add it yourself.
 
-NOTE: This will only add values of the whitelist on top of the already existing default recognized tools, if you need to exclude tools look for the `Blacklisted tools`.
+NOTE: This will only add values in allow list on top of the already existing default recognized tools, if you need to exclude tools look for the `Denied tools`.
 
 The list will contain values under the minecraft resource location format :
 
@@ -15,10 +15,10 @@ TIP: You can find this info by enabling detailed info on items by pressing `F3 +
 
 - `#modid:tagid` for a tag of items (eg: `#minecraft:beds`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Items[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
 
-|Blacklisted tools
-|This works similarly to the `Whitelisted tools` section except that here you define tools that will never be considered as tools by the mod.
+|Denied tools
+|This works similarly to the `Allowed tools` section except that here you define tools that will never be considered as tools by the mod.
 
-NOTE: The blacklist takes over the values defined in the whitelist. So if you defined the same item in the whitelist and blacklist it'll end up blacklisted.
+NOTE: Deny list takes over the values defined in allow list. So if you defined the same item in allow and deny lists it'll end up denied.
 
 |Preserve tools
 |This controls how the mod behaves when a tree is cut with a tool that is going to break.
@@ -27,7 +27,7 @@ NOTE: The blacklist takes over the values defined in the whitelist. So if you de
 - Yes: The tool won't be fully used and be left with 1 of durability.
 
 |Require enchantment
-|Define if the tool must be enchanted in order to be able to chop trees with it (whitelist/blacklist still applies).
+|Define if the tool must be enchanted in order to be able to chop trees with it (allow/deny lists still apply).
 
 - No: The tool will be fully used and broken.
 - Yes: The tool won't be fully used and be left with 1 of durability.
