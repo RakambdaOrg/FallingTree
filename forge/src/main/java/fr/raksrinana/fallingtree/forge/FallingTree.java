@@ -2,11 +2,13 @@ package fr.raksrinana.fallingtree.forge;
 
 import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.config.cloth.ClothConfigHook;
+import fr.raksrinana.fallingtree.forge.enchant.FallingTreeEnchantments;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,5 +35,8 @@ public class FallingTree{
 				logger.error("Failed to hook into ClothConfig", e);
 			}
 		}
+		
+		var eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		FallingTreeEnchantments.register(eventBus);
 	}
 }

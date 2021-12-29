@@ -207,28 +207,28 @@ public class ClothConfigHook{
 				.setSaveConsumer(config::setAdjacentStopMode)
 				.build();
 
-		var tools = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.trees"));
-		tools.addEntry(breakModeEntry);
-		tools.addEntry(detectionModeEntry);
-		tools.addEntry(whitelistedLogsEntry);
-		tools.addEntry(blacklistedLogsEntry);
-		tools.addEntry(whitelistedLeavesEntry);
-		tools.addEntry(whitelistedNonDecayLeavesEntry);
-		tools.addEntry(blacklistedLeavesEntry);
-		tools.addEntry(maxScanSizeEntry);
-		tools.addEntry(maxSizeEntry);
-		tools.addEntry(maxSizeActionEntry);
-		tools.addEntry(breakOrderEntry);
-		tools.addEntry(treeBreakingEntry);
-		tools.addEntry(leavesBreakingEntry);
-		tools.addEntry(leavesBreakingForceRadiusEntry);
-		tools.addEntry(minimumLeavesAroundRequiredEntry);
-		tools.addEntry(allowMixedLogsEntry);
-		tools.addEntry(breakNetherTreeWartsEntry);
-		tools.addEntry(instantlyBreakWartsEntry);
-		tools.addEntry(searchAreaRadiusEntry);
-		tools.addEntry(whitelistedAdjacentBlocks);
-		tools.addEntry(adjacentStopModeEntry);
+		var trees = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.trees"));
+		trees.addEntry(breakModeEntry);
+		trees.addEntry(detectionModeEntry);
+		trees.addEntry(whitelistedLogsEntry);
+		trees.addEntry(blacklistedLogsEntry);
+		trees.addEntry(whitelistedLeavesEntry);
+		trees.addEntry(whitelistedNonDecayLeavesEntry);
+		trees.addEntry(blacklistedLeavesEntry);
+		trees.addEntry(maxScanSizeEntry);
+		trees.addEntry(maxSizeEntry);
+		trees.addEntry(maxSizeActionEntry);
+		trees.addEntry(breakOrderEntry);
+		trees.addEntry(treeBreakingEntry);
+		trees.addEntry(leavesBreakingEntry);
+		trees.addEntry(leavesBreakingForceRadiusEntry);
+		trees.addEntry(minimumLeavesAroundRequiredEntry);
+		trees.addEntry(allowMixedLogsEntry);
+		trees.addEntry(breakNetherTreeWartsEntry);
+		trees.addEntry(instantlyBreakWartsEntry);
+		trees.addEntry(searchAreaRadiusEntry);
+		trees.addEntry(whitelistedAdjacentBlocks);
+		trees.addEntry(adjacentStopModeEntry);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -240,6 +240,12 @@ public class ClothConfigHook{
 				.setDefaultValue(false)
 				.setTooltip(getTooltips("tools", "ignoreTools", 4))
 				.setSaveConsumer(config::setIgnoreTools)
+				.build();
+		var requireEnchantEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName("tools", "requireEnchant")), config.isRequireEnchant())
+				.setDefaultValue(true)
+				.setTooltip(getTooltips("tools", "requireEnchant", 2))
+				.setSaveConsumer(config::setRequireEnchant)
 				.build();
 		var whitelistedEntry = builder.entryBuilder()
 				.startStrList(new TranslatableComponent(getFieldName("tools", "whitelisted")), config.getWhitelisted())
@@ -286,6 +292,7 @@ public class ClothConfigHook{
 
 		var tools = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.tools"));
 		tools.addEntry(ignoreToolsEntry);
+		tools.addEntry(requireEnchantEntry);
 		tools.addEntry(whitelistedEntry);
 		tools.addEntry(blacklistedEntry);
 		tools.addEntry(damageMultiplicandEntry);

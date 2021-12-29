@@ -5,7 +5,9 @@ plugins {
 dependencies {
     minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
+
     modImplementation(libs.bundles.fabric)
+
     implementation(project(":common"))
 
     modImplementation(libs.modmenu) {
