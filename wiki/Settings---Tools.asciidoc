@@ -26,6 +26,12 @@ NOTE: The blacklist takes over the values defined in the whitelist. So if you de
 - No: The tool will be fully used and broken.
 - Yes: The tool won't be fully used and be left with 1 of durability.
 
+|Require enchantment
+|Define if the tool must be enchanted in order to be able to chop trees with it (whitelist/blacklist still applies).
+
+- No: The tool will be fully used and broken.
+- Yes: The tool won't be fully used and be left with 1 of durability.
+
 |Damage multiplicand
 |Defines how much damage is applied to a tool when a tree is broken. This value indicates a coefficient that will be applied against the number of logs present in the tree. For example:
 

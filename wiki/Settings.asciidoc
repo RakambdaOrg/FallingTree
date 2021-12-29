@@ -2,7 +2,7 @@
 
 == Intro
 
-Here I'll try to explain in a bit more details what are the different settings you'll find in FallingTree and when possible give some examples so it's clearer.
+Here I'll try to explain in a bit more details what are the different settings you'll find in FallingTree and when possible give some examples, so it's clearer.
 
 There's 3 main sections that you'll find in the configuration file or in the config GUI:
 
@@ -17,7 +17,7 @@ Examples of full config files can be found link:Settings---Examples[here].
 You have several options :
 
 * Edit the config file in the config directory.
-* Edit the configuration through the GUI on aclient and upload the updated configuration file to the server.
+* Edit the configuration through the GUI on a client and upload the updated configuration file to the server.
 
 == GUI
 
@@ -30,13 +30,18 @@ This GUI isn't activated by default and need a dependency for that.
 
 === Forge
 
-The dependency needed is https://www.curseforge.com/minecraft/mc-mods/cloth-config-forge[Cloth Config API (Forge)].
-When this is installed alongside FallingTree, you'll be able to go into `Main menu > Mods > FallingTree > Config`.
+You'll need to install the dependency https://www.curseforge.com/minecraft/mc-mods/cloth-config-forge[Cloth Config API (Forge)].
+When it is installed alongside FallingTree, you'll be able to go into `Main menu > Mods > FallingTree > Config`.
 
 image::assets/settings/forge-config-button.png[Config button in the mod list]
 
 === Fabric
-The dependency needed is https://www.curseforge.com/minecraft/mc-mods/modmenu[Mod Menu].
-When this is installed alongside FallingTree, you'll be able to go inside `Mods > FallingTree > Config`.
+
+You'll need 2 dependencies :
+
+- https://www.curseforge.com/minecraft/mc-mods/modmenu[Mod Menu].
+- https://www.curseforge.com/minecraft/mc-mods/cloth-config[Cloth Config API (Fabric)].
+
+When they are installed alongside FallingTree, you'll be able to go inside `Mods > FallingTree > Config`.
 
 image::assets/settings/fabric-config-button.png[Config button in the mod list]
