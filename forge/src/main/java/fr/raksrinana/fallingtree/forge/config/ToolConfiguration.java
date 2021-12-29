@@ -14,6 +14,10 @@ public class ToolConfiguration{
 			"When set to true, the mod will be activated no matter what you have in your hand.",
 			"INFO: Blacklist still can be use to restrict some tools."
 	};
+	private static final String[] DESC_REQUIRE_ENCHANT = {
+			"Define if the tool must be enchanted in order to be able",
+			"to chop trees with it (whitelist/blacklist still applies)."
+	};
 	private static final String[] DESC_WHITELISTED = {
 			"Additional list of tools that can be used to chop down a tree.",
 			"INFO: Items marked with the axe tag will already be whitelisted."
@@ -53,6 +57,7 @@ public class ToolConfiguration{
 	private final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklisted;
 	private final ForgeConfigSpec.BooleanValue preserve;
 	private final ForgeConfigSpec.BooleanValue ignoreTools;
+	private final ForgeConfigSpec.BooleanValue requireEnchant;
 	private final ForgeConfigSpec.DoubleValue damageMultiplicand;
 	private final ForgeConfigSpec.EnumValue<DamageRounding> damageRounding;
 	private final ForgeConfigSpec.DoubleValue speedMultiplicand;
@@ -60,6 +65,8 @@ public class ToolConfiguration{
 	public ToolConfiguration(ForgeConfigSpec.Builder builder){
 		ignoreTools = builder.comment(DESC_IGNORE_TOOLS)
 				.define("ignore_tools", false);
+		requireEnchant = builder.comment(DESC_REQUIRE_ENCHANT)
+				.define("require_enchant", true);
 		whitelisted = builder.comment(DESC_WHITELISTED)
 				.defineList("whitelisted", Lists.newArrayList(), Objects::nonNull);
 		blacklisted = builder.comment(DESC_BLACKLISTED)
@@ -106,6 +113,10 @@ public class ToolConfiguration{
 		ignoreTools.set(value);
 	}
 	
+	public void setRequireEnchant(Boolean value){
+		requireEnchant.set(value);
+	}
+	
 	public void setPreserve(Boolean value){
 		preserve.set(value);
 	}
@@ -120,6 +131,10 @@ public class ToolConfiguration{
 	
 	public boolean isPreserve(){
 		return preserve.get();
+	}
+	
+	public boolean isRequireEnchant(){
+		return requireEnchant.get();
 	}
 	
 	public boolean isIgnoreTools(){
