@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.tree.builder;
 
-import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.config.ConfigCache;
+import fr.raksrinana.fallingtree.forge.config.Configuration;
 import fr.raksrinana.fallingtree.forge.tree.Tree;
 import fr.raksrinana.fallingtree.forge.tree.builder.position.AbovePositionFetcher;
 import fr.raksrinana.fallingtree.forge.tree.builder.position.AboveYFetcher;
@@ -33,7 +33,7 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		var maxScanSize = Config.COMMON.getTrees().getMaxScanSize();
+		var maxScanSize = Configuration.getInstance().getTrees().getMaxScanSize();
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
 		var tree = new Tree(level, originPos);
@@ -71,8 +71,8 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		if(Config.COMMON.getTrees().getBreakMode().isCheckLeavesAround()){
-			var aroundRequired = Config.COMMON.getTrees().getMinimumLeavesAroundRequired();
+		if(Configuration.getInstance().getTrees().getBreakMode().isCheckLeavesAround()){
+			var aroundRequired = Configuration.getInstance().getTrees().getMinimumLeavesAroundRequired();
 			if(tree.getTopMostLog()
 					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
 					.orElse(true)){
@@ -89,13 +89,13 @@ public class TreeBuilder{
 	}
 	
 	private static Predicate<Block> getAdjacentPredicate(){
-		var whitelist = Config.COMMON.getTrees().getWhitelistedAdjacentBlockBlocks();
+		var whitelist = Configuration.getInstance().getTrees().getWhitelistedAdjacentBlockBlocks();
 		var base = ConfigCache.getInstance().getAdjacentBlocksBase();
 		
 		if(whitelist.isEmpty()){
 			return block -> true;
 		}
-		return switch(Config.COMMON.getTrees().getAdjacentStopMode()){
+		return switch(Configuration.getInstance().getTrees().getAdjacentStopMode()){
 			case STOP_ALL -> block -> {
 				var whitelisted = whitelist.contains(block) || base.contains(block);
 				if(!whitelisted){
@@ -115,7 +115,7 @@ public class TreeBuilder{
 	}
 	
 	private static Predicate<BlockPos> getBoundingBoxSearch(BlockPos originPos){
-		var radius = Config.COMMON.getTrees().getSearchAreaRadius();
+		var radius = Configuration.getInstance().getTrees().getSearchAreaRadius();
 		if(radius < 0){
 			return pos -> true;
 		}
@@ -132,7 +132,7 @@ public class TreeBuilder{
 	}
 	
 	private static IPositionFetcher getFirstPositionFetcher(){
-		var detectionMode = Config.COMMON.getTrees().getDetectionMode();
+		var detectionMode = Configuration.getInstance().getTrees().getDetectionMode();
 		return switch(detectionMode){
 			case ABOVE_CUT -> AbovePositionFetcher.getInstance();
 			case ABOVE_Y -> AboveYFetcher.getInstance();
@@ -177,7 +177,7 @@ public class TreeBuilder{
 		if(parent.treePartType() == LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.checkPos())){
 			return true;
 		}
-		if(Config.COMMON.getTrees().isBreakNetherTreeWarts()){
+		if(Configuration.getInstance().getTrees().isBreakNetherTreeWarts()){
 			if(check.treePartType() == NETHER_WART){
 				var checkBlockPos = check.checkPos();
 				var dx = Math.abs(originPos.getX() - checkBlockPos.getX());
@@ -189,7 +189,7 @@ public class TreeBuilder{
 	}
 	
 	private static boolean isSameTree(Block parentLogBlock, ToAnalyzePos check){
-		if(Config.COMMON.getTrees().isAllowMixedLogs()){
+		if(Configuration.getInstance().getTrees().isAllowMixedLogs()){
 			return check.treePartType() == LOG;
 		}
 		else{

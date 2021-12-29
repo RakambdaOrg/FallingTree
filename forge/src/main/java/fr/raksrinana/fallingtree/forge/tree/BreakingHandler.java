@@ -3,7 +3,7 @@ package fr.raksrinana.fallingtree.forge.tree;
 import fr.raksrinana.fallingtree.forge.FallingTree;
 import fr.raksrinana.fallingtree.forge.FallingTreeBlockBreakEvent;
 import fr.raksrinana.fallingtree.forge.config.BreakMode;
-import fr.raksrinana.fallingtree.forge.config.Config;
+import fr.raksrinana.fallingtree.forge.config.Configuration;
 import fr.raksrinana.fallingtree.forge.tree.breaking.BreakTreeTooBigException;
 import fr.raksrinana.fallingtree.forge.tree.breaking.ITreeBreakingHandler;
 import fr.raksrinana.fallingtree.forge.tree.breaking.InstantaneousTreeBreakingHandler;
@@ -34,8 +34,8 @@ public class BreakingHandler{
 	
 	@SubscribeEvent
 	public static void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
-		if(Config.COMMON.getTrees().isTreeBreaking() && !event.isCanceled()){
-			if(Config.COMMON.getTrees().getBreakMode() == BreakMode.INSTANTANEOUS){
+		if(Configuration.getInstance().getTrees().isTreeBreaking() && !event.isCanceled()){
+			if(Configuration.getInstance().getTrees().getBreakMode() == BreakMode.INSTANTANEOUS){
 				if(isPlayerInRightState(event.getPlayer(), event.getState())){
 					var cacheSpeed = speedCache.compute(event.getPlayer().getUUID(), (pos, speed) -> {
 						if(isNull(speed) || !speed.isValid(event.getPos())){
@@ -53,7 +53,7 @@ public class BreakingHandler{
 	
 	@SubscribeEvent
 	public static void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
-		if(Config.COMMON.getTrees().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isClientSide()){
+		if(Configuration.getInstance().getTrees().isTreeBreaking() && !event.isCanceled() && !event.getWorld().isClientSide()){
 			if(event instanceof FallingTreeBlockBreakEvent){
 				return;
 			}
@@ -65,14 +65,14 @@ public class BreakingHandler{
 						return;
 					}
 					var tree = treeOptional.get();
-					var breakMode = Config.COMMON.getTrees().getBreakMode();
+					var breakMode = Configuration.getInstance().getTrees().getBreakMode();
 					getBreakingHandler(breakMode).breakTree(event, tree);
 				}
 				catch(TreeTooBigException e){
-					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", Config.COMMON.getTrees().getMaxScanSize()));
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.tree_too_big", Configuration.getInstance().getTrees().getMaxScanSize()));
 				}
 				catch(BreakTreeTooBigException e){
-					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.break_tree_too_big", Config.COMMON.getTrees().getMaxSize()));
+					FallingTreeUtils.notifyPlayer(player, new TranslatableComponent("chat.fallingtree.break_tree_too_big", Configuration.getInstance().getTrees().getMaxSize()));
 				}
 			}
 		}
@@ -86,17 +86,17 @@ public class BreakingHandler{
 	}
 	
 	private static boolean isPlayerInRightState(Player player, BlockState aimedBlockState){
-		if(player.isCreative() && !Config.COMMON.isBreakInCreative()){
+		if(player.isCreative() && !Configuration.getInstance().isBreakInCreative()){
 			return false;
 		}
-		if(Config.COMMON.isReverseSneaking() != player.isCrouching()){
+		if(Configuration.getInstance().isReverseSneaking() != player.isCrouching()){
 			return false;
 		}
 		return canPlayerBreakTree(player, aimedBlockState);
 	}
 	
 	private static CacheSpeed getSpeed(PlayerEvent.BreakSpeed event){
-		var speedMultiplicand = Config.COMMON.getTools().getSpeedMultiplicand();
+		var speedMultiplicand = Configuration.getInstance().getTools().getSpeedMultiplicand();
 		try{
 			var player = event.getPlayer();
 			return speedMultiplicand <= 0 ? null :

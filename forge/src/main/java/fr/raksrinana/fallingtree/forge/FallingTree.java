@@ -1,12 +1,9 @@
 package fr.raksrinana.fallingtree.forge;
 
-import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.config.cloth.ClothConfigHook;
 import fr.raksrinana.fallingtree.forge.enchant.FallingTreeEnchantments;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,8 +15,6 @@ public class FallingTree{
 	public static final Logger logger = LogManager.getLogger(MOD_ID);
 	
 	public FallingTree(){
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
-		
 		if(ModList.get().isLoaded("cloth_config")){
 			try{
 				Class.forName("fr.raksrinana.fallingtree.forge.config.cloth.ClothConfigHook")
