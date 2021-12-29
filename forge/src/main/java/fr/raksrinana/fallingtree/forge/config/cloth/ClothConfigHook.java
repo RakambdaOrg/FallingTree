@@ -23,19 +23,18 @@ public class ClothConfigHook{
 			var builder = ConfigBuilder.create()
 					.setParentScreen(screen)
 					.setTitle(new TextComponent("FallingTree"));
-
-			fillConfigScreen(builder);
-
-			builder.setSavingRunnable(() -> ConfigCache.getInstance().invalidate());
-
+			
+			var configuration = Configuration.getInstance();
+			builder.setSavingRunnable(configuration::onUpdate);
+			
+			fillConfigScreen(builder, configuration);
+			
 			return builder.build();
 		}));
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void fillConfigScreen(ConfigBuilder builder){
-		var config = Config.COMMON;
-
+	public void fillConfigScreen(ConfigBuilder builder, Configuration config){
 		var reverseSneakingEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "reverseSneaking")), config.isReverseSneaking())
 				.setDefaultValue(false)
@@ -54,20 +53,18 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips(null, "notificationMode", 5))
 				.setSaveConsumer(config::setNotificationMode)
 				.build();
-
+		
 		var general = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.default"));
 		general.addEntry(reverseSneakingEntry);
 		general.addEntry(breakInCreativeEntry);
 		general.addEntry(notificationModeEntry);
 		
-		fillTreesConfigScreen(builder);
-		fillToolsConfigScreen(builder);
+		fillTreesConfigScreen(builder, config.getTrees());
+		fillToolsConfigScreen(builder, config.getTools());
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	private void fillTreesConfigScreen(ConfigBuilder builder){
-		TreeConfiguration config = Config.COMMON.getTrees();
-
+	private void fillTreesConfigScreen(ConfigBuilder builder, TreeConfiguration config){
 		var breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(new TranslatableComponent(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
 				.setDefaultValue(BreakMode.INSTANTANEOUS)
@@ -206,7 +203,7 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "adjacentStopMode", 9))
 				.setSaveConsumer(config::setAdjacentStopMode)
 				.build();
-
+		
 		var trees = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.trees"));
 		trees.addEntry(breakModeEntry);
 		trees.addEntry(detectionModeEntry);
@@ -232,9 +229,7 @@ public class ClothConfigHook{
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	private void fillToolsConfigScreen(ConfigBuilder builder){
-		var config = Config.COMMON.getTools();
-
+	private void fillToolsConfigScreen(ConfigBuilder builder, ToolConfiguration config){
 		var ignoreToolsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())
 				.setDefaultValue(false)
@@ -289,7 +284,7 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("tools", "preserve", 3))
 				.setSaveConsumer(config::setPreserve)
 				.build();
-
+		
 		var tools = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.tools"));
 		tools.addEntry(ignoreToolsEntry);
 		tools.addEntry(requireEnchantEntry);
@@ -300,7 +295,7 @@ public class ClothConfigHook{
 		tools.addEntry(speedMultiplicandEntry);
 		tools.addEntry(preserveEntry);
 	}
-
+	
 	private String getFieldName(String category, String fieldName){
 		return Optional.ofNullable(category)
 				.filter(c -> !c.isBlank())

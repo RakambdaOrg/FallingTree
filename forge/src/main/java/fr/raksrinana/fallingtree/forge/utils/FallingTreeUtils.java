@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.utils;
 
-import fr.raksrinana.fallingtree.forge.config.Config;
 import fr.raksrinana.fallingtree.forge.config.ConfigCache;
+import fr.raksrinana.fallingtree.forge.config.Configuration;
 import fr.raksrinana.fallingtree.forge.enchant.FallingTreeEnchantments;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
@@ -99,16 +99,16 @@ public class FallingTreeUtils{
 	
 	public static boolean isLeafBlock(@Nonnull Block block){
 		var isWhitelistedBlock = LEAVES.contains(block)
-		                         || Config.COMMON.getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+		                         || Configuration.getInstance().getTrees().getWhitelistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 		if(isWhitelistedBlock){
-			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
+			var isBlacklistedBlock = Configuration.getInstance().getTrees().getBlacklistedLeaveBlocks().stream().anyMatch(leaf -> leaf.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
 	}
 	
 	public static boolean canPlayerBreakTree(Player player, BlockState aimedBlockState){
-		var toolConfiguration = Config.COMMON.getTools();
+		var toolConfiguration = Configuration.getInstance().getTools();
 		var heldItemStack = player.getItemInHand(MAIN_HAND);
 		var heldItem = heldItemStack.getItem();
 		
@@ -146,7 +146,7 @@ public class FallingTreeUtils{
 	}
 	
 	public static boolean isLeafNeedBreakBlock(Block block){
-		return Config.COMMON.getTrees()
+		return Configuration.getInstance().getTrees()
 				.getWhitelistedNonDecayLeaveBlocks()
 				.stream()
 				.anyMatch(log -> log.equals(block));
@@ -154,9 +154,9 @@ public class FallingTreeUtils{
 	
 	public static boolean isLogBlock(Block block){
 		var isWhitelistedBlock = ConfigCache.getInstance().getDefaultLogs().stream().anyMatch(log -> log.equals(block))
-		                         || Config.COMMON.getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
+		                         || Configuration.getInstance().getTrees().getWhitelistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 		if(isWhitelistedBlock){
-			var isBlacklistedBlock = Config.COMMON.getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
+			var isBlacklistedBlock = Configuration.getInstance().getTrees().getBlacklistedLogBlocks().stream().anyMatch(log -> log.equals(block));
 			return !isBlacklistedBlock;
 		}
 		return false;
@@ -168,7 +168,7 @@ public class FallingTreeUtils{
 	
 	public static void notifyPlayer(Player player, Component text){
 		if(player instanceof ServerPlayer serverPlayer){
-			switch(Config.COMMON.getNotificationMode()){
+			switch(Configuration.getInstance().getNotificationMode()){
 				case CHAT -> player.sendMessage(text, NIL_UUID);
 				case ACTION_BAR -> serverPlayer.sendMessage(text, ChatType.GAME_INFO, NIL_UUID);
 			}

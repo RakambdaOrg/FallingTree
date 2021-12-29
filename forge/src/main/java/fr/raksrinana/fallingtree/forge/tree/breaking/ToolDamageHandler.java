@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.tree.breaking;
 
 import fr.raksrinana.fallingtree.forge.FallingTree;
-import fr.raksrinana.fallingtree.forge.config.Config;
+import fr.raksrinana.fallingtree.forge.config.Configuration;
 import fr.raksrinana.fallingtree.forge.config.MaxSizeAction;
 import lombok.Getter;
 import net.minecraft.world.item.ItemStack;
@@ -17,8 +17,8 @@ public class ToolDamageHandler{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		
-		var maxSize = Config.COMMON.getTrees().getMaxSize();
-		if(breakableCount > maxSize && Config.COMMON.getTrees().getMaxSizeAction() == MaxSizeAction.ABORT){
+		var maxSize = Configuration.getInstance().getTrees().getMaxSize();
+		if(breakableCount > maxSize && Configuration.getInstance().getTrees().getMaxSizeAction() == MaxSizeAction.ABORT){
 			FallingTree.logger.debug("Tree reached max size of {}", maxSize);
 			throw new BreakTreeTooBigException();
 		}
@@ -46,7 +46,7 @@ public class ToolDamageHandler{
 		}
 		var rawDamage = count * damageMultiplicand;
 		
-		return (int) switch(Config.COMMON.getTools().getDamageRounding()){
+		return (int) switch(Configuration.getInstance().getTools().getDamageRounding()){
 			case ROUND_DOWN -> Math.floor(rawDamage);
 			case ROUND_UP -> Math.ceil(rawDamage);
 			case ROUNDING -> Math.round(rawDamage);
