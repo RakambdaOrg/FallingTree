@@ -1,0 +1,23 @@
+[cols='1,4a']
+|===
+|Name |Description
+
+|Reverse sneaking
+|This will reverse how sneaking influences the mod.
+
+- No: Sneaking will disable the mod, making it not cutting trees.
+- Yes: Sneaking will activate the mod, making it cut trees.
+
+|Break in creative
+|Sets if the mod if active when a player breaks a tree in creative mode.
+
+- No: Breaking trees in creative won't activate the mod.
+- Yes: The mod will behave the same as in Survival mode.
+
+|Notification mode
+|How messages are sent to the player.
+
+- CHAT: Messages are sent in the chat.
+- ACTION_BAR: Messages are displayed in the player's action bar.
+- NONE: No notifications will appear.
+|===

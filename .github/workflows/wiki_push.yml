@@ -1,0 +1,25 @@
+name: Push to wiki
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'wiki/**'
+    tags-ignore:
+      - '**'
+
+jobs:
+  push:
+    name: Deploy wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Push changes to the wiki
+        uses: Andrew-Chen-Wang/github-wiki-action@v2
+        env:
+          WIKI_DIR: wiki/
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_MAIL: actions@github.com
+          GH_NAME: github-actions[bot]

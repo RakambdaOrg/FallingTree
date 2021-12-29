@@ -1,0 +1,85 @@
+Here you'll find examples of a fully filled configuration. Comments have been stripped away and can be found in the configuration generated.
+
+NOTE: This is purely an example, values there won't always make sense.
+
+== Forge
+
+[source, toml]
+----
+reverse_sneaking = false
+break_in_creative = true
+notification_mode = "ACTION_BAR"
+
+[trees]
+	leaves_non_decay_whitelisted = ["minecraft:anvil", "#minecraft:beds"]
+	max_size_action = "ABORT"
+	break_nether_tree_warts = true
+	search_around_radius = -1
+	minimum_leaves_around_required = 1
+	instantly_break_warts = false
+	max_scan_size = 500
+	adjacent_blocks_whitelisted = ["minecraft:anvil", "#minecraft:beds"]
+	leaves_breaking_force_radius = 0
+	break_mode = "INSTANTANEOUS"
+	logs_blacklisted = ["minecraft:anvil", "#minecraft:beds"]
+	tree_breaking = true
+	leaves_breaking = true
+	detection_mode = "WHOLE_TREE"
+	break_order = "FURTHEST_FIRST"
+	leaves_blacklisted = ["minecraft:anvil", "#minecraft:beds"]
+	logs_whitelisted = ["minecraft:anvil", "#minecraft:beds"]
+	logs_max_count = 100
+	leaves_whitelisted = ["minecraft:anvil", "#minecraft:beds"]
+	allow_mixed_logs = false
+	adjacent_stop_mode = "STOP_ALL"
+
+[tools]
+	blacklisted = ["minecraft:oak_boat", "#minecraft:flowers"]
+	preserve = false
+	ignore_tools = false
+	speed_multiplicand = 0.0
+	whitelisted = ["minecraft:oak_boat", "#minecraft:flowers"]
+	damage_multiplicand = 1
+----
+
+== Fabric
+
+[source,json5]
+----
+{
+	"reverseSneaking": false,
+	"breakInCreative": true,
+	"notificationMode": "ACTION_BAR",
+	"trees": {
+		"whitelistedLogs": ["minecraft:anvil", "#minecraft:beds"],
+		"blacklistedLogs": ["minecraft:anvil", "#minecraft:beds"],
+		"whitelistedLeaves": ["minecraft:anvil", "#minecraft:beds"],
+		"whitelistedNonDecayLeaves": ["minecraft:anvil", "#minecraft:beds"],
+		"blacklistedLeaves": ["minecraft:anvil", "#minecraft:beds"],
+		"breakMode": "INSTANTANEOUS",
+		"detectionMode": "WHOLE_TREE",
+		"maxScanSize": 500,
+		"maxSize": 100,
+		"maxSizeAction": "ABORT",
+		"breakOrder": "FURTHEST_FIRST",
+		"minimumLeavesAroundRequired": 1,
+		"treeBreaking": true,
+		"leavesBreaking": true,
+		"leavesBreakingForceRadius": 0,
+		"allowMixedLogs": false,
+		"breakNetherTreeWarts": true,
+		"instantlyBreakWarts": false,
+		"searchAreaRadius": -1,
+		"whitelistedAdjacentBlocks": ["minecraft:anvil", "#minecraft:beds"],
+		"adjacentStopMode": "STOP_ALL"
+	},
+	"tools": {
+		"whitelisted": ["minecraft:oak_boat", "#minecraft:flowers"],
+		"blacklisted": ["minecraft:oak_boat", "#minecraft:flowers"],
+		"preserve": false,
+		"ignoreTools": false,
+		"damageMultiplicand": 1,
+		"speedMultiplicand": 0.0
+	}
+}
+----

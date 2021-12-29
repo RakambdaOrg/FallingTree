@@ -1,0 +1,165 @@
+[cols='1,4a']
+|===
+|Name |Description
+
+|Whitelisted logs
+|Allows you to define a list of whitelisted blocks that are considered as logs by the mod. By default every block tagges as `#minecraft/logs` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
+
+NOTE: This will only add values of the whitelist on top of the already existing default recognized blocks, if you need to exclude logs look for the `Blacklisted logs`.
+
+The list will contain values under the minecraft resource location format :
+
+- `modid:blockid` for a block (eg: `minecraft:cobblestone`).
+
+TIP: You can find this info by enabling detailed info on blocks by pressing `F3 + H` and hover the block in your inventory.
+
+- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+
+|Blacklisted logs
+|This works similarly to the `Whitelisted logs` section except that here you define blocks that will never be considered as logs by the mod.
+
+NOTE: The blacklist takes over the values defined in the whitelist. So if you defined the same block in the whitelist and blacklist it'll end up blacklisted.
+
+|Whitelisted leaves
+|Allows you to define a list of whitelisted blocks that are considered as leaves by the mod. By default every block tagges as `#minecraft/leaves` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
+
+NOTE: This will only add values of the whitelist on top of the already existing default recognized blocks, if you need to exclude leaves look for the `Blacklisted leaves`.
+
+The list will contain values under the minecraft resource location format :
+
+- `modid:blockid` for a block (eg: `minecraft:cobblestone`).
+
+TIP: You can find this info by enabling detailed info on blocks by pressing `F3 + H` and hover the block in your inventory.
+
+- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+
+|Whitelisted leaves (needs breaking)
+|This is similar to `Whitelisted leaves` except that here you define values of leaves that needs to be broken because they do not decay over time. This would for example be the case fot the nether trees that got warts as leaves and it doesn't decay.
+
+|Blacklisted leaves
+|This works similarly to the `Whitelisted leaves` section except that here you define blocks that will never be considered as leaves by the mod.
+
+NOTE: The blacklist takes over the values defined in the whitelist. So if you defined the same block in the whitelist and blacklist it'll end up blacklisted.
+
+|Break mode
+|Defines how the tree will be cut when you chop down one of its logs.
+
+NOTE: In the screenshots the axe indicates where the tree is being cut by you.
+
+- Instantaneous: The whole tree will be chopped at once.
+image:assets/behavior/break-mode-instantaneous.png[]
+- Shift down: The furthest log will be broken. This allow you to still cut the tree one by one but you don't have to climb to get all the logs; just aim at one spot and cut it multiple times.
+image:assets/behavior/break-mode-shift-down.png[]
+
+NOTE: Those modes are conditioned by `Detection mode`.
+
+|Detection mode
+|Defines how the tree is being scanned.
+
+NOTE: In the screenshots the axe indicates where the tree is being cut by you, and the red signs indicates the logs that **WON'T** be broken.
+
+- Whole tree: The whole tree will be scanned, searching in all 6 directions.
+image:assets/behavior/detection-mode-whole-tree.png[]
+- Above cut: Will search in all directions except at the cutting point where it'll only look up.
+image:assets/behavior/detection-mode-above-cut.png[]
+- Above cut: Will search in all directions but retain only logs with a `y` value greater than the cutting point.
+image:assets/behavior/detection-mode-above-y.png[]
+
+|Max scan size
+|The maximum number of blocks to scan when trying to detect a tree. If there's more than this value the tree won't be cut.
+
+|Max (break) size
+|The maximum size of a tree. If a tree with more elements than this value is attempted to be cut, the mod will refuse to do it.
+
+NOTE: Only applied in `Instantaneous` breaking mode.
+
+|Max size action
+|What to do when the max size of a tree is reached.
+
+- ABORT: Tree won't be cut.
+- CUT: Tree will still be cut leaving some of it untouched.
+
+|Max size order
+|In what order logs are broken.
+
+This only makes sense if `maxSize` < `maxScanSize`.
+
+- FURTHEST_FIRST: The furthest log will be broken first.
+- CLOSEST_FIRST: The closest log will be broken first.
+
+NOTE: Only applied in `Instantaneous` breaking mode.
+
+|Minimum leaves around required
+|Defines how many leaves should be around the top most log of the tree. If not enough leaves are found, then the broken block won't be considered as part of a tree.
+
+This value can be useful for people that have houses made of logs and doesn't want to chop it all down in one cut.
+
+NOTE: Only applied in `Instantaneous` breaking mode.
+
+|Trunk breaking
+|Defines if the mod should cut trees in one cut.
+
+- Yes: Trees will be cut.
+- No: Trees won't be cut and only the leaf decay will remain (if activated by `Leaves breaking`).
+
+|Leaves breaking
+|Define if leaves should decay faster than they normally do.
+
+- Yes: Leaves will decay faster.
+- No: Leaves will decay at the normal speed.
+
+|Leaves breaking force radius
+|If you want leaves to be broken (and no decayed) by the mod, you can define a radius around which leaves are broken.
+
+I highly discourage using this feature as it'll cut leaves in a not so elegant way. You should probably first try to add the problematic leaves in `Whitelist leaves (needs breaking)`.
+
+WARNING: This will break leaves placed by a player.
+
+NOTE: `Leaves breaking` must be activated.
+NOTE: This only works in the `Instantaneous` breaking mode.
+
+|Allow trunks with mixed log blocks
+|Defines if a tree can be composed of different log types or not.
+
+- No: If another log block is encountered it is considered as another tree and therefore won't be cut.
+- Yes: If another log block is encountered it is considered as the same tree and will be cut.
+
+|Break nether tree warts
+|Defines if the nether tree warts should be broken when the trunk is cut.
+
+- Yes: Warts will be cut.
+
+NOTE: Durability will be used
+
+NOTE: The warts don't decay so they will be broken with a predefined radius which may leave things a bit ugly if you cut nether trees that are close to each other.
+
+|Instantly break nether tree warts
+|When set to true nether tree warts (leaves) will be broken with only one hit.
+
+NOTE: Only applied in `Shift down` breaking mode.
+
+|Search area radius
+|Defines the radius in which the tree is scanned.
+
+- If set to -1 then no restrictions will be applied.
+- If set to any other value (`a`) then only blocks that are in a square of `a x a` around the cutting point will be kept.
+
+|Adjacent blocks whitelist
+|Defines a list of blocks that are allowed to be next to the trunk. If a block that isn't whitelisted is encountered, the behavior defined in `Adjacent stop mode` will be applied.
+
+NOTE: If the list is empty, then no restrictions will be applied (ie: all blocks are whitelisted).
+
+The list will contain values under the minecraft resource location format :
+
+- `modid:blockid` for a block (eg: `minecraft:cobblestone`).
+
+TIP: You can find this info by enabling detailed info on blocks by pressing `F3 + H` and hover the block in your inventory.
+
+- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+
+|Adjacent stop mode
+|Defines the behavior to apply when a not whitelisted adjacent block is found.
+
+- Stop all: The detection will be stopped and no tree will be found.
+- Stop branch: Only the current branch will be stopped (ie: no logs will be fetched from that block)
+|===

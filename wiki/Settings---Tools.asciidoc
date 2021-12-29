@@ -1,0 +1,52 @@
+[cols='1,4a']
+|===
+|Name |Description
+
+|Whitelisted tools
+|Allows you to define a list of whitelisted tools that are considered as axes by the mod. By default every tool that extends an axe will be recognized by default. If it doesn't, you'll have to add it yourself.
+
+NOTE: This will only add values of the whitelist on top of the already existing default recognized tools, if you need to exclude tools look for the `Blacklisted tools`.
+
+The list will contain values under the minecraft resource location format :
+
+- `modid:itemid` for an item (eg: `minecraft:diamond_axe`).
+
+TIP: You can find this info by enabling detailed info on items by pressing `F3 + H` and hover the item in your inventory.
+
+- `#modid:tagid` for a tag of items (eg: `#minecraft:beds`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Items[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+
+|Blacklisted tools
+|This works similarly to the `Whitelisted tools` section except that here you define tools that will never be considered as tools by the mod.
+
+NOTE: The blacklist takes over the values defined in the whitelist. So if you defined the same item in the whitelist and blacklist it'll end up blacklisted.
+
+|Preserve tools
+|This controls how the mod behaves when a tree is cut with a tool that is going to break.
+
+- No: The tool will be fully used and broken.
+- Yes: The tool won't be fully used and be left with 1 of durability.
+
+|Damage multiplicand
+|Defines how much damage is applied to a tool when a tree is broken. This value indicates a coefficient that will be applied against the number of logs present in the tree. For example:
+
+- 1: Will apply the same amount of damage as the number of logs broken.
+- 2: Will apply damage equivalent to cutting twice the number of logs.
+- 0.5: Will apply damage equivalent to cutting half the number of logs in the tree.
+- 0: This is a special value and will apply only 1 damage regardless of the number of logs.
+
+|Damage Rounding
+|How damage taken should be rounded if it isn't a whole number.
+
+- ROUNDING: round to the closest whole number.
+- ROUND_DOWN: round down.
+- ROUND_UP: round up.
+- PROBABILISTIC: treat decimal fraction as a probability of rounding up (ie: 9.45 will have 45% chance of being rounded up to 10 and 55% chance of being rounded down to 9).
+
+|Speed multiplicand
+|Defines how long the tool will need to hit the log in order for the tree to be cut. This value indicates a coefficient that will be applied against the number of logs present in the tree. For example:
+
+- 1: Will take the same amount of time as if you'd break every log in the tree.
+- 2: Will take the same amount of time as if you'd break a tree with twice the amount of logs.
+- 0.5: Will take the same amount of time as if you'd break a tree with half the amount of logs.
+- 0: This is a special value and will take only the time of breaking one single log block.
+|===
