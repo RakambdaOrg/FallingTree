@@ -15,6 +15,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import java.util.*;
 import java.util.function.Predicate;
@@ -167,8 +168,18 @@ public class TreeBuilder{
 		return ALL_DIRECTIONS.stream()
 				.map(blockPos::relative)
 				.filter(testPos -> {
-					var block = level.getBlockState(testPos).getBlock();
-					return FallingTreeUtils.isLeafBlock(block) || FallingTreeUtils.isNetherWartOrShroomlight(block) || FallingTreeUtils.isLeafNeedBreakBlock(block);
+					var blockState = level.getBlockState(testPos);
+					var block = blockState.getBlock();
+					var isLeaf = FallingTreeUtils.isLeafBlock(block) || FallingTreeUtils.isNetherWartOrShroomlight(block) || FallingTreeUtils.isLeafNeedBreakBlock(block);
+					if(!isLeaf){
+						return false;
+					}
+					
+					if(Configuration.getInstance().getTrees().isIncludePersistentLeavesInRequiredCount()){
+						return true;
+					}
+					
+					return !blockState.getOptionalValue(LeavesBlock.PERSISTENT).orElse(false);
 				})
 				.count();
 	}

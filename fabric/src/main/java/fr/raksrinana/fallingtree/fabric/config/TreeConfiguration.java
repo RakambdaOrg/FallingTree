@@ -34,6 +34,8 @@ public class TreeConfiguration{
 	@Expose
 	private int minimumLeavesAroundRequired = 1;
 	@Expose
+	private boolean includePersistentLeavesInRequiredCount = true;
+	@Expose
 	private boolean treeBreaking = true;
 	@Expose
 	private boolean leavesBreaking = true;
