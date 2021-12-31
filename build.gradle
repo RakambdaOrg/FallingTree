@@ -11,6 +11,7 @@ buildscript {
 
 
 import com.modrinth.minotaur.TaskModrinthUpload
+import com.modrinth.minotaur.request.VersionType
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -85,6 +86,14 @@ task buildJar(type: Jar, group: "modding") {
 assemble.finalizedBy("buildJar")
 
 curseforge {
+    def relType = "release"
+    if(version.contains("b")) {
+        relType = "beta"
+    }
+    if(version.contains("a") || version.contains("dev")) {
+        relType = "alpha"
+    }
+
     apiKey = "${project.findProperty("curseforgeApiKey")}"
     project {
         id = "${project.curseforge_project_id}"
@@ -94,7 +103,7 @@ curseforge {
         addGameVersion "Fabric"
         addGameVersion "Forge"
         changelog = project.findProperty("changelog") ?: "No changelog provided"
-        releaseType = "${project.releaseType}"
+        releaseType = relType
         mainArtifact(jar) {
             displayName = "${project.minecraft_version}-${project.version}"
         }
@@ -117,6 +126,13 @@ curseforge {
 
 task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     dependsOn build
+    def relType = VersionType.RELEASE
+    if(version.contains("b")) {
+        relType = VersionType.BETA
+    }
+    if(version.contains("a") || version.contains("dev")) {
+        relType = VersionType.ALPHA
+    }
 
     token = project.findProperty("modrinthToken") as String
     projectId = project.modrinth_project_id
@@ -126,7 +142,7 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     addGameVersion(project.minecraft_version as String)
     addLoader("fabric")
     addLoader("forge")
-    versionType = project.releaseType.toLowerCase()
+    versionType = relType
     changelog = project.findProperty("changelog") ?: "No changelog provided"
 }
 
@@ -138,7 +154,7 @@ def writeUpdateJson() {
     def json = slurper.parse(file)
     def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/releases"
 
-    if(!mcVersion.contains("w")) {
+    if(!mcVersion.contains("w") && !version.contains("dev")) {
         json["changelog"] = changelogUrl
 
         // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
