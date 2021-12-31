@@ -131,7 +131,7 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
 }
 
 def writeUpdateJson() {
-    def version = project.version
+    def version = project.version as String
     def mcVersion = project.minecraft_version
     def slurper = new JsonSlurper()
     def file = project.file("update.json")
@@ -146,7 +146,9 @@ def writeUpdateJson() {
         json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
         json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
         json["promos"]["${mcVersion}-latest"] = version
-        json["promos"]["${mcVersion}-recommended"] = version
+        if(!version.contains("b")) {
+            json["promos"]["${mcVersion}-recommended"] = version
+        }
 
         println(json)
         file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
