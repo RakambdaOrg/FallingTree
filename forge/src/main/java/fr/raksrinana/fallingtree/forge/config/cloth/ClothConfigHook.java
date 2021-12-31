@@ -166,6 +166,12 @@ public class ClothConfigHook{
 				.setTooltip(getTooltips("trees", "minimumLeavesAroundRequired", 4))
 				.setSaveConsumer(config::setMinimumLeavesAroundRequired)
 				.build();
+		var includePersistentLeavesInRequiredCountEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName("trees", "includePersistentLeavesInRequiredCount")), config.isIncludePersistentLeavesInRequiredCount())
+				.setDefaultValue(true)
+				.setTooltip(getTooltips("trees", "includePersistentLeavesInRequiredCount", 5))
+				.setSaveConsumer(config::setIncludePersistentLeavesInRequiredCount)
+				.build();
 		var allowMixedLogsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("trees", "allowMixedLogs")), config.isAllowMixedLogs())
 				.setDefaultValue(false)
@@ -220,6 +226,7 @@ public class ClothConfigHook{
 		trees.addEntry(leavesBreakingEntry);
 		trees.addEntry(leavesBreakingForceRadiusEntry);
 		trees.addEntry(minimumLeavesAroundRequiredEntry);
+		trees.addEntry(includePersistentLeavesInRequiredCountEntry);
 		trees.addEntry(allowMixedLogsEntry);
 		trees.addEntry(breakNetherTreeWartsEntry);
 		trees.addEntry(instantlyBreakWartsEntry);

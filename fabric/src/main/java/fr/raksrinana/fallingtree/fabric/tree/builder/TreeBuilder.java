@@ -14,6 +14,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import java.util.*;
 import java.util.function.Predicate;
@@ -124,9 +125,9 @@ public class TreeBuilder{
 		var maxZ = originPos.getZ() + radius;
 		
 		return pos -> minX <= pos.getX()
-				&& maxX >= pos.getX()
-				&& minZ <= pos.getZ()
-				&& maxZ >= pos.getZ();
+		              && maxX >= pos.getX()
+		              && minZ <= pos.getZ()
+		              && maxZ >= pos.getZ();
 	}
 	
 	private static IPositionFetcher getFirstPositionFetcher(){
@@ -161,12 +162,22 @@ public class TreeBuilder{
 				.allMatch(adjacentPredicate);
 	}
 	
-	private static long getLeavesAround(Level world, BlockPos blockPos){
+	private static long getLeavesAround(Level level, BlockPos blockPos){
 		return ALL_DIRECTIONS.stream()
 				.map(blockPos::relative)
 				.filter(testPos -> {
-					var block = world.getBlockState(testPos).getBlock();
-					return FallingTreeUtils.isLeafBlock(block) || FallingTreeUtils.isNetherWartOrShroomlight(block) || FallingTreeUtils.isLeafNeedBreakBlock(block);
+					var blockState = level.getBlockState(testPos);
+					var block = blockState.getBlock();
+					var isLeaf = FallingTreeUtils.isLeafBlock(block) || FallingTreeUtils.isNetherWartOrShroomlight(block) || FallingTreeUtils.isLeafNeedBreakBlock(block);
+					if(!isLeaf){
+						return false;
+					}
+					
+					if(Configuration.getInstance().getTrees().isIncludePersistentLeavesInRequiredCount()){
+						return true;
+					}
+					
+					return !blockState.getOptionalValue(LeavesBlock.PERSISTENT).orElse(false);
 				})
 				.count();
 	}
