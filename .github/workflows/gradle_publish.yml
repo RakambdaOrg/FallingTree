@@ -38,6 +38,7 @@ jobs:
       - name: Push on stores
         uses: gradle/gradle-build-action@v2.0.1
         env:
+          ORG_GRADLE_PROJECT_version: "${{ steps.get_release.outputs.tag_name }}"
           ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
           ORG_GRADLE_PROJECT_curseforgeApiKey: ${{ secrets.CURSEFORGE_API_KEY }}
           ORG_GRADLE_PROJECT_modrinthToken: ${{ secrets.MODRINTH_TOKEN }}
@@ -51,3 +52,10 @@ jobs:
             build
             curseforge
             publishModrinth
+            
+      - name: Commit update.json
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'actions@github.com'
+          git commit -am "Automated update.json creation"
+          git push
