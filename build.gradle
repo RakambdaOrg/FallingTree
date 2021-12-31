@@ -150,7 +150,7 @@ def writeUpdateJson() {
     def version = project.version as String
     def mcVersion = project.minecraft_version
     def slurper = new JsonSlurper()
-    def file = project.file("update.json")
+    def file = project.file("wiki/assets/update.json")
     def json = slurper.parse(file)
     def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/releases"
 
