@@ -163,7 +163,7 @@ def writeUpdateJson() {
         json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
         json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
         json["promos"]["${mcVersion}-latest"] = version
-        if(!version.contains("b")) {
+        if(!version.contains("b") && !version.contains("a")) {
             json["promos"]["${mcVersion}-recommended"] = version
         }
 
