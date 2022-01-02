@@ -9,6 +9,9 @@ changelog:
   - title: "🐛 Fixes"
     labels:
     - "type: 🐛 bug"
+  - title: "🐛 Beta Fixes"
+    labels:
+    - "type: 🐛 beta bug"
   - title: Other Changes
     labels:
        - "*"
