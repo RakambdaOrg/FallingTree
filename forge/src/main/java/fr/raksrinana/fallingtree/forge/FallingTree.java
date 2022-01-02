@@ -5,7 +5,7 @@ import fr.raksrinana.fallingtree.forge.cloth.ClothConfigHook;
 import fr.raksrinana.fallingtree.forge.common.FallingTreeCommonsImpl;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.minecraftforge.fml.Bindings;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -33,6 +33,6 @@ public class FallingTree{
 		}
 		
 		mod.registerMod(FMLJavaModLoadingContext.get().getModEventBus());
-		mod.registerForge(Bindings.getForgeBus().get());
+		mod.registerForge(MinecraftForge.EVENT_BUS);
 	}
 }
