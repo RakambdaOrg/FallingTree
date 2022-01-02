@@ -156,8 +156,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		return !MinecraftForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw()));
 	}
 	
-	public void register(@NotNull IEventBus eventBus){
+	public void registerMod(@NotNull IEventBus eventBus){
 		FallingTreeEnchantments.register(eventBus);
+	}
+	
+	public void registerForge(@NotNull IEventBus eventBus){
 		eventBus.register(new BlockBreakListener(this));
 		eventBus.register(new LeafBreakingListener(this));
 	}
