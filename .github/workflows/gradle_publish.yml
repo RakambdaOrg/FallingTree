@@ -37,7 +37,6 @@ jobs:
 
       - name: Push on stores
         uses: gradle/gradle-build-action@v2.1.0
-        if: ${{ ! steps.get_release.outputs.draft }}
         env:
           ORG_GRADLE_PROJECT_version: "${{ steps.get_release.outputs.name }}"
           ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
