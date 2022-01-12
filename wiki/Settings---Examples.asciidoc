@@ -38,6 +38,9 @@ NOTE: This is purely an example, values there won't always make sense.
 		"ignoreTools": false,
 		"damageMultiplicand": 1,
 		"speedMultiplicand": 0.0
-	}
+	},
+    "player": {
+        "allowedTags": ["playerTag1", "playerTag2"]
+    }
 }
 ----

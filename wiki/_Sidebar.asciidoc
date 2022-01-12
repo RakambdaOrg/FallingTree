@@ -3,4 +3,5 @@
 ** link:Settings---General[General]
 ** link:Settings---Trees[Trees]
 ** link:Settings---Tools[Tools]
+** link:Settings---Player[Player]
 ** link:Settings---Examples[Examples]
