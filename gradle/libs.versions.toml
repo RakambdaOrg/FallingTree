@@ -1,29 +1,35 @@
 # Fabric https://modmuss50.me/fabric.html
 
 [versions]
-modmenu-version = "3.0.0"
-cloth-config-fabric-version = "6.1.48"
-cloth-config-forge-version = "6.1.48"
 lombok-version = "1.18.22"
+jetbrains-annotations-version = "23.0.0"
+gson-version = "2.8.8"
+slf4j-version = "2.0.0-alpha5"
 minecraft-version = "1.18.1"
 fabric-loader-version = "0.12.11"
 fabric-api-version = "0.44.0+1.18"
 forge-version = "1.18.1-39.0.0"
+modmenu-version = "3.0.0"
+cloth-config-fabric-version = "6.1.48"
+cloth-config-forge-version = "6.1.48"
 
+fabric-loom-version = "0.10.64"
 curse-version = "1.4.0"
 modrinth-version = "1.2.1"
 names-version = "0.39.0"
-fabric-loom-version = "0.10.64"
 
 [libraries]
-modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
-clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "cloth-config-fabric-version" }
-clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version.ref = "cloth-config-forge-version" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok-version" }
+jetbrainsAnnotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrains-annotations-version" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson-version" }
+slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-version" }
 minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft-version" }
 fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader-version" }
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api-version" }
 forge = { group = "net.minecraftforge", name = "forge", version.ref = "forge-version" }
+modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
+clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "cloth-config-fabric-version" }
+clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version.ref = "cloth-config-forge-version" }
 
 [bundles]
 fabric = ["fabric-loader", "fabric-api"]

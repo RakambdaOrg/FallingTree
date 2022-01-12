@@ -54,21 +54,8 @@ jobs:
             curseforge
             publishModrinth
 
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        if: ${{ ! steps.get_release.outputs.draft }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: "./build/libs/FallingTree-${{ steps.get_release.outputs.name }}.jar"
-          asset_name: "FallingTree-${{ steps.get_release.outputs.name }}.jar"
-          asset_content_type: application/java-archive
-
       - name: Push changes to the wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v2
-        if: ${{ ! steps.get_release.outputs.draft }}
         env:
           WIKI_DIR: wiki/
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
