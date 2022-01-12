@@ -1,0 +1,13 @@
+[cols='1,4a']
+|===
+|Name |Description
+
+|Allowed tags
+|Allows you to define a list of tags that the player should have in order to activate the mod.
+
+NOTE: The player only need to have one tag from the list to be considered valid.
+
+NOTE: An empty list applies no restrictions.
+
+You can add a tag on a player with the link:https://minecraft.fandom.com/wiki/Commands/tag[tag command].
+|===
