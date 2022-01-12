@@ -318,7 +318,7 @@ public class ClothConfigHook extends ClothHookBase{
 		var allowedTagsEntry = builder.entryBuilder()
 				.startStrList(new TranslatableComponent(getFieldName("player", "allowedTags")), config.getAllowedTags())
 				.setDefaultValue(Lists.newArrayList())
-				.setTooltip(getTooltips("player", "allowedTags", 1))
+				.setTooltip(getTooltips("player", "allowedTags", 4))
 				.setSaveConsumer(config::setAllowedTags)
 				.build();
 		

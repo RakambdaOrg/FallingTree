@@ -195,7 +195,7 @@
   "text.autoconfig.fallingtree.option.tools.requireEnchant.@Tooltip[0]": "Define if the tool must be enchanted in order to be able",
   "text.autoconfig.fallingtree.option.tools.requireEnchant.@Tooltip[1]": "to chop trees with it (allow/deny list still apply).",
   "text.autoconfig.fallingtree.category.player": "Player",
-  "text.autoconfig.fallingtree.option.player.allowedTags": "Required player tags",
+  "text.autoconfig.fallingtree.option.player.allowedTags": "Required player tagss",
   "text.autoconfig.fallingtree.option.player.allowedTags.@Tooltip[0]": "Define a list of tags that the player should",
   "text.autoconfig.fallingtree.option.player.allowedTags.@Tooltip[1]": "have in order to activate the mod. Only one",
   "text.autoconfig.fallingtree.option.player.allowedTags.@Tooltip[2]": "on them is required.",
