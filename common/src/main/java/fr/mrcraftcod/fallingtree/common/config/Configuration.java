@@ -22,6 +22,9 @@ public class Configuration{
 	@NotNull
 	private ToolConfiguration tools = new ToolConfiguration();
 	@Expose
+	@NotNull
+	private PlayerConfiguration player = new PlayerConfiguration();
+	@Expose
 	private boolean reverseSneaking = false;
 	@Expose
 	private boolean breakInCreative = false;

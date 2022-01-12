@@ -42,7 +42,20 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		if(configuration.isReverseSneaking() != player.isCrouching()){
 			return false;
 		}
+		if(!playerHasRequiredTags(player)){
+			return false;
+		}
 		return canPlayerBreakTree(player, blockState);
+	}
+	
+	private boolean playerHasRequiredTags(@NotNull IPlayer player){
+		var tags = configuration.getPlayer().getAllowedTags();
+		if(tags.isEmpty()){
+			return true;
+		}
+		
+		var playerTags = player.getTags();
+		return tags.stream().anyMatch(playerTags::contains);
 	}
 	
 	public boolean canPlayerBreakTree(@NotNull IPlayer player, @NotNull IBlockState aimedBlockState){

@@ -41,4 +41,13 @@ jobs:
         with:
           arguments: |
             clean
-            assemble
+            build
+
+      - name: Upload mod file
+        uses: actions/upload-artifact@v2
+        with:
+          name: mod-file
+          path: |
+            build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 14

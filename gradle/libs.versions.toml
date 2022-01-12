@@ -10,8 +10,7 @@ fabric-loader-version = "0.12.11"
 fabric-api-version = "0.44.0+1.18"
 forge-version = "1.18.1-39.0.0"
 modmenu-version = "3.0.0"
-cloth-config-fabric-version = "6.1.48"
-cloth-config-forge-version = "6.1.48"
+cloth-config-version = "6.1.48"
 
 fabric-loom-version = "0.10.64"
 curse-version = "1.4.0"
@@ -28,8 +27,8 @@ fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = 
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api-version" }
 forge = { group = "net.minecraftforge", name = "forge", version.ref = "forge-version" }
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
-clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "cloth-config-fabric-version" }
-clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version.ref = "cloth-config-forge-version" }
+clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "cloth-config-version" }
+clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version.ref = "cloth-config-version" }
 
 [bundles]
 fabric = ["fabric-loader", "fabric-api"]

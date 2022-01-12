@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.fabric.cloth;
 import com.google.common.collect.Lists;
 import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
 import fr.mrcraftcod.fallingtree.common.config.Configuration;
+import fr.mrcraftcod.fallingtree.common.config.PlayerConfiguration;
 import fr.mrcraftcod.fallingtree.common.config.ToolConfiguration;
 import fr.mrcraftcod.fallingtree.common.config.TreeConfiguration;
 import fr.mrcraftcod.fallingtree.common.config.cloth.ClothHookBase;
@@ -69,6 +70,7 @@ public class ClothConfigHook extends ClothHookBase{
 		
 		fillTreesConfigScreen(builder, config.getTrees());
 		fillToolsConfigScreen(builder, config.getTools());
+		fillPlayerConfigScreen(builder, config.getPlayer());
 	}
 	
 	@Environment(EnvType.CLIENT)
@@ -309,6 +311,19 @@ public class ClothConfigHook extends ClothHookBase{
 		tools.addEntry(damageRoundingEntry);
 		tools.addEntry(speedMultiplicandEntry);
 		tools.addEntry(preserveEntry);
+	}
+	
+	@Environment(EnvType.CLIENT)
+	private void fillPlayerConfigScreen(@NotNull ConfigBuilder builder, @NotNull PlayerConfiguration config){
+		var allowedTagsEntry = builder.entryBuilder()
+				.startStrList(new TranslatableComponent(getFieldName("player", "allowedTags")), config.getAllowedTags())
+				.setDefaultValue(Lists.newArrayList())
+				.setTooltip(getTooltips("player", "allowedTags", 4))
+				.setSaveConsumer(config::setAllowedTags)
+				.build();
+		
+		var tools = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.player"));
+		tools.addEntry(allowedTagsEntry);
 	}
 	
 	@NotNull

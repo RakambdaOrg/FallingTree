@@ -12,6 +12,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
+import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -65,5 +66,11 @@ public class PlayerWrapper implements IPlayer{
 	@NotNull
 	public ILevel getLevel(){
 		return new LevelWrapper(raw.getCommandSenderWorld());
+	}
+	
+	@Override
+	@NotNull
+	public Set<String> getTags(){
+		return raw.getTags();
 	}
 }
