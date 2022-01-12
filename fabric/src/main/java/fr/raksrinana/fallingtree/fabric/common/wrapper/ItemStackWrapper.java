@@ -1,15 +1,17 @@
 package fr.raksrinana.fallingtree.fabric.common.wrapper;
 
+import fr.mrcraftcod.fallingtree.common.wrapper.IEnchantment;
 import fr.mrcraftcod.fallingtree.common.wrapper.IItem;
 import fr.mrcraftcod.fallingtree.common.wrapper.IItemStack;
 import fr.mrcraftcod.fallingtree.common.wrapper.IPlayer;
-import fr.raksrinana.fallingtree.fabric.FallingTree;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @RequiredArgsConstructor
 public class ItemStackWrapper implements IItemStack{
@@ -44,7 +46,10 @@ public class ItemStackWrapper implements IItemStack{
 	}
 	
 	@Override
-	public int getChopperEnchantLevel(){
-		return EnchantmentHelper.getItemEnchantmentLevel(FallingTree.CHOPPER_ENCHANTMENT, raw);
+	public int getEnchantLevel(@Nullable IEnchantment enchantment){
+		if(enchantment == null){
+			return 0;
+		}
+		return EnchantmentHelper.getItemEnchantmentLevel((Enchantment) enchantment.getRaw(), raw);
 	}
 }

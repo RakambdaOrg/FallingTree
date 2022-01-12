@@ -3,11 +3,14 @@ package fr.raksrinana.fallingtree.fabric.common;
 import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
 import fr.mrcraftcod.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.mrcraftcod.fallingtree.common.wrapper.*;
-import fr.raksrinana.fallingtree.fabric.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.BlockWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.ComponentWrapper;
+import fr.raksrinana.fallingtree.fabric.common.wrapper.EnchantmentWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.ItemWrapper;
+import fr.raksrinana.fallingtree.fabric.enchant.ChopperEnchantment;
+import fr.raksrinana.fallingtree.fabric.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.fabric.event.LeafBreakingListener;
+import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.tag.TagFactory;
@@ -23,10 +26,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import static fr.raksrinana.fallingtree.fabric.FallingTree.MOD_ID;
 import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
+	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
+	@Getter
+	private IEnchantment chopperEnchantment;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
@@ -36,12 +43,6 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@NotNull
 	public IComponent translate(@NotNull String key, Object... objects){
 		return new ComponentWrapper(new TranslatableComponent(key, objects));
-	}
-	
-	@Override
-	@NotNull
-	public LeafBreakingHandler getLeafBreakingHandler(){
-		return leafBreakingHandler;
 	}
 	
 	@Override
@@ -136,6 +137,15 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
 		return true;
+	}
+	
+	@Override
+	protected void performEnchantRegister(){
+		chopperEnchantment = new EnchantmentWrapper(Registry.register(
+				Registry.ENCHANTMENT,
+				new ResourceLocation(MOD_ID, "chopper"),
+				new ChopperEnchantment()
+		));
 	}
 	
 	public void register(){

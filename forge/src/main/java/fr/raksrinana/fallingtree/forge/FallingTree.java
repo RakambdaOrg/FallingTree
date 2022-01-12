@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
@@ -32,7 +31,7 @@ public class FallingTree{
 			}
 		}
 		
-		mod.registerMod(FMLJavaModLoadingContext.get().getModEventBus());
+		mod.registerEnchant();
 		mod.registerForge(MinecraftForge.EVENT_BUS);
 	}
 }

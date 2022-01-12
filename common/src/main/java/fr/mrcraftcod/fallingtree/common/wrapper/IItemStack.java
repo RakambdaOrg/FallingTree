@@ -1,6 +1,7 @@
 package fr.mrcraftcod.fallingtree.common.wrapper;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface IItemStack extends IWrapper{
 	boolean isDamageable();
@@ -14,5 +15,5 @@ public interface IItemStack extends IWrapper{
 	@NotNull
 	IItem getItem();
 	
-	int getChopperEnchantLevel();
+	int getEnchantLevel(@Nullable IEnchantment enchantment);
 }

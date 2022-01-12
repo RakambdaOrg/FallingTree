@@ -75,7 +75,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 			return false;
 		}
 		
-		var isToolChopperEnchanted = heldItemStack.getChopperEnchantLevel() > 0;
+		var isToolChopperEnchanted = heldItemStack.getEnchantLevel(getChopperEnchantment()) > 0;
 		if(toolConfiguration.isRequireEnchant() && !isToolChopperEnchanted){
 			return false;
 		}
@@ -164,4 +164,15 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	}
 	
 	public abstract boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player);
+	
+	public void registerEnchant(){
+		if(false){
+			performEnchantRegister();
+		}
+	}
+	
+	protected abstract void performEnchantRegister();
+	
+	@NotNull
+	protected abstract IEnchantment getChopperEnchantment();
 }
