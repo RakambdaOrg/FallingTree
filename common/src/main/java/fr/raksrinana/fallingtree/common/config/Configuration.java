@@ -31,6 +31,8 @@ public class Configuration{
 	@Expose
 	private boolean registerEnchant = false;
 	@Expose
+	private boolean onlyEnchantBook = false;
+	@Expose
 	@NotNull
 	private NotificationMode notificationMode = NotificationMode.ACTION_BAR;
 	

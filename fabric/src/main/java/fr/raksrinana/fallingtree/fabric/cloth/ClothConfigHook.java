@@ -68,12 +68,19 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips(null, "registerEnchant", 11))
 				.setSaveConsumer(config::setRegisterEnchant)
 				.build();
+		var onlyEnchantBookEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "onlyEnchantBook")), config.isOnlyEnchantBook())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips(null, "onlyEnchantBook", 2))
+				.setSaveConsumer(config::setOnlyEnchantBook)
+				.build();
 		
 		var general = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.default"));
 		general.addEntry(reverseSneakingEntry);
 		general.addEntry(breakInCreativeEntry);
 		general.addEntry(notificationModeEntry);
 		general.addEntry(registerEnchantEntry);
+		general.addEntry(onlyEnchantBookEntry);
 		
 		fillTreesConfigScreen(builder, config.getTrees());
 		fillToolsConfigScreen(builder, config.getTools());
