@@ -20,4 +20,12 @@
 - CHAT: Messages are sent in the chat.
 - ACTION_BAR: Messages are displayed in the player's action bar.
 - NONE: No notifications will appear.
+
+|Register enchant
+|If set to true, the chopper enchant will be registered and can be used to limit which tools activate the mod (see tools.requireEnchant).
+If set to false it won't be registered, making the mod server-sided.
+
+NOTE: If set to false, also set tools.requireEnchant to false otherwise the mod will never activate.
+
+NOTE: Restart needed.
 |===
