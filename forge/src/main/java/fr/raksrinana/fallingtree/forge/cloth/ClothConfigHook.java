@@ -64,7 +64,7 @@ public class ClothConfigHook extends ClothHookBase{
 				.build();
 		var registerEnchantEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "registerEnchant")), config.isRegisterEnchant())
-				.setDefaultValue(true)
+				.setDefaultValue(false)
 				.setTooltip(getTooltips(null, "registerEnchant", 11))
 				.setSaveConsumer(config::setRegisterEnchant)
 				.build();
@@ -262,8 +262,8 @@ public class ClothConfigHook extends ClothHookBase{
 				.build();
 		var requireEnchantEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("tools", "requireEnchant")), config.isRequireEnchant())
-				.setDefaultValue(true)
-				.setTooltip(getTooltips("tools", "requireEnchant", 2))
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("tools", "requireEnchant", 3))
 				.setSaveConsumer(config::setRequireEnchant)
 				.build();
 		var allowedEntry = builder.entryBuilder()
