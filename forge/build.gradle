@@ -1,19 +1,8 @@
 import net.minecraftforge.gradle.common.tasks.SignJar
 
-buildscript {
-    repositories {
-        maven {
-            name = "forge"
-            url = "https://maven.minecraftforge.net"
-        }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.27", changing: true
-    }
+plugins {
+    alias(libs.plugins.forge)
 }
-
-apply plugin: "net.minecraftforge.gradle"
 
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"

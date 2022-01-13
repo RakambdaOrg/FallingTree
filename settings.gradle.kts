@@ -6,7 +6,18 @@ pluginManagement {
             name = "Fabric"
             url = uri("https://maven.fabricmc.net/")
         }
+        maven {
+            name = "MinecraftForge"
+            url = uri("https://maven.minecraftforge.net")
+        }
         gradlePluginPortal()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "net.minecraftforge.gradle") {
+                useModule("${requested.id}:ForgeGradle:${requested.version}")
+            }
+        }
     }
 }
 
