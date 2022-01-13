@@ -166,7 +166,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	public abstract boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player);
 	
 	public void registerEnchant(){
-		if(false){
+		if(configuration.isRegisterEnchant()){
 			performEnchantRegister();
 		}
 	}
