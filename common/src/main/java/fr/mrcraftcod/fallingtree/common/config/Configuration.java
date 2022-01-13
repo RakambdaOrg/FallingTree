@@ -29,6 +29,8 @@ public class Configuration{
 	@Expose
 	private boolean breakInCreative = false;
 	@Expose
+	private boolean registerEnchant = true;
+	@Expose
 	@NotNull
 	private NotificationMode notificationMode = NotificationMode.ACTION_BAR;
 	

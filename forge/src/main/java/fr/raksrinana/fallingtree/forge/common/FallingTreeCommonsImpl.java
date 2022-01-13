@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.forge.common;
 import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
 import fr.mrcraftcod.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.mrcraftcod.fallingtree.common.wrapper.*;
+import fr.raksrinana.fallingtree.forge.common.wrapper.EnchantmentWrapper;
 import fr.raksrinana.fallingtree.forge.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.forge.event.FallingTreeBlockBreakEvent;
 import fr.raksrinana.fallingtree.forge.common.wrapper.BlockWrapper;
@@ -10,6 +11,7 @@ import fr.raksrinana.fallingtree.forge.common.wrapper.ComponentWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.ItemWrapper;
 import fr.raksrinana.fallingtree.forge.event.FallingTreeEnchantments;
 import fr.raksrinana.fallingtree.forge.event.LeafBreakingListener;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
@@ -36,7 +39,10 @@ import static java.util.stream.Stream.empty;
 import static net.minecraftforge.registries.ForgeRegistries.ITEMS;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
+	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
+	@Getter
+	private IEnchantment chopperEnchantment;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
@@ -46,12 +52,6 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@NotNull
 	public IComponent translate(@NotNull String key, Object... objects){
 		return new ComponentWrapper(new TranslatableComponent(key, objects));
-	}
-	
-	@Override
-	@NotNull
-	public LeafBreakingHandler getLeafBreakingHandler(){
-		return leafBreakingHandler;
 	}
 	
 	@Override
@@ -156,8 +156,10 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		return !MinecraftForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw()));
 	}
 	
-	public void registerMod(@NotNull IEventBus eventBus){
-		FallingTreeEnchantments.register(eventBus);
+	@Override
+	protected void performEnchantRegister(){
+		FallingTreeEnchantments.register(FMLJavaModLoadingContext.get().getModEventBus());
+		chopperEnchantment = new EnchantmentWrapper(FallingTreeEnchantments.CHOPPER_ENCHANTMENT);
 	}
 	
 	public void registerForge(@NotNull IEventBus eventBus){
