@@ -25,7 +25,7 @@ public class ToolConfiguration{
 	@Expose
 	private boolean ignoreTools = false;
 	@Expose
-	private boolean requireEnchant = true;
+	private boolean requireEnchant = false;
 	@Expose
 	private double damageMultiplicand = 1d;
 	@Expose
