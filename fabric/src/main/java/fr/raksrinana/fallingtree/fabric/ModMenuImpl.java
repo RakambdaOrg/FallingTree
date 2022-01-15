@@ -5,17 +5,11 @@ import com.terraformersmc.modmenu.api.ModMenuApi;
 import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.fabric.cloth.ClothConfigHook;
 import lombok.extern.slf4j.Slf4j;
-import me.shedaniel.autoconfig.gui.DefaultGuiProviders;
-import me.shedaniel.autoconfig.gui.DefaultGuiTransformers;
-import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
 public class ModMenuImpl implements ModMenuApi{
-	@SuppressWarnings("unused")
-	private static final GuiRegistry defaultGuiRegistry = DefaultGuiTransformers.apply(DefaultGuiProviders.apply(new GuiRegistry()));
-	
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory(){
 		if(FabricLoader.getInstance().isModLoaded("cloth-config")){
