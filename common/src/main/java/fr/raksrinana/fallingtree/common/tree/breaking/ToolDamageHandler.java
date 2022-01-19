@@ -4,10 +4,10 @@ import fr.raksrinana.fallingtree.common.config.enums.DamageRounding;
 import fr.raksrinana.fallingtree.common.config.enums.MaxSizeAction;
 import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 
-@Slf4j
+@Log4j2
 public class ToolDamageHandler{
 	private final IItemStack tool;
 	private final double damageMultiplicand;

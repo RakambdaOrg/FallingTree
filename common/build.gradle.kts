@@ -1,4 +1,4 @@
 dependencies {
     compileOnly(libs.gson)
-    compileOnly(libs.slf4j)
+    compileOnly(libs.log4j2)
 }

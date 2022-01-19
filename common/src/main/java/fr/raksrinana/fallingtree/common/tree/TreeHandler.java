@@ -13,7 +13,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IBlockState;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import static java.util.Objects.isNull;
 
-@Slf4j
+@Log4j2
 @RequiredArgsConstructor
 public class TreeHandler{
 	@NotNull

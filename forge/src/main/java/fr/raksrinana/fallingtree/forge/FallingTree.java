@@ -4,13 +4,13 @@ import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.forge.cloth.ClothConfigHook;
 import fr.raksrinana.fallingtree.forge.common.FallingTreeCommonsImpl;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import java.lang.reflect.InvocationTargetException;
 
-@Slf4j
+@Log4j2
 @Mod(FallingTree.MOD_ID)
 public class FallingTree{
 	public static final String MOD_ID = "fallingtree";

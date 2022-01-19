@@ -7,14 +7,14 @@ import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.List;
 import static fr.raksrinana.fallingtree.common.tree.TreePartType.NETHER_WART;
 import static java.util.Objects.isNull;
 
-@Slf4j
+@Log4j2
 @RequiredArgsConstructor
 public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private static ShiftDownTreeBreakingHandler INSTANCE;

@@ -5,7 +5,7 @@ import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
-@Slf4j
+@Log4j2
 public class Configuration{
 	@Expose
 	@NotNull

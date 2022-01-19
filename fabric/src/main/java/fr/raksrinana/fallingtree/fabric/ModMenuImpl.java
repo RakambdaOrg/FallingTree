@@ -4,11 +4,11 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.fabric.cloth.ClothConfigHook;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import net.fabricmc.loader.api.FabricLoader;
 import java.lang.reflect.InvocationTargetException;
 
-@Slf4j
+@Log4j2
 public class ModMenuImpl implements ModMenuApi{
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory(){

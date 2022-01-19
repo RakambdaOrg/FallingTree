@@ -7,17 +7,26 @@ import fr.raksrinana.fallingtree.common.tree.builder.position.AbovePositionFetch
 import fr.raksrinana.fallingtree.common.tree.builder.position.AboveYFetcher;
 import fr.raksrinana.fallingtree.common.tree.builder.position.BasicPositionFetcher;
 import fr.raksrinana.fallingtree.common.tree.builder.position.IPositionFetcher;
-import fr.raksrinana.fallingtree.common.wrapper.*;
+import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
+import fr.raksrinana.fallingtree.common.wrapper.IBlock;
+import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
+import fr.raksrinana.fallingtree.common.wrapper.IBlockState;
+import fr.raksrinana.fallingtree.common.wrapper.ILevel;
+import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
-import java.util.*;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import static java.util.Optional.empty;
 
 @RequiredArgsConstructor
-@Slf4j
+@Log4j2
 public class TreeBuilder{
 	private static final EnumSet<DirectionCompat> ALL_DIRECTIONS = EnumSet.allOf(DirectionCompat.class);
 	
