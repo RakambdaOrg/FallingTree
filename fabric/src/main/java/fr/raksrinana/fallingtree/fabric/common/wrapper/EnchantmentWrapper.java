@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.IEnchantment;
+import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.item.enchantment.Enchantment;

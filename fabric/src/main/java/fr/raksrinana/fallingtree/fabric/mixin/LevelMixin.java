@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.mixin;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.DirectionCompat;
+import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
 import fr.raksrinana.fallingtree.fabric.FallingTree;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.BlockPosWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.BlockStateWrapper;

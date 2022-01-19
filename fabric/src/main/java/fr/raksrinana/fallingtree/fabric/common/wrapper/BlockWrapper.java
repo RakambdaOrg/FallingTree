@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.*;
+import fr.raksrinana.fallingtree.common.wrapper.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.BlockPos;

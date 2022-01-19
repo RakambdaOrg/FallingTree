@@ -21,7 +21,7 @@ minecraft {
         server {
             workingDirectory project.file("../run")
             property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
+            property "forge.logging.console.level", "info"
             mods {
                 fallingtree {
                     source sourceSets.main
@@ -48,7 +48,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     minecraft(libs.forge)
-    implementation project(":common")
+    implementation(project(":common"))
 
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:6.1.50"))
 }

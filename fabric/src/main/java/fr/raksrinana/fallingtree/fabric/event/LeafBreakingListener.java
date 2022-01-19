@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.event;
 
-import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import lombok.RequiredArgsConstructor;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;

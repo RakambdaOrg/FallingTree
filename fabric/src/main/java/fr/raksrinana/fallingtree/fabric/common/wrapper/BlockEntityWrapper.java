@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.IBlockEntity;
+import fr.raksrinana.fallingtree.common.wrapper.IBlockEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.level.block.entity.BlockEntity;

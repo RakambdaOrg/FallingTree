@@ -1,14 +1,14 @@
 package fr.raksrinana.fallingtree.fabric.cloth;
 
 import com.google.common.collect.Lists;
-import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
-import fr.mrcraftcod.fallingtree.common.config.Configuration;
-import fr.mrcraftcod.fallingtree.common.config.PlayerConfiguration;
-import fr.mrcraftcod.fallingtree.common.config.ToolConfiguration;
-import fr.mrcraftcod.fallingtree.common.config.TreeConfiguration;
-import fr.mrcraftcod.fallingtree.common.config.cloth.ClothHookBase;
-import fr.mrcraftcod.fallingtree.common.config.enums.*;
-import fr.mrcraftcod.fallingtree.common.wrapper.IComponent;
+import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.config.Configuration;
+import fr.raksrinana.fallingtree.common.config.PlayerConfiguration;
+import fr.raksrinana.fallingtree.common.config.ToolConfiguration;
+import fr.raksrinana.fallingtree.common.config.TreeConfiguration;
+import fr.raksrinana.fallingtree.common.config.cloth.ClothHookBase;
+import fr.raksrinana.fallingtree.common.config.enums.*;
+import fr.raksrinana.fallingtree.common.wrapper.IComponent;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

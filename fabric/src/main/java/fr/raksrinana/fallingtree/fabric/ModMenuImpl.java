@@ -2,7 +2,7 @@ package fr.raksrinana.fallingtree.fabric;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.fabric.cloth.ClothConfigHook;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;

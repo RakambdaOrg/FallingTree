@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.IChunk;
-import fr.mrcraftcod.fallingtree.common.wrapper.IChunkPos;
+import fr.raksrinana.fallingtree.common.wrapper.IChunk;
+import fr.raksrinana.fallingtree.common.wrapper.IChunkPos;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.level.chunk.ChunkAccess;

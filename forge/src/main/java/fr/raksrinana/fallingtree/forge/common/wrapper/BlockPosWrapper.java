@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.DirectionCompat;
-import fr.mrcraftcod.fallingtree.common.wrapper.IBlockPos;
+import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
+import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
 import fr.raksrinana.fallingtree.forge.FallingTree;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

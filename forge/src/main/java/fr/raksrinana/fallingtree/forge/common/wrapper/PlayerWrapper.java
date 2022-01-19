@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.config.enums.NotificationMode;
-import fr.mrcraftcod.fallingtree.common.wrapper.*;
+import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
+import fr.raksrinana.fallingtree.common.wrapper.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.Util;

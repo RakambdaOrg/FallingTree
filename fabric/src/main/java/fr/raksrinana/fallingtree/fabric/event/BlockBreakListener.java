@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.fabric.event;
 
-import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.BlockPosWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.LevelWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.PlayerWrapper;

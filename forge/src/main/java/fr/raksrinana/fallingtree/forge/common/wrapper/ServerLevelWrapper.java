@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.forge.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.IServerLevel;
+import fr.raksrinana.fallingtree.common.wrapper.IServerLevel;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 

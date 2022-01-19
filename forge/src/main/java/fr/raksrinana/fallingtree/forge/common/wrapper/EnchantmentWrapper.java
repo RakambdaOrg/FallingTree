@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.forge.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.IEnchantment;
+import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.RegistryObject;

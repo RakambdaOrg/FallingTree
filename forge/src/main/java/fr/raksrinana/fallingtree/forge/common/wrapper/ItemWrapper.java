@@ -1,8 +1,8 @@
 package fr.raksrinana.fallingtree.forge.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.IBlockState;
-import fr.mrcraftcod.fallingtree.common.wrapper.IItem;
-import fr.mrcraftcod.fallingtree.common.wrapper.IItemStack;
+import fr.raksrinana.fallingtree.common.wrapper.IBlockState;
+import fr.raksrinana.fallingtree.common.wrapper.IItem;
+import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.item.Item;

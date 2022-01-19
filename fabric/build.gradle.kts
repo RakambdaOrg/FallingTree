@@ -55,7 +55,7 @@ loom {
         create("fallingTreeServer") {
             server()
 
-            property("fabric.log.level", "debug")
+            property("fabric.log.level", "info")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
         }
     }

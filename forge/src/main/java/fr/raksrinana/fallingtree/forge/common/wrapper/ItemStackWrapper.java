@@ -1,9 +1,9 @@
 package fr.raksrinana.fallingtree.forge.common.wrapper;
 
-import fr.mrcraftcod.fallingtree.common.wrapper.IEnchantment;
-import fr.mrcraftcod.fallingtree.common.wrapper.IItem;
-import fr.mrcraftcod.fallingtree.common.wrapper.IItemStack;
-import fr.mrcraftcod.fallingtree.common.wrapper.IPlayer;
+import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
+import fr.raksrinana.fallingtree.common.wrapper.IItem;
+import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
+import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.entity.player.Player;

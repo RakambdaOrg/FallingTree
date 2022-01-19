@@ -1,6 +1,6 @@
 package fr.raksrinana.fallingtree.forge;
 
-import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.forge.cloth.ClothConfigHook;
 import fr.raksrinana.fallingtree.forge.common.FallingTreeCommonsImpl;
 import lombok.Getter;
