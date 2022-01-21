@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.forge.enchant;
 
-import fr.mrcraftcod.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.forge.common.wrapper.ItemStackWrapper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -16,12 +17,17 @@ public class ChopperEnchantment extends Enchantment{
 	}
 	
 	@Override
-	public boolean canEnchant(@NotNull ItemStack itemStack){
-		return true;
+	public boolean isTradeable(){
+		return !mod.getConfiguration().getEnchantment().isHideEnchant();
 	}
 	
 	@Override
 	public boolean isDiscoverable(){
-		return !mod.getConfiguration().isOnlyEnchantBook();
+		return !mod.getConfiguration().getEnchantment().isHideEnchant();
+	}
+	
+	@Override
+	public boolean canApplyAtEnchantingTable(@NotNull ItemStack stack){
+		return mod.isValidTool(new ItemStackWrapper(stack), false);
 	}
 }
