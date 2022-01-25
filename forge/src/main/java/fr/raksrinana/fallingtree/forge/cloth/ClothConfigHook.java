@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.forge.cloth;
 import com.google.common.collect.Lists;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.config.Configuration;
+import fr.raksrinana.fallingtree.common.config.EnchantmentConfiguration;
 import fr.raksrinana.fallingtree.common.config.PlayerConfiguration;
 import fr.raksrinana.fallingtree.common.config.ToolConfiguration;
 import fr.raksrinana.fallingtree.common.config.TreeConfiguration;
@@ -62,22 +63,16 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips(null, "notificationMode", 5))
 				.setSaveConsumer(config::setNotificationMode)
 				.build();
-		var registerEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "registerEnchant")), config.isRegisterEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips(null, "registerEnchant", 11))
-				.setSaveConsumer(config::setRegisterEnchant)
-				.build();
 		
 		var general = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.default"));
 		general.addEntry(reverseSneakingEntry);
 		general.addEntry(breakInCreativeEntry);
 		general.addEntry(notificationModeEntry);
-		general.addEntry(registerEnchantEntry);
 		
 		fillTreesConfigScreen(builder, config.getTrees());
 		fillToolsConfigScreen(builder, config.getTools());
 		fillPlayerConfigScreen(builder, config.getPlayer());
+		fillEnchantmentConfigScreen(builder, config.getEnchantment());
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -260,12 +255,6 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("tools", "ignoreTools", 4))
 				.setSaveConsumer(config::setIgnoreTools)
 				.build();
-		var requireEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslatableComponent(getFieldName("tools", "requireEnchant")), config.isRequireEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("tools", "requireEnchant", 3))
-				.setSaveConsumer(config::setRequireEnchant)
-				.build();
 		var allowedEntry = builder.entryBuilder()
 				.startStrList(new TranslatableComponent(getFieldName("tools", "allowed")), config.getAllowed())
 				.setDefaultValue(Lists.newArrayList())
@@ -311,7 +300,6 @@ public class ClothConfigHook extends ClothHookBase{
 		
 		var tools = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.tools"));
 		tools.addEntry(ignoreToolsEntry);
-		tools.addEntry(requireEnchantEntry);
 		tools.addEntry(allowedEntry);
 		tools.addEntry(deniedEntry);
 		tools.addEntry(damageMultiplicandEntry);
@@ -331,6 +319,26 @@ public class ClothConfigHook extends ClothHookBase{
 		
 		var tools = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.player"));
 		tools.addEntry(allowedTagsEntry);
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	private void fillEnchantmentConfigScreen(@NotNull ConfigBuilder builder, @NotNull EnchantmentConfiguration config){
+		var registerEnchantEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName("enchantment", "registerEnchant")), config.isRegisterEnchant())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips(null, "registerEnchant", 8))
+				.setSaveConsumer(config::setRegisterEnchant)
+				.build();
+		var hideEnchantEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName("enchantment", "hideEnchant")), config.isHideEnchant())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("enchantment", "hideEnchant", 2))
+				.setSaveConsumer(config::setHideEnchant)
+				.build();
+		
+		var enchantment = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.enchantment"));
+		enchantment.addEntry(registerEnchantEntry);
+		enchantment.addEntry(hideEnchantEntry);
 	}
 	
 	@NotNull

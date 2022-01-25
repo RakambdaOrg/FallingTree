@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class FallingTreeEnchantments{
 	private static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, FallingTree.MOD_ID);
 	
-	public static RegistryObject<Enchantment> CHOPPER_ENCHANTMENT = ENCHANTMENTS.register("chopper", ChopperEnchantment::new);
+	public static RegistryObject<Enchantment> CHOPPER_ENCHANTMENT = ENCHANTMENTS.register("chopper", () -> new ChopperEnchantment(FallingTree.getMod()));
 	
 	public static void register(@NotNull IEventBus eventBus){
 		ENCHANTMENTS.register(eventBus);

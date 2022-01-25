@@ -12,6 +12,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IBlockState;
 import fr.raksrinana.fallingtree.common.wrapper.IComponent;
 import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
 import fr.raksrinana.fallingtree.common.wrapper.IItem;
+import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
@@ -67,12 +68,28 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	}
 	
 	public boolean canPlayerBreakTree(@NotNull IPlayer player, @NotNull IBlockState aimedBlockState){
-		var toolConfiguration = getConfiguration().getTools();
 		var heldItemStack = player.getMainHandItem();
+		var heldItem = heldItemStack.getItem();
+		var isCorrectTool = heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1.0f;
+		
+		if(!isValidTool(heldItemStack, isCorrectTool)){
+			return false;
+		}
+		
+		var isToolChopperEnchanted = heldItemStack.getEnchantLevel(getChopperEnchantment()) > 0;
+		if(getConfiguration().getEnchantment().isRegisterEnchant() && !isToolChopperEnchanted){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean isValidTool(@NotNull IItemStack heldItemStack, boolean isCorrectTool){
+		var toolConfiguration = getConfiguration().getTools();
 		var heldItem = heldItemStack.getItem();
 		
 		var isAllowedTool = toolConfiguration.isIgnoreTools()
-		                    || heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1.0f
+		                    || isCorrectTool
 		                    || toolConfiguration.getAllowedItems(this).stream().anyMatch(tool -> tool.equals(heldItem));
 		if(!isAllowedTool){
 			return false;
@@ -80,11 +97,6 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		
 		var isDeniedTool = toolConfiguration.getDeniedItems(this).stream().anyMatch(tool -> tool.equals(heldItem));
 		if(isDeniedTool){
-			return false;
-		}
-		
-		var isToolChopperEnchanted = heldItemStack.getEnchantLevel(getChopperEnchantment()) > 0;
-		if(toolConfiguration.isRequireEnchant() && !isToolChopperEnchanted){
 			return false;
 		}
 		
@@ -174,7 +186,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	public abstract boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player);
 	
 	public void registerEnchant(){
-		if(configuration.isRegisterEnchant()){
+		if(configuration.getEnchantment().isRegisterEnchant()){
 			performEnchantRegister();
 		}
 	}

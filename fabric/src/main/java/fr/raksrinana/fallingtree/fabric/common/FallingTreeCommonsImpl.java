@@ -144,7 +144,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		chopperEnchantment = new EnchantmentWrapper(Registry.register(
 				Registry.ENCHANTMENT,
 				new ResourceLocation(MOD_ID, "chopper"),
-				new ChopperEnchantment()
+				new ChopperEnchantment(this)
 		));
 	}
 	

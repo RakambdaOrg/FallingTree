@@ -25,11 +25,12 @@ public class Configuration{
 	@NotNull
 	private PlayerConfiguration player = new PlayerConfiguration();
 	@Expose
+	@NotNull
+	private EnchantmentConfiguration enchantment = new EnchantmentConfiguration();
+	@Expose
 	private boolean reverseSneaking = false;
 	@Expose
 	private boolean breakInCreative = false;
-	@Expose
-	private boolean registerEnchant = false;
 	@Expose
 	@NotNull
 	private NotificationMode notificationMode = NotificationMode.ACTION_BAR;
