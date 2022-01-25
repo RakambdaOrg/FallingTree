@@ -29,7 +29,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 				mod.getConfiguration().getTrees().getMaxSizeAction(),
 				mod.getConfiguration().getTools().getDamageRounding());
 		
-		if(toolHandler.getMaxBreakCount() <= 0){
+		if(mod.getConfiguration().getTools().isPreserve() && toolHandler.getMaxBreakCount() <= 0){
 			log.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.prevented_break_tool"));
 			return false;
