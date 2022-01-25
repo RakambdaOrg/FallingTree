@@ -28,7 +28,15 @@ public class ToolDamageHandler{
 		
 		int tempMaxBreakCount;
 		if(tool.isDamageable()){
-			var breakCount = damageMultiplicand == 0 ? maxSize : (int) Math.floor(getToolDurability() / damageMultiplicand);
+			int breakCount = 0;
+			if(damageMultiplicand == 0){
+				breakCount = maxSize;
+			}
+			else{
+				breakCount = (int) Math.floor(getToolDurability() / damageMultiplicand);
+				breakCount = Math.max(1, breakCount);
+			}
+			
 			if(preserve && breakCount <= breakableCount){
 				breakCount--;
 			}
