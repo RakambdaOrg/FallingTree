@@ -66,24 +66,24 @@ task buildJar(type: Jar, group: "modding") {
     dependsOn {
         assemble
         ":common:build"
-        if (project.includeFabric) {
+        if (project.includeFabric.toBoolean()) {
             ":fabric:build"
         }
-        if (project.includeForge) {
+        if (project.includeForge.toBoolean()) {
             ":forge:build"
         }
     }
-    if (project.includeForge) {
+    if (project.includeForge.toBoolean()) {
         finalizedBy ":forge:signJar"
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
         zipTree("common/build/libs/common-${project.version}.jar")
-        if (project.includeFabric) {
+        if (project.includeFabric.toBoolean()) {
             zipTree("fabric/build/libs/fabric-${project.version}.jar")
         }
-        if (project.includeForge) {
+        if (project.includeForge.toBoolean()) {
             zipTree("forge/build/libs/forge-${project.version}.jar")
         }
     }
@@ -117,10 +117,10 @@ curseforge {
         changelogType = "markdown"
         addGameVersion minecraftVersion
         addGameVersion "Java 17"
-        if (project.includeFabric) {
+        if (project.includeFabric.toBoolean()) {
             addGameVersion "Fabric"
         }
-        if (project.includeForge) {
+        if (project.includeForge.toBoolean()) {
             addGameVersion "Forge"
         }
         changelog = project.findProperty("changelog") ?: "No changelog provided"
@@ -129,13 +129,13 @@ curseforge {
             displayName = "${minecraftVersion}-${project.version}"
         }
         relations {
-            if (project.includeFabric) {
+            if (project.includeFabric.toBoolean()) {
                 optionalDependency("fabric-api") //It's actually required
                 optionalDependency("modmenu")
                 optionalDependency("cloth-config")
             }
 
-            if (project.includeForge) {
+            if (project.includeForge.toBoolean()) {
                 optionalDependency("cloth-config-forge")
             }
         }
@@ -163,19 +163,18 @@ task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     versionName = "${minecraftVersion}-${project.version}"
     uploadFile = jar
     addGameVersion(minecraftVersion)
-    if (project.includeFabric) {
+    if (project.includeFabric.toBoolean()) {
         addLoader("fabric")
     }
-    if (project.includeForge) {
+    if (project.includeForge.toBoolean()) {
         addLoader("forge")
     }
     versionType = relType
     changelog = project.findProperty("changelog") ?: "No changelog provided"
 }
 
-def writeUpdateJson() {
+def writeUpdateJson(mcVersion) {
     def version = project.version as String
-    def mcVersion = project.minecraft_version
     def slurper = new JsonSlurper()
     def file = project.file("wiki/assets/update.json")
     def json = slurper.parse(file)
@@ -201,7 +200,7 @@ def writeUpdateJson() {
 task createUpdateJson(group: "modding") {
     doLast {
         println("Updating update.json...")
-        writeUpdateJson()
+        writeUpdateJson(minecraftVersion)
     }
 }
 build.finalizedBy createUpdateJson
