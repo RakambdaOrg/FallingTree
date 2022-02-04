@@ -48,6 +48,7 @@ jobs:
           ORG_GRADLE_PROJECT_forgeKeyStoreKeyPass: ${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
           ORG_GRADLE_PROJECT_forgeSignSHA1: f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
         with:
+          cache-disabled: true
           arguments: |
             build
             curseforge
