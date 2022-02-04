@@ -3,6 +3,9 @@ changelog:
     labels:
       - "type: 📚 dependencies"
   categories:
+  - title: "⚠ Breaking"
+    labels:
+    - "⚠ Breaking"
   - title: "🚀 Features"
     labels:
     - "type: 🧱 enhancement"
