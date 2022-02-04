@@ -50,6 +50,7 @@ jobs:
         with:
           cache-disabled: true
           arguments: |
+            clean
             build
             curseforge
             publishModrinth
