@@ -4,12 +4,13 @@
 
 Here I'll try to explain in a bit more details what are the different settings you'll find in FallingTree and when possible give some examples, so it's clearer.
 
-There's 4 main sections that you'll find in the configuration file or in the config GUI:
+There's several sections that you'll find in the configuration file or in the config GUI:
 
 * link:Settings---General[General]
 * link:Settings---Trees[Trees]
 * link:Settings---Tools[Tools]
 * link:Settings---Player[Player]
+* link:Settings---Enchantment[Enchantment]
 
 Examples of full config files can be found link:Settings---Examples[here].
 

@@ -4,4 +4,5 @@
 ** link:Settings---Trees[Trees]
 ** link:Settings---Tools[Tools]
 ** link:Settings---Player[Player]
+** link:Settings---Enchantment[Enchantment]
 ** link:Settings---Examples[Examples]
