@@ -53,6 +53,10 @@ dependencies {
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:6.1.50"))
 }
 
+ext {
+    minecraftVersion = libs.versions.minecraftVersion.get()
+}
+
 processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 

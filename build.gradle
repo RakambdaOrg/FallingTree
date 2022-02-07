@@ -63,27 +63,30 @@ group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${minecraftVersion}"
 
 task buildJar(type: Jar, group: "modding") {
-    dependsOn {
-        assemble
-        ":common:build"
-        if (project.includeFabric.toBoolean()) {
-            ":fabric:build"
-        }
-        if (project.includeForge.toBoolean()) {
-            ":forge:build"
-        }
+    dependsOn(assemble)
+    dependsOn(":common:build")
+    if (project.includeFabric.toBoolean()) {
+        dependsOn(":fabric:build")
     }
     if (project.includeForge.toBoolean()) {
-        finalizedBy ":forge:signJar"
+        dependsOn(":forge:build")
+    }
+
+    if (project.includeForge.toBoolean()) {
+        finalizedBy(":forge:signJar")
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
         zipTree("common/build/libs/common-${project.version}.jar")
-        if (project.includeFabric.toBoolean()) {
+    }
+    if (project.includeFabric.toBoolean()) {
+        from {
             zipTree("fabric/build/libs/fabric-${project.version}.jar")
         }
-        if (project.includeForge.toBoolean()) {
+    }
+    if (project.includeForge.toBoolean()) {
+        from {
             zipTree("forge/build/libs/forge-${project.version}.jar")
         }
     }
