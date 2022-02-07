@@ -326,7 +326,7 @@ public class ClothConfigHook extends ClothHookBase{
 		var registerEnchantEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("enchantment", "registerEnchant")), config.isRegisterEnchant())
 				.setDefaultValue(false)
-				.setTooltip(getTooltips(null, "registerEnchant", 8))
+				.setTooltip(getTooltips("enchantment", "registerEnchant", 8))
 				.setSaveConsumer(config::setRegisterEnchant)
 				.build();
 		var hideEnchantEntry = builder.entryBuilder()
