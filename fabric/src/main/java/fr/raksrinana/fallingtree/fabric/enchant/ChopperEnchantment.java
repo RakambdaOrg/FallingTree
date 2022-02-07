@@ -12,8 +12,18 @@ public class ChopperEnchantment extends Enchantment{
 	private final FallingTreeCommon<?> mod;
 	
 	public ChopperEnchantment(FallingTreeCommon<?> mod){
-		super(Rarity.COMMON, EnchantmentCategory.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+		super(Rarity.COMMON, EnchantmentCategory.BREAKABLE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
 		this.mod = mod;
+	}
+	
+	@Override
+	public int getMinCost(int i){
+		return 1;
+	}
+	
+	@Override
+	public int getMaxCost(int i){
+		return 10;
 	}
 	
 	@Override
