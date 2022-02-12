@@ -46,9 +46,9 @@ NOTE: Deny list takes over the values defined in allow list. So if you defined t
 
 NOTE: In the screenshots the axe indicates where the tree is being cut by you.
 
-- Instantaneous: The whole tree will be chopped at once.
+- INSTANTANEOUS: The whole tree will be chopped at once.
 image:assets/behavior/break-mode-instantaneous.png[]
-- Shift down: The furthest log will be broken. This allow you to still cut the tree one by one but you don't have to climb to get all the logs; just aim at one spot and cut it multiple times.
+- SHIFT_DOWN: The furthest log will be broken. This allow you to still cut the tree one by one but you don't have to climb to get all the logs; just aim at one spot and cut it multiple times.
 image:assets/behavior/break-mode-shift-down.png[]
 
 NOTE: Those modes are conditioned by `Detection mode`.
@@ -58,11 +58,11 @@ NOTE: Those modes are conditioned by `Detection mode`.
 
 NOTE: In the screenshots the axe indicates where the tree is being cut by you, and the red signs indicates the logs that **WON'T** be broken.
 
-- Whole tree: The whole tree will be scanned, searching in all 6 directions.
+- WHOLE_TREE: The whole tree will be scanned, searching in all 6 directions.
 image:assets/behavior/detection-mode-whole-tree.png[]
-- Above cut: Will search in all directions except at the cutting point where it'll only look up.
+- ABOVE_CUT: Will search in all directions except at the cutting point where it'll only look up.
 image:assets/behavior/detection-mode-above-cut.png[]
-- Above cut: Will search in all directions but retain only logs with a `y` value greater than the cutting point.
+- ABOVE_Y: Will search in all directions but retain only logs with a `y` value greater than the cutting point.
 image:assets/behavior/detection-mode-above-y.png[]
 
 |Max scan size
