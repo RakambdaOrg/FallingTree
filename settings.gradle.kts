@@ -1,7 +1,5 @@
 rootProject.name = "FallingTree"
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 pluginManagement {
     repositories {
         maven {
