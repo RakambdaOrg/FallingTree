@@ -58,19 +58,38 @@ allprojects {
     }
 }
 
+var minecraftVersion = libs.versions.minecraftVersion.get()
 group = "fr.raksrinana"
-archivesBaseName = "${project.modName}-${project.minecraft_version}"
+archivesBaseName = "${project.modName}-${minecraftVersion}"
 
 task buildJar(type: Jar, group: "modding") {
-    dependsOn assemble, ":common:build",
-            ":fabric:build",
-            ":forge:build"
-    finalizedBy ":forge:signJar"
+    dependsOn(assemble)
+    dependsOn(":common:build")
+    if (project.includeFabric.toBoolean()) {
+        dependsOn(":fabric:build")
+    }
+    if (project.includeForge.toBoolean()) {
+        dependsOn(":forge:build")
+    }
+
+    if (project.includeForge.toBoolean()) {
+        finalizedBy(":forge:signJar")
+    }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from zipTree("common/build/libs/common-${project.version}.jar"),
-            zipTree("fabric/build/libs/fabric-${project.version}.jar"),
+    from {
+        zipTree("common/build/libs/common-${project.version}.jar")
+    }
+    if (project.includeFabric.toBoolean()) {
+        from {
+            zipTree("fabric/build/libs/fabric-${project.version}.jar")
+        }
+    }
+    if (project.includeForge.toBoolean()) {
+        from {
             zipTree("forge/build/libs/forge-${project.version}.jar")
+        }
+    }
 
     manifest {
         attributes([
@@ -88,10 +107,10 @@ assemble.finalizedBy("buildJar")
 
 curseforge {
     def relType = "release"
-    if(version.contains("b")) {
+    if (version.contains("b")) {
         relType = "beta"
     }
-    if(version.contains("a") || version.contains("dev")) {
+    if (version.contains("a") || version.contains("dev")) {
         relType = "alpha"
     }
 
@@ -99,23 +118,29 @@ curseforge {
     project {
         id = "${project.curseforge_project_id}"
         changelogType = "markdown"
-        addGameVersion project.minecraft_version
+        addGameVersion "1.18-Snapshot" //TODO after snapshot : minecraftVersion
         addGameVersion "Java 17"
-        addGameVersion "Fabric"
-        addGameVersion "Forge"
+        if (project.includeFabric.toBoolean()) {
+            addGameVersion "Fabric"
+        }
+        if (project.includeForge.toBoolean()) {
+            addGameVersion "Forge"
+        }
         changelog = project.findProperty("changelog") ?: "No changelog provided"
         releaseType = relType
         mainArtifact(jar) {
-            displayName = "${project.minecraft_version}-${project.version}"
+            displayName = "${minecraftVersion}-${project.version}"
         }
         relations {
-            //Fabric
-            optionalDependency("fabric-api") //It's actually required
-            optionalDependency("modmenu")
-            optionalDependency("cloth-config")
+            if (project.includeFabric.toBoolean()) {
+                optionalDependency("fabric-api") //It's actually required
+                optionalDependency("modmenu")
+                optionalDependency("cloth-config")
+            }
 
-            //Forge
-            optionalDependency("cloth-config-forge")
+            if (project.includeForge.toBoolean()) {
+                optionalDependency("cloth-config-forge")
+            }
         }
     }
     options {
@@ -128,34 +153,37 @@ curseforge {
 task publishModrinth(type: TaskModrinthUpload, group: "upload") {
     dependsOn build
     def relType = VersionType.RELEASE
-    if(version.contains("b")) {
+    if (version.contains("b")) {
         relType = VersionType.BETA
     }
-    if(version.contains("a") || version.contains("dev")) {
+    if (version.contains("a") || version.contains("dev")) {
         relType = VersionType.ALPHA
     }
 
     token = project.findProperty("modrinthToken") as String
     projectId = project.modrinth_project_id
-    versionNumber = "${project.minecraft_version}-${project.version}"
-    versionName = "${project.minecraft_version}-${project.version}"
+    versionNumber = "${minecraftVersion}-${project.version}"
+    versionName = "${minecraftVersion}-${project.version}"
     uploadFile = jar
-    addGameVersion(project.minecraft_version as String)
-    addLoader("fabric")
-    addLoader("forge")
+    addGameVersion(minecraftVersion)
+    if (project.includeFabric.toBoolean()) {
+        addLoader("fabric")
+    }
+    if (project.includeForge.toBoolean()) {
+        addLoader("forge")
+    }
     versionType = relType
     changelog = project.findProperty("changelog") ?: "No changelog provided"
 }
 
-def writeUpdateJson() {
+def writeUpdateJson(mcVersion) {
     def version = project.version as String
-    def mcVersion = project.minecraft_version
     def slurper = new JsonSlurper()
     def file = project.file("wiki/assets/update.json")
     def json = slurper.parse(file)
     def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/releases"
 
-    if(!mcVersion.contains("w") && !version.contains("dev")) {
+    if (!mcVersion.contains("w") && !version.contains("dev")) {
         json["changelog"] = changelogUrl
 
         // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
@@ -163,7 +191,7 @@ def writeUpdateJson() {
         json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
         json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
         json["promos"]["${mcVersion}-latest"] = version
-        if(!version.contains("b") && !version.contains("a")) {
+        if (!version.contains("b") && !version.contains("a")) {
             json["promos"]["${mcVersion}-recommended"] = version
         }
 
@@ -175,7 +203,7 @@ def writeUpdateJson() {
 task createUpdateJson(group: "modding") {
     doLast {
         println("Updating update.json...")
-        writeUpdateJson()
+        writeUpdateJson(minecraftVersion)
     }
 }
 build.finalizedBy createUpdateJson

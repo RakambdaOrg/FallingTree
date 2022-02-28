@@ -6,18 +6,6 @@ updates:
       interval: "daily"
     reviewers:
       - RakSrinaNa
-  - package-ecosystem: gradle
-    directory: "/forge"
-    schedule:
-      interval: "daily"
-    reviewers:
-      - RakSrinaNa
-  - package-ecosystem: gradle
-    directory: "/fabric"
-    schedule:
-      interval: "daily"
-    reviewers:
-      - RakSrinaNa
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

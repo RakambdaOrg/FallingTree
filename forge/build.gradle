@@ -50,7 +50,11 @@ dependencies {
     minecraft(libs.forge)
     implementation(project(":common"))
 
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:6.1.50"))
+    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}"))
+}
+
+ext {
+    minecraftVersion = libs.versions.minecraftVersion.get()
 }
 
 processResources {

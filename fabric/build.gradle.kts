@@ -42,7 +42,7 @@ loom {
     val modId: String by project
 
     mixin {
-        getDefaultRefmapName().set("fabric.${modId}.refmap.json")
+        defaultRefmapName.set("fabric.${modId}.refmap.json")
     }
 
     runs {

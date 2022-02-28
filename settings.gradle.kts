@@ -1,4 +1,4 @@
-enableFeaturePreview("VERSION_CATALOGS")
+rootProject.name = "FallingTree"
 
 pluginManagement {
     repositories {
@@ -21,7 +21,13 @@ pluginManagement {
     }
 }
 
-rootProject.name = "FallingTree"
+val includeFabric: String by settings
+val includeForge: String by settings
+
 include("common")
-include("fabric")
-include("forge")
+if (includeFabric.toBoolean()) {
+    include("fabric")
+}
+if (includeForge.toBoolean()) {
+    include("forge")
+}

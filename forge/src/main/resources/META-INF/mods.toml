@@ -22,7 +22,7 @@ side = "BOTH"
 [[dependencies.fallingtree]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[${minecraft_version}]"
+versionRange = "[${minecraftVersion}]"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.fallingtree]]
