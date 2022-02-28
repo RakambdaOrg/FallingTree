@@ -118,13 +118,13 @@ curseforge {
     project {
         id = "${project.curseforge_project_id}"
         changelogType = "markdown"
-        addGameVersion "1.18-Snapshot" //TODO after snapshot : minecraftVersion
-        addGameVersion "Java 17"
+        addGameVersion(minecraftVersion)
+        addGameVersion("Java 17")
         if (project.includeFabric.toBoolean()) {
-            addGameVersion "Fabric"
+            addGameVersion("Fabric")
         }
         if (project.includeForge.toBoolean()) {
-            addGameVersion "Forge"
+            addGameVersion("Forge")
         }
         changelog = project.findProperty("changelog") ?: "No changelog provided"
         releaseType = relType
