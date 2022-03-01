@@ -106,6 +106,10 @@ task buildJar(type: Jar, group: "modding") {
 assemble.finalizedBy("buildJar")
 
 curseforge {
+    afterEvaluate {
+        tasks["curseforge${project.curseforge_project_id}"].dependsOn("buildJar")
+    }
+
     def relType = "release"
     if (version.contains("b")) {
         relType = "beta"
@@ -151,7 +155,7 @@ curseforge {
 }
 
 task publishModrinth(type: TaskModrinthUpload, group: "upload") {
-    dependsOn build
+    dependsOn buildJar
     def relType = VersionType.RELEASE
     if (version.contains("b")) {
         relType = VersionType.BETA
