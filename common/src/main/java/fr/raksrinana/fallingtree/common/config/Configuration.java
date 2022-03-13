@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.common.config;
 
 import com.google.gson.annotations.Expose;
 import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
+import fr.raksrinana.fallingtree.common.config.enums.SneakMode;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,8 @@ public class Configuration{
 	@NotNull
 	private EnchantmentConfiguration enchantment = new EnchantmentConfiguration();
 	@Expose
-	private boolean reverseSneaking = false;
+	@NotNull
+	private SneakMode sneakMode = SneakMode.SNEAK_DISABLE;
 	@Expose
 	private boolean breakInCreative = false;
 	@Expose

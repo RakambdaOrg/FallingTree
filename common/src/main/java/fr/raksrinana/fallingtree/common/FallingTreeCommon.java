@@ -48,7 +48,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		if(player.isCreative() && !getConfiguration().isBreakInCreative()){
 			return false;
 		}
-		if(configuration.isReverseSneaking() != player.isCrouching()){
+		if(configuration.getSneakMode().test(player.isCrouching())){
 			return false;
 		}
 		if(!playerHasRequiredTags(player)){
