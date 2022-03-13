@@ -2,11 +2,12 @@
 |===
 |Name |Description
 
-|Reverse sneaking
-|This will reverse how sneaking influences the mod.
+|Sneak mode
+|Defines what happens when sneaking.
 
-- No: Sneaking will disable the mod, making it not cutting trees.
-- Yes: Sneaking will activate the mod, making it cut trees.
+- SNEAK_DISABLE: Sneaking will disable the mod.
+- SNEAK_ENABLE: Sneaking will enable the mod.
+- IGNORE: Mod will always be activated.
 
 |Break in creative
 |Sets if the mod if active when a player breaks a tree in creative mode.

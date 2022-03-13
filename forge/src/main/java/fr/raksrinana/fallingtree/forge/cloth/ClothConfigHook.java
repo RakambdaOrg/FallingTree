@@ -46,10 +46,10 @@ public class ClothConfigHook extends ClothHookBase{
 	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(@NotNull ConfigBuilder builder, @NotNull Configuration config){
 		var reverseSneakingEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "reverseSneaking")), config.isReverseSneaking())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips(null, "reverseSneaking", 2))
-				.setSaveConsumer(config::setReverseSneaking)
+				.startEnumSelector(new TranslatableComponent(getFieldName(null, "sneakMode")), SneakMode.class, config.getSneakMode())
+				.setDefaultValue(SneakMode.SNEAK_DISABLE)
+				.setTooltip(getTooltips(null, "sneakMode", 5))
+				.setSaveConsumer(config::setSneakMode)
 				.build();
 		var breakInCreativeEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "breakInCreative")), config.isBreakInCreative())

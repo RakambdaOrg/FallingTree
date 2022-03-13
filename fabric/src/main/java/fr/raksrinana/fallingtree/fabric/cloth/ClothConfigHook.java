@@ -15,6 +15,7 @@ import fr.raksrinana.fallingtree.common.config.enums.DamageRounding;
 import fr.raksrinana.fallingtree.common.config.enums.DetectionMode;
 import fr.raksrinana.fallingtree.common.config.enums.MaxSizeAction;
 import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
+import fr.raksrinana.fallingtree.common.config.enums.SneakMode;
 import fr.raksrinana.fallingtree.common.wrapper.IComponent;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.fabricmc.api.EnvType;
@@ -52,10 +53,10 @@ public class ClothConfigHook extends ClothHookBase{
 	@Environment(EnvType.CLIENT)
 	public void fillConfigScreen(@NotNull ConfigBuilder builder, @NotNull Configuration config){
 		var reverseSneakingEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "reverseSneaking")), config.isReverseSneaking())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips(null, "reverseSneaking", 2))
-				.setSaveConsumer(config::setReverseSneaking)
+				.startEnumSelector(new TranslatableComponent(getFieldName(null, "sneakMode")), SneakMode.class, config.getSneakMode())
+				.setDefaultValue(SneakMode.SNEAK_DISABLE)
+				.setTooltip(getTooltips(null, "sneakMode", 5))
+				.setSaveConsumer(config::setSneakMode)
 				.build();
 		var breakInCreativeEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName(null, "breakInCreative")), config.isBreakInCreative())

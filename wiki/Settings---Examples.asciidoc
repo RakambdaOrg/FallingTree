@@ -5,7 +5,7 @@ NOTE: This is purely an example, values there won't always make sense.
 [source,json]
 ----
 {
-  "reverseSneaking": false,
+  "sneakMode": "IGNORE",
   "breakInCreative": true,
   "notificationMode": "ACTION_BAR",
   "trees": {
