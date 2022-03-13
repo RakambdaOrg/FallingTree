@@ -39,7 +39,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.1.3
         env:
           ORG_GRADLE_PROJECT_version: "${{ steps.get_release.outputs.name }}"
-          ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
+          ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
           ORG_GRADLE_PROJECT_forgeKeyStore: keystoreForgeMods.jks
           ORG_GRADLE_PROJECT_forgeKeyStoreAlias: ${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
           ORG_GRADLE_PROJECT_forgeKeyStorePass: ${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
@@ -55,7 +55,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.1.3
         env:
           ORG_GRADLE_PROJECT_version: "${{ steps.get_release.outputs.name }}"
-          ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})"
+          ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
           ORG_GRADLE_PROJECT_curseforgeApiKey: ${{ secrets.CURSEFORGE_API_KEY }}
           ORG_GRADLE_PROJECT_modrinthToken: ${{ secrets.MODRINTH_TOKEN }}
           ORG_GRADLE_PROJECT_forgeKeyStore: keystoreForgeMods.jks
