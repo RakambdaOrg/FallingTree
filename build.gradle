@@ -138,8 +138,8 @@ curseforge {
         relations {
             if (project.includeFabric.toBoolean()) {
                 optionalDependency("fabric-api") //It's actually required
-                optionalDependency("modmenu")
-                optionalDependency("cloth-config")
+//                optionalDependency("modmenu")
+//                optionalDependency("cloth-config")
             }
 
             if (project.includeForge.toBoolean()) {
