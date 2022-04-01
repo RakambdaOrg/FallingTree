@@ -122,7 +122,7 @@ curseforge {
     project {
         id = "${project.curseforge_project_id}"
         changelogType = "markdown"
-        addGameVersion(minecraftVersion)
+        addGameVersion("1.19-Snapshot")
         addGameVersion("Java 17")
         if (project.includeFabric.toBoolean()) {
             addGameVersion("Fabric")
