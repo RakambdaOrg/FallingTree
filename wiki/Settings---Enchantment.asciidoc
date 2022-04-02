@@ -7,6 +7,11 @@
 
 NOTE: Server/Client restart needed.
 
+|Register specific enchant
+|If set to true, several chopper enchants will be registered and will be required on tools in order to activate the mod with a specific breaking mode. If set to false it won't be registered, making the mod server-sided.
+
+NOTE: Server/Client restart needed.
+
 |Hide enchant
 |If set to true the enchant will not be discoverable nor tradeable.
 |===

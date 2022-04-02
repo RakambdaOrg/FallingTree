@@ -1,9 +1,9 @@
-package fr.raksrinana.fallingtree.forge.enchant;
+package fr.raksrinana.fallingtree.fabric.enchant;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.enchant.IFallingTreeEnchantment;
-import fr.raksrinana.fallingtree.forge.common.wrapper.ItemStackWrapper;
+import fr.raksrinana.fallingtree.fabric.common.wrapper.ItemStackWrapper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -11,10 +11,10 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
-public class ChopperEnchantment extends Enchantment implements IFallingTreeEnchantment{
+public class ChopperShiftDownEnchantment extends Enchantment implements IFallingTreeEnchantment{
 	private final FallingTreeCommon<?> mod;
 	
-	public ChopperEnchantment(FallingTreeCommon<?> mod){
+	public ChopperShiftDownEnchantment(FallingTreeCommon<?> mod){
 		super(Rarity.COMMON, EnchantmentCategory.BREAKABLE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
 		this.mod = mod;
 	}
@@ -40,8 +40,8 @@ public class ChopperEnchantment extends Enchantment implements IFallingTreeEncha
 	}
 	
 	@Override
-	public boolean canApplyAtEnchantingTable(@NotNull ItemStack stack){
-		return mod.isValidTool(new ItemStackWrapper(stack));
+	public boolean canEnchant(@NotNull ItemStack stack){
+		return mod.isValidTool(new ItemStackWrapper(stack), false);
 	}
 	
 	@Override
@@ -52,6 +52,6 @@ public class ChopperEnchantment extends Enchantment implements IFallingTreeEncha
 	@Override
 	@NotNull
 	public Optional<BreakMode> getBreakMode(){
-		return Optional.empty();
+		return Optional.of(BreakMode.SHIFT_DOWN);
 	}
 }

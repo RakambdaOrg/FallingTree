@@ -329,6 +329,12 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("enchantment", "registerEnchant", 8))
 				.setSaveConsumer(config::setRegisterEnchant)
 				.build();
+		var registerSpecificEnchantEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName("enchantment", "registerSpecificEnchant")), config.isRegisterSpecificEnchant())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("enchantment", "registerSpecificEnchant", 9))
+				.setSaveConsumer(config::setRegisterSpecificEnchant)
+				.build();
 		var hideEnchantEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("enchantment", "hideEnchant")), config.isHideEnchant())
 				.setDefaultValue(false)
@@ -338,6 +344,7 @@ public class ClothConfigHook extends ClothHookBase{
 		
 		var enchantment = builder.getOrCreateCategory(new TranslatableComponent("text.autoconfig.fallingtree.category.enchantment"));
 		enchantment.addEntry(registerEnchantEntry);
+		enchantment.addEntry(registerSpecificEnchantEntry);
 		enchantment.addEntry(hideEnchantEntry);
 	}
 	

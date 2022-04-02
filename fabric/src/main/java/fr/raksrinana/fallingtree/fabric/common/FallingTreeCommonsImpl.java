@@ -16,6 +16,8 @@ import fr.raksrinana.fallingtree.fabric.common.wrapper.ComponentWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.EnchantmentWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.ItemWrapper;
 import fr.raksrinana.fallingtree.fabric.enchant.ChopperEnchantment;
+import fr.raksrinana.fallingtree.fabric.enchant.ChopperInstantaneousEnchantment;
+import fr.raksrinana.fallingtree.fabric.enchant.ChopperShiftDownEnchantment;
 import fr.raksrinana.fallingtree.fabric.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.fabric.event.LeafBreakingListener;
 import lombok.Getter;
@@ -31,6 +33,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,10 +46,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
 	@Getter
-	private IEnchantment chopperEnchantment;
+	private Collection<IEnchantment> chopperEnchantments;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
+		chopperEnchantments = new ArrayList<>();
 	}
 	
 	@Override
@@ -152,12 +157,30 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	protected void performEnchantRegister(){
-		chopperEnchantment = new EnchantmentWrapper(Registry.register(
+	protected void performDefaultEnchantRegister(){
+		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
 				Registry.ENCHANTMENT,
 				new ResourceLocation(MOD_ID, "chopper"),
 				new ChopperEnchantment(this)
-		));
+		)));
+	}
+	
+	@Override
+	protected void performSpecificEnchantRegister(){
+		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
+				Registry.ENCHANTMENT,
+				new ResourceLocation(MOD_ID, "chopper_instantaneous"),
+				new ChopperInstantaneousEnchantment(this)
+		)));
+		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
+				Registry.ENCHANTMENT,
+				new ResourceLocation(MOD_ID, "chopper_shift_down"),
+				new ChopperShiftDownEnchantment(this)
+		)));
+	}
+	
+	@Override
+	protected void performCommitEnchantRegister(){
 	}
 	
 	@NotNull

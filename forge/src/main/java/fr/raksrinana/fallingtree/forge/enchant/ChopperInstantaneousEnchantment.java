@@ -11,10 +11,10 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
-public class ChopperEnchantment extends Enchantment implements IFallingTreeEnchantment{
+public class ChopperInstantaneousEnchantment extends Enchantment implements IFallingTreeEnchantment{
 	private final FallingTreeCommon<?> mod;
 	
-	public ChopperEnchantment(FallingTreeCommon<?> mod){
+	public ChopperInstantaneousEnchantment(FallingTreeCommon<?> mod){
 		super(Rarity.COMMON, EnchantmentCategory.BREAKABLE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
 		this.mod = mod;
 	}
@@ -41,7 +41,7 @@ public class ChopperEnchantment extends Enchantment implements IFallingTreeEncha
 	
 	@Override
 	public boolean canApplyAtEnchantingTable(@NotNull ItemStack stack){
-		return mod.isValidTool(new ItemStackWrapper(stack));
+		return mod.isValidTool(new ItemStackWrapper(stack), false);
 	}
 	
 	@Override
@@ -52,6 +52,6 @@ public class ChopperEnchantment extends Enchantment implements IFallingTreeEncha
 	@Override
 	@NotNull
 	public Optional<BreakMode> getBreakMode(){
-		return Optional.empty();
+		return Optional.of(BreakMode.INSTANTANEOUS);
 	}
 }

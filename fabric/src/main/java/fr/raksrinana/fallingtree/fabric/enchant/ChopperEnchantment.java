@@ -1,14 +1,17 @@
 package fr.raksrinana.fallingtree.fabric.enchant;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
+import fr.raksrinana.fallingtree.common.enchant.IFallingTreeEnchantment;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.ItemStackWrapper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
 
-public class ChopperEnchantment extends Enchantment{
+public class ChopperEnchantment extends Enchantment implements IFallingTreeEnchantment{
 	private final FallingTreeCommon<?> mod;
 	
 	public ChopperEnchantment(FallingTreeCommon<?> mod){
@@ -39,5 +42,16 @@ public class ChopperEnchantment extends Enchantment{
 	@Override
 	public boolean canEnchant(@NotNull ItemStack stack){
 		return mod.isValidTool(new ItemStackWrapper(stack));
+	}
+	
+	@Override
+	protected boolean checkCompatibility(@NotNull Enchantment enchantment){
+		return super.checkCompatibility(enchantment) && !(enchantment instanceof IFallingTreeEnchantment);
+	}
+	
+	@Override
+	@NotNull
+	public Optional<BreakMode> getBreakMode(){
+		return Optional.empty();
 	}
 }

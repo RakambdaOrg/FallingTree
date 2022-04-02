@@ -8,5 +8,11 @@ public class EnchantmentConfiguration{
 	@Expose
 	private boolean registerEnchant = false;
 	@Expose
+	private boolean registerSpecificEnchant = false;
+	@Expose
 	private boolean hideEnchant = false;
+	
+	public boolean isAtLeastOneEnchantRegistered(){
+		return registerEnchant || registerSpecificEnchant;
+	}
 }
