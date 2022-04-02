@@ -56,7 +56,7 @@ public class ItemStackWrapper implements IItemStack{
 	}
 	
 	@Override
-	public boolean hasAnyEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel){
+	public boolean hasOneOfEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel){
 		var itemEnchantments = EnchantmentHelper.getEnchantments(raw);
 		for(var enchantment : enchantments){
 			var key = (Enchantment) enchantment.getRaw();

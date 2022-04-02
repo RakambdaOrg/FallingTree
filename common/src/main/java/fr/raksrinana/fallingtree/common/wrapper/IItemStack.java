@@ -19,7 +19,7 @@ public interface IItemStack extends IWrapper{
 	
 	int getEnchantLevel(@Nullable IEnchantment enchantment);
 	
-	boolean hasAnyEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel);
+	boolean hasOneOfEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel);
 	
 	@NotNull
 	Optional<IEnchantment> getAnyEnchant(@NotNull Collection<IEnchantment> enchantments);

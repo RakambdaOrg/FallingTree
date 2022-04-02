@@ -74,8 +74,8 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 			return false;
 		}
 		
-		var isToolChopperEnchanted = heldItemStack.hasAnyEnchantAtLeast(getChopperEnchantments(), 1);
-		if(getConfiguration().getEnchantment().isAtLeastOneEnchantRegistered() && !isToolChopperEnchanted){
+		if(getConfiguration().getEnchantment().isAtLeastOneEnchantRegistered()
+		   && !heldItemStack.hasOneOfEnchantAtLeast(getChopperEnchantments(), 1)){
 			return false;
 		}
 		
