@@ -44,7 +44,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		player.sendMessage(component, getConfiguration().getNotificationMode());
 	}
 	
-	public boolean isPlayerInRightState(@NotNull IPlayer player, @NotNull IBlockState blockState){
+	public boolean isPlayerInRightState(@NotNull IPlayer player){
 		if(player.isCreative() && !getConfiguration().isBreakInCreative()){
 			return false;
 		}
@@ -54,7 +54,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		if(!playerHasRequiredTags(player)){
 			return false;
 		}
-		return canPlayerBreakTree(player, blockState);
+		return canPlayerBreakTree(player);
 	}
 	
 	private boolean playerHasRequiredTags(@NotNull IPlayer player){
@@ -67,9 +67,8 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		return tags.stream().anyMatch(playerTags::contains);
 	}
 	
-	public boolean canPlayerBreakTree(@NotNull IPlayer player, @NotNull IBlockState aimedBlockState){
+	public boolean canPlayerBreakTree(@NotNull IPlayer player){
 		var heldItemStack = player.getMainHandItem();
-		var heldItem = heldItemStack.getItem();
 		
 		if(!isValidTool(heldItemStack)){
 			return false;

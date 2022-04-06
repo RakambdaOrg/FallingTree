@@ -9,7 +9,6 @@ import fr.raksrinana.fallingtree.common.tree.breaking.ShiftDownTreeBreakingHandl
 import fr.raksrinana.fallingtree.common.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.common.utils.CacheSpeed;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
-import fr.raksrinana.fallingtree.common.wrapper.IBlockState;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +37,7 @@ public class TreeHandler{
 			return Optional.empty();
 		}
 		
-		var blockState = level.getBlockState(blockPos);
-		if(!mod.isPlayerInRightState(player, blockState)){
+		if(!mod.isPlayerInRightState(player)){
 			return Optional.empty();
 		}
 		
@@ -73,14 +71,14 @@ public class TreeHandler{
 	}
 	
 	@NotNull
-	public Optional<Float> getBreakSpeed(@NotNull IPlayer player, @NotNull IBlockState blockState, @NotNull IBlockPos blockPos, float originalSpeed){
+	public Optional<Float> getBreakSpeed(@NotNull IPlayer player, @NotNull IBlockPos blockPos, float originalSpeed){
 		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
 			return Optional.empty();
 		}
 		if(mod.getConfiguration().getTrees().getBreakMode() != BreakMode.INSTANTANEOUS){
 			return Optional.empty();
 		}
-		if(!mod.isPlayerInRightState(player, blockState)){
+		if(!mod.isPlayerInRightState(player)){
 			return Optional.empty();
 		}
 		
