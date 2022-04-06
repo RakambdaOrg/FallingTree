@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.fabric.common;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
 import fr.raksrinana.fallingtree.common.wrapper.IBlock;
@@ -16,8 +17,6 @@ import fr.raksrinana.fallingtree.fabric.common.wrapper.ComponentWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.EnchantmentWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.ItemWrapper;
 import fr.raksrinana.fallingtree.fabric.enchant.ChopperEnchantment;
-import fr.raksrinana.fallingtree.fabric.enchant.ChopperInstantaneousEnchantment;
-import fr.raksrinana.fallingtree.fabric.enchant.ChopperShiftDownEnchantment;
 import fr.raksrinana.fallingtree.fabric.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.fabric.event.LeafBreakingListener;
 import lombok.Getter;
@@ -161,7 +160,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
 				Registry.ENCHANTMENT,
 				new ResourceLocation(MOD_ID, "chopper"),
-				new ChopperEnchantment(this)
+				new ChopperEnchantment(this, null)
 		)));
 	}
 	
@@ -170,12 +169,12 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
 				Registry.ENCHANTMENT,
 				new ResourceLocation(MOD_ID, "chopper_instantaneous"),
-				new ChopperInstantaneousEnchantment(this)
+				new ChopperEnchantment(this, BreakMode.INSTANTANEOUS)
 		)));
 		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
 				Registry.ENCHANTMENT,
 				new ResourceLocation(MOD_ID, "chopper_shift_down"),
-				new ChopperShiftDownEnchantment(this)
+				new ChopperEnchantment(this, BreakMode.SHIFT_DOWN)
 		)));
 	}
 	

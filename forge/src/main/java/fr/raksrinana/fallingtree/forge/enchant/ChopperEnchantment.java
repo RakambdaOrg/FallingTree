@@ -9,14 +9,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class ChopperEnchantment extends Enchantment implements IFallingTreeEnchantment{
 	private final FallingTreeCommon<?> mod;
+	private final BreakMode breakMode;
 	
-	public ChopperEnchantment(FallingTreeCommon<?> mod){
+	public ChopperEnchantment(@NotNull FallingTreeCommon<?> mod, @Nullable BreakMode breakMode){
 		super(Rarity.COMMON, EnchantmentCategory.BREAKABLE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
 		this.mod = mod;
+		this.breakMode = breakMode;
 	}
 	
 	@Override
@@ -52,6 +55,6 @@ public class ChopperEnchantment extends Enchantment implements IFallingTreeEncha
 	@Override
 	@NotNull
 	public Optional<BreakMode> getBreakMode(){
-		return Optional.empty();
+		return Optional.ofNullable(breakMode);
 	}
 }
