@@ -70,9 +70,8 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	public boolean canPlayerBreakTree(@NotNull IPlayer player, @NotNull IBlockState aimedBlockState){
 		var heldItemStack = player.getMainHandItem();
 		var heldItem = heldItemStack.getItem();
-		var isCorrectTool = heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1.0f;
 		
-		if(!isValidTool(heldItemStack, isCorrectTool)){
+		if(!isValidTool(heldItemStack)){
 			return false;
 		}
 		
@@ -84,12 +83,12 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		return true;
 	}
 	
-	public boolean isValidTool(@NotNull IItemStack heldItemStack, boolean isCorrectTool){
+	public boolean isValidTool(@NotNull IItemStack heldItemStack){
 		var toolConfiguration = getConfiguration().getTools();
 		var heldItem = heldItemStack.getItem();
 		
 		var isAllowedTool = toolConfiguration.isIgnoreTools()
-		                    || isCorrectTool
+		                    || heldItem.isAxe()
 		                    || toolConfiguration.getAllowedItems(this).stream().anyMatch(tool -> tool.equals(heldItem));
 		if(!isAllowedTool){
 			return false;
