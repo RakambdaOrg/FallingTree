@@ -2,7 +2,6 @@ package fr.raksrinana.fallingtree.fabric.mixin;
 
 import fr.raksrinana.fallingtree.fabric.FallingTree;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.BlockPosWrapper;
-import fr.raksrinana.fallingtree.fabric.common.wrapper.BlockStateWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.PlayerWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -19,10 +18,9 @@ public abstract class AbstractBlockMixin{
 	@Inject(method = "getDestroyProgress", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
 		var wrappedPlayer = new PlayerWrapper(player);
-		var wrappedState = new BlockStateWrapper(state);
 		var wrappedPos = new BlockPosWrapper(pos);
 		
-		var result = FallingTree.getMod().getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedState, wrappedPos, callbackInfoReturnable.getReturnValue());
+		var result = FallingTree.getMod().getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, callbackInfoReturnable.getReturnValue());
 		if(result.isEmpty()){
 			return;
 		}

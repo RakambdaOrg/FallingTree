@@ -2,7 +2,6 @@ package fr.raksrinana.fallingtree.forge.event;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.forge.common.wrapper.BlockPosWrapper;
-import fr.raksrinana.fallingtree.forge.common.wrapper.BlockStateWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.LevelWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.PlayerWrapper;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +23,9 @@ public class BlockBreakListener{
 		}
 		
 		var wrappedPlayer = new PlayerWrapper(event.getPlayer());
-		var wrappedState = new BlockStateWrapper(event.getState());
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
-		var result = mod.getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedState, wrappedPos, event.getNewSpeed());
+		var result = mod.getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, event.getNewSpeed());
 		if(result.isEmpty()){
 			return;
 		}

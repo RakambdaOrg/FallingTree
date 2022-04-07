@@ -38,6 +38,6 @@ public class ChopperEnchantment extends Enchantment{
 	
 	@Override
 	public boolean canApplyAtEnchantingTable(@NotNull ItemStack stack){
-		return mod.isValidTool(new ItemStackWrapper(stack), false);
+		return mod.isValidTool(new ItemStackWrapper(stack));
 	}
 }
