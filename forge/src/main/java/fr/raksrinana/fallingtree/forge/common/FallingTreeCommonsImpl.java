@@ -38,6 +38,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -50,10 +52,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
 	@Getter
-	private IEnchantment chopperEnchantment;
+	private Collection<IEnchantment> chopperEnchantments;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
+		chopperEnchantments = new ArrayList<>();
 	}
 	
 	@Override
@@ -160,9 +163,23 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	protected void performEnchantRegister(){
-		FallingTreeEnchantments.register(FMLJavaModLoadingContext.get().getModEventBus());
-		chopperEnchantment = new EnchantmentWrapper(FallingTreeEnchantments.CHOPPER_ENCHANTMENT);
+	protected void performDefaultEnchantRegister(){
+		FallingTreeEnchantments.registerDefault();
+	}
+	
+	@Override
+	protected void performSpecificEnchantRegister(){
+		FallingTreeEnchantments.registerSpecific();
+	}
+	
+	@Override
+	protected void performCommitEnchantRegister(){
+		FallingTreeEnchantments.commit(FMLJavaModLoadingContext.get().getModEventBus());
+		
+		Stream.of(FallingTreeEnchantments.CHOPPER_ENCHANTMENT, FallingTreeEnchantments.CHOPPER_INSTANTANEOUS_ENCHANTMENT, FallingTreeEnchantments.CHOPPER_SHIFT_DOWN_ENCHANTMENT)
+				.filter(Objects::nonNull)
+				.map(EnchantmentWrapper::new)
+				.forEach(chopperEnchantments::add);
 	}
 	
 	@NotNull

@@ -106,44 +106,44 @@ task buildJar(type: Jar, group: "modding") {
 assemble.finalizedBy("buildJar")
 
 curseforge {
-    afterEvaluate {
-        tasks["curseforge${project.curseforge_project_id}"].dependsOn("buildJar")
-    }
-
     def relType = "release"
+    def isAlpha = false
     if (version.contains("b")) {
         relType = "beta"
     }
     if (version.contains("a") || version.contains("dev")) {
         relType = "alpha"
+        isAlpha = true
     }
 
     apiKey = "${project.findProperty("curseforgeApiKey")}"
-    project {
-        id = "${project.curseforge_project_id}"
-        changelogType = "markdown"
-        addGameVersion("1.19-Snapshot")
-        addGameVersion("Java 17")
-        if (project.includeFabric.toBoolean()) {
-            addGameVersion("Fabric")
-        }
-        if (project.includeForge.toBoolean()) {
-            addGameVersion("Forge")
-        }
-        changelog = project.findProperty("changelog") ?: "No changelog provided"
-        releaseType = relType
-        mainArtifact(jar) {
-            displayName = "${minecraftVersion}-${project.version}"
-        }
-        relations {
+    if(isAlpha){
+        project {
+            id = "${project.curseforge_project_id}"
+            changelogType = "markdown"
+            addGameVersion("1.19-Snapshot")
+            addGameVersion("Java 17")
             if (project.includeFabric.toBoolean()) {
-                optionalDependency("fabric-api") //It's actually required
-//                optionalDependency("modmenu")
-//                optionalDependency("cloth-config")
+                addGameVersion("Fabric")
             }
-
             if (project.includeForge.toBoolean()) {
-                optionalDependency("cloth-config-forge")
+                addGameVersion("Forge")
+            }
+            changelog = project.findProperty("changelog") ?: "No changelog provided"
+            releaseType = relType
+            mainArtifact(jar) {
+                displayName = "${minecraftVersion}-${project.version}"
+            }
+            relations {
+                if (project.includeFabric.toBoolean()) {
+                    optionalDependency("fabric-api") //It's actually required
+//                    optionalDependency("modmenu")
+//                    optionalDependency("cloth-config")
+                }
+
+                if (project.includeForge.toBoolean()) {
+                    optionalDependency("cloth-config-forge")
+                }
             }
         }
     }
@@ -151,6 +151,12 @@ curseforge {
         javaVersionAutoDetect = false
         javaIntegration = false
         forgeGradleIntegration = false
+    }
+
+    afterEvaluate {
+        if(isAlpha){
+            tasks["curseforge${project.curseforge_project_id}"].dependsOn("buildJar")
+        }
     }
 }
 

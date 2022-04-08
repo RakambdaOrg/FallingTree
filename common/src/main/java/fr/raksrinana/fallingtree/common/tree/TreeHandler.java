@@ -9,7 +9,8 @@ import fr.raksrinana.fallingtree.common.tree.breaking.ShiftDownTreeBreakingHandl
 import fr.raksrinana.fallingtree.common.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.common.utils.CacheSpeed;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
-import fr.raksrinana.fallingtree.common.wrapper.IBlockState;
+import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
+import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,7 @@ public class TreeHandler{
 			return Optional.empty();
 		}
 		
-		var blockState = level.getBlockState(blockPos);
-		if(!mod.isPlayerInRightState(player, blockState)){
+		if(!mod.isPlayerInRightState(player)){
 			return Optional.empty();
 		}
 		
@@ -50,7 +50,7 @@ public class TreeHandler{
 			}
 			
 			var tree = treeOptional.get();
-			var breakMode = mod.getConfiguration().getTrees().getBreakMode();
+			var breakMode = getBreakMode(player.getMainHandItem());
 			var result = getBreakingHandler(breakMode).breakTree(player, tree);
 			return Optional.of(new BreakTreeResult(!result, breakMode));
 		}
@@ -65,6 +65,13 @@ public class TreeHandler{
 	}
 	
 	@NotNull
+	private BreakMode getBreakMode(@NotNull IItemStack itemStack){
+		return itemStack.getAnyEnchant(mod.getChopperEnchantments())
+				.flatMap(IEnchantment::getBreakMode)
+				.orElseGet(() -> mod.getConfiguration().getTrees().getBreakMode());
+	}
+	
+	@NotNull
 	private ITreeBreakingHandler getBreakingHandler(@NotNull BreakMode breakMode){
 		return switch(breakMode){
 			case INSTANTANEOUS -> InstantaneousTreeBreakingHandler.getInstance(mod);
@@ -73,14 +80,14 @@ public class TreeHandler{
 	}
 	
 	@NotNull
-	public Optional<Float> getBreakSpeed(@NotNull IPlayer player, @NotNull IBlockState blockState, @NotNull IBlockPos blockPos, float originalSpeed){
+	public Optional<Float> getBreakSpeed(@NotNull IPlayer player, @NotNull IBlockPos blockPos, float originalSpeed){
 		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
 			return Optional.empty();
 		}
 		if(mod.getConfiguration().getTrees().getBreakMode() != BreakMode.INSTANTANEOUS){
 			return Optional.empty();
 		}
-		if(!mod.isPlayerInRightState(player, blockState)){
+		if(!mod.isPlayerInRightState(player)){
 			return Optional.empty();
 		}
 		

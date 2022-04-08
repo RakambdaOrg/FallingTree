@@ -5,6 +5,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IItem;
 import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,6 +17,11 @@ public class ItemWrapper implements IItem{
 	@NotNull
 	@Getter
 	private final Item raw;
+	
+	@Override
+	public boolean isAxe(){
+		return raw instanceof AxeItem;
+	}
 	
 	@Override
 	public boolean isAir(){

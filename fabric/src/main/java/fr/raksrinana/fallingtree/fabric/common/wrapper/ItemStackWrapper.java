@@ -12,6 +12,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.Collection;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ItemStackWrapper implements IItemStack{
@@ -51,5 +53,31 @@ public class ItemStackWrapper implements IItemStack{
 			return 0;
 		}
 		return EnchantmentHelper.getItemEnchantmentLevel((Enchantment) enchantment.getRaw(), raw);
+	}
+	
+	@Override
+	public boolean hasOneOfEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel){
+		var itemEnchantments = EnchantmentHelper.getEnchantments(raw);
+		for(var enchantment : enchantments){
+			var key = (Enchantment) enchantment.getRaw();
+			if(itemEnchantments.containsKey(key)){
+				if(itemEnchantments.get(key) >= minLevel){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@NotNull
+	public Optional<IEnchantment> getAnyEnchant(@NotNull Collection<IEnchantment> enchantments){
+		var itemEnchantments = EnchantmentHelper.getEnchantments(raw);
+		for(var enchantment : enchantments){
+			var key = (Enchantment) enchantment.getRaw();
+			if(itemEnchantments.containsKey(key)){
+				return Optional.of(enchantment);
+			}
+		}
+		return Optional.empty();
 	}
 }

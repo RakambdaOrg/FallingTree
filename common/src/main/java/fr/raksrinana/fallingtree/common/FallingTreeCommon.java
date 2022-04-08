@@ -44,17 +44,17 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		player.sendMessage(component, getConfiguration().getNotificationMode());
 	}
 	
-	public boolean isPlayerInRightState(@NotNull IPlayer player, @NotNull IBlockState blockState){
+	public boolean isPlayerInRightState(@NotNull IPlayer player){
 		if(player.isCreative() && !getConfiguration().isBreakInCreative()){
 			return false;
 		}
-		if(configuration.getSneakMode().test(player.isCrouching())){
+		if(!configuration.getSneakMode().test(player.isCrouching())){
 			return false;
 		}
 		if(!playerHasRequiredTags(player)){
 			return false;
 		}
-		return canPlayerBreakTree(player, blockState);
+		return canPlayerBreakTree(player);
 	}
 	
 	private boolean playerHasRequiredTags(@NotNull IPlayer player){
@@ -67,29 +67,27 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		return tags.stream().anyMatch(playerTags::contains);
 	}
 	
-	public boolean canPlayerBreakTree(@NotNull IPlayer player, @NotNull IBlockState aimedBlockState){
+	public boolean canPlayerBreakTree(@NotNull IPlayer player){
 		var heldItemStack = player.getMainHandItem();
-		var heldItem = heldItemStack.getItem();
-		var isCorrectTool = heldItem.getDestroySpeed(heldItemStack, aimedBlockState) > 1.0f;
 		
-		if(!isValidTool(heldItemStack, isCorrectTool)){
+		if(!isValidTool(heldItemStack)){
 			return false;
 		}
 		
-		var isToolChopperEnchanted = heldItemStack.getEnchantLevel(getChopperEnchantment()) > 0;
-		if(getConfiguration().getEnchantment().isRegisterEnchant() && !isToolChopperEnchanted){
+		if(getConfiguration().getEnchantment().isAtLeastOneEnchantRegistered()
+		   && !heldItemStack.hasOneOfEnchantAtLeast(getChopperEnchantments(), 1)){
 			return false;
 		}
 		
 		return true;
 	}
 	
-	public boolean isValidTool(@NotNull IItemStack heldItemStack, boolean isCorrectTool){
+	public boolean isValidTool(@NotNull IItemStack heldItemStack){
 		var toolConfiguration = getConfiguration().getTools();
 		var heldItem = heldItemStack.getItem();
 		
 		var isAllowedTool = toolConfiguration.isIgnoreTools()
-		                    || isCorrectTool
+		                    || heldItem.isAxe()
 		                    || toolConfiguration.getAllowedItems(this).stream().anyMatch(tool -> tool.equals(heldItem));
 		if(!isAllowedTool){
 			return false;
@@ -187,12 +185,20 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	
 	public void registerEnchant(){
 		if(configuration.getEnchantment().isRegisterEnchant()){
-			performEnchantRegister();
+			performDefaultEnchantRegister();
 		}
+		if(configuration.getEnchantment().isRegisterSpecificEnchant()){
+			performSpecificEnchantRegister();
+		}
+		performCommitEnchantRegister();
 	}
 	
-	protected abstract void performEnchantRegister();
+	protected abstract void performDefaultEnchantRegister();
+	
+	protected abstract void performSpecificEnchantRegister();
+	
+	protected abstract void performCommitEnchantRegister();
 	
 	@NotNull
-	protected abstract IEnchantment getChopperEnchantment();
+	public abstract Collection<IEnchantment> getChopperEnchantments();
 }

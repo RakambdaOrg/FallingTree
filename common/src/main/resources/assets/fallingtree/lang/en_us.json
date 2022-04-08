@@ -210,6 +210,16 @@
   "text.autoconfig.fallingtree.option.enchantment.registerEnchant.@Tooltip[5]": "mod server-sided.",
   "text.autoconfig.fallingtree.option.enchantment.registerEnchant.@Tooltip[6]": "",
   "text.autoconfig.fallingtree.option.enchantment.registerEnchant.@Tooltip[7]": "INFO: Restart needed.",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant": "Register Specific Chopper enchantment",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[0]": "If set to true, several chopper",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[1]": "enchants will be registered and",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[2]": "will be required on tools in order",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[3]": "to activate the mod with a specific",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[4]": "breaking mode. If set to false",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[5]": "it won't be registered, making the",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[6]": "mod server-sided.",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[7]": "",
+  "text.autoconfig.fallingtree.option.enchantment.registerSpecificEnchant.@Tooltip[8]": "INFO: Restart needed.",
   "text.autoconfig.fallingtree.option.enchantment.hideEnchant": "Hide enchant",
   "text.autoconfig.fallingtree.option.enchantment.hideEnchant.@Tooltip[0]": "If set to true the enchant will",
   "text.autoconfig.fallingtree.option.enchantment.hideEnchant.@Tooltip[1]": "not be discoverable nor tradeable.",
@@ -218,5 +228,7 @@
   "chat.fallingtree.prevented_break_tool": "Your tool is about to break, go repair it or get a new one.",
   "chat.fallingtree.search_aborted": "Tree detection stopped, reason: ",
   "chat.fallingtree.search_aborted.adjacent": "Found block %s that isn't allowed in the adjacent blocks.",
-  "enchantment.fallingtree.chopper": "Chopper"
+  "enchantment.fallingtree.chopper": "Chopper",
+  "enchantment.fallingtree.chopper_instantaneous": "Chopper (instantaneous)",
+  "enchantment.fallingtree.chopper_shift_down": "Chopper (shift down)"
 }
