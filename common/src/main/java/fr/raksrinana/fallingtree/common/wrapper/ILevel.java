@@ -2,7 +2,6 @@ package fr.raksrinana.fallingtree.common.wrapper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.Random;
 
 public interface ILevel extends IWrapper{
 	@NotNull
@@ -11,7 +10,7 @@ public interface ILevel extends IWrapper{
 	boolean hasChunk(int x, int z);
 	
 	@NotNull
-	Random getRandom();
+	IRandomSource getRandom();
 	
 	boolean isServer();
 	
