@@ -74,8 +74,8 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 			return false;
 		}
 		
-		var isToolChopperEnchanted = heldItemStack.getEnchantLevel(getChopperEnchantment()) > 0;
-		if(getConfiguration().getEnchantment().isRegisterEnchant() && !isToolChopperEnchanted){
+		if(getConfiguration().getEnchantment().isAtLeastOneEnchantRegistered()
+		   && !heldItemStack.hasOneOfEnchantAtLeast(getChopperEnchantments(), 1)){
 			return false;
 		}
 		
@@ -185,12 +185,20 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	
 	public void registerEnchant(){
 		if(configuration.getEnchantment().isRegisterEnchant()){
-			performEnchantRegister();
+			performDefaultEnchantRegister();
 		}
+		if(configuration.getEnchantment().isRegisterSpecificEnchant()){
+			performSpecificEnchantRegister();
+		}
+		performCommitEnchantRegister();
 	}
 	
-	protected abstract void performEnchantRegister();
+	protected abstract void performDefaultEnchantRegister();
+	
+	protected abstract void performSpecificEnchantRegister();
+	
+	protected abstract void performCommitEnchantRegister();
 	
 	@NotNull
-	protected abstract IEnchantment getChopperEnchantment();
+	public abstract Collection<IEnchantment> getChopperEnchantments();
 }

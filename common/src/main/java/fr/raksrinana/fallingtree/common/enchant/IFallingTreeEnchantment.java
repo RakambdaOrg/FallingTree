@@ -1,10 +1,10 @@
-package fr.raksrinana.fallingtree.common.wrapper;
+package fr.raksrinana.fallingtree.common.enchant;
 
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
-public interface IEnchantment extends IWrapper{
+public interface IFallingTreeEnchantment{
 	@NotNull
 	Optional<BreakMode> getBreakMode();
 }

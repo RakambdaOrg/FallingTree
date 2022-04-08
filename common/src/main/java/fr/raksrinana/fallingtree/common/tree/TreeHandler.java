@@ -9,6 +9,8 @@ import fr.raksrinana.fallingtree.common.tree.breaking.ShiftDownTreeBreakingHandl
 import fr.raksrinana.fallingtree.common.tree.builder.TreeTooBigException;
 import fr.raksrinana.fallingtree.common.utils.CacheSpeed;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
+import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
+import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +50,7 @@ public class TreeHandler{
 			}
 			
 			var tree = treeOptional.get();
-			var breakMode = mod.getConfiguration().getTrees().getBreakMode();
+			var breakMode = getBreakMode(player.getMainHandItem());
 			var result = getBreakingHandler(breakMode).breakTree(player, tree);
 			return Optional.of(new BreakTreeResult(!result, breakMode));
 		}
@@ -60,6 +62,13 @@ public class TreeHandler{
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_big", mod.getConfiguration().getTrees().getMaxSize()));
 			return Optional.empty();
 		}
+	}
+	
+	@NotNull
+	private BreakMode getBreakMode(@NotNull IItemStack itemStack){
+		return itemStack.getAnyEnchant(mod.getChopperEnchantments())
+				.flatMap(IEnchantment::getBreakMode)
+				.orElseGet(() -> mod.getConfiguration().getTrees().getBreakMode());
 	}
 	
 	@NotNull
