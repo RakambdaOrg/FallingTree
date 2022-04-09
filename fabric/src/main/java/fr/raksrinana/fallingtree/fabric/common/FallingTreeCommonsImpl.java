@@ -151,6 +151,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
+	protected boolean isMangroveRoots(@NotNull IBlock block){
+		return Blocks.MANGROVE_ROOTS.equals(block.getRaw());
+	}
+	
+	@Override
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
 		return true;
 	}
