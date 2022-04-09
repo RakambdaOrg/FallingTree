@@ -151,7 +151,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	protected boolean isMangroveRoots(@NotNull IBlock block){
+	public boolean isMangroveRoots(@NotNull IBlock block){
 		return Blocks.MANGROVE_ROOTS.equals(block.getRaw());
 	}
 	
