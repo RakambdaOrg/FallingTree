@@ -197,17 +197,23 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("trees", "allowMixedLogs", 4))
 				.setSaveConsumer(config::setAllowMixedLogs)
 				.build();
+		var instantlyBreakWartsEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName("trees", "instantlyBreakWarts")), config.isInstantlyBreakWarts())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("trees", "instantlyBreakWarts", 2))
+				.setSaveConsumer(config::setInstantlyBreakWarts)
+				.build();
 		var breakNetherTreeWartsEntry = builder.entryBuilder()
 				.startBooleanToggle(new TranslatableComponent(getFieldName("trees", "breakNetherTreeWarts")), config.isBreakNetherTreeWarts())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips("trees", "breakNetherTreeWarts", 2))
 				.setSaveConsumer(config::setBreakNetherTreeWarts)
 				.build();
-		var instantlyBreakWartsEntry = builder.entryBuilder()
-				.startBooleanToggle(new TranslatableComponent(getFieldName("trees", "instantlyBreakWarts")), config.isInstantlyBreakWarts())
+		var breakMangroveRootsEntry = builder.entryBuilder()
+				.startBooleanToggle(new TranslatableComponent(getFieldName("trees", "breakMangroveRoots")), config.isBreakMangroveRoots())
 				.setDefaultValue(false)
-				.setTooltip(getTooltips("trees", "instantlyBreakWarts", 2))
-				.setSaveConsumer(config::setInstantlyBreakWarts)
+				.setTooltip(getTooltips("trees", "breakMangroveRoots", 2))
+				.setSaveConsumer(config::setBreakMangroveRoots)
 				.build();
 		var searchAreaRadiusEntry = builder.entryBuilder()
 				.startIntField(new TranslatableComponent(getFieldName("trees", "searchAreaRadius")), config.getSearchAreaRadius())
@@ -249,6 +255,7 @@ public class ClothConfigHook extends ClothHookBase{
 		trees.addEntry(allowMixedLogsEntry);
 		trees.addEntry(breakNetherTreeWartsEntry);
 		trees.addEntry(instantlyBreakWartsEntry);
+		trees.addEntry(breakMangroveRootsEntry);
 		trees.addEntry(searchAreaRadiusEntry);
 		trees.addEntry(allowedAdjacentBlocks);
 		trees.addEntry(adjacentStopModeEntry);

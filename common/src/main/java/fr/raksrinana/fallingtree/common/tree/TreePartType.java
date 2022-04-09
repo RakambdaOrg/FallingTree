@@ -10,6 +10,7 @@ public enum TreePartType{
 	LEAF_NEED_BREAK(true),
 	LOG(true),
 	NETHER_WART(true),
+	MANGROVE_ROOTS(true),
 	OTHER(false);
 	
 	private final boolean breakable;
