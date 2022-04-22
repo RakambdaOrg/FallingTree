@@ -117,7 +117,7 @@ curseforge {
     }
 
     apiKey = "${project.findProperty("curseforgeApiKey")}"
-    if(isAlpha){
+    if(!isAlpha){
         project {
             id = "${project.curseforge_project_id}"
             changelogType = "markdown"
@@ -154,7 +154,7 @@ curseforge {
     }
 
     afterEvaluate {
-        if(isAlpha){
+        if(!isAlpha){
             tasks["curseforge${project.curseforge_project_id}"].dependsOn("buildJar")
         }
     }
