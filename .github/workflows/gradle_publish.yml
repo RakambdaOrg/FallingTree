@@ -70,7 +70,7 @@ jobs:
             publishModrinth
 
       - name: Push changes to the wiki
-        uses: Andrew-Chen-Wang/github-wiki-action@v2
+        uses: Andrew-Chen-Wang/github-wiki-action@v3
         env:
           WIKI_DIR: wiki/
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
