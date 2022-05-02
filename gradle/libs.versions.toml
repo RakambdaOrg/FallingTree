@@ -10,7 +10,7 @@ fabric-loader-version = "0.14.4"
 fabric-api-version = "0.52.0+1.19"
 forge-version = "1.18.2-40.0.13"
 modmenu-version = "4.0.0-beta.4"
-clothConfigVersion = "6.2.57"
+clothConfigVersion = "7.0.61"
 
 fabric-loom-version = "0.12.21"
 forge-plugin-version = "5.1.27"
