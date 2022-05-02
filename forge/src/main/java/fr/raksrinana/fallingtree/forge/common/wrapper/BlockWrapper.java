@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.forge.common.wrapper;
 import fr.raksrinana.fallingtree.common.wrapper.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @RequiredArgsConstructor
+@ToString
 public class BlockWrapper implements IBlock{
 	@NotNull
 	@Getter

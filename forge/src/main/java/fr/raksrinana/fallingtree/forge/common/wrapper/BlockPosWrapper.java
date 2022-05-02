@@ -5,11 +5,13 @@ import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
 import fr.raksrinana.fallingtree.forge.FallingTree;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
+@ToString
 public class BlockPosWrapper implements IBlockPos{
 	@NotNull
 	@Getter

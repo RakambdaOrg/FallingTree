@@ -8,6 +8,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IRandomSource;
 import fr.raksrinana.fallingtree.common.wrapper.IServerLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@ToString
 public class BlockStateWrapper implements IBlockState{
 	@NotNull
 	@Getter
