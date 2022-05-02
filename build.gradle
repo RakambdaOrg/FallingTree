@@ -142,7 +142,7 @@ curseforge {
                 }
 
                 if (project.includeForge.toBoolean()) {
-                    optionalDependency("cloth-config-forge")
+                    optionalDependency("cloth-config")
                 }
             }
         }
