@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.fabric.common.wrapper;
 import fr.raksrinana.fallingtree.common.wrapper.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @RequiredArgsConstructor
+@ToString
 public class BlockStateWrapper implements IBlockState{
 	@NotNull
 	@Getter

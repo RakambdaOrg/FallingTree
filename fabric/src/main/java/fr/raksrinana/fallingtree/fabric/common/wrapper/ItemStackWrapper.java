@@ -6,6 +6,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@ToString
 public class ItemStackWrapper implements IItemStack{
 	@NotNull
 	@Getter
