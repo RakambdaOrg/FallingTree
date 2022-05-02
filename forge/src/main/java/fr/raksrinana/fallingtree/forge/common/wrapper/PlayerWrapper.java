@@ -4,6 +4,7 @@ import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
 import fr.raksrinana.fallingtree.common.wrapper.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.Util;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
+@ToString
 public class PlayerWrapper implements IPlayer{
 	@NotNull
 	@Getter

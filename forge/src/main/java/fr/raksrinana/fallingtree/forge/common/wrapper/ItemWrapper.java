@@ -5,6 +5,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IItem;
 import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
+@ToString
 public class ItemWrapper implements IItem{
 	@NotNull
 	@Getter

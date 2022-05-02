@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.fabric.common.wrapper;
 import fr.raksrinana.fallingtree.common.wrapper.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 @RequiredArgsConstructor
+@ToString
 public class LevelWrapper implements ILevel{
 	@NotNull
 	@Getter
