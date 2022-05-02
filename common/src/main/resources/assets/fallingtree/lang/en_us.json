@@ -199,7 +199,7 @@
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand.@Tooltip[13]": "or every player should have the mod. Else they'll have a weird",
   "text.autoconfig.fallingtree.option.tools.speedMultiplicand.@Tooltip[14]": "effect of breaking the block but the block is still there.",
   "text.autoconfig.fallingtree.category.player": "Player",
-  "text.autoconfig.fallingtree.option.player.allowedTags": "Required player tagss",
+  "text.autoconfig.fallingtree.option.player.allowedTags": "Required player tags",
   "text.autoconfig.fallingtree.option.player.allowedTags.@Tooltip[0]": "Define a list of tags that the player should",
   "text.autoconfig.fallingtree.option.player.allowedTags.@Tooltip[1]": "have in order to activate the mod. Only one",
   "text.autoconfig.fallingtree.option.player.allowedTags.@Tooltip[2]": "on them is required.",
