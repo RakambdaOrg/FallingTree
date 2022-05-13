@@ -173,7 +173,7 @@ modrinth {
     versionType.set(relType)
     changelog.set(project.findProperty("changelog") ?: "No changelog provided")
     syncBodyFrom.set(Files.readString(Paths.get(project.file("README.md").toURI())))
-    debugMode.set(true)
+    debugMode.set(false)
 
     dependencies {
         if (project.includeFabric.toBoolean()) {
