@@ -67,7 +67,8 @@ jobs:
           cache-disabled: true
           arguments: |
             curseforge
-            publishModrinth
+            modrinth
+            modrinthSyncBody
 
       - name: Push changes to the wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v3
