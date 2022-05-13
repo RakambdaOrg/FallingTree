@@ -55,9 +55,19 @@ allprojects {
     }
 }
 
-var minecraftVersion = libs.versions.minecraftVersion.get()
+def minecraftVersion = libs.versions.minecraftVersion.get()
 group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${minecraftVersion}"
+
+def relType = "release"
+def isAlpha = false
+if (version.contains("b")) {
+    relType = "beta"
+}
+if (version.contains("a") || version.contains("dev")) {
+    relType = "alpha"
+    isAlpha = true
+}
 
 task buildJar(type: Jar, group: "modding") {
     dependsOn(assemble)
@@ -103,16 +113,6 @@ task buildJar(type: Jar, group: "modding") {
 assemble.finalizedBy("buildJar")
 
 curseforge {
-    def relType = "release"
-    def isAlpha = false
-    if (version.contains("b")) {
-        relType = "beta"
-    }
-    if (version.contains("a") || version.contains("dev")) {
-        relType = "alpha"
-        isAlpha = true
-    }
-
     apiKey = "${project.findProperty("curseforgeApiKey")}"
     if(!isAlpha){
         project {
@@ -158,14 +158,6 @@ curseforge {
 }
 
 modrinth {
-    def relType = "release"
-    if (version.contains("b")) {
-        relType = "beta"
-    }
-    if (version.contains("a") || version.contains("dev")) {
-        relType = "alpha"
-    }
-
     token.set(project.findProperty("modrinthToken") as String)
     projectId.set(project.modrinth_project_id)
     versionNumber.set("${minecraftVersion}-${project.version}")
