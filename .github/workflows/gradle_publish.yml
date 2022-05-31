@@ -68,7 +68,7 @@ jobs:
           arguments: |
             curseforge
             modrinth
-            modrinthSyncBody
+#            modrinthSyncBody
 
       - name: Push changes to the wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v3
