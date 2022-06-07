@@ -1,21 +1,24 @@
-package fr.raksrinana.fallingtree.fabric;
+package fr.raksrinana.fallingtree.fabric.client;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
-import fr.raksrinana.fallingtree.fabric.cloth.ClothConfigHook;
-import lombok.extern.log4j.Log4j2;
+import fr.raksrinana.fallingtree.fabric.FallingTree;
+import fr.raksrinana.fallingtree.fabric.client.cloth.ClothConfigHook;
 import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.lang.reflect.InvocationTargetException;
 
-@Log4j2
 public class ModMenuImpl implements ModMenuApi{
+	private static final Logger log = LogManager.getLogger(ModMenuImpl.class);
+	
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory(){
 		if(FabricLoader.getInstance().isModLoaded("cloth-config")){
 			return (screen) -> {
 				try{
-					return Class.forName("fr.raksrinana.fallingtree.fabric.cloth.ClothConfigHook")
+					return Class.forName("fr.raksrinana.fallingtree.fabric.client.cloth.ClothConfigHook")
 							.asSubclass(ClothConfigHook.class)
 							.getConstructor(FallingTreeCommon.class)
 							.newInstance(FallingTree.getMod())

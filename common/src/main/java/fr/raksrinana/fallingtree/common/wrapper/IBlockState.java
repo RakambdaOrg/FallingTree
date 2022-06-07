@@ -2,12 +2,11 @@ package fr.raksrinana.fallingtree.common.wrapper;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
-import java.util.Random;
 
 public interface IBlockState extends IWrapper{
-	void tick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull Random random);
+	void tick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull IRandomSource random);
 	
-	void randomTick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull Random random);
+	void randomTick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull IRandomSource random);
 	
 	@NotNull
 	IBlock getBlock();

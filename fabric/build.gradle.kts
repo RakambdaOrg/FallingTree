@@ -41,6 +41,15 @@ tasks {
 loom {
     val modId: String by project
 
+    splitEnvironmentSourceSets()
+
+    mods {
+        create("fallingtree") {
+            sourceSet(sourceSets["main"])
+            sourceSet(sourceSets["client"])
+        }
+    }
+
     mixin {
         defaultRefmapName.set("fabric.${modId}.refmap.json")
     }
@@ -51,6 +60,7 @@ loom {
 
             property("fabric.log.level", "debug")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
+            programArgs("--uuid=123")
         }
         create("fallingTreeServer") {
             server()

@@ -59,6 +59,8 @@ public class TreeConfiguration{
 	@Expose
 	private boolean instantlyBreakWarts = false;
 	@Expose
+	private boolean breakMangroveRoots = true;
+	@Expose
 	private int searchAreaRadius = -1;
 	@Expose
 	@NotNull

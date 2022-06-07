@@ -7,7 +7,6 @@ license = "LGPL-3.0"
 modId = "${modId}"
 version = "${version}"
 displayName = "${modName}"
-updateJSONURL = "https://raw.githubusercontent.com/wiki/${repoUser}/${repoName}/assets/update.json"
 description = '''Change the way you cut trees.'''
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/falling-tree"
 logoFile = "logo.png"

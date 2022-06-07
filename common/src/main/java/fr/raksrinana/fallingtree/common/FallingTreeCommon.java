@@ -164,12 +164,17 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	
 	public abstract boolean isNetherWartOrShroomlight(@NotNull IBlock block);
 	
+	public abstract boolean isMangroveRoots(@NotNull IBlock block);
+	
 	@NotNull
 	public TreePartType getTreePart(@NotNull IBlock checkBlock){
 		if(isLogBlock(checkBlock)){
 			return TreePartType.LOG;
 		}
 		if(isNetherWartOrShroomlight(checkBlock)){
+			return TreePartType.NETHER_WART;
+		}
+		if(isMangroveRoots(checkBlock)){
 			return TreePartType.NETHER_WART;
 		}
 		if(isLeafNeedBreakBlock(checkBlock)){

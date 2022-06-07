@@ -22,7 +22,7 @@
     "client": [],
     "server": [],
     "modmenu": [
-      "fr.raksrinana.fallingtree.fabric.ModMenuImpl"
+      "fr.raksrinana.fallingtree.fabric.client.ModMenuImpl"
     ]
   },
   "mixins": [

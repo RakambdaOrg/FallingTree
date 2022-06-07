@@ -138,6 +138,13 @@ NOTE: The warts don't decay so they will be broken with a predefined radius whic
 
 NOTE: Only applied in `Shift down` breaking mode.
 
+|Break mangrove roots
+|Defines if the mangrove roots should be broken when the trunk is cut.
+
+- Yes: Mangrove roots will be cut.
+
+NOTE: Durability will be used
+
 |Search area radius
 |Defines the radius in which the tree is scanned.
 

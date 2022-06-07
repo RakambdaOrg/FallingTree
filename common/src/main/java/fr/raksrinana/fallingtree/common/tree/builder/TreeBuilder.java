@@ -205,6 +205,11 @@ public class TreeBuilder{
 				return dx <= 4 && dz <= 4;
 			}
 		}
+		if(mod.getConfiguration().getTrees().isBreakMangroveRoots()){
+			if(check.treePartType() == TreePartType.MANGROVE_ROOTS){
+				return true;
+			}
+		}
 		return check.treePartType() == TreePartType.LEAF_NEED_BREAK;
 	}
 	

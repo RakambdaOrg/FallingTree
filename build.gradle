@@ -1,19 +1,16 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
 buildscript {
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.google.guava:guava:31.0.1-jre")
+        classpath("com.google.guava:guava:31.1-jre")
         classpath("commons-io:commons-io:2.11.0")
     }
 }
-
-
-import com.modrinth.minotaur.TaskModrinthUpload
-import com.modrinth.minotaur.request.VersionType
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 
 plugins {
     alias(libs.plugins.curse)
@@ -58,9 +55,19 @@ allprojects {
     }
 }
 
-var minecraftVersion = libs.versions.minecraftVersion.get()
+def minecraftVersion = libs.versions.minecraftVersion.get()
 group = "fr.raksrinana"
 archivesBaseName = "${project.modName}-${minecraftVersion}"
+
+def relType = "release"
+def isAlpha = false
+if (version.contains("b")) {
+    relType = "beta"
+}
+if (version.contains("a") || version.contains("dev")) {
+    relType = "alpha"
+    isAlpha = true
+}
 
 task buildJar(type: Jar, group: "modding") {
     dependsOn(assemble)
@@ -106,22 +113,12 @@ task buildJar(type: Jar, group: "modding") {
 assemble.finalizedBy("buildJar")
 
 curseforge {
-    def relType = "release"
-    def isAlpha = false
-    if (version.contains("b")) {
-        relType = "beta"
-    }
-    if (version.contains("a") || version.contains("dev")) {
-        relType = "alpha"
-        isAlpha = true
-    }
-
     apiKey = "${project.findProperty("curseforgeApiKey")}"
     if(!isAlpha){
         project {
             id = "${project.curseforge_project_id}"
             changelogType = "markdown"
-            addGameVersion(minecraftVersion)
+            addGameVersion("1.19-Snapshot")
             addGameVersion("Java 17")
             if (project.includeFabric.toBoolean()) {
                 addGameVersion("Fabric")
@@ -160,60 +157,37 @@ curseforge {
     }
 }
 
-task publishModrinth(type: TaskModrinthUpload, group: "upload") {
-    dependsOn buildJar
-    def relType = VersionType.RELEASE
-    if (version.contains("b")) {
-        relType = VersionType.BETA
-    }
-    if (version.contains("a") || version.contains("dev")) {
-        relType = VersionType.ALPHA
-    }
-
-    token = project.findProperty("modrinthToken") as String
-    projectId = project.modrinth_project_id
-    versionNumber = "${minecraftVersion}-${project.version}"
-    versionName = "${minecraftVersion}-${project.version}"
-    uploadFile = jar
-    addGameVersion(minecraftVersion)
+modrinth {
+    token.set(project.findProperty("modrinthToken") as String)
+    projectId.set(project.modrinth_project_id)
+    versionNumber.set("${minecraftVersion}-${project.version}")
+    versionName.set("${minecraftVersion}-${project.version}")
+    uploadFile.set(tasks.jar)
+    gameVersions.add(minecraftVersion)
     if (project.includeFabric.toBoolean()) {
-        addLoader("fabric")
+        loaders.add("fabric")
     }
     if (project.includeForge.toBoolean()) {
-        addLoader("forge")
+        loaders.add("forge")
     }
-    versionType = relType
-    changelog = project.findProperty("changelog") ?: "No changelog provided"
-}
+    versionType.set(relType)
+    changelog.set(project.findProperty("changelog") ?: "No changelog provided")
+    syncBodyFrom.set(Files.readString(Paths.get(project.file("README.md").toURI())))
+    debugMode.set(false)
 
-def writeUpdateJson(mcVersion) {
-    def version = project.version as String
-    def slurper = new JsonSlurper()
-    def file = project.file("wiki/assets/update.json")
-    def json = slurper.parse(file)
-    def changelogUrl = "https://github.com/${project.repoUser}/${project.repoName}/releases"
-
-    if (!mcVersion.contains("w") && !version.contains("dev")) {
-        json["changelog"] = changelogUrl
-
-        // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
-        json.putIfAbsent(mcVersion, new HashMap<>())
-        json[mcVersion].putIfAbsent(version, changelogUrl + "/" + version)
-        json[mcVersion] = json[mcVersion].sort([compare: { a, b -> a.compareTo(b) }] as Comparator)
-        json["promos"]["${mcVersion}-latest"] = version
-        if (!version.contains("b") && !version.contains("a")) {
-            json["promos"]["${mcVersion}-recommended"] = version
+    dependencies {
+        if (project.includeFabric.toBoolean()) {
+            optional.project("P7dR8mSH") //Fabric-api / It's actually required
+            optional.project("mOgUt4GM") //Modmenu
+            optional.project("9s6osm5g") //Cloth config
         }
 
-        println(json)
-        file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
+        if (project.includeForge.toBoolean()) {
+            optional.project("9s6osm5g") //Cloth config
+        }
     }
-}
 
-task createUpdateJson(group: "modding") {
-    doLast {
-        println("Updating update.json...")
-        writeUpdateJson(minecraftVersion)
+    afterEvaluate {
+        tasks["modrinth"].dependsOn("buildJar")
     }
 }
-build.finalizedBy createUpdateJson
