@@ -1,11 +1,14 @@
 package fr.raksrinana.fallingtree.forge.common.wrapper;
 
 import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
-import fr.raksrinana.fallingtree.common.wrapper.*;
+import fr.raksrinana.fallingtree.common.wrapper.IComponent;
+import fr.raksrinana.fallingtree.common.wrapper.IItem;
+import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
+import fr.raksrinana.fallingtree.common.wrapper.ILevel;
+import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import net.minecraft.Util;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,12 +31,12 @@ public class PlayerWrapper implements IPlayer{
 		var text = (Component) component.getRaw();
 		if(raw instanceof ServerPlayer serverPlayer){
 			switch(mode){
-				case CHAT -> serverPlayer.sendMessage(text, Util.NIL_UUID);
-				case ACTION_BAR -> serverPlayer.sendMessage(text, ChatType.GAME_INFO, Util.NIL_UUID);
+				case CHAT -> serverPlayer.m_215098_(text, ChatType.f_130598_);
+				case ACTION_BAR -> serverPlayer.m_215098_(text, ChatType.f_130600_);
 			}
 		}
 		else{
-			raw.sendMessage(text, Util.NIL_UUID);
+			raw.m_213846_(text);
 		}
 	}
 	
@@ -61,7 +64,7 @@ public class PlayerWrapper implements IPlayer{
 	@Override
 	@NotNull
 	public UUID getUUID(){
-		return raw.getUUID();
+		return raw.m_20148_();
 	}
 	
 	@Override
