@@ -24,7 +24,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -62,7 +63,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	@NotNull
 	public IComponent translate(@NotNull String key, Object... objects){
-		return new ComponentWrapper(new TranslatableComponent(key, objects));
+		return new ComponentWrapper(MutableComponent.m_237204_(new TranslatableContents(key, objects)));
 	}
 	
 	@Override
@@ -155,6 +156,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	public boolean isNetherWartOrShroomlight(@NotNull IBlock block){
 		return registryTagContains(Registry.BLOCK, BlockTags.WART_BLOCKS, (Block) block.getRaw())
 		       || Blocks.SHROOMLIGHT.equals(block.getRaw());
+	}
+	
+	@Override
+	public boolean isMangroveRoots(@NotNull IBlock block){
+		return Blocks.f_220833_.equals(block.getRaw());
 	}
 	
 	@Override
