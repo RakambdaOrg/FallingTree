@@ -5,7 +5,7 @@ plugins {
 }
 
 minecraft {
-    mappings channel: "${mappings_channel}", version: "${mappings_version}"
+    mappings channel: "official", version: "${libs.versions.forgeMappingsVersion.get()}"
     runs {
         client {
             workingDirectory project.file("../run")

@@ -26,13 +26,13 @@ public class BlockPosWrapper implements IBlockPos{
 	@Override
 	@NotNull
 	public IBlockPos offset(int dx, int dy, int dz){
-		return new BlockPosWrapper(raw.m_7918_(dx, dy, dz));
+		return new BlockPosWrapper(raw.offset(dx, dy, dz));
 	}
 	
 	@Override
 	@NotNull
 	public IBlockPos relative(@NotNull DirectionCompat direction){
-		return new BlockPosWrapper(raw.m_121945_(FallingTree.getMod().asDirection(direction)));
+		return new BlockPosWrapper(raw.relative(FallingTree.getMod().asDirection(direction)));
 	}
 	
 	@Override

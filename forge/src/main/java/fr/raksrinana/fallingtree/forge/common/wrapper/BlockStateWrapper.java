@@ -30,14 +30,14 @@ public class BlockStateWrapper implements IBlockState{
 	public void tick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull IRandomSource random){
 		var l = (ServerLevel) level.getRaw();
 		var bp = (BlockPos) blockPos.getRaw();
-		raw.m_222963_(l, bp, (RandomSource) random.getRaw()); //tick
+		raw.tick(l, bp, (RandomSource) random.getRaw()); //tick
 	}
 	
 	@Override
 	public void randomTick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull IRandomSource random){
 		var l = (ServerLevel) level.getRaw();
 		var bp = (BlockPos) blockPos.getRaw();
-		raw.m_222972_(l, bp, (RandomSource) random.getRaw()); //randomTick
+		raw.randomTick(l, bp, (RandomSource) random.getRaw()); //randomTick
 	}
 	
 	@Override

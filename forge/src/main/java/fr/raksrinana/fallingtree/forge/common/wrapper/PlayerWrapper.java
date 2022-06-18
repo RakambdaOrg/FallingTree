@@ -31,12 +31,12 @@ public class PlayerWrapper implements IPlayer{
 		var text = (Component) component.getRaw();
 		if(raw instanceof ServerPlayer serverPlayer){
 			switch(mode){
-				case CHAT -> serverPlayer.m_215098_(text, ChatType.f_130598_);
-				case ACTION_BAR -> serverPlayer.m_215098_(text, ChatType.f_130600_);
+				case CHAT -> serverPlayer.sendSystemMessage(text, ChatType.CHAT);
+				case ACTION_BAR -> serverPlayer.sendSystemMessage(text, ChatType.GAME_INFO);
 			}
 		}
 		else{
-			raw.m_213846_(text);
+			raw.sendSystemMessage(text);
 		}
 	}
 	
@@ -64,7 +64,7 @@ public class PlayerWrapper implements IPlayer{
 	@Override
 	@NotNull
 	public UUID getUUID(){
-		return raw.m_20148_();
+		return raw.getUUID();
 	}
 	
 	@Override

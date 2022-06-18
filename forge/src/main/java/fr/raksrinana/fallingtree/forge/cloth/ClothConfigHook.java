@@ -39,7 +39,7 @@ public class ClothConfigHook extends ClothHookBase{
 		ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () -> new ConfigGuiHandler.ConfigGuiFactory((minecraft, screen) -> {
 			var builder = ConfigBuilder.create()
 					.setParentScreen(screen)
-					.setTitle(MutableComponent.m_237204_(new LiteralContents("FallingTree")));
+					.setTitle(MutableComponent.create(new LiteralContents("FallingTree")));
 			
 			var configuration = getMod().getConfiguration();
 			builder.setSavingRunnable(configuration::onUpdate);

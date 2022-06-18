@@ -55,7 +55,7 @@ public class LevelWrapper implements ILevel{
 	@Override
 	@NotNull
 	public IRandomSource getRandom(){
-		return new RandomSourceWrapper(raw.m_213780_());
+		return new RandomSourceWrapper(raw.getRandom());
 	}
 	
 	@Override
