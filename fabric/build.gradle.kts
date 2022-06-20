@@ -57,15 +57,15 @@ loom {
     runs {
         create("runFTFabricClient") {
             client()
-            runDir(project.file("run").canonicalPath)
+            runDir("run/client")
 
-            property("fabric.log.level", "debug")
+            property("fabric.log.level", "info")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
             programArgs("--uuid=123")
         }
         create("runFTFabricServer") {
             server()
-            runDir(project.file("run").canonicalPath)
+            runDir("run/server")
 
             property("fabric.log.level", "info")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")

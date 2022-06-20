@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class FabricServerPacketHandler implements ServerPacketHandler{
-	private static final ResourceLocation CONFIGURATION_MESSAGE_ID = new ResourceLocation(FallingTree.MOD_ID, "configurationMessageId");
+	public static final ResourceLocation CONFIGURATION_MESSAGE_ID = new ResourceLocation(FallingTree.MOD_ID, "configuration-packet");
 	
 	private final FallingTreeCommon<?> mod;
 	
