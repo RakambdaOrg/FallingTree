@@ -1,10 +1,12 @@
 package fr.raksrinana.fallingtree.forge.network;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.network.ClientPacketHandler;
 import fr.raksrinana.fallingtree.common.network.ConfigurationPacket;
-import fr.raksrinana.fallingtree.common.network.PacketHandler;
+import fr.raksrinana.fallingtree.common.network.ServerPacketHandler;
 import fr.raksrinana.fallingtree.common.wrapper.IServerPlayer;
 import fr.raksrinana.fallingtree.forge.FallingTree;
+import fr.raksrinana.fallingtree.forge.common.wrapper.FriendlyByteBufWrapper;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,7 +22,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
-public class ForgePacketHandler implements PacketHandler{
+public class ForgePacketHandler implements ClientPacketHandler, ServerPacketHandler{
 	private static final String PROTOCOL_VERSION = "1";
 	private static final Collection<String> ALLOWED_VERSIONS = Set.of(
 			PROTOCOL_VERSION,
@@ -39,8 +41,18 @@ public class ForgePacketHandler implements PacketHandler{
 	
 	private final FallingTreeCommon<?> mod;
 	
-	public void register(){
-		INSTANCE.registerMessage(CONFIGURATION_MESSAGE_ID, ConfigurationPacket.class, ConfigurationPacketCoding::encode, ConfigurationPacketCoding::decode, this::handleConfigurationPacket);
+	@Override
+	public void registerServer(){
+		INSTANCE.registerMessage(
+				CONFIGURATION_MESSAGE_ID,
+				ConfigurationPacket.class,
+				(packet, buf) -> mod.getPacketUtils().encodeConfigurationPacket(packet, new FriendlyByteBufWrapper(buf)),
+				buf -> mod.getPacketUtils().decodeConfigurationPacket(new FriendlyByteBufWrapper(buf)),
+				this::handleConfigurationPacket);
+	}
+	
+	@Override
+	public void registerClient(){
 	}
 	
 	public void handleConfigurationPacket(ConfigurationPacket configurationPacket, Supplier<NetworkEvent.Context> contextSupplier){

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 
 @RequiredArgsConstructor
-public class UserJoinListener{
+public class PlayerJoinListener{
 	@NotNull
 	private final FallingTreeCommon<?> mod;
 	
@@ -21,7 +21,7 @@ public class UserJoinListener{
 		}
 		
 		if(event.getPlayer() instanceof ServerPlayer serverPlayer){
-			mod.getPacketHandler().onPlayerConnected(new ServerPlayerWrapper(serverPlayer));
+			mod.getServerPacketHandler().onPlayerConnected(new ServerPlayerWrapper(serverPlayer));
 		}
 	}
 }

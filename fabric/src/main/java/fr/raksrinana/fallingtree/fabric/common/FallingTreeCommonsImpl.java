@@ -3,7 +3,7 @@ package fr.raksrinana.fallingtree.fabric.common;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
-import fr.raksrinana.fallingtree.common.network.PacketHandler;
+import fr.raksrinana.fallingtree.common.network.ServerPacketHandler;
 import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
 import fr.raksrinana.fallingtree.common.wrapper.IBlock;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
@@ -20,10 +20,12 @@ import fr.raksrinana.fallingtree.fabric.common.wrapper.ItemWrapper;
 import fr.raksrinana.fallingtree.fabric.enchant.ChopperEnchantment;
 import fr.raksrinana.fallingtree.fabric.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.fabric.event.LeafBreakingListener;
-import fr.raksrinana.fallingtree.fabric.network.FabricPacketHandler;
+import fr.raksrinana.fallingtree.fabric.event.PlayerJoinListener;
+import fr.raksrinana.fallingtree.fabric.network.FabricServerPacketHandler;
 import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -48,14 +50,14 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
 	@Getter
-	private final PacketHandler packetHandler;
+	private final ServerPacketHandler serverPacketHandler;
 	@Getter
 	private Collection<IEnchantment> chopperEnchantments;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
 		chopperEnchantments = new ArrayList<>();
-		packetHandler = new FabricPacketHandler();
+		serverPacketHandler = new FabricServerPacketHandler(this);
 	}
 	
 	@Override
@@ -204,7 +206,10 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	public void register(){
+		getServerPacketHandler().registerServer();
+		
 		ServerTickEvents.END_SERVER_TICK.register(new LeafBreakingListener(this));
 		PlayerBlockBreakEvents.BEFORE.register(new BlockBreakListener(this));
+		ServerPlayConnectionEvents.JOIN.register(new PlayerJoinListener(this));
 	}
 }

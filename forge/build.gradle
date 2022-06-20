@@ -9,7 +9,7 @@ minecraft {
     runs {
         client {
             taskName "runFTForgeClient"
-            workingDirectory project.file("../run")
+            workingDirectory project.file("./run")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
             mods {
@@ -21,7 +21,7 @@ minecraft {
 
         server {
             taskName "runFTForgeServer"
-            workingDirectory project.file("../run")
+            workingDirectory project.file("./run")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "info"
             mods {
@@ -33,7 +33,7 @@ minecraft {
 
         gameTestServer {
             taskName "runFTForgeTestServer"
-            workingDirectory project.file("../run")
+            workingDirectory project.file("./run")
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'fallingtree'
@@ -47,7 +47,7 @@ minecraft {
 
         data {
             taskName "runFTForgeData"
-            workingDirectory project.file("../run")
+            workingDirectory project.file("./run")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
             args '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
