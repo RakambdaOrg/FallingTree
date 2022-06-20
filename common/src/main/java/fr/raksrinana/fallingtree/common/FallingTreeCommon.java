@@ -2,6 +2,8 @@ package fr.raksrinana.fallingtree.common;
 
 import fr.raksrinana.fallingtree.common.config.Configuration;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
+import fr.raksrinana.fallingtree.common.network.PacketHandler;
+import fr.raksrinana.fallingtree.common.network.PacketUtils;
 import fr.raksrinana.fallingtree.common.tree.TreeHandler;
 import fr.raksrinana.fallingtree.common.tree.TreePartType;
 import fr.raksrinana.fallingtree.common.tree.builder.TreeBuilder;
@@ -30,11 +32,13 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	private final Configuration configuration;
 	private final TreeBuilder treeBuilder;
 	private final TreeHandler treeHandler;
+	private final PacketUtils packetUtils;
 	
 	public FallingTreeCommon(){
 		configuration = Configuration.read();
 		treeBuilder = new TreeBuilder(this);
 		treeHandler = new TreeHandler(this);
+		packetUtils = new PacketUtils(this);
 	}
 	
 	@NotNull
@@ -110,6 +114,8 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	
 	@NotNull
 	public abstract LeafBreakingHandler getLeafBreakingHandler();
+	
+	public abstract PacketHandler getPacketHandler();
 	
 	@NotNull
 	public Set<IBlock> getAsBlocks(@NotNull Collection<String> names){

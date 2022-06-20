@@ -3,6 +3,7 @@ package fr.raksrinana.fallingtree.fabric.common;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
+import fr.raksrinana.fallingtree.common.network.PacketHandler;
 import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
 import fr.raksrinana.fallingtree.common.wrapper.IBlock;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
@@ -19,6 +20,7 @@ import fr.raksrinana.fallingtree.fabric.common.wrapper.ItemWrapper;
 import fr.raksrinana.fallingtree.fabric.enchant.ChopperEnchantment;
 import fr.raksrinana.fallingtree.fabric.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.fabric.event.LeafBreakingListener;
+import fr.raksrinana.fallingtree.fabric.network.FabricPacketHandler;
 import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -46,11 +48,14 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
 	@Getter
+	private final PacketHandler packetHandler;
+	@Getter
 	private Collection<IEnchantment> chopperEnchantments;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
 		chopperEnchantments = new ArrayList<>();
+		packetHandler = new FabricPacketHandler();
 	}
 	
 	@Override

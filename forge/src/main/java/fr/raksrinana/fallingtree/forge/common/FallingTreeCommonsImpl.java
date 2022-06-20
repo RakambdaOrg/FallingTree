@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.forge.common;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
+import fr.raksrinana.fallingtree.common.network.PacketHandler;
 import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
 import fr.raksrinana.fallingtree.common.wrapper.IBlock;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
@@ -19,6 +20,8 @@ import fr.raksrinana.fallingtree.forge.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.forge.event.FallingTreeBlockBreakEvent;
 import fr.raksrinana.fallingtree.forge.event.FallingTreeEnchantments;
 import fr.raksrinana.fallingtree.forge.event.LeafBreakingListener;
+import fr.raksrinana.fallingtree.forge.network.ForgePacketHandler;
+import fr.raksrinana.fallingtree.forge.network.UserJoinListener;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,11 +56,14 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
 	@Getter
+	private final PacketHandler packetHandler;
+	@Getter
 	private Collection<IEnchantment> chopperEnchantments;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
 		chopperEnchantments = new ArrayList<>();
+		packetHandler = new ForgePacketHandler(this);
 	}
 	
 	@Override
@@ -199,7 +205,10 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	public void registerForge(@NotNull IEventBus eventBus){
+		getPacketHandler().register();
+		
 		eventBus.register(new BlockBreakListener(this));
 		eventBus.register(new LeafBreakingListener(this));
+		eventBus.register(new UserJoinListener(this));
 	}
 }
