@@ -77,7 +77,9 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		player.awardItemUsed(tool.getItem());
-		logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(blockPos), tool);
+		if(!player.isCreative() || mod.getConfiguration().isLootInCreative()){
+			logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(blockPos), tool);
+		}
 		level.removeBlock(blockPos, false);
 		return 1;
 	}

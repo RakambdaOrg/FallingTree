@@ -64,6 +64,12 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips(null, "breakInCreative", 2))
 				.setSaveConsumer(config::setBreakInCreative)
 				.build();
+		var lootInCreativeEntry = builder.entryBuilder()
+				.startBooleanToggle(translatable(getFieldName(null, "lootInCreative")), config.isLootInCreative())
+				.setDefaultValue(true)
+				.setTooltip(getTooltips(null, "lootInCreative", 2))
+				.setSaveConsumer(config::setLootInCreative)
+				.build();
 		var notificationModeEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName(null, "notificationMode")), NotificationMode.class, config.getNotificationMode())
 				.setDefaultValue(NotificationMode.ACTION_BAR)
@@ -74,6 +80,7 @@ public class ClothConfigHook extends ClothHookBase{
 		var general = builder.getOrCreateCategory(translatable("text.autoconfig.fallingtree.category.default"));
 		general.addEntry(reverseSneakingEntry);
 		general.addEntry(breakInCreativeEntry);
+		general.addEntry(lootInCreativeEntry);
 		general.addEntry(notificationModeEntry);
 		
 		fillTreesConfigScreen(builder, config.getTrees());

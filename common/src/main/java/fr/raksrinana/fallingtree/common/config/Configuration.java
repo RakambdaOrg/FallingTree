@@ -34,6 +34,8 @@ public class Configuration{
 	@Expose
 	private boolean breakInCreative = false;
 	@Expose
+	private boolean lootInCreative = true;
+	@Expose
 	@NotNull
 	private NotificationMode notificationMode = NotificationMode.ACTION_BAR;
 	

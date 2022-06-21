@@ -47,7 +47,9 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 					}
 					
 					player.awardItemUsed(tool.getItem());
-					logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
+					if(!player.isCreative() || mod.getConfiguration().isLootInCreative()){
+						logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
+					}
 					var isRemoved = level.removeBlock(logBlockPos, false);
 					return isRemoved ? 1 : 0;
 				})
