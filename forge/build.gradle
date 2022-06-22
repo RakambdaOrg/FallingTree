@@ -8,6 +8,7 @@ minecraft {
     mappings channel: "official", version: "${libs.versions.forgeMappingsVersion.get()}"
     runs {
         client {
+            taskName "runFTForgeClient"
             workingDirectory project.file("../run")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
@@ -19,6 +20,7 @@ minecraft {
         }
 
         server {
+            taskName "runFTForgeServer"
             workingDirectory project.file("../run")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "info"
@@ -30,6 +32,7 @@ minecraft {
         }
 
         gameTestServer {
+            taskName "runFTForgeTestServer"
             workingDirectory project.file("../run")
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
@@ -43,6 +46,7 @@ minecraft {
         }
 
         data {
+            taskName "runFTForgeData"
             workingDirectory project.file("../run")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
@@ -57,11 +61,22 @@ minecraft {
     }
 }
 
+configurations {
+    library
+    implementation.extendsFrom library
+}
+
+minecraft.runs.all {
+    lazyToken('minecraft_classpath') {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+    }
+}
+
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     minecraft(libs.forge)
-    implementation(project(":common"))
+    library(project(":common"))
 
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}"))
 }

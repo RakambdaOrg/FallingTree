@@ -55,14 +55,14 @@ loom {
     }
 
     runs {
-        create("fallingTreeClient") {
+        create("runFTFabricClient") {
             client()
 
             property("fabric.log.level", "debug")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
             programArgs("--uuid=123")
         }
-        create("fallingTreeServer") {
+        create("runFTFabricServer") {
             server()
 
             property("fabric.log.level", "info")
