@@ -47,7 +47,9 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 					}
 					
 					player.awardItemUsed(tool.getItem());
-					logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
+					if(!player.isCreative() || mod.getConfiguration().isLootInCreative()){
+						logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
+					}
 					var isRemoved = level.removeBlock(logBlockPos, false);
 					return isRemoved ? 1 : 0;
 				})
@@ -59,12 +61,12 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		if(brokenCount >= toolHandler.getMaxBreakCount()){
-			forceBreakDecayLeaves(tree, level);
+			forceBreakDecayLeaves(player, tree, level);
 		}
 		return true;
 	}
 	
-	private void forceBreakDecayLeaves(@NotNull Tree tree, @NotNull ILevel level){
+	private void forceBreakDecayLeaves(@NotNull IPlayer player, @NotNull Tree tree, @NotNull ILevel level){
 		var radius = mod.getConfiguration().getTrees().getLeavesBreakingForceRadius();
 		if(radius > 0){
 			tree.getTopMostLog().ifPresent(topLog -> {
@@ -74,7 +76,9 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 					var checkState = level.getBlockState(checkPos);
 					var checkBlock = checkState.getBlock();
 					if(mod.isLeafBlock(checkBlock)){
-						checkState.dropResources(level, checkPos);
+						if(!player.isCreative() || mod.getConfiguration().isLootInCreative()){
+							checkState.dropResources(level, checkPos);
+						}
 						level.removeBlock(checkPos, false);
 					}
 				});

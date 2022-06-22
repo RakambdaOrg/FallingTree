@@ -7,6 +7,7 @@ NOTE: This is purely an example, values there won't always make sense.
 {
   "sneakMode": "IGNORE",
   "breakInCreative": true,
+  "lootInCreative": false,
   "notificationMode": "ACTION_BAR",
   "trees": {
     "whitelistedLogs": ["minecraft:anvil", "#minecraft:beds"],
