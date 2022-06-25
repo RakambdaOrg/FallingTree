@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.common.network;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.wrapper.IFriendlyByteBuf;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -11,20 +12,27 @@ public class PacketUtils{
 	
 	@NotNull
 	public ConfigurationPacket createConfigurationPacket(){
-		return new ConfigurationPacket(mod.getConfiguration().getTools().getSpeedMultiplicand());
+		return ConfigurationPacket.builder()
+				.speedMultiplicand(mod.getConfiguration().getTools().getSpeedMultiplicand())
+				.breakMode(mod.getConfiguration().getTrees().getBreakMode())
+				.build();
 	}
 	
 	public void onClientConfigurationPacket(@NotNull ConfigurationPacket packet){
 		mod.getConfiguration().getTools().setSpeedMultiplicand(packet.getSpeedMultiplicand());
+		mod.getConfiguration().getTrees().setBreakMode(packet.getBreakMode());
 	}
 	
-	@NotNull
 	public void encodeConfigurationPacket(@NotNull ConfigurationPacket packet, @NotNull IFriendlyByteBuf buf){
 		buf.writeDouble(packet.getSpeedMultiplicand());
+		buf.writeInteger(packet.getBreakMode().ordinal());
 	}
 	
 	@NotNull
 	public ConfigurationPacket decodeConfigurationPacket(@NotNull IFriendlyByteBuf buf){
-		return new ConfigurationPacket(buf.readDouble());
+		return ConfigurationPacket.builder()
+				.speedMultiplicand(buf.readDouble())
+				.breakMode(BreakMode.values()[buf.readInteger()])
+				.build();
 	}
 }

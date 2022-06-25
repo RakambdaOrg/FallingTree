@@ -20,7 +20,17 @@ public class FriendlyByteBufWrapper implements IFriendlyByteBuf{
 	}
 	
 	@Override
+	public void writeInteger(int value){
+		raw.writeInt(value);
+	}
+	
+	@Override
 	public double readDouble(){
 		return raw.readDouble();
+	}
+	
+	@Override
+	public int readInteger(){
+		return raw.readInt();
 	}
 }
