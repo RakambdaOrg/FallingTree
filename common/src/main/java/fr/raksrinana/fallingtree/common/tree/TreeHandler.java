@@ -84,7 +84,7 @@ public class TreeHandler{
 		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
 			return Optional.empty();
 		}
-		if(mod.getConfiguration().getTrees().getBreakMode() != BreakMode.INSTANTANEOUS){
+		if(!getBreakMode(player.getMainHandItem()).isApplySpeedMultiplier()){
 			return Optional.empty();
 		}
 		if(!mod.isPlayerInRightState(player)){
