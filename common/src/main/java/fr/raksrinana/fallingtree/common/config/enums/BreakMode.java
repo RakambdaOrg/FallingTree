@@ -6,8 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum BreakMode{
-	INSTANTANEOUS(true),
-	SHIFT_DOWN(false);
+	INSTANTANEOUS(true, true),
+	SHIFT_DOWN(false, false);
 	
 	private final boolean checkLeavesAround;
+	private final boolean applySpeedMultiplier;
 }

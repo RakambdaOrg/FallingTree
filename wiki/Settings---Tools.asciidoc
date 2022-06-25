@@ -55,4 +55,6 @@ NOTE: Deny list takes over the values defined in allow list. So if you defined t
 - 2: Will take the same amount of time as if you'd break a tree with twice the amount of logs.
 - 0.5: Will take the same amount of time as if you'd break a tree with half the amount of logs.
 - 0: This is a special value and will take only the time of breaking one single log block.
+
+NOTE: This is only applied when INSTANTANEOUS break mode is used.
 |===
