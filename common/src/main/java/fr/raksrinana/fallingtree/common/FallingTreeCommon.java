@@ -58,7 +58,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	}
 	
 	private boolean playerHasRequiredTags(@NotNull IPlayer player){
-		var tags = configuration.getPlayer().getAllowedTags();
+		var tags = configuration.getPlayer().getAllowedTagsNormalized();
 		if(tags.isEmpty()){
 			return true;
 		}
