@@ -53,6 +53,7 @@ public class Configuration{
 	public void onUpdate(){
 		trees.invalidate();
 		tools.invalidate();
+		player.invalidate();
 		
 		var path = getConfigPath();
 		try{
