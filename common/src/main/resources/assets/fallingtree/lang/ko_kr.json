@@ -233,7 +233,7 @@
   "chat.fallingtree.break_tree_too_big": "이 나무는 너무 커서 한 번에 벨 수 없습니다 (최대 나무 크기: %d)",
   "chat.fallingtree.prevented_break_tool": "사용하는 도구가 곧 부서질 것 같습니다. 수리하거나 새로운 도구를 사용하세요.",
   "chat.fallingtree.search_aborted": "나무 감지가 중지되었습니다. 이유: ",
-  "chat.fallingtree.search_aborted.adjacent": "인접 블록에 허용되지 않은 블록 %s를(을) 발견했습니다."
+  "chat.fallingtree.search_aborted.adjacent": "인접 블록에 허용되지 않은 블록 %s를(을) 발견했습니다.",
   "enchantment.fallingtree.chopper": "벌목",
   "enchantment.fallingtree.chopper_instantaneous": "벌목 (한번에)",
   "enchantment.fallingtree.chopper_shift_down": "벌목 (하나씩)"

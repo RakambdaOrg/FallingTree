@@ -3,7 +3,7 @@
 |Name |Description
 
 |Allowed logs
-|Allows you to define a list of allowed blocks that are considered as logs by the mod. By default every block tagged as `#minecraft/logs` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
+|Allows you to define a list of allowed blocks that are considered as logs by the mod. By default, every block tagged as `#minecraft/logs` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
 
 NOTE: This will only add values in allow list on top of the already existing default recognized blocks, if you need to exclude logs look for the `Denied logs`.
 
@@ -21,7 +21,7 @@ TIP: You can find this info by enabling detailed info on blocks by pressing `F3 
 NOTE: Deny list takes over the values defined in allow list. So if you defined the same block in allow and deny lists it'll end up denied.
 
 |Allowed leaves
-|Allows you to define a list of allowed blocks that are considered as leaves by the mod. By default every block tagged as `#minecraft/leaves` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
+|Allows you to define a list of allowed blocks that are considered as leaves by the mod. By default, every block tagged as `#minecraft/leaves` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
 
 NOTE: This will only add values in allow list on top of the already existing default recognized blocks, if you need to exclude leaves look for the `Denied leaves`.
 
@@ -48,7 +48,7 @@ NOTE: In the screenshots the axe indicates where the tree is being cut by you.
 
 - INSTANTANEOUS: The whole tree will be chopped at once.
 image:assets/behavior/break-mode-instantaneous.png[]
-- SHIFT_DOWN: The furthest log will be broken. This allow you to still cut the tree one by one but you don't have to climb to get all the logs; just aim at one spot and cut it multiple times.
+- SHIFT_DOWN: The furthest log will be broken. This allows you to still cut the tree one by one, but you don't have to climb to get all the logs; just aim at one spot and cut it multiple times.
 image:assets/behavior/break-mode-shift-down.png[]
 
 NOTE: Those modes are conditioned by `Detection mode`.
@@ -131,7 +131,7 @@ NOTE: This only works in the `Instantaneous` breaking mode.
 
 NOTE: Durability will be used
 
-NOTE: The warts don't decay so they will be broken with a predefined radius which may leave things a bit ugly if you cut nether trees that are close to each other.
+NOTE: The warts don't decay, so they will be broken with a predefined radius which may leave things a bit ugly if you cut nether trees that are close to each other.
 
 |Instantly break nether tree warts
 |When set to true nether tree warts (leaves) will be broken with only one hit.

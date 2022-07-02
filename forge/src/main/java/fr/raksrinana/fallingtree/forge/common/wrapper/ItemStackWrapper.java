@@ -55,7 +55,7 @@ public class ItemStackWrapper implements IItemStack{
 		if(enchantment == null){
 			return 0;
 		}
-		return EnchantmentHelper.getItemEnchantmentLevel((Enchantment) enchantment.getRaw(), raw);
+		return raw.getEnchantmentLevel((Enchantment) enchantment.getRaw());
 	}
 	
 	@Override

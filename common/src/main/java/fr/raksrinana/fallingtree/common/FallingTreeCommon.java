@@ -95,11 +95,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		}
 		
 		var isDeniedTool = toolConfiguration.getDeniedItems(this).stream().anyMatch(tool -> tool.equals(heldItem));
-		if(isDeniedTool){
-			return false;
-		}
-		
-		return true;
+		return !isDeniedTool;
 	}
 	
 	@NotNull
