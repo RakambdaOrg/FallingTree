@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
@@ -81,5 +82,10 @@ public class ItemStackWrapper implements IItemStack{
 			}
 		}
 		return Optional.empty();
+	}
+	
+	@Override
+	public boolean canPerformAxeAction(){
+		return raw.canPerformAction(ToolActions.AXE_DIG);
 	}
 }
