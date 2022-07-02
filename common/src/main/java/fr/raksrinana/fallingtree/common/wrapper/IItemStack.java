@@ -23,4 +23,6 @@ public interface IItemStack extends IWrapper{
 	
 	@NotNull
 	Optional<IEnchantment> getAnyEnchant(@NotNull Collection<IEnchantment> enchantments);
+	
+	boolean canPerformAxeAction();
 }
