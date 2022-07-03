@@ -1,4 +1,4 @@
-package fr.raksrinana.fallingtree.forge.cloth;
+package fr.raksrinana.fallingtree.forge.client.cloth;
 
 import com.google.common.collect.Lists;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;

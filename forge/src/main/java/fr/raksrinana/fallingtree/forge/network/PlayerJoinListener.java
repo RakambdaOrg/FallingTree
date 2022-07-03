@@ -24,15 +24,4 @@ public class PlayerJoinListener{
 			mod.getServerPacketHandler().onPlayerConnected(new ServerPlayerWrapper(serverPlayer));
 		}
 	}
-	
-	@SubscribeEvent
-	public void onPlayerLoggedOutEvent(@Nonnull PlayerEvent.PlayerLoggedOutEvent event){
-		if(event.isCanceled()){
-			return;
-		}
-		
-		if(!(event.getPlayer() instanceof ServerPlayer)){
-			mod.getPacketUtils().onClientDisconnect();
-		}
-	}
 }

@@ -12,6 +12,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
 import fr.raksrinana.fallingtree.common.wrapper.IItem;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
+import fr.raksrinana.fallingtree.forge.client.event.PlayerLeaveListener;
 import fr.raksrinana.fallingtree.forge.common.wrapper.BlockWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.ComponentWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.EnchantmentWrapper;
@@ -215,5 +216,6 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		eventBus.register(new BlockBreakListener(this));
 		eventBus.register(new LeafBreakingListener(this));
 		eventBus.register(new PlayerJoinListener(this));
+		eventBus.register(new PlayerLeaveListener(this));
 	}
 }

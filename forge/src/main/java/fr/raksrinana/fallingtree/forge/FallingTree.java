@@ -1,7 +1,7 @@
 package fr.raksrinana.fallingtree.forge;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
-import fr.raksrinana.fallingtree.forge.cloth.ClothConfigHook;
+import fr.raksrinana.fallingtree.forge.client.cloth.ClothConfigHook;
 import fr.raksrinana.fallingtree.forge.common.FallingTreeCommonsImpl;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -20,7 +20,7 @@ public class FallingTree{
 	public FallingTree(){
 		if(ModList.get().isLoaded("cloth_config")){
 			try{
-				Class.forName("fr.raksrinana.fallingtree.forge.cloth.ClothConfigHook")
+				Class.forName("fr.raksrinana.fallingtree.forge.client.cloth.ClothConfigHook")
 						.asSubclass(ClothConfigHook.class)
 						.getConstructor(FallingTreeCommon.class)
 						.newInstance(mod)
