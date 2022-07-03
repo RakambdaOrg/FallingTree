@@ -1,4 +1,4 @@
-package fr.raksrinana.fallingtree.common.config.cloth;
+package fr.raksrinana.fallingtree.common.config.real.cloth;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.wrapper.IComponent;

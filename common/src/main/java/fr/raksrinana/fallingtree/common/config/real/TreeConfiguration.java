@@ -1,16 +1,26 @@
-package fr.raksrinana.fallingtree.common.config;
+package fr.raksrinana.fallingtree.common.config.real;
 
 import com.google.gson.annotations.Expose;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
-import fr.raksrinana.fallingtree.common.config.enums.*;
+import fr.raksrinana.fallingtree.common.config.IResettable;
+import fr.raksrinana.fallingtree.common.config.ITreeConfiguration;
+import fr.raksrinana.fallingtree.common.config.enums.AdjacentStopMode;
+import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
+import fr.raksrinana.fallingtree.common.config.enums.BreakOrder;
+import fr.raksrinana.fallingtree.common.config.enums.DetectionMode;
+import fr.raksrinana.fallingtree.common.config.enums.MaxSizeAction;
 import fr.raksrinana.fallingtree.common.wrapper.IBlock;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import static java.util.Objects.isNull;
 
 @Data
-public class TreeConfiguration{
+public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	@NotNull
 	private List<String> allowedLogs = new ArrayList<>();
@@ -151,7 +161,7 @@ public class TreeConfiguration{
 		return allowedAdjacentBlocksCache;
 	}
 	
-	public void invalidate(){
+	public void reset(){
 		deniedLeavesCache = null;
 		deniedLogsCache = null;
 		allowedLeavesCache = null;

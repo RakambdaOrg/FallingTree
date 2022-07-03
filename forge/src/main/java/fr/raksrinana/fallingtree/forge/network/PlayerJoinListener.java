@@ -15,13 +15,24 @@ public class PlayerJoinListener{
 	private final FallingTreeCommon<?> mod;
 	
 	@SubscribeEvent
-	public void onBreakSpeed(@Nonnull PlayerEvent.PlayerLoggedInEvent event){
+	public void onPlayerLoggedInEvent(@Nonnull PlayerEvent.PlayerLoggedInEvent event){
 		if(event.isCanceled()){
 			return;
 		}
 		
 		if(event.getPlayer() instanceof ServerPlayer serverPlayer){
 			mod.getServerPacketHandler().onPlayerConnected(new ServerPlayerWrapper(serverPlayer));
+		}
+	}
+	
+	@SubscribeEvent
+	public void onPlayerLoggedOutEvent(@Nonnull PlayerEvent.PlayerLoggedOutEvent event){
+		if(event.isCanceled()){
+			return;
+		}
+		
+		if(!(event.getPlayer() instanceof ServerPlayer)){
+			mod.getPacketUtils().onClientDisconnect();
 		}
 	}
 }

@@ -1,7 +1,9 @@
-package fr.raksrinana.fallingtree.common.config;
+package fr.raksrinana.fallingtree.common.config.real;
 
 import com.google.gson.annotations.Expose;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.config.IResettable;
+import fr.raksrinana.fallingtree.common.config.IToolConfiguration;
 import fr.raksrinana.fallingtree.common.config.enums.DamageRounding;
 import fr.raksrinana.fallingtree.common.wrapper.IItem;
 import lombok.Data;
@@ -13,7 +15,7 @@ import java.util.Set;
 import static java.util.Objects.isNull;
 
 @Data
-public class ToolConfiguration{
+public class ToolConfiguration implements IToolConfiguration, IResettable{
 	@Expose
 	@NotNull
 	private List<String> allowed = new ArrayList<>();
@@ -52,7 +54,7 @@ public class ToolConfiguration{
 		return allowedCache;
 	}
 	
-	public void invalidate(){
+	public void reset(){
 		deniedCache = null;
 		allowedCache = null;
 	}

@@ -2,12 +2,12 @@ package fr.raksrinana.fallingtree.fabric.client.cloth;
 
 import com.google.common.collect.Lists;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
-import fr.raksrinana.fallingtree.common.config.Configuration;
-import fr.raksrinana.fallingtree.common.config.EnchantmentConfiguration;
-import fr.raksrinana.fallingtree.common.config.PlayerConfiguration;
-import fr.raksrinana.fallingtree.common.config.ToolConfiguration;
-import fr.raksrinana.fallingtree.common.config.TreeConfiguration;
-import fr.raksrinana.fallingtree.common.config.cloth.ClothHookBase;
+import fr.raksrinana.fallingtree.common.config.real.Configuration;
+import fr.raksrinana.fallingtree.common.config.real.EnchantmentConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.PlayerConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.ToolConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.TreeConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.cloth.ClothHookBase;
 import fr.raksrinana.fallingtree.common.config.enums.AdjacentStopMode;
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.config.enums.BreakOrder;
@@ -41,7 +41,7 @@ public class ClothConfigHook extends ClothHookBase{
 					.setParentScreen(screen)
 					.setTitle(MutableComponent.create(new LiteralContents("FallingTree")));
 			
-			var configuration = getMod().getConfiguration();
+			var configuration = getMod().getOwnConfiguration();
 			builder.setSavingRunnable(configuration::onUpdate);
 			
 			fillConfigScreen(builder, configuration);

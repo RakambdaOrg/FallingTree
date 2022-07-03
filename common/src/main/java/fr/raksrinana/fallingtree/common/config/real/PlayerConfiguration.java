@@ -1,6 +1,8 @@
-package fr.raksrinana.fallingtree.common.config;
+package fr.raksrinana.fallingtree.common.config.real;
 
 import com.google.gson.annotations.Expose;
+import fr.raksrinana.fallingtree.common.config.IPlayerConfiguration;
+import fr.raksrinana.fallingtree.common.config.IResettable;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.List;
 import static java.util.Objects.isNull;
 
 @Data
-public class PlayerConfiguration{
+public class PlayerConfiguration implements IPlayerConfiguration, IResettable{
 	@Expose
 	@NotNull
 	private List<String> allowedTags = new ArrayList<>();
@@ -16,6 +18,8 @@ public class PlayerConfiguration{
 	//Cache
 	private List<String> allowedTagsCache;
 	
+	@Override
+	@NotNull
 	public List<String> getAllowedTagsNormalized(){
 		if(isNull(allowedTagsCache)){
 			allowedTagsCache = allowedTags.stream()
@@ -25,7 +29,7 @@ public class PlayerConfiguration{
 		return allowedTagsCache;
 	}
 	
-	public void invalidate(){
+	public void reset(){
 		allowedTagsCache = null;
 	}
 }

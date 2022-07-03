@@ -4,8 +4,10 @@ import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.wrapper.IFriendlyByteBuf;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 
+@Log4j2
 @RequiredArgsConstructor
 public class PacketUtils{
 	private final FallingTreeCommon<?> mod;
@@ -19,13 +21,19 @@ public class PacketUtils{
 	}
 	
 	public void onClientConfigurationPacket(@NotNull ConfigurationPacket packet){
-		mod.getConfiguration().getTools().setSpeedMultiplicand(packet.getSpeedMultiplicand());
-		mod.getConfiguration().getTrees().setBreakMode(packet.getBreakMode());
+		log.debug("Received FT configuration packet from server, overriding values");
+		mod.getProxyConfiguration().getTools().setSpeedMultiplicand(packet.getSpeedMultiplicand());
+		mod.getProxyConfiguration().getTrees().setBreakMode(packet.getBreakMode());
 	}
 	
 	public void encodeConfigurationPacket(@NotNull ConfigurationPacket packet, @NotNull IFriendlyByteBuf buf){
 		buf.writeDouble(packet.getSpeedMultiplicand());
 		buf.writeInteger(packet.getBreakMode().ordinal());
+	}
+	
+	public void onClientDisconnect(){
+		log.debug("Disconnected from server, resetting config values");
+		mod.getProxyConfiguration().reset();
 	}
 	
 	@NotNull
