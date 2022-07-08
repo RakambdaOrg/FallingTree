@@ -19,7 +19,9 @@
     "main": [
       "fr.raksrinana.fallingtree.fabric.FallingTree"
     ],
-    "client": [],
+    "client": [
+      "fr.raksrinana.fallingtree.fabric.client.FallingTreeClient"
+    ],
     "server": [],
     "modmenu": [
       "fr.raksrinana.fallingtree.fabric.client.ModMenuImpl"

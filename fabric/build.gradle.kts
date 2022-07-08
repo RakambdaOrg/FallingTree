@@ -55,15 +55,17 @@ loom {
     }
 
     runs {
-        create("runFTFabricClient") {
+        create("FTFabricClient") {
             client()
+            runDir("run/client")
 
-            property("fabric.log.level", "debug")
+            property("fabric.log.level", "info")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
-            programArgs("--uuid=123")
+            programArgs("--uuid=123", "--username=Dev")
         }
-        create("runFTFabricServer") {
+        create("FTFabricServer") {
             server()
+            runDir("run/server")
 
             property("fabric.log.level", "info")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")

@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.forge.common;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
+import fr.raksrinana.fallingtree.common.network.ServerPacketHandler;
 import fr.raksrinana.fallingtree.common.wrapper.DirectionCompat;
 import fr.raksrinana.fallingtree.common.wrapper.IBlock;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
@@ -11,6 +12,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
 import fr.raksrinana.fallingtree.common.wrapper.IItem;
 import fr.raksrinana.fallingtree.common.wrapper.ILevel;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
+import fr.raksrinana.fallingtree.forge.client.event.PlayerLeaveListener;
 import fr.raksrinana.fallingtree.forge.common.wrapper.BlockWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.ComponentWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.EnchantmentWrapper;
@@ -19,6 +21,8 @@ import fr.raksrinana.fallingtree.forge.event.BlockBreakListener;
 import fr.raksrinana.fallingtree.forge.event.FallingTreeBlockBreakEvent;
 import fr.raksrinana.fallingtree.forge.event.FallingTreeEnchantments;
 import fr.raksrinana.fallingtree.forge.event.LeafBreakingListener;
+import fr.raksrinana.fallingtree.forge.network.ForgePacketHandler;
+import fr.raksrinana.fallingtree.forge.network.PlayerJoinListener;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,18 +56,26 @@ import static net.minecraftforge.registries.ForgeRegistries.ITEMS;
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
+	private final ForgePacketHandler packetHandler;
 	@Getter
 	private Collection<IEnchantment> chopperEnchantments;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
 		chopperEnchantments = new ArrayList<>();
+		packetHandler = new ForgePacketHandler(this);
 	}
 	
 	@Override
 	@NotNull
 	public IComponent translate(@NotNull String key, Object... objects){
 		return new ComponentWrapper(MutableComponent.create(new TranslatableContents(key, objects)));
+	}
+	
+	@Override
+	@NotNull
+	public ServerPacketHandler getServerPacketHandler(){
+		return packetHandler;
 	}
 	
 	@Override
@@ -199,7 +211,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	public void registerForge(@NotNull IEventBus eventBus){
+		getServerPacketHandler().registerServer();
+		
 		eventBus.register(new BlockBreakListener(this));
 		eventBus.register(new LeafBreakingListener(this));
+		eventBus.register(new PlayerJoinListener(this));
+		eventBus.register(new PlayerLeaveListener(this));
 	}
 }

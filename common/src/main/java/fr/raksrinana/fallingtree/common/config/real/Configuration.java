@@ -1,6 +1,7 @@
-package fr.raksrinana.fallingtree.common.config;
+package fr.raksrinana.fallingtree.common.config.real;
 
 import com.google.gson.annotations.Expose;
+import fr.raksrinana.fallingtree.common.config.IConfiguration;
 import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
 import fr.raksrinana.fallingtree.common.config.enums.SneakMode;
 import lombok.AccessLevel;
@@ -15,7 +16,7 @@ import java.nio.file.Paths;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
 @Log4j2
-public class Configuration{
+public class Configuration implements IConfiguration{
 	@Expose
 	@NotNull
 	private TreeConfiguration trees = new TreeConfiguration();
@@ -51,9 +52,9 @@ public class Configuration{
 	}
 	
 	public void onUpdate(){
-		trees.invalidate();
-		tools.invalidate();
-		player.invalidate();
+		trees.reset();
+		tools.reset();
+		player.reset();
 		
 		var path = getConfigPath();
 		try{

@@ -1,7 +1,11 @@
 package fr.raksrinana.fallingtree.common;
 
-import fr.raksrinana.fallingtree.common.config.Configuration;
+import fr.raksrinana.fallingtree.common.config.IConfiguration;
+import fr.raksrinana.fallingtree.common.config.proxy.ProxyConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.Configuration;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
+import fr.raksrinana.fallingtree.common.network.PacketUtils;
+import fr.raksrinana.fallingtree.common.network.ServerPacketHandler;
 import fr.raksrinana.fallingtree.common.tree.TreeHandler;
 import fr.raksrinana.fallingtree.common.tree.TreePartType;
 import fr.raksrinana.fallingtree.common.tree.builder.TreeBuilder;
@@ -27,14 +31,22 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 @Getter
 public abstract class FallingTreeCommon<D extends Enum<D>>{
-	private final Configuration configuration;
+	private final Configuration ownConfiguration;
+	private final ProxyConfiguration proxyConfiguration;
 	private final TreeBuilder treeBuilder;
 	private final TreeHandler treeHandler;
+	private final PacketUtils packetUtils;
 	
 	public FallingTreeCommon(){
-		configuration = Configuration.read();
+		ownConfiguration = Configuration.read();
+		proxyConfiguration = new ProxyConfiguration(ownConfiguration);
 		treeBuilder = new TreeBuilder(this);
 		treeHandler = new TreeHandler(this);
+		packetUtils = new PacketUtils(this);
+	}
+	
+	public IConfiguration getConfiguration(){
+		return getProxyConfiguration();
 	}
 	
 	@NotNull
@@ -48,7 +60,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		if(player.isCreative() && !getConfiguration().isBreakInCreative()){
 			return false;
 		}
-		if(!configuration.getSneakMode().test(player.isCrouching())){
+		if(!getConfiguration().getSneakMode().test(player.isCrouching())){
 			return false;
 		}
 		if(!playerHasRequiredTags(player)){
@@ -58,7 +70,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	}
 	
 	private boolean playerHasRequiredTags(@NotNull IPlayer player){
-		var tags = configuration.getPlayer().getAllowedTagsNormalized();
+		var tags = getConfiguration().getPlayer().getAllowedTagsNormalized();
 		if(tags.isEmpty()){
 			return true;
 		}
@@ -110,6 +122,9 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	
 	@NotNull
 	public abstract LeafBreakingHandler getLeafBreakingHandler();
+	
+	@NotNull
+	public abstract ServerPacketHandler getServerPacketHandler();
 	
 	@NotNull
 	public Set<IBlock> getAsBlocks(@NotNull Collection<String> names){
@@ -186,10 +201,10 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	public abstract boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player);
 	
 	public void registerEnchant(){
-		if(configuration.getEnchantment().isRegisterEnchant()){
+		if(getConfiguration().getEnchantment().isRegisterEnchant()){
 			performDefaultEnchantRegister();
 		}
-		if(configuration.getEnchantment().isRegisterSpecificEnchant()){
+		if(getConfiguration().getEnchantment().isRegisterSpecificEnchant()){
 			performSpecificEnchantRegister();
 		}
 		performCommitEnchantRegister();

@@ -1,4 +1,4 @@
-package fr.raksrinana.fallingtree.common.config;
+package fr.raksrinana.fallingtree.common.config.real;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
