@@ -16,7 +16,7 @@ public class PlayerLeaveListener{
 	
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onPlayerLoggedOutEvent(@Nonnull ClientPlayerNetworkEvent.LoggedOutEvent event){
+	public void onPlayerLoggedOutEvent(@Nonnull ClientPlayerNetworkEvent.LoggingOut event){
 		if(event.isCanceled()){
 			return;
 		}
