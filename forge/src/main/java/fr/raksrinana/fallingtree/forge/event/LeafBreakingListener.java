@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.stream.Collectors;
@@ -29,7 +29,7 @@ public class LeafBreakingListener{
 	
 	@SubscribeEvent
 	public void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
-		if(event.getWorld() instanceof ServerLevel level){
+		if(event.getLevel() instanceof ServerLevel level){
 			var eventState = event.getState();
 			var eventPos = event.getPos();
 			

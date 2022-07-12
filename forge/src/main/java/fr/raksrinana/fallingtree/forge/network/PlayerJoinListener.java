@@ -20,7 +20,7 @@ public class PlayerJoinListener{
 			return;
 		}
 		
-		if(event.getPlayer() instanceof ServerPlayer serverPlayer){
+		if(event.getEntity() instanceof ServerPlayer serverPlayer){
 			mod.getServerPacketHandler().onPlayerConnected(new ServerPlayerWrapper(serverPlayer));
 		}
 	}
