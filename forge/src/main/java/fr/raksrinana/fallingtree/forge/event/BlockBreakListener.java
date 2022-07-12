@@ -6,7 +6,7 @@ import fr.raksrinana.fallingtree.forge.common.wrapper.LevelWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.PlayerWrapper;
 import lombok.RequiredArgsConstructor;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
@@ -22,7 +22,7 @@ public class BlockBreakListener{
 			return;
 		}
 		
-		var wrappedPlayer = new PlayerWrapper(event.getPlayer());
+		var wrappedPlayer = new PlayerWrapper(event.getEntity());
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
 		var result = mod.getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, event.getNewSpeed());
@@ -43,7 +43,7 @@ public class BlockBreakListener{
 		}
 		
 		var wrappedPlayer = new PlayerWrapper(event.getPlayer());
-		var wrappedLevel = new LevelWrapper(event.getWorld());
+		var wrappedLevel = new LevelWrapper(event.getLevel());
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
 		var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);

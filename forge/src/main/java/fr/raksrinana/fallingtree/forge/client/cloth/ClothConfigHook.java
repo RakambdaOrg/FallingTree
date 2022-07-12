@@ -2,12 +2,6 @@ package fr.raksrinana.fallingtree.forge.client.cloth;
 
 import com.google.common.collect.Lists;
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
-import fr.raksrinana.fallingtree.common.config.real.Configuration;
-import fr.raksrinana.fallingtree.common.config.real.EnchantmentConfiguration;
-import fr.raksrinana.fallingtree.common.config.real.PlayerConfiguration;
-import fr.raksrinana.fallingtree.common.config.real.ToolConfiguration;
-import fr.raksrinana.fallingtree.common.config.real.TreeConfiguration;
-import fr.raksrinana.fallingtree.common.config.real.cloth.ClothHookBase;
 import fr.raksrinana.fallingtree.common.config.enums.AdjacentStopMode;
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
 import fr.raksrinana.fallingtree.common.config.enums.BreakOrder;
@@ -16,6 +10,12 @@ import fr.raksrinana.fallingtree.common.config.enums.DetectionMode;
 import fr.raksrinana.fallingtree.common.config.enums.MaxSizeAction;
 import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
 import fr.raksrinana.fallingtree.common.config.enums.SneakMode;
+import fr.raksrinana.fallingtree.common.config.real.Configuration;
+import fr.raksrinana.fallingtree.common.config.real.EnchantmentConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.PlayerConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.ToolConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.TreeConfiguration;
+import fr.raksrinana.fallingtree.common.config.real.cloth.ClothHookBase;
 import fr.raksrinana.fallingtree.common.wrapper.IComponent;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.network.chat.Component;
@@ -23,7 +23,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ConfigGuiHandler;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.fml.ModLoadingContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +36,7 @@ public class ClothConfigHook extends ClothHookBase{
 	}
 	
 	public void load(){
-		ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () -> new ConfigGuiHandler.ConfigGuiFactory((minecraft, screen) -> {
+		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> {
 			var builder = ConfigBuilder.create()
 					.setParentScreen(screen)
 					.setTitle(MutableComponent.create(new LiteralContents("FallingTree")));
