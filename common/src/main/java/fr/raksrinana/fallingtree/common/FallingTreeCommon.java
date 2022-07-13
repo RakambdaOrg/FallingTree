@@ -187,7 +187,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 			return TreePartType.NETHER_WART;
 		}
 		if(isMangroveRoots(checkBlock)){
-			return TreePartType.NETHER_WART;
+			return TreePartType.MANGROVE_ROOTS;
 		}
 		if(isLeafNeedBreakBlock(checkBlock)){
 			return TreePartType.LEAF_NEED_BREAK;
