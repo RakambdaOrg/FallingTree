@@ -235,6 +235,9 @@
   "chat.fallingtree.search_aborted": "Tree detection stopped, reason: ",
   "chat.fallingtree.search_aborted.adjacent": "Found block %s that isn't allowed in the adjacent blocks.",
   "enchantment.fallingtree.chopper": "Chopper",
+  "enchantment.fallingtree.chopper.desc": "Makes the enchanted tool able to chop down tress in one go with the default breaking mode",
   "enchantment.fallingtree.chopper_instantaneous": "Chopper (instantaneous)",
-  "enchantment.fallingtree.chopper_shift_down": "Chopper (shift down)"
+  "enchantment.fallingtree.chopper_instantaneous.desc": "Makes the enchanted tool able to chop down tress in one go with the instantaneous mode",
+  "enchantment.fallingtree.chopper_shift_down": "Chopper (shift down)",
+  "enchantment.fallingtree.chopper_shift_down.desc": "Makes the enchanted tool able to chop down tress in one go with the shift down mode"
 }
