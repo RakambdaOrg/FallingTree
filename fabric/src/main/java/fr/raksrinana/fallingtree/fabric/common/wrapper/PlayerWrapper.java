@@ -9,7 +9,6 @@ import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -31,8 +30,8 @@ public class PlayerWrapper implements IPlayer{
 		var text = (Component) component.getRaw();
 		if(raw instanceof ServerPlayer serverPlayer){
 			switch(mode){
-				case CHAT -> serverPlayer.sendSystemMessage(text, ChatType.CHAT);
-				case ACTION_BAR -> serverPlayer.sendSystemMessage(text, ChatType.GAME_INFO);
+				case CHAT -> serverPlayer.sendSystemMessage(text, false);
+				case ACTION_BAR -> serverPlayer.sendSystemMessage(text, true);
 			}
 		}
 		else{

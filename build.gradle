@@ -1,6 +1,3 @@
-import java.nio.file.Files
-import java.nio.file.Paths
-
 buildscript {
     repositories {
         mavenCentral()
@@ -172,7 +169,7 @@ modrinth {
     }
     versionType.set(relType)
     changelog.set(project.findProperty("changelog") ?: "No changelog provided")
-    syncBodyFrom.set(Files.readString(Paths.get(project.file("README.md").toURI())))
+    syncBodyFrom.set(rootProject.file("README.md").getText())
     debugMode.set(false)
 
     dependencies {
