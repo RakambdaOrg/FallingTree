@@ -22,8 +22,13 @@ public class BlockBreakListener{
 			return;
 		}
 		
+		var optionalPos = event.getPosition();
+		if(optionalPos.isEmpty()){
+			return;
+		}
+		
 		var wrappedPlayer = new PlayerWrapper(event.getEntity());
-		var wrappedPos = new BlockPosWrapper(event.getPos());
+		var wrappedPos = new BlockPosWrapper(optionalPos.get());
 		
 		var result = mod.getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, event.getNewSpeed());
 		if(result.isEmpty()){
