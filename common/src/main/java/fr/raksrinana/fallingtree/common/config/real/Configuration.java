@@ -61,7 +61,7 @@ public class Configuration implements IConfiguration{
 			ConfigLoader.saveConfig(this, path);
 		}
 		catch(IOException e){
-			log.error("Failed to saved FallingTree configuration to {}", path, e);
+			log.error("Failed to save FallingTree configuration to {}", path, e);
 		}
 	}
 	
