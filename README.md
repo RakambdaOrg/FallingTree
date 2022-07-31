@@ -20,3 +20,5 @@ Several options are available in the config file:
 * Let tools at 1 durability if it's going to break.
 
 NOTE: On servers this mod can be server-side only, client isn't required (except if you use the change speed feature and/or enchants configurations).
+
+Check out the [wiki](https://github.com/RakSrinaNa/FallingTree/wiki) for some more information.

@@ -6,3 +6,4 @@
 ** link:Settings---Player[Player]
 ** link:Settings---Enchantment[Enchantment]
 ** link:Settings---Examples[Examples]
+** link:Faq[FAQ]

@@ -1,0 +1,14 @@
+= FAQ
+
+If you feel like some more info should be here, feel free to send your propositions.
+
+== Easy Paxel (Lite)
+
+link:https://www.curseforge.com/minecraft/mc-mods/colds-easy-paxel-lite#c36[Tools to add to the config (allowed tools)]:
+
+* easypaxellite:wooden_paxel
+* easypaxellite:stone_paxel
+* easypaxellite:iron_paxel
+* easypaxellite:golden_paxel
+* easypaxellite:diamond_paxel
+* easypaxellite:netherite_paxel
