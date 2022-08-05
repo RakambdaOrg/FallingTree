@@ -3,21 +3,21 @@
 [versions]
 lombok-version = "1.18.24"
 jetbrains-annotations-version = "23.0.0"
-gson-version = "2.9.0"
+gson-version = "2.9.1"
 log4j2-version = "2.18.0"
 
 # Minecraft / Loaders
-minecraftVersion = "1.19.1"
+minecraftVersion = "1.19.2"
 fabric-loader-version = "0.14.8"
-fabric-api-version = "0.58.5+1.19.1"
+fabric-api-version = "0.58.6+1.19.2"
 forge-version = "1.19.1-42.0.0"
 forgeMappingsVersion = "1.19.1"
 
 # Mod dependencies
 modmenu-version = "4.0.5"
-clothConfigVersion = "7.0.73"
+clothConfigVersion = "8.0.75"
 
-fabric-loom-version = "0.12.55"
+fabric-loom-version = "0.12.56"
 forge-plugin-version = "5.1.52"
 curse-version = "1.4.0"
 modrinth-version = "2.4.3"
