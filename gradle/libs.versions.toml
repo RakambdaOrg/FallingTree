@@ -10,15 +10,15 @@ log4j2-version = "2.18.0"
 minecraftVersion = "1.19.2"
 fabric-loader-version = "0.14.8"
 fabric-api-version = "0.58.6+1.19.2"
-forge-version = "1.19.1-42.0.0"
-forgeMappingsVersion = "1.19.1"
+forge-version = "1.19.2-43.0.0"
+forgeMappingsVersion = "1.19.2"
 
 # Mod dependencies
 modmenu-version = "4.0.5"
 clothConfigVersion = "8.0.75"
 
 fabric-loom-version = "0.12.56"
-forge-plugin-version = "5.1.52"
+forge-plugin-version = "5.1.53"
 curse-version = "1.4.0"
 modrinth-version = "2.4.3"
 names-version = "0.42.0"
