@@ -21,7 +21,7 @@ public class PacketUtils{
 	}
 	
 	public void onClientConfigurationPacket(@NotNull ConfigurationPacket packet){
-		log.debug("Received FT configuration packet from server, overriding values");
+		log.info("Received FT configuration packet from server, setting up proxy config values");
 		mod.getProxyConfiguration().getTools().setSpeedMultiplicand(packet.getSpeedMultiplicand());
 		mod.getProxyConfiguration().getTrees().setBreakMode(packet.getBreakMode());
 	}
@@ -32,7 +32,7 @@ public class PacketUtils{
 	}
 	
 	public void onClientDisconnect(){
-		log.debug("Disconnected from server, resetting config values");
+		log.info("Disconnected from server, resetting proxy config values");
 		mod.getProxyConfiguration().reset();
 	}
 	
