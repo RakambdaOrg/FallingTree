@@ -1,6 +1,12 @@
 package fr.raksrinana.fallingtree.fabric.event;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.tree.exception.NoTreeFoundException;
+import fr.raksrinana.fallingtree.common.tree.exception.NotServerException;
+import fr.raksrinana.fallingtree.common.tree.exception.PlayerNotInRightState;
+import fr.raksrinana.fallingtree.common.tree.exception.ToolUseForcedException;
+import fr.raksrinana.fallingtree.common.tree.exception.TreeBreakingException;
+import fr.raksrinana.fallingtree.common.tree.exception.TreeBreakingNotEnabledException;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.BlockPosWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.LevelWrapper;
 import fr.raksrinana.fallingtree.fabric.common.wrapper.PlayerWrapper;
@@ -24,14 +30,18 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 		var wrappedLevel = new LevelWrapper(level);
 		var wrappedPos = new BlockPosWrapper(blockPos);
 		
-		var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
-		if(result.isEmpty()){
+		try{
+			var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
+			return switch(result.breakMode()){
+				case INSTANTANEOUS -> !result.shouldCancel();
+				case SHIFT_DOWN -> false;
+			};
+		}
+		catch(TreeBreakingNotEnabledException | PlayerNotInRightState | TreeBreakingException | NoTreeFoundException | NotServerException e){
 			return true;
 		}
-		
-		return switch(result.get().breakMode()){
-			case INSTANTANEOUS -> !result.get().shouldCancel();
-			case SHIFT_DOWN -> false;
-		};
+		catch(ToolUseForcedException e){
+			return false;
+		}
 	}
 }

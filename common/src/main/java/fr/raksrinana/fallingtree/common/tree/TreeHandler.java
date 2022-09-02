@@ -7,6 +7,12 @@ import fr.raksrinana.fallingtree.common.tree.breaking.ITreeBreakingHandler;
 import fr.raksrinana.fallingtree.common.tree.breaking.InstantaneousTreeBreakingHandler;
 import fr.raksrinana.fallingtree.common.tree.breaking.ShiftDownTreeBreakingHandler;
 import fr.raksrinana.fallingtree.common.tree.builder.TreeTooBigException;
+import fr.raksrinana.fallingtree.common.tree.exception.NoTreeFoundException;
+import fr.raksrinana.fallingtree.common.tree.exception.NotServerException;
+import fr.raksrinana.fallingtree.common.tree.exception.PlayerNotInRightState;
+import fr.raksrinana.fallingtree.common.tree.exception.ToolUseForcedException;
+import fr.raksrinana.fallingtree.common.tree.exception.TreeBreakingException;
+import fr.raksrinana.fallingtree.common.tree.exception.TreeBreakingNotEnabledException;
 import fr.raksrinana.fallingtree.common.utils.CacheSpeed;
 import fr.raksrinana.fallingtree.common.wrapper.IBlockPos;
 import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
@@ -31,36 +37,40 @@ public class TreeHandler{
 	private final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
 	@NotNull
-	public Optional<BreakTreeResult> breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos){
+	public BreakTreeResult breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos) throws TreeBreakingNotEnabledException, PlayerNotInRightState, ToolUseForcedException, TreeBreakingException, NoTreeFoundException, NotServerException{
 		if(!level.isServer()){
-			return Optional.empty();
+			throw new NotServerException();
 		}
 		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
-			return Optional.empty();
+			throw new TreeBreakingNotEnabledException();
+		}
+		
+		if(mod.getConfiguration().getTools().isForceToolUsage() && player.getMainHandItem().isEmpty()){
+			throw new ToolUseForcedException();
 		}
 		
 		if(!mod.isPlayerInRightState(player)){
-			return Optional.empty();
+			throw new PlayerNotInRightState();
 		}
 		
 		try{
 			var treeOptional = mod.getTreeBuilder().getTree(player, level, blockPos);
 			if(treeOptional.isEmpty()){
-				return Optional.empty();
+				throw new NoTreeFoundException();
 			}
 			
 			var tree = treeOptional.get();
 			var breakMode = getBreakMode(player.getMainHandItem());
 			var result = getBreakingHandler(breakMode).breakTree(player, tree);
-			return Optional.of(new BreakTreeResult(!result, breakMode));
+			return new BreakTreeResult(!result, breakMode);
 		}
 		catch(TreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.tree_too_big", mod.getConfiguration().getTrees().getMaxScanSize()));
-			return Optional.empty();
+			throw new TreeBreakingException(e);
 		}
 		catch(BreakTreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_big", mod.getConfiguration().getTrees().getMaxSize()));
-			return Optional.empty();
+			throw new TreeBreakingException(e);
 		}
 	}
 	

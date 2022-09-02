@@ -318,6 +318,12 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("tools", "preserve", 3))
 				.setSaveConsumer(config::setPreserve)
 				.build();
+		var forceToolUsageEntry = builder.entryBuilder()
+				.startBooleanToggle(translatable(getFieldName("tools", "forceToolUsage")), config.isPreserve())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("tools", "forceToolUsage", 3))
+				.setSaveConsumer(config::setForceToolUsage)
+				.build();
 		
 		var tools = builder.getOrCreateCategory(translatable("text.autoconfig.fallingtree.category.tools"));
 		tools.addEntry(ignoreToolsEntry);
@@ -327,6 +333,7 @@ public class ClothConfigHook extends ClothHookBase{
 		tools.addEntry(damageRoundingEntry);
 		tools.addEntry(speedMultiplicandEntry);
 		tools.addEntry(preserveEntry);
+		tools.addEntry(forceToolUsageEntry);
 	}
 	
 	@Environment(EnvType.CLIENT)

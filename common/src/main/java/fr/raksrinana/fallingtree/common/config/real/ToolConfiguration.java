@@ -33,6 +33,8 @@ public class ToolConfiguration implements IToolConfiguration, IResettable{
 	private DamageRounding damageRounding = DamageRounding.ROUND_DOWN;
 	@Expose
 	private double speedMultiplicand = 0d;
+	@Expose
+	private boolean forceToolUsage = false;
 	
 	//Cache
 	private Set<IItem> deniedCache;

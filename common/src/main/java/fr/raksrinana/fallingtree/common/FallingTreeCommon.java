@@ -101,7 +101,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		var isAllowedTool = toolConfiguration.isIgnoreTools()
 		                    || heldItem.isAxe()
 		                    || toolConfiguration.getAllowedItems(this).stream().anyMatch(tool -> tool.equals(heldItem))
-							|| heldItemStack.canPerformAxeAction();
+		                    || heldItemStack.canPerformAxeAction();
 		if(!isAllowedTool){
 			return false;
 		}

@@ -17,6 +17,8 @@ public interface IToolConfiguration{
 	
 	boolean isIgnoreTools();
 	
+	boolean isForceToolUsage();
+	
 	double getDamageMultiplicand();
 	
 	DamageRounding getDamageRounding();

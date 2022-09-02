@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ConfigurationPacket{
 	private double speedMultiplicand;
+	private boolean forceToolUsage;
 	private BreakMode breakMode;
 }

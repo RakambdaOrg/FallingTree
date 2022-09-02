@@ -25,6 +25,11 @@ public class ItemStackWrapper implements IItemStack{
 	private final ItemStack raw;
 	
 	@Override
+	public boolean isEmpty(){
+		return raw.isEmpty();
+	}
+	
+	@Override
 	public boolean isDamageable(){
 		return raw.isDamageableItem();
 	}
