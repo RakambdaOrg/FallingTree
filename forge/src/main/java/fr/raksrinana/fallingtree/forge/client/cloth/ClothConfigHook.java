@@ -319,7 +319,7 @@ public class ClothConfigHook extends ClothHookBase{
 				.setSaveConsumer(config::setPreserve)
 				.build();
 		var forceToolUsageEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("tools", "forceToolUsage")), config.isPreserve())
+				.startBooleanToggle(translatable(getFieldName("tools", "forceToolUsage")), config.isForceToolUsage())
 				.setDefaultValue(false)
 				.setTooltip(getTooltips("tools", "forceToolUsage", 2))
 				.setSaveConsumer(config::setForceToolUsage)
