@@ -45,7 +45,8 @@ public class TreeHandler{
 			throw new TreeBreakingNotEnabledException();
 		}
 		
-		if(mod.getConfiguration().getTools().isForceToolUsage() && player.getMainHandItem().isEmpty()){
+		if(mod.getConfiguration().getTools().isForceToolUsage() && !mod.isValidTool(player.getMainHandItem())){
+			mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
 			throw new ToolUseForcedException();
 		}
 		
