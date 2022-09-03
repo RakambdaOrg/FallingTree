@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.common;
 
 import fr.raksrinana.fallingtree.common.config.IConfiguration;
+import fr.raksrinana.fallingtree.common.config.IToolConfiguration;
 import fr.raksrinana.fallingtree.common.config.proxy.ProxyConfiguration;
 import fr.raksrinana.fallingtree.common.config.real.Configuration;
 import fr.raksrinana.fallingtree.common.leaf.LeafBreakingHandler;
@@ -54,6 +55,29 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 	
 	public void notifyPlayer(@NotNull IPlayer player, @NotNull IComponent component){
 		player.sendMessage(component, getConfiguration().getNotificationMode());
+	}
+	
+	/**
+	 * Checks if a player is allowed to break a block.
+	 * <br>
+	 * These conditions must be met in order, otherwise player is denied :
+	 * <ul>
+	 *     <li>If {@link IToolConfiguration#isForceToolUsage()} is set to false, player is allowed</li>
+	 *     <li>If block is not a whitelisted one, player is allowed</li>
+	 *     <li>If tool is valid, player is allowed</li>
+	 * </ul>
+	 *
+	 * @return true if the player is allowed to break that block, false otherwise.
+	 */
+	public boolean checkForceToolUsage(@NotNull IPlayer player, @NotNull ILevel level, @NotNull IBlockPos blockPos){
+		if(!getConfiguration().getTools().isForceToolUsage()){
+			return true;
+		}
+		var originBlock = level.getBlockState(blockPos).getBlock();
+		if(!isLogBlock(originBlock)){
+			return true;
+		}
+		return isValidTool(player.getMainHandItem());
 	}
 	
 	public boolean isPlayerInRightState(@NotNull IPlayer player){
