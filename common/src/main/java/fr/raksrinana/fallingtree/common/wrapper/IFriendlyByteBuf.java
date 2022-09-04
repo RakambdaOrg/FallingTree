@@ -5,7 +5,11 @@ public interface IFriendlyByteBuf extends IWrapper{
 	
 	void writeInteger(int value);
 	
+	void writeBoolean(boolean value);
+	
 	double readDouble();
 	
 	int readInteger();
+	
+	boolean readBoolean();
 }

@@ -57,4 +57,7 @@ NOTE: Deny list takes over the values defined in allow list. So if you defined t
 - 0: This is a special value and will take only the time of breaking one single log block.
 
 NOTE: This is only applied when INSTANTANEOUS break mode is used.
+
+|Force tool usage
+|If set to true, you'll be forced to use a valid tool in order to break logs.
 |===

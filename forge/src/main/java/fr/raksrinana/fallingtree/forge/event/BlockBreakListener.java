@@ -1,6 +1,12 @@
 package fr.raksrinana.fallingtree.forge.event;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
+import fr.raksrinana.fallingtree.common.tree.exception.NoTreeFoundException;
+import fr.raksrinana.fallingtree.common.tree.exception.NotServerException;
+import fr.raksrinana.fallingtree.common.tree.exception.PlayerNotInRightState;
+import fr.raksrinana.fallingtree.common.tree.exception.ToolUseForcedException;
+import fr.raksrinana.fallingtree.common.tree.exception.TreeBreakingException;
+import fr.raksrinana.fallingtree.common.tree.exception.TreeBreakingNotEnabledException;
 import fr.raksrinana.fallingtree.forge.common.wrapper.BlockPosWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.LevelWrapper;
 import fr.raksrinana.fallingtree.forge.common.wrapper.PlayerWrapper;
@@ -51,15 +57,20 @@ public class BlockBreakListener{
 		var wrappedLevel = new LevelWrapper(event.getLevel());
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
-		var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
-		if(result.isEmpty()){
-			return;
+		try{
+			var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
+			if(event.isCancelable()){
+				switch(result.breakMode()){
+					case INSTANTANEOUS -> event.setCanceled(result.shouldCancel());
+					case SHIFT_DOWN -> event.setCanceled(true);
+				}
+			}
 		}
-		
-		if(event.isCancelable()){
-			switch(result.get().breakMode()){
-				case INSTANTANEOUS -> event.setCanceled(result.get().shouldCancel());
-				case SHIFT_DOWN -> event.setCanceled(true);
+		catch(TreeBreakingNotEnabledException | PlayerNotInRightState | TreeBreakingException | NoTreeFoundException | NotServerException ignored){
+		}
+		catch(ToolUseForcedException e){
+			if(event.isCancelable()){
+				event.setCanceled(true);
 			}
 		}
 	}

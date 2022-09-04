@@ -17,10 +17,13 @@ public class ToolProxyConfiguration implements IToolConfiguration, IResettable{
 	
 	@Setter
 	private Double speedMultiplicand;
+	@Setter
+	private Boolean forceToolUsage;
 	
 	@Override
 	public void reset(){
 		setSpeedMultiplicand(null);
+		setForceToolUsage(null);
 	}
 	
 	@Override
@@ -58,5 +61,10 @@ public class ToolProxyConfiguration implements IToolConfiguration, IResettable{
 	@Override
 	public double getSpeedMultiplicand(){
 		return Optional.ofNullable(speedMultiplicand).orElseGet(delegate::getSpeedMultiplicand);
+	}
+	
+	@Override
+	public boolean isForceToolUsage(){
+		return Optional.ofNullable(forceToolUsage).orElseGet(delegate::isForceToolUsage);
 	}
 }

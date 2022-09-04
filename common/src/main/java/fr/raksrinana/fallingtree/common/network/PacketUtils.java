@@ -16,6 +16,7 @@ public class PacketUtils{
 	public ConfigurationPacket createConfigurationPacket(){
 		return ConfigurationPacket.builder()
 				.speedMultiplicand(mod.getConfiguration().getTools().getSpeedMultiplicand())
+				.forceToolUsage(mod.getConfiguration().getTools().isForceToolUsage())
 				.breakMode(mod.getConfiguration().getTrees().getBreakMode())
 				.build();
 	}
@@ -23,11 +24,13 @@ public class PacketUtils{
 	public void onClientConfigurationPacket(@NotNull ConfigurationPacket packet){
 		log.info("Received FT configuration packet from server, setting up proxy config values");
 		mod.getProxyConfiguration().getTools().setSpeedMultiplicand(packet.getSpeedMultiplicand());
+		mod.getProxyConfiguration().getTools().setForceToolUsage(packet.isForceToolUsage());
 		mod.getProxyConfiguration().getTrees().setBreakMode(packet.getBreakMode());
 	}
 	
 	public void encodeConfigurationPacket(@NotNull ConfigurationPacket packet, @NotNull IFriendlyByteBuf buf){
 		buf.writeDouble(packet.getSpeedMultiplicand());
+		buf.writeBoolean(packet.isForceToolUsage());
 		buf.writeInteger(packet.getBreakMode().ordinal());
 	}
 	
@@ -40,6 +43,7 @@ public class PacketUtils{
 	public ConfigurationPacket decodeConfigurationPacket(@NotNull IFriendlyByteBuf buf){
 		return ConfigurationPacket.builder()
 				.speedMultiplicand(buf.readDouble())
+				.forceToolUsage(buf.readBoolean())
 				.breakMode(BreakMode.values()[buf.readInteger()])
 				.build();
 	}

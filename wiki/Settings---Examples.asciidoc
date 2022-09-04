@@ -39,7 +39,8 @@ NOTE: This is purely an example, values there won't always make sense.
     "preserve": false,
     "ignoreTools": false,
     "damageMultiplicand": 1,
-    "speedMultiplicand": 0.0
+    "speedMultiplicand": 0.0,
+    "forceToolUsage": true
   },
   "player": {
     "allowedTags": ["playerTag1", "playerTag2"]

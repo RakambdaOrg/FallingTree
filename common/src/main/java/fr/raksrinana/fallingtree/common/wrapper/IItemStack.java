@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface IItemStack extends IWrapper{
+	boolean isEmpty();
+	
 	boolean isDamageable();
 	
 	int getDamage();
