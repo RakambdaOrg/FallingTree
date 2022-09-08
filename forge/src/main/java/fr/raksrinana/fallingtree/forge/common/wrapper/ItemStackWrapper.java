@@ -7,6 +7,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -42,6 +43,18 @@ public class ItemStackWrapper implements IItemStack{
 	@Override
 	public void damage(int amount, @NotNull IPlayer player){
 		raw.hurtAndBreak(amount, (Player) player.getRaw(), entity -> {});
+		handleHoning(player);
+	}
+	
+	private void handleHoning(@NotNull IPlayer player){
+		try{
+			var item = raw.getItem();
+			var method = item.getClass().getMethod("tickHoningProgression", LivingEntity.class, ItemStack.class, int.class);
+			method.invoke(item, (Player) player.getRaw(), raw, 0);
+		}
+		catch(Exception e){
+			//silence
+		}
 	}
 	
 	@Override
