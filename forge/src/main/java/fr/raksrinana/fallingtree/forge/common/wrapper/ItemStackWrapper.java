@@ -4,6 +4,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IEnchantment;
 import fr.raksrinana.fallingtree.common.wrapper.IItem;
 import fr.raksrinana.fallingtree.common.wrapper.IItemStack;
 import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
+import fr.raksrinana.fallingtree.forge.compat.TetraCompat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @ToString
 public class ItemStackWrapper implements IItemStack{
+	
 	@NotNull
 	@Getter
 	private final ItemStack raw;
@@ -47,7 +49,9 @@ public class ItemStackWrapper implements IItemStack{
 	@Override
 	public void damage(int amount, @NotNull IPlayer player){
 		raw.hurtAndBreak(amount, (Player) player.getRaw(), entity -> {});
+		TetraCompat.tickHoningProgression(this, player);
 	}
+
 	
 	@Override
 	@NotNull
