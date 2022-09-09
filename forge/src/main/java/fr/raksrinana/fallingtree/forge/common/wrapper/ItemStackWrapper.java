@@ -7,6 +7,7 @@ import fr.raksrinana.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -14,12 +15,17 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @ToString
 public class ItemStackWrapper implements IItemStack{
+	private static Map<Class<?>, Optional<Method>> honingProgressMethod = new ConcurrentHashMap<>();
+	
 	@NotNull
 	@Getter
 	private final ItemStack raw;
@@ -42,6 +48,30 @@ public class ItemStackWrapper implements IItemStack{
 	@Override
 	public void damage(int amount, @NotNull IPlayer player){
 		raw.hurtAndBreak(amount, (Player) player.getRaw(), entity -> {});
+		handleHoning(player);
+	}
+	
+	private void handleHoning(@NotNull IPlayer player){
+		try{
+			var item = raw.getItem();
+			var itemClass = item.getClass();
+			var method = honingProgressMethod.computeIfAbsent(itemClass, this::getHoningMethod);
+			if(method.isPresent()){
+				method.get().invoke(item, (Player) player.getRaw(), raw, 1);
+			}
+		}
+		catch(Exception e){
+			//silence
+		}
+	}
+	
+	private Optional<Method> getHoningMethod(Class<?> klass){
+		try{
+			return Optional.of(klass.getMethod("tickHoningProgression", LivingEntity.class, ItemStack.class, int.class));
+		}
+		catch(Exception e){
+			return Optional.empty();
+		}
 	}
 	
 	@Override
