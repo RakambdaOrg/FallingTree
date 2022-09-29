@@ -1,0 +1,10 @@
+{
+  "assignees": [
+    "RakSrinaNa"
+  ],
+  "extends": [
+    "config:base"
+  ],
+  "labels": ["type: \uD83D\uDCDA dependencies"],
+  "dependencyDashboard": false
+}
