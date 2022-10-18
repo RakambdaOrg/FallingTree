@@ -9,7 +9,7 @@ log4j2-version = "2.19.0"
 # Minecraft / Loaders
 minecraftVersion = "1.19.2"
 fabric-loader-version = "0.14.9"
-fabric-api-version = "0.62.0+1.19.2"
+fabric-api-version = "0.64.0+1.19.2"
 forge-version = "1.19.2-43.1.3"
 forgeMappingsVersion = "1.19.2"
 
