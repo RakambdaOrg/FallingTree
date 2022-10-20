@@ -1,6 +1,7 @@
 package fr.raksrinana.fallingtree.common.network;
 
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
+import fr.raksrinana.fallingtree.common.config.enums.SneakMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +15,5 @@ public class ConfigurationPacket{
 	private double speedMultiplicand;
 	private boolean forceToolUsage;
 	private BreakMode breakMode;
+	private SneakMode sneakMode;
 }

@@ -6,12 +6,17 @@ import fr.raksrinana.fallingtree.common.config.IPlayerConfiguration;
 import fr.raksrinana.fallingtree.common.config.IResettable;
 import fr.raksrinana.fallingtree.common.config.enums.NotificationMode;
 import fr.raksrinana.fallingtree.common.config.enums.SneakMode;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
 
 public class ProxyConfiguration implements IConfiguration, IResettable{
 	private final IConfiguration delegate;
 	private final ToolProxyConfiguration toolDelegate;
 	private final TreeProxyConfiguration treeDelegate;
+	
+	@Setter
+	private SneakMode sneakMode;
 	
 	public ProxyConfiguration(IConfiguration delegate){
 		this.delegate = delegate;
@@ -21,6 +26,8 @@ public class ProxyConfiguration implements IConfiguration, IResettable{
 	
 	@Override
 	public void reset(){
+		this.sneakMode = null;
+		
 		toolDelegate.reset();
 		treeDelegate.reset();
 	}
@@ -52,7 +59,7 @@ public class ProxyConfiguration implements IConfiguration, IResettable{
 	@Override
 	@NotNull
 	public SneakMode getSneakMode(){
-		return delegate.getSneakMode();
+		return Optional.ofNullable(sneakMode).orElseGet(delegate::getSneakMode);
 	}
 	
 	@Override

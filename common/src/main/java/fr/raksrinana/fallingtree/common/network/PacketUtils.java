@@ -2,6 +2,7 @@ package fr.raksrinana.fallingtree.common.network;
 
 import fr.raksrinana.fallingtree.common.FallingTreeCommon;
 import fr.raksrinana.fallingtree.common.config.enums.BreakMode;
+import fr.raksrinana.fallingtree.common.config.enums.SneakMode;
 import fr.raksrinana.fallingtree.common.wrapper.IFriendlyByteBuf;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +19,7 @@ public class PacketUtils{
 				.speedMultiplicand(mod.getConfiguration().getTools().getSpeedMultiplicand())
 				.forceToolUsage(mod.getConfiguration().getTools().isForceToolUsage())
 				.breakMode(mod.getConfiguration().getTrees().getBreakMode())
+				.sneakMode(mod.getConfiguration().getSneakMode())
 				.build();
 	}
 	
@@ -26,12 +28,14 @@ public class PacketUtils{
 		mod.getProxyConfiguration().getTools().setSpeedMultiplicand(packet.getSpeedMultiplicand());
 		mod.getProxyConfiguration().getTools().setForceToolUsage(packet.isForceToolUsage());
 		mod.getProxyConfiguration().getTrees().setBreakMode(packet.getBreakMode());
+		mod.getProxyConfiguration().setSneakMode(packet.getSneakMode());
 	}
 	
 	public void encodeConfigurationPacket(@NotNull ConfigurationPacket packet, @NotNull IFriendlyByteBuf buf){
 		buf.writeDouble(packet.getSpeedMultiplicand());
 		buf.writeBoolean(packet.isForceToolUsage());
 		buf.writeInteger(packet.getBreakMode().ordinal());
+		buf.writeInteger(packet.getSneakMode().ordinal());
 	}
 	
 	public void onClientDisconnect(){
@@ -45,6 +49,7 @@ public class PacketUtils{
 				.speedMultiplicand(buf.readDouble())
 				.forceToolUsage(buf.readBoolean())
 				.breakMode(BreakMode.values()[buf.readInteger()])
+				.sneakMode(SneakMode.values()[buf.readInteger()])
 				.build();
 	}
 }
