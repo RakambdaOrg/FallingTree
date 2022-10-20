@@ -42,6 +42,7 @@ minecraft {
             mods {
                 fallingtree {
                     source sourceSets.main
+                    source sourceSets.test
                 }
             }
         }
