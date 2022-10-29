@@ -1,6 +1,6 @@
 # Changelog
 
-For newer releases see the [releases section](https://github.com/RakSrinaNa/FallingTree/releases).
+For newer releases see the [releases section](https://github.com/Rakambda/FallingTree/releases).
 
 ## [1.17.1-2.12.3] - 2021-08-08
 ### Changed
