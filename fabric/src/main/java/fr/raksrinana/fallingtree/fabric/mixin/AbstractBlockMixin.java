@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mixin(BlockBehaviour.class)
 public abstract class AbstractBlockMixin{
-	private static final Map<UUID, CacheSpeed> speedCache = new HashMap<>();
+	private static final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
 	@Inject(method = "getDestroyProgress", at = @At(value = "TAIL"), cancellable = true)
 	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){

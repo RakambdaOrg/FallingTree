@@ -29,6 +29,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static net.minecraft.util.Hand.MAIN_HAND;
@@ -39,7 +40,7 @@ import static net.minecraftforge.fml.LogicalSide.SERVER;
 @Mod.EventBusSubscriber(modid = FallingTree.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventSubscriber{
 	private static final Set<LeafBreakingSchedule> scheduledLeavesBreaking = new ConcurrentSet<>();
-	private static final Map<UUID, CacheSpeed> speedCache = new HashMap<>();
+	private static final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
 	@SubscribeEvent
 	public static void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
