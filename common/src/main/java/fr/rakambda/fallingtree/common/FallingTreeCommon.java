@@ -1,5 +1,6 @@
 package fr.rakambda.fallingtree.common;
 
+import fr.rakambda.fallingtree.common.command.ToggleCommand;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.tree.TreeHandler;
 import fr.rakambda.fallingtree.common.tree.TreePartType;
@@ -87,10 +88,17 @@ public abstract class FallingTreeCommon<D extends Enum<D>>{
 		if(!getConfiguration().getSneakMode().test(player.isCrouching())){
 			return false;
 		}
+		if(playerHasToggledOff(player)){
+			return false;
+		}
 		if(!playerHasRequiredTags(player)){
 			return false;
 		}
 		return canPlayerBreakTree(player);
+	}
+	
+	private boolean playerHasToggledOff(@NotNull IPlayer player){
+		return player.getTags().contains(ToggleCommand.FALLINGTREE_DISABLE_TAG);
 	}
 	
 	private boolean playerHasRequiredTags(@NotNull IPlayer player){

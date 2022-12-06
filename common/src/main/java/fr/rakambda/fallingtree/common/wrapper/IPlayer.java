@@ -25,4 +25,8 @@ public interface IPlayer extends IWrapper{
 	
 	@NotNull
 	Set<String> getTags();
+	
+	boolean addTag(@NotNull String tag);
+	
+	boolean removeTag(@NotNull String tag);
 }

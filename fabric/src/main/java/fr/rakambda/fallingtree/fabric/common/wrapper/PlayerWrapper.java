@@ -77,4 +77,14 @@ public class PlayerWrapper implements IPlayer{
 	public Set<String> getTags(){
 		return raw.getTags();
 	}
+	
+	@Override
+	public boolean addTag(@NotNull String tag){
+		return raw.addTag(tag);
+	}
+	
+	@Override
+	public boolean removeTag(@NotNull String tag){
+		return raw.removeTag(tag);
+	}
 }
