@@ -14,11 +14,11 @@ public class ToggleCommand{
 	public int apply(@NotNull IPlayer player){
 		if(player.getTags().contains(FALLINGTREE_DISABLE_TAG)){
 			player.removeTag(FALLINGTREE_DISABLE_TAG);
-			mod.notifyPlayer(player, mod.translate("fallingtree.command.toggle.enabled"));
+			mod.notifyPlayer(player, mod.translate("command.fallingtree.toggle.enabled"));
 		}
 		else {
 			player.addTag(FALLINGTREE_DISABLE_TAG);
-			mod.notifyPlayer(player, mod.translate("fallingtree.command.toggle.disabled"));
+			mod.notifyPlayer(player, mod.translate("command.fallingtree.toggle.disabled"));
 		}
 		return 1;
 	}
