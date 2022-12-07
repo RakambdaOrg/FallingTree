@@ -238,6 +238,8 @@
   "chat.fallingtree.search_aborted": "Tree detection stopped, reason: ",
   "chat.fallingtree.search_aborted.adjacent": "Found block %s that isn't allowed in the adjacent blocks.",
   "chat.fallingtree.force_tool_usage": "Tool usage is forced, but you didn't use a valid tool.",
+  "command.fallingtree.toggle.enabled": "FallingTree enabled",
+  "command.fallingtree.toggle.disabled": "FallingTree disabled",
   "enchantment.fallingtree.chopper": "Chopper",
   "enchantment.fallingtree.chopper.desc": "Makes the enchanted tool able to chop down tress in one go with the default breaking mode",
   "enchantment.fallingtree.chopper_instantaneous": "Chopper (instantaneous)",

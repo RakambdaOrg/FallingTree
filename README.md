@@ -8,7 +8,7 @@ This mod will change the way you break trees. 2 modes are available:
 * Instantaneous: Break one log and the whole tree will fall
 * Shift down: Break a block and the log will slowly shift down as you cut it (good if you don't want to "cheat" too much but are lazy to go cut top log blocks 😛)
 
-![Demonstration of breaking a tree](https://github.com/RakSrinaNa/FallingTree/raw/minecraft/1.16.5/assets/demo.gif)
+![Demonstration of breaking a tree](https://github.com/Rakambda/FallingTree/raw/minecraft/1.16.5/assets/demo.gif)
 
 Several options are available in the config file:
 
@@ -22,4 +22,4 @@ Several options are available in the config file:
 
 NOTE: On servers this mod can be server-side only, client isn't required (except if you use the change speed feature and/or enchants configurations).
 
-Check out the [wiki](https://github.com/RakSrinaNa/FallingTree/wiki) for some more information.
+Check out the [wiki](https://github.com/Rakambda/FallingTree/wiki) for some more information.

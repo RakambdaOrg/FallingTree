@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "fr.raksrinana.fallingtree.fabric.mixin",
+  "package": "fr.rakambda.fallingtree.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractBlockMixin",

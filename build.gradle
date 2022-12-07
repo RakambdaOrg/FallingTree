@@ -55,7 +55,7 @@ allprojects {
 }
 
 def minecraftVersion = libs.versions.minecraftVersion.get()
-group = "fr.raksrinana"
+group = "fr.rakambda"
 archivesBaseName = "${project.modName}-${minecraftVersion}"
 
 def relType = "release"
@@ -100,23 +100,23 @@ task buildJar(type: Jar, group: "modding") {
     manifest {
         attributes([
                 "Specification-Title"     : project.modId,
-                "Specification-Vendor"    : "RakSrinaNa",
+                "Specification-Vendor"    : "Rakambda",
                 "Specification-Version"   : project.version,
                 "Implementation-Title"    : project.modName,
                 "Implementation-Version"  : "${project.version}",
-                "Implementation-Vendor"   : "RakSrinaNa",
+                "Implementation-Vendor"   : "Rakambda",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 assemble.finalizedBy("buildJar")
 
-static def extractMainVersion(String ver){
+static def extractMainVersion(String ver) {
     def match = Pattern.compile("(\\d+\\.\\d+)(\\.\\d+)?").matcher(ver)
-    if(match.matches()){
+    if (match.matches()) {
         return match.group(1)
     }
-    return ver;
+    return null;
 }
 
 curseforge {
@@ -126,7 +126,10 @@ curseforge {
         changelogType = "markdown"
 
         if (isAlpha) {
-            addGameVersion(extractMainVersion(minecraftVersion) + "-Snapshot")
+            def extracted = extractMainVersion(minecraftVersion)
+            if (extracted != null) {
+                addGameVersion(extracted + "-Snapshot")
+            }
         } else {
             addGameVersion(minecraftVersion)
         }
