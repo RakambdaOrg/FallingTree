@@ -12,6 +12,7 @@ import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
 import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
+import fr.rakambda.fallingtree.forge.client.event.PlayerLeaveListener;
 import fr.rakambda.fallingtree.forge.common.wrapper.BlockWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.ComponentWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.EnchantmentWrapper;
@@ -20,14 +21,14 @@ import fr.rakambda.fallingtree.forge.event.BlockBreakListener;
 import fr.rakambda.fallingtree.forge.event.FallingTreeBlockBreakEvent;
 import fr.rakambda.fallingtree.forge.event.FallingTreeEnchantments;
 import fr.rakambda.fallingtree.forge.event.LeafBreakingListener;
+import fr.rakambda.fallingtree.forge.event.ServerCommandRegistrationListener;
 import fr.rakambda.fallingtree.forge.network.ForgePacketHandler;
 import fr.rakambda.fallingtree.forge.network.PlayerJoinListener;
-import fr.rakambda.fallingtree.forge.client.event.PlayerLeaveListener;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +43,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +53,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import static java.util.stream.Stream.empty;
-import static net.minecraftforge.registries.ForgeRegistries.ITEMS;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
@@ -88,10 +89,10 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			}
 			var resourceLocation = new ResourceLocation(name);
 			if(isTag){
-				var tag = TagKey.create(Registry.BLOCK_REGISTRY, resourceLocation);
-				return getRegistryTagContent(Registry.BLOCK, tag).map(BlockWrapper::new);
+				var tag = TagKey.create(Registries.BLOCK, resourceLocation);
+				return getRegistryTagContent(ForgeRegistries.BLOCKS, tag).map(BlockWrapper::new);
 			}
-			return Stream.of(ForgeRegistries.BLOCKS.getValue(resourceLocation)).filter(Objects::nonNull).map(BlockWrapper::new);
+			return getRegistryElement(ForgeRegistries.BLOCKS, resourceLocation).stream().map(BlockWrapper::new);
 		}
 		catch(Exception e){
 			return empty();
@@ -108,10 +109,10 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			}
 			var resourceLocation = new ResourceLocation(name);
 			if(isTag){
-				var tag = TagKey.create(Registry.ITEM_REGISTRY, resourceLocation);
-				return getRegistryTagContent(Registry.ITEM, tag).map(ItemWrapper::new);
+				var tag = TagKey.create(Registries.ITEM, resourceLocation);
+				return getRegistryTagContent(ForgeRegistries.ITEMS, tag).map(ItemWrapper::new);
 			}
-			return Stream.of(ITEMS.getValue(resourceLocation)).filter(Objects::nonNull).map(ItemWrapper::new);
+			return getRegistryElement(ForgeRegistries.ITEMS, resourceLocation).stream().map(ItemWrapper::new);
 		}
 		catch(Exception e){
 			return empty();
@@ -120,7 +121,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean isLeafBlock(@NotNull IBlock block){
-		var isAllowedBlock = registryTagContains(Registry.BLOCK, BlockTags.LEAVES, (Block) block.getRaw())
+		var isAllowedBlock = registryTagContains(ForgeRegistries.BLOCKS, BlockTags.LEAVES, (Block) block.getRaw())
 		                     || getConfiguration().getTrees().getAllowedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
 		if(isAllowedBlock){
 			var isDeniedBlock = getConfiguration().getTrees().getDeniedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
@@ -143,7 +144,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	@NotNull
 	public Set<IBlock> getAllNonStrippedLogsBlocks(){
-		return getRegistryTagContent(Registry.BLOCK, BlockTags.LOGS)
+		return getRegistryTagContent(ForgeRegistries.BLOCKS, BlockTags.LOGS)
 				.filter(block -> !Optional.ofNullable(ForgeRegistries.BLOCKS.getKey(block))
 						.map(ResourceLocation::getPath)
 						.map(name -> name.startsWith("stripped"))
@@ -166,7 +167,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean isNetherWartOrShroomlight(@NotNull IBlock block){
-		return registryTagContains(Registry.BLOCK, BlockTags.WART_BLOCKS, (Block) block.getRaw())
+		return registryTagContains(ForgeRegistries.BLOCKS, BlockTags.WART_BLOCKS, (Block) block.getRaw())
 		       || Blocks.SHROOMLIGHT.equals(block.getRaw());
 	}
 	
@@ -201,12 +202,16 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@NotNull
-	private <T> Stream<T> getRegistryTagContent(@NotNull Registry<T> registry, @NotNull TagKey<T> tag){
-		return registry.getTag(tag).stream()
-				.flatMap(a -> a.stream().map(Holder::value));
+	private <T> Optional<T> getRegistryElement(IForgeRegistry<T> registryKey, ResourceLocation identifier){
+		return registryKey.getHolder(identifier).map(Holder::value);
 	}
 	
-	private <T> boolean registryTagContains(@NotNull Registry<T> registry, @NotNull TagKey<T> tag, @NotNull T element){
+	@NotNull
+	private <T> Stream<T> getRegistryTagContent(@NotNull IForgeRegistry<T> registry, @NotNull TagKey<T> tag){
+		return registry.tags().getTag(tag).stream();
+	}
+	
+	private <T> boolean registryTagContains(@NotNull IForgeRegistry<T> registry, @NotNull TagKey<T> tag, @NotNull T element){
 		return getRegistryTagContent(registry, tag).anyMatch(element::equals);
 	}
 	
@@ -217,5 +222,6 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		eventBus.register(new LeafBreakingListener(this));
 		eventBus.register(new PlayerJoinListener(this));
 		eventBus.register(new PlayerLeaveListener(this));
+		eventBus.register(new ServerCommandRegistrationListener(this));
 	}
 }

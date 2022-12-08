@@ -12,6 +12,7 @@ minecraft {
             workingDirectory project.file("./run/client")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
+            property "forge.enabledGameTestNamespaces", "fallingtree"
             mods {
                 fallingtree {
                     source sourceSets.main
@@ -24,6 +25,7 @@ minecraft {
             workingDirectory project.file("./run/server")
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "info"
+            property "forge.enabledGameTestNamespaces", "fallingtree"
             args "--nogui"
             mods {
                 fallingtree {
@@ -35,9 +37,9 @@ minecraft {
         gameTestServer {
             taskName "runFTForgeTestServer"
             workingDirectory project.file("./run/test")
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'fallingtree'
+            property "forge.logging.markers", "REGISTRIES"
+            property "forge.logging.console.level", "debug"
+            property "forge.enabledGameTestNamespaces", "fallingtree"
 
             mods {
                 fallingtree {
