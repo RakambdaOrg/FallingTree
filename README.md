@@ -1,5 +1,5 @@
 [![Discord Server](https://img.shields.io/discord/1007349372444491856.svg?logo=Discord&colorB=7289da)](https://discord.gg/uXWsRftdy7)
-[![Curseforge Downloads](http://cf.way2muchnoise.eu/falling-tree.svg)](https://www.curseforge.com/minecraft/mc-mods/falling-tree)
+[![Curseforge Downloads](http://cf.way2muchnoise.eu/short_349559_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/falling-tree)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/fallingtree?logo=Modrinth)](https://modrinth.com/mod/fallingtree)
 
 This mod will change the way you break trees. 2 modes are available:
@@ -18,6 +18,11 @@ Several options are available in the config file:
 * Damage tools or not (can set it to break the tool by the amount of blocks there were in the tree).
 * Let tools at 1 durability if it's going to break.
 
-NOTE: On servers this mod can be server-side only, client isn't required (except if you use the change speed feature and/or enchants configurations).
-
 Check out the [wiki](https://github.com/Rakambda/FallingTree/wiki) for some more information.
+
+---
+
+* For Fabric users, **Fabric API** is required.
+* For Forge users, **Cloth Config API** is optional on the client and allows you to have a config GUI in game.
+
+NOTE: On servers this mod can be server-side only, client isn't required (except if you use the change speed feature and/or enchants configurations).
