@@ -1,58 +1,38 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
 
-plugins {
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id "com.github.breadmoirai.github-release" version "2.2.10"
-    id 'com.novoda.build-properties' version '0.4.1'
-}
-
-buildProperties {
-    secrets {
-        using(file('secrets.properties')).or(System.getenv()).or([
-                "CURSEFORGE_API_KEY": "N/A",
-                "GITHUB_TOKEN"      : "N/A"
-        ])
-    }
-}
-
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
-apply plugin: "com.github.breadmoirai.github-release"
-
-repositories {
-    flatDir {
-        name "fileRepo"
-        dirs "repo"
-    }
-    mavenLocal()
-    jcenter()
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.compilerArgs = ['-Xlint:deprecation']
-}
-
-javadoc {
-    failOnError = false
-}
 
 archivesBaseName = project.archivesBaseName
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    version = "${project.forge_version}"
-    runDir = "run"
-    mappings = "${project.mcp_channel}_${project.mcp_mappings}"
+    mappings channel: "${project.mcp_channel}", version: "${project.mcp_mappings}"
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${project.forge_version}"
 }
 
 jar {
@@ -68,147 +48,10 @@ jar {
     }
 }
 
-task deobfJar(type: Jar) {
-    appendix = "${project.mc_version}"
-    classifier = 'deobf'
-    from sourceSets.main.output
-}
-
-task sourcesJar(type: Jar) {
-    appendix = "${project.mc_version}"
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    appendix = "${project.mc_version}"
-    classifier = 'javadoc'
-    from javadoc.getDestinationDir()
-}
-
-curseforge {
-    apiKey = buildProperties.secrets['CURSEFORGE_API_KEY'].string
-    project {
-        id = "${project.curseforge_project_id}"
-        changelogType = 'markdown'
-        addGameVersion "${project.mc_version}"
-        changelog = getLatestChangeLog()
-        releaseType = "${project.curseforge_release_type}"
-        mainArtifact(jar) {
-            displayName = "${project.archivesBaseName}-${project.mc_version}-${project.version}"
-        }
-    }
-    options {
-        debug = false
-        javaVersionAutoDetect = false
-    }
-}
+jar.finalizedBy('reobfJar')
 
 processResources {
     filesMatching("mcmod.info") {
         expand project.properties
     }
 }
-
-githubRelease {
-    owner = "RakSrinaNa"
-    repo = project.repoName
-    token = buildProperties.secrets['GITHUB_TOKEN'].string
-    tagName = "${project.mc_version}-${project.version}"
-    releaseName = "${project.mc_version}-${project.version}"
-    targetCommitish = "${project.mc_version}"
-    body {
-        return getLatestChangeLog()
-    }
-}
-
-artifacts {
-    if (project.hasProperty('doDeobfJar')) {
-        archives deobfJar
-    }
-    if (project.hasProperty('doSourceJar')) {
-        archives sourcesJar
-    }
-    if (project.hasProperty('doJavadocJar')) {
-        archives javadocJar
-    }
-}
-
-// Update JSON management
-
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
-
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
-
-def writeUpdateJson() {
-    def version = project.version
-    def slurper = new JsonSlurper()
-    def file = new File('update.json')
-    def json = slurper.parse(file)
-
-    // TODO: Maybe add something to create an abbreviated changelog? May not be useful...
-    if (!json[project.mc_version].containsKey(version.toString()))
-        json[project.mc_version][version.toString()] = project.changelogUrl
-    json[project.mc_version] = json[project.mc_version].sort([compare: { a, b -> b.compareTo(a) }] as Comparator)
-    json['promos']["${project.mc_version}-latest"] = version
-    json['promos']["${project.mc_version}-recommended"] = version
-
-    println(json)
-    file.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
-}
-
-String getAllChangeLog() {
-    final old_log = file("CHANGELOG.md")
-    final header_file = file("header.md")
-
-    def all_log = old_log.exists() ? old_log.text : "No change log provided."
-    def header = header_file.exists() ? header_file.text : ""
-    return header + System.lineSeparator() + all_log
-}
-
-String getLatestChangeLog() {
-    final def log_file = file("changes.md")
-    final def header_file = file("header.md")
-    def log = log_file.exists() ? log_file.text : "No change log provided."
-    def header = header_file.exists() ? header_file.text : ""
-    return header + System.lineSeparator() + log
-}
-
-task makeChangeLog() {
-    doLast {
-        moveOldLog()
-
-        ProcessBuilder commiter = new ProcessBuilder("git", "commit", "-m", "v${project.version}")
-        def process1 = commiter.start()
-        process1.waitFor(10L, TimeUnit.SECONDS)
-        ProcessBuilder pusher = new ProcessBuilder("git", "push")
-        def process2 = pusher.start()
-        process2.waitFor(20L, TimeUnit.SECONDS)
-    }
-}
-
-void moveOldLog() {
-    def new_log_file = file("changes.md")
-    def old_log_file = file("CHANGELOG.md")
-
-    if (new_log_file.exists()) {
-        if (!old_log_file.exists())
-            old_log_file.createNewFile()
-        def version = project.version
-        def dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        def currDate = LocalDate.now()
-        def combined = "## [${project.mc_version}-${version}] - " + currDate.format(dateFormat) + System.lineSeparator() + new_log_file.text.trim() + System.lineSeparator() + System.lineSeparator() + old_log_file.text
-        old_log_file.setText(combined)
-    }
-}
-
-task createUpdateJson {
-    doLast {
-        println('Updating update.json...')
-        writeUpdateJson()
-    }
-}
-build.finalizedBy createUpdateJson
