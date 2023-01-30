@@ -241,9 +241,9 @@
   "command.fallingtree.toggle.enabled": "FallingTree enabled",
   "command.fallingtree.toggle.disabled": "FallingTree disabled",
   "enchantment.fallingtree.chopper": "Chopper",
-  "enchantment.fallingtree.chopper.desc": "Makes the enchanted tool able to chop down tress in one go with the default breaking mode",
+  "enchantment.fallingtree.chopper.desc": "Makes the enchanted tool able to chop down trees in one go with the default breaking mode",
   "enchantment.fallingtree.chopper_instantaneous": "Chopper (instantaneous)",
-  "enchantment.fallingtree.chopper_instantaneous.desc": "Makes the enchanted tool able to chop down tress in one go with the instantaneous mode",
+  "enchantment.fallingtree.chopper_instantaneous.desc": "Makes the enchanted tool able to chop down trees in one go with the instantaneous mode",
   "enchantment.fallingtree.chopper_shift_down": "Chopper (shift down)",
-  "enchantment.fallingtree.chopper_shift_down.desc": "Makes the enchanted tool able to chop down tress in one go with the shift down mode"
+  "enchantment.fallingtree.chopper_shift_down.desc": "Makes the enchanted tool able to chop down trees in one go with the shift down mode"
 }
