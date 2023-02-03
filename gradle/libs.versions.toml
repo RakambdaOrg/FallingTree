@@ -1,7 +1,7 @@
 # Fabric https://modmuss50.me/fabric.html
 
 [versions]
-lombok-version = "1.18.24"
+lombok-version = "1.18.26"
 jetbrains-annotations-version = "24.0.0"
 gson-version = "2.10.1"
 log4j2-version = "2.19.0"
