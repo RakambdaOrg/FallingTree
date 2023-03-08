@@ -18,7 +18,7 @@ modmenu-version = "5.0.2"
 clothConfigVersion = "9.0.94"
 
 fabric-loom-version = "1.1.9"
-forge-plugin-version = "5.1.67"
+forge-plugin-version = "5.1.68"
 curse-version = "1.4.0"
 modrinth-version = "2.7.4"
 names-version = "0.46.0"
