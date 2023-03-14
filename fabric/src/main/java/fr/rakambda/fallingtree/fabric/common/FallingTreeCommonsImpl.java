@@ -67,7 +67,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	@NotNull
 	public IComponent translate(@NotNull String key, Object... objects){
-		return new ComponentWrapper(MutableComponent.create(new TranslatableContents(key, objects)));
+		return new ComponentWrapper(MutableComponent.create(new TranslatableContents(key, null, objects)));
 	}
 	
 	@Override
