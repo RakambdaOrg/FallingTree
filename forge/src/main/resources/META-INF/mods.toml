@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[44,)"
+loaderVersion = "[45,)"
 issueTrackerURL = "https://github.com/${repoUser}/${repoName}/issues"
 license = "LGPL-3.0"
 
@@ -15,7 +15,7 @@ authors = "Rakambda"
 [[dependencies.fallingtree]]
 modId = "forge"
 mandatory = true
-versionRange = "[44,)"
+versionRange = "[45,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.fallingtree]]
@@ -27,6 +27,6 @@ side = "BOTH"
 [[dependencies.fallingtree]]
 modId = "cloth-config"
 mandatory = false
-versionRange = "[9.0.0,)"
+versionRange = "[10.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
