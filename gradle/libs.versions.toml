@@ -20,7 +20,7 @@ clothConfigVersion = "10.0.95"
 fabric-loom-version = "1.1.10"
 forge-plugin-version = "5.1.68"
 curse-version = "1.4.0"
-modrinth-version = "2.7.4"
+modrinth-version = "2.7.5"
 names-version = "0.46.0"
 
 [libraries]
