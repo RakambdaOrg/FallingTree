@@ -29,8 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -70,7 +69,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	@NotNull
 	public IComponent translate(@NotNull String key, Object... objects){
-		return new ComponentWrapper(MutableComponent.create(new TranslatableContents(key, objects)));
+		return new ComponentWrapper(Component.translatable(key, objects));
 	}
 	
 	@Override
