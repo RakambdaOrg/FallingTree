@@ -19,8 +19,6 @@ import fr.rakambda.fallingtree.common.config.real.cloth.ClothHookBase;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigScreenHandler;
@@ -39,7 +37,7 @@ public class ClothConfigHook extends ClothHookBase{
 		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> {
 			var builder = ConfigBuilder.create()
 					.setParentScreen(screen)
-					.setTitle(MutableComponent.create(new LiteralContents("FallingTree")));
+					.setTitle(Component.literal("FallingTree"));
 			
 			var configuration = getMod().getOwnConfiguration();
 			builder.setSavingRunnable(configuration::onUpdate);

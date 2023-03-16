@@ -2,12 +2,6 @@ package fr.rakambda.fallingtree.fabric.client.cloth;
 
 import com.google.common.collect.Lists;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.config.real.Configuration;
-import fr.rakambda.fallingtree.common.config.real.EnchantmentConfiguration;
-import fr.rakambda.fallingtree.common.config.real.PlayerConfiguration;
-import fr.rakambda.fallingtree.common.config.real.ToolConfiguration;
-import fr.rakambda.fallingtree.common.config.real.TreeConfiguration;
-import fr.rakambda.fallingtree.common.config.real.cloth.ClothHookBase;
 import fr.rakambda.fallingtree.common.config.enums.AdjacentStopMode;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.config.enums.BreakOrder;
@@ -16,14 +10,18 @@ import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.config.enums.NotificationMode;
 import fr.rakambda.fallingtree.common.config.enums.SneakMode;
+import fr.rakambda.fallingtree.common.config.real.Configuration;
+import fr.rakambda.fallingtree.common.config.real.EnchantmentConfiguration;
+import fr.rakambda.fallingtree.common.config.real.PlayerConfiguration;
+import fr.rakambda.fallingtree.common.config.real.ToolConfiguration;
+import fr.rakambda.fallingtree.common.config.real.TreeConfiguration;
+import fr.rakambda.fallingtree.common.config.real.cloth.ClothHookBase;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
@@ -39,7 +37,7 @@ public class ClothConfigHook extends ClothHookBase{
 		return (screen) -> {
 			var builder = ConfigBuilder.create()
 					.setParentScreen(screen)
-					.setTitle(MutableComponent.create(new LiteralContents("FallingTree")));
+					.setTitle(Component.literal("FallingTree"));
 			
 			var configuration = getMod().getOwnConfiguration();
 			builder.setSavingRunnable(configuration::onUpdate);
