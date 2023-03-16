@@ -5,7 +5,7 @@ on:
 jobs:
   auto-approve-synced-files:
     name: Auto approve synced files
-    if: contains(github.event.pull_request.title, 'Synced file(s)') && github.actor == 'rakambda' && github.event.pull_request.base.ref == github.event.repository.default_branch
+    if: contains(github.event.pull_request.title, 'Synced file(s)') && github.actor == 'couchoud-t' && github.event.pull_request.base.ref == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.4.0
