@@ -1,14 +1,30 @@
 version: 2
 updates:
-  - package-ecosystem: gradle
+  - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - Rakambda
-  - package-ecosystem: github-actions
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - Rakambda
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"

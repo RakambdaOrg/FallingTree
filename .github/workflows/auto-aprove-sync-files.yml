@@ -1,0 +1,20 @@
+name: Auto approve sync files
+on:
+  pull_request:
+
+jobs:
+  auto-approve-synced-files:
+    name: Auto approve synced files
+    if: contains(github.event.pull_request.title, 'Synced file(s)') && github.actor == 'rakambda' && github.event.pull_request.base.ref == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.4.0
+      - name: Pull Request approval
+        uses: hmarr/auto-approve-action@v3.2.1
+        with:
+          github-token: "${{ secrets.SYNC_TOKEN }}"
+      - name: Pull Request merge
+        uses: KeisukeYamashita/auto-pull-request-merge@v1.0.6
+        with:
+          token: "${{ secrets.SYNC_TOKEN }}"
+          strategy: squash

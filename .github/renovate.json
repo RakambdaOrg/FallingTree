@@ -1,10 +1,11 @@
 {
-  "assignees": [
+  "assignees" : [
     "Rakambda"
   ],
-  "extends": [
+  "extends" : [
     "config:base"
   ],
-  "labels": ["type: \uD83D\uDCDA dependencies"],
-  "dependencyDashboard": false
+  "labels" : ["type: \uD83D\uDCDA dependencies"],
+  "enabledManagers": ["dockerfile", "nuget", "gradle", "maven", "npm", "pip_requirements", "github-actions", "gradle-wrapper"],
+  "dependencyDashboard" : false
 }
