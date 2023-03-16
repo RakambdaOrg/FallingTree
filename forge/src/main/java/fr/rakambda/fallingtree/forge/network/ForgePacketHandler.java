@@ -26,7 +26,7 @@ public class ForgePacketHandler implements ClientPacketHandler, ServerPacketHand
 	private static final String PROTOCOL_VERSION = "1";
 	private static final Collection<String> ALLOWED_VERSIONS = Set.of(
 			PROTOCOL_VERSION,
-			NetworkRegistry.ABSENT,
+			NetworkRegistry.ABSENT.version(),
 			NetworkRegistry.ACCEPTVANILLA
 	);
 	
