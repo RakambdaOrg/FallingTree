@@ -7,5 +7,6 @@
   ],
   "labels" : ["type: \uD83D\uDCDA dependencies"],
   "enabledManagers": ["dockerfile", "nuget", "npm", "pip_requirements", "github-actions", "gradle-wrapper"],
-  "dependencyDashboard" : false
+  "dependencyDashboard" : false,
+  "excludeCommitPaths": [".github/workflows/auto-approve-sync-files.yml"]
 }
