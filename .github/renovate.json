@@ -6,6 +6,6 @@
     "config:base"
   ],
   "labels" : ["type: \uD83D\uDCDA dependencies"],
-  "enabledManagers": ["dockerfile", "nuget", "gradle", "maven", "npm", "pip_requirements", "github-actions", "gradle-wrapper"],
+  "enabledManagers": ["dockerfile", "nuget", "npm", "pip_requirements", "github-actions", "gradle-wrapper"],
   "dependencyDashboard" : false
 }
