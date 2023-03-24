@@ -4,10 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
+#  Disable while paths can't be ignored as it'd update all 'auto-approve-sync-files.yml', Renovate will handle exclusion
+#  - package-ecosystem: "github-actions"
+#    directory: "/"
+#    schedule:
+#      interval: "daily"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
@@ -16,7 +17,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-#  Disable for now, it doesn't handle well pnpm
+#  Disable for now, it doesn't handle well pnpm, Renovate handles it
 #  - package-ecosystem: "npm"
 #    directory: "/"
 #    schedule:
