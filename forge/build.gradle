@@ -56,6 +56,8 @@ repositories {
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     from "src/main/resources", "../common/src/main/resources"
 
     filesMatching("META-INF/mods.toml") {
