@@ -8,7 +8,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'Synced file(s)') && github.actor == 'couchoud-t' && github.event.pull_request.base.ref == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.1
+      - uses: actions/checkout@v3.5.2
       - name: Pull Request approval
         uses: hmarr/auto-approve-action@v3.2.1
         with:
