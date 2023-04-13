@@ -31,7 +31,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Check project
-        uses: gradle/gradle-build-action@v2.4.0
+        uses: gradle/gradle-build-action@v2.4.1
         env:
           ORG_GRADLE_PROJECT_forgeKeyStore: keystoreForgeMods.jks
           ORG_GRADLE_PROJECT_forgeKeyStoreAlias: ${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
