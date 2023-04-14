@@ -36,7 +36,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build mod file
-        uses: gradle/gradle-build-action@v2.4.1
+        uses: gradle/gradle-build-action@v2.4.2
         env:
           ORG_GRADLE_PROJECT_version: "${{ steps.get_release.outputs.name }}"
           ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
@@ -52,7 +52,7 @@ jobs:
             build
 
       - name: Push on stores
-        uses: gradle/gradle-build-action@v2.4.1
+        uses: gradle/gradle-build-action@v2.4.2
         env:
           ORG_GRADLE_PROJECT_version: "${{ steps.get_release.outputs.name }}"
           ORG_GRADLE_PROJECT_changelog: "[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
