@@ -10,4 +10,4 @@ pluginManagement {
 }
 
 rootProject.name = "FallingTree"
-include("common", "forge")
+include("common", "fabric", "forge")
