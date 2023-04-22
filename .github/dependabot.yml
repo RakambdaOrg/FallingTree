@@ -4,29 +4,43 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    pull-request-branch-name:
+      separator: "-"
 #  Disable while paths can't be ignored as it'd update all 'auto-approve-sync-files.yml', Renovate will handle exclusion
 #  - package-ecosystem: "github-actions"
 #    directory: "/"
 #    schedule:
 #      interval: "daily"
+#    pull-request-branch-name:
+#      separator: "-"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
+    pull-request-branch-name:
+      separator: "-"
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "daily"
+    pull-request-branch-name:
+      separator: "-"
 #  Disable for now, it doesn't handle well pnpm, Renovate handles it
 #  - package-ecosystem: "npm"
 #    directory: "/"
 #    schedule:
 #      interval: "daily"
+#    pull-request-branch-name:
+#      separator: "-"
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "daily"
+    pull-request-branch-name:
+      separator: "-"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "daily"
+    pull-request-branch-name:
+      separator: "-"
