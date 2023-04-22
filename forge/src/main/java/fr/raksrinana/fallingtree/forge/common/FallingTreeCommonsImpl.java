@@ -75,7 +75,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			}
 			var resourceLocation = new ResourceLocation(name);
 			if(isTag){
-				var tag = TagKey.m_203882_(Registry.BLOCK_REGISTRY, resourceLocation);
+				var tag = TagKey.create(Registry.BLOCK_REGISTRY, resourceLocation);
 				return getRegistryTagContent(Registry.BLOCK, tag).map(BlockWrapper::new);
 			}
 			return Stream.of(ForgeRegistries.BLOCKS.getValue(resourceLocation)).filter(Objects::nonNull).map(BlockWrapper::new);
@@ -95,7 +95,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			}
 			var resourceLocation = new ResourceLocation(name);
 			if(isTag){
-				var tag = TagKey.m_203882_(Registry.ITEM_REGISTRY, resourceLocation);
+				var tag = TagKey.create(Registry.ITEM_REGISTRY, resourceLocation);
 				return getRegistryTagContent(Registry.ITEM, tag).map(ItemWrapper::new);
 			}
 			return Stream.of(ITEMS.getValue(resourceLocation)).filter(Objects::nonNull).map(ItemWrapper::new);
@@ -184,8 +184,9 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@NotNull
 	private <T> Stream<T> getRegistryTagContent(@NotNull Registry<T> registry, @NotNull TagKey<T> tag){
-		return registry.m_203431_(tag).stream()
-				.flatMap(a -> a.m_203614_().map(Holder::m_203334_));
+		return Stream.of(registry.getTag(tag).orElse(null))
+				.filter(Objects::nonNull)
+				.flatMap(a -> a.stream().map(Holder::value));
 	}
 	
 	private <T> boolean registryTagContains(@NotNull Registry<T> registry, @NotNull TagKey<T> tag, @NotNull T element){
