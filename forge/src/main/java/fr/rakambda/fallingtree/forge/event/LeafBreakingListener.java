@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.stream.Collectors;
@@ -38,6 +39,13 @@ public class LeafBreakingListener{
 					new BlockPosWrapper(eventPos),
 					new BlockStateWrapper(eventState),
 					event.getNotifiedSides().stream().map(mod::asDirectionCompat).collect(Collectors.toSet()));
+		}
+	}
+	
+	@SubscribeEvent
+	public void onWorldUnload(LevelEvent.Unload event){
+		if(event.getLevel() instanceof ServerLevel serverLevel){
+			mod.getLeafBreakingHandler().onWorldUnload(new ServerLevelWrapper(serverLevel));
 		}
 	}
 }

@@ -7,6 +7,7 @@ import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IServerLevel;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -71,5 +72,9 @@ public class LeafBreakingHandler{
 	
 	public void addSchedule(@NotNull LeafBreakingSchedule schedule){
 		scheduledLeavesBreaking.add(schedule);
+	}
+	
+	public void onWorldUnload(@NotNull IServerLevel level){
+		scheduledLeavesBreaking.removeIf(leafBreakingSchedule -> Objects.equals(level.getRaw(), leafBreakingSchedule.getLevel().getRaw()));
 	}
 }
