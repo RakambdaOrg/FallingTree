@@ -38,7 +38,7 @@ archivesBaseName = "${project.modName}-${project.minecraft_version}"
 
 task buildJar(type: Jar, group: "modding") {
     dependsOn ":common:jar", ":fabric:build", ":forge:build"
-    finalizedBy ":forge:signJar"
+//    finalizedBy ":forge:signJar"
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from zipTree("common/build/libs/common-${project.version}.jar"),
