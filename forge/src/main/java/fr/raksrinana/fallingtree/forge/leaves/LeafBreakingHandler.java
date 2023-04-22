@@ -7,8 +7,10 @@ import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import java.util.Objects;
 import java.util.Set;
 import static net.minecraft.world.level.block.Blocks.AIR;
 import static net.minecraftforge.event.TickEvent.Phase.END;
@@ -62,5 +64,11 @@ public class LeafBreakingHandler{
 				}
 			}
 		}
+	}
+	
+	
+	@SubscribeEvent
+	public static void onWorldUnload(WorldEvent.Unload event){
+		scheduledLeavesBreaking.removeIf(leafBreakingSchedule -> Objects.equals(event.getWorld(), leafBreakingSchedule.getLevel()));
 	}
 }

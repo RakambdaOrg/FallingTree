@@ -3,7 +3,7 @@ name: CI
 on: [ push ]
 
 env:
-  APP_JAVA_VERSION: 16
+  APP_JAVA_VERSION: 17
 
 jobs:
   build:
