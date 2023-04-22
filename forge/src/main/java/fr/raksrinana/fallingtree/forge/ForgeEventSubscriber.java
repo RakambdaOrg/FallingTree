@@ -25,11 +25,14 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
 import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static net.minecraft.util.Hand.MAIN_HAND;
@@ -88,8 +91,8 @@ public final class ForgeEventSubscriber{
 		ToolConfiguration toolConfiguration = Config.COMMON.getToolsConfiguration();
 		Item heldItem = player.getItemInHand(MAIN_HAND).getItem();
 		boolean isWhitelistedTool = toolConfiguration.isIgnoreTools()
-				|| heldItem instanceof AxeItem
-				|| toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
+		                            || heldItem instanceof AxeItem
+		                            || toolConfiguration.getWhitelisted().stream().anyMatch(tool -> tool.equals(heldItem));
 		if(isWhitelistedTool){
 			boolean isBlacklistedTool = toolConfiguration.getBlacklisted().stream().anyMatch(tool -> tool.equals(heldItem));
 			return !isBlacklistedTool;
@@ -100,8 +103,8 @@ public final class ForgeEventSubscriber{
 	@SubscribeEvent
 	public static void onNeighborNotifyEvent(BlockEvent.NeighborNotifyEvent event){
 		if(Config.COMMON.getTreesConfiguration().isLeavesBreaking()
-				&& !event.getWorld().isClientSide()
-				&& event.getWorld() instanceof ServerWorld){
+		   && !event.getWorld().isClientSide()
+		   && event.getWorld() instanceof ServerWorld){
 			ServerWorld world = (ServerWorld) event.getWorld();
 			BlockState eventState = event.getState();
 			Block eventBlock = eventState.getBlock();
@@ -169,5 +172,10 @@ public final class ForgeEventSubscriber{
 				}
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onWorldUnload(WorldEvent.Unload event){
+		scheduledLeavesBreaking.removeIf(leafBreakingSchedule -> Objects.equals(event.getWorld(), leafBreakingSchedule.getWorld()));
 	}
 }

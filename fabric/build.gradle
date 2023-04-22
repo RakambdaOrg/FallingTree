@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraft_version}")
-    mappings(minecraft.officialMojangMappings())
+    mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:${loader_version}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
     implementation project(':common')
@@ -36,6 +36,8 @@ repositories {
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     from "src/main/resources", "../common/src/main/resources"
 
     filesMatching("fabric.mod.json") {
@@ -45,14 +47,13 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-
-    def targetVersion = 8
-    if (JavaVersion.current().isJava9Compatible()) {
-        it.options.release = targetVersion
-    }
 }
 
 loom {
+    mixin {
+        defaultRefmapName.set("fabric.${project.modId}.refmap.json")
+    }
+
     runs {
         client {
             vmArg "-Dfabric.log.level=debug"
@@ -61,8 +62,4 @@ loom {
             vmArg "-Dfabric.log.level=debug"
         }
     }
-}
-
-minecraft {
-    refmapName = "fabric.${project.modId}.refmap.json"
 }

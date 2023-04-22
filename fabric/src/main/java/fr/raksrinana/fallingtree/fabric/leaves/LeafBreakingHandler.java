@@ -2,15 +2,18 @@ package fr.raksrinana.fallingtree.fabric.leaves;
 
 import io.netty.util.internal.ConcurrentSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
-public class LeafBreakingHandler implements ServerTickEvents.EndTick{
+public class LeafBreakingHandler implements ServerTickEvents.EndTick, ServerWorldEvents.Unload{
 	public static final Set<LeafBreakingSchedule> scheduledLeavesBreaking = new ConcurrentSet<>();
 	
 	@Override
@@ -35,5 +38,10 @@ public class LeafBreakingHandler implements ServerTickEvents.EndTick{
 				leafBreakingSchedule.tick();
 			}
 		}
+	}
+	
+	@Override
+	public void onWorldUnload(MinecraftServer server, ServerLevel world){
+		scheduledLeavesBreaking.removeIf(leafBreakingSchedule -> Objects.equals(world, leafBreakingSchedule.getWorld()));
 	}
 }
