@@ -72,8 +72,5 @@ jobs:
 
       - name: Push changes to the wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v4
-        env:
-          WIKI_DIR: wiki/
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_MAIL: actions@github.com
-          GH_NAME: github-actions[bot]
+        with:
+          path: wiki/
