@@ -54,12 +54,16 @@ allprojects {
         }
     }
 
-    if(version == null || version.equals("unspecified")) {
-        def details = versionDetails()
-        if (details.commitDistance > 0) {
-            version = "${details.lastTag}-${details.commitDistance}"
-        } else {
-            version = details.lastTag
+    if (version == null || version.equals("unspecified")) {
+        try {
+            def details = versionDetails()
+            if (details.commitDistance > 0) {
+                version = "${details.lastTag}-${details.commitDistance}"
+            } else {
+                version = details.lastTag
+            }
+        } catch (Exception e) {
+            version = "0.0.1-dev"
         }
     }
 }
