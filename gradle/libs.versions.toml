@@ -22,6 +22,7 @@ forge-plugin-version = "6.0.4"
 curse-version = "1.4.0"
 modrinth-version = "2.7.5"
 names-version = "0.46.0"
+git-version-plugin-version = "3.0.0"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok-version" }
@@ -45,3 +46,4 @@ modrinth = { id = "com.modrinth.minotaur", version.ref = "modrinth-version"}
 names = { id = "com.github.ben-manes.versions", version.ref = "names-version" }
 loom = { id = "fabric-loom", version.ref = "fabric-loom-version" }
 forge = { id = "net.minecraftforge.gradle", version.ref = "forge-plugin-version" }
+gitVersion = { id = "com.palantir.git-version", version.ref = "git-version-plugin-version" }

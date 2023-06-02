@@ -15,6 +15,7 @@ plugins {
     alias(libs.plugins.curse)
     alias(libs.plugins.modrinth)
     alias(libs.plugins.names)
+    alias(libs.plugins.gitVersion)
 }
 
 allprojects {
@@ -50,6 +51,19 @@ allprojects {
         maven {
             name = "Cloth Config"
             url = "https://maven.shedaniel.me/"
+        }
+    }
+
+    if (version == null || version.equals("unspecified")) {
+        try {
+            def details = versionDetails()
+            if (details.commitDistance > 0) {
+                version = "${details.lastTag}-${details.commitDistance}"
+            } else {
+                version = details.lastTag
+            }
+        } catch (Exception e) {
+            version = "0.0.1-dev"
         }
     }
 }
