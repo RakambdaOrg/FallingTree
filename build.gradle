@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.google.guava:guava:32.0.0-jre")
+        classpath("com.google.guava:guava:32.0.1-jre")
         classpath("commons-io:commons-io:2.13.0")
     }
 }
