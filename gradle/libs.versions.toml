@@ -7,9 +7,9 @@ gson-version = "2.10.1"
 log4j2-version = "2.20.0"
 
 # Minecraft / Loaders
-minecraftVersion = "1.20"
+minecraftVersion = "1.20.1"
 fabric-loader-version = "0.14.21"
-fabric-api-version = "0.83.0+1.20"
+fabric-api-version = "0.83.0+1.20.1"
 forge-version = "1.20-46.0.1"
 forgeMappingsVersion = "1.20"
 
