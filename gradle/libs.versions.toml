@@ -11,7 +11,7 @@ minecraftVersion = "1.20.1"
 fabric-loader-version = "0.14.21"
 fabric-api-version = "0.83.0+1.20.1"
 forge-version = "1.20.1-47.0.1"
-forgeMappingsVersion = "1.20"
+forgeMappingsVersion = "1.20.1"
 
 # Mod dependencies
 modmenu-version = "7.0.1"
