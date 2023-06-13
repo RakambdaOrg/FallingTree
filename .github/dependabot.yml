@@ -25,13 +25,12 @@ updates:
       interval: "daily"
     pull-request-branch-name:
       separator: "-"
-#  Disable for now, it doesn't handle well pnpm, Renovate handles it
-#  - package-ecosystem: "npm"
-#    directory: "/"
-#    schedule:
-#      interval: "daily"
-#    pull-request-branch-name:
-#      separator: "-"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    pull-request-branch-name:
+      separator: "-"
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
