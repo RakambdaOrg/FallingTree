@@ -10,8 +10,9 @@ import java.util.Comparator;
 @Getter
 public enum BreakOrder{
 	FURTHEST_FIRST(Comparator.comparingInt(TreePart::sequence).reversed()),
-	CLOSEST_FIRST(Comparator.comparingInt(TreePart::sequence));
-	
+	CLOSEST_FIRST(Comparator.comparingInt(TreePart::sequence)),
+	LOWEST_FIRST(Comparator.comparingInt(part -> part.blockPos().getY()));
+
 	@NotNull
 	private final Comparator<? super TreePart> comparator;
 }

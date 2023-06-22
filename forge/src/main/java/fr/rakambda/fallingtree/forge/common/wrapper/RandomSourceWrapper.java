@@ -11,4 +11,9 @@ public class RandomSourceWrapper implements IRandomSource{
 	@NotNull
 	@Getter
 	private final RandomSource raw;
+
+	@Override
+	public double nextDouble() {
+		return raw.nextDouble();
+	}
 }

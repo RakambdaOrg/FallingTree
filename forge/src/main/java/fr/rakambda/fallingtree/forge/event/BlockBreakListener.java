@@ -61,7 +61,7 @@ public class BlockBreakListener{
 			var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
 			if(event.isCancelable()){
 				switch(result.breakMode()){
-					case INSTANTANEOUS -> event.setCanceled(result.shouldCancel());
+					case INSTANTANEOUS, FALL_ANIMATION_ITEMS -> event.setCanceled(result.shouldCancel());
 					case SHIFT_DOWN -> event.setCanceled(true);
 				}
 			}

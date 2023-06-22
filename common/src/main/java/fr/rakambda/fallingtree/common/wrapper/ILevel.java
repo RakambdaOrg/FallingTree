@@ -21,4 +21,6 @@ public interface ILevel extends IWrapper{
 	IBlockEntity getBlockEntity(@NotNull IBlockPos blockPos);
 	
 	boolean removeBlock(@NotNull IBlockPos blockPos, boolean b);
+
+    void fallBlock(@NotNull IBlockPos blockPos, boolean drop, double vx, double vy, double vz);
 }

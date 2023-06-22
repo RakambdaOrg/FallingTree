@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum BreakMode{
 	INSTANTANEOUS(true, true),
+	FALL_ANIMATION_ITEMS(true, true),
+	FALL_ANIMATION_BLOCK(true, true),
 	SHIFT_DOWN(false, false);
 	
 	private final boolean checkLeavesAround;
