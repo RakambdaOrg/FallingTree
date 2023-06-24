@@ -1,7 +1,11 @@
 package fr.rakambda.fallingtree.fabric.common.wrapper;
 
-import fr.rakambda.fallingtree.common.utils.ReflectionUtils;
-import fr.rakambda.fallingtree.common.wrapper.*;
+import fr.rakambda.fallingtree.common.wrapper.IBlockEntity;
+import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
+import fr.rakambda.fallingtree.common.wrapper.IBlockState;
+import fr.rakambda.fallingtree.common.wrapper.IChunk;
+import fr.rakambda.fallingtree.common.wrapper.ILevel;
+import fr.rakambda.fallingtree.common.wrapper.IRandomSource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -74,6 +78,8 @@ public class LevelWrapper implements ILevel {
         var x = (double) logBlockPos.getX() + 0.5;
         var y = (double) logBlockPos.getY();
         var z = (double) logBlockPos.getZ() + 0.5;
+	    var blockState = (BlockState) getBlockState(logBlockPos).getRaw();
+	    var newBlockState = blockState.hasProperty(BlockStateProperties.WATERLOGGED) ? blockState.setValue(BlockStateProperties.WATERLOGGED, false) : blockState;
 
         var entity = new FallingBlockEntity(EntityType.FALLING_BLOCK, raw);
         entity.blocksBuilding = true;
@@ -82,11 +88,7 @@ public class LevelWrapper implements ILevel {
         entity.yo = y;
         entity.zo = z;
         entity.setStartPos((BlockPos) logBlockPos.getRaw());
-
-        var blockState = (BlockState) getBlockState(logBlockPos).getRaw();
-        var newBlockState = blockState.hasProperty(BlockStateProperties.WATERLOGGED) ? blockState.setValue(BlockStateProperties.WATERLOGGED, false) : blockState;
-        ReflectionUtils.setField(entity, newBlockState, "blockState");
-
+		entity.blockState = newBlockState;
         return entity;
     }
 
