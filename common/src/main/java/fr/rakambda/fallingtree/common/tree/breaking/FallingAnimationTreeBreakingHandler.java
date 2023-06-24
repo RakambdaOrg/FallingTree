@@ -56,7 +56,9 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
                         logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
                     }
 
-                    level.fallBlock(logBlockPos, dropAsItems, (level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
+                    level.fallBlock(logBlockPos, dropAsItems,
+							0, 0.5, 0,
+		                    (level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
 
                     fallLeaf(scannedLeaves, player, level, 5, logBlockPos.below());
                     fallLeaf(scannedLeaves, player, level, 5, logBlockPos.north());
@@ -102,7 +104,9 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
         if (!dropAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())) {
             blockState.getBlock().playerDestroy(level, player, blockPos, blockState, level.getBlockEntity(blockPos), mod.getEmptyItemStack());
         }
-        level.fallBlock(blockPos, dropAsItems, (level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
+        level.fallBlock(blockPos, dropAsItems,
+		        0, 0.5, 0,
+		        (level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
         level.removeBlock(blockPos, false);
 
         fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.north());

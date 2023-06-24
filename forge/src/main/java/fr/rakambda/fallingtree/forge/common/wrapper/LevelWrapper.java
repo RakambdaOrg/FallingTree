@@ -71,8 +71,8 @@ public class LevelWrapper implements ILevel {
     }
 
     @Override
-    public void fallBlock(@NotNull IBlockPos logBlockPos, boolean drop, double vx, double vy, double vz) {
-        var entity = createFallingEntity(logBlockPos);
+    public void fallBlock(@NotNull IBlockPos logBlockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz) {
+        var entity = createFallingEntity(logBlockPos, dx, dy, dz);
         if (!drop) {
             entity.disableDrop();
         }
@@ -81,10 +81,11 @@ public class LevelWrapper implements ILevel {
     }
 
     @NotNull
-    private FallingBlockEntity createFallingEntity(@NotNull IBlockPos logBlockPos) {
-        var x = (double) logBlockPos.getX() + 0.5;
-        var y = (double) logBlockPos.getY();
-        var z = (double) logBlockPos.getZ() + 0.5;var blockState = (BlockState) getBlockState(logBlockPos).getRaw();
+    private FallingBlockEntity createFallingEntity(@NotNull IBlockPos logBlockPos, double dx, double dy, double dz) {
+        var x = (double) logBlockPos.getX() + dx;
+        var y = (double) logBlockPos.getY() + dy;
+        var z = (double) logBlockPos.getZ() + dz;
+		var blockState = (BlockState) getBlockState(logBlockPos).getRaw();
 	    var newBlockState = blockState.hasProperty(BlockStateProperties.WATERLOGGED) ? blockState.setValue(BlockStateProperties.WATERLOGGED, false) : blockState;
 	    
 	    var entity = new FallingBlockEntity(EntityType.FALLING_BLOCK, (Level) raw);
