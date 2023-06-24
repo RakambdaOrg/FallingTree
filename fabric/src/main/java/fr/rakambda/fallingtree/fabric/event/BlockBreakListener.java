@@ -33,7 +33,7 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 		try{
 			var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
 			return switch(result.breakMode()){
-				case INSTANTANEOUS, FALL_ANIMATION_ITEMS, FALL_ANIMATION_BLOCK -> !result.shouldCancel();
+				case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK -> !result.shouldCancel();
 				case SHIFT_DOWN -> false;
 			};
 		}

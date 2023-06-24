@@ -83,8 +83,8 @@ public class TreeHandler{
 	private ITreeBreakingHandler getBreakingHandler(@NotNull BreakMode breakMode){
 		return switch(breakMode){
 			case INSTANTANEOUS -> InstantaneousTreeBreakingHandler.getInstance(mod);
-			case FALL_ANIMATION_ITEMS -> FallingAnimationTreeBreakingHandler.getInstance(mod, false);
-			case FALL_ANIMATION_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, true);
+			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, false);
+			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, true);
 			case SHIFT_DOWN -> ShiftDownTreeBreakingHandler.getInstance(mod);
 		};
 	}
