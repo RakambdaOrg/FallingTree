@@ -6,6 +6,9 @@ plugins {
 
 minecraft {
     mappings channel: "official", version: "${libs.versions.forgeMappingsVersion.get()}"
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
     runs {
         client {
             taskName "runFTForgeClient"

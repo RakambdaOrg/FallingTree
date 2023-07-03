@@ -92,7 +92,7 @@ public class ClothConfigHook extends ClothHookBase{
 		var breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
 				.setDefaultValue(BreakMode.INSTANTANEOUS)
-				.setTooltip(getTooltips("trees", "breakMode", 7))
+				.setTooltip(getTooltips("trees", "breakMode", 9))
 				.setSaveConsumer(config::setBreakMode)
 				.build();
 		var detectionModeEntry = builder.entryBuilder()
@@ -159,7 +159,7 @@ public class ClothConfigHook extends ClothHookBase{
 		var breakOrderEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName("trees", "breakOrder")), BreakOrder.class, config.getBreakOrder())
 				.setDefaultValue(BreakOrder.FURTHEST_FIRST)
-				.setTooltip(getTooltips("trees", "breakOrder", 4))
+				.setTooltip(getTooltips("trees", "breakOrder", 7))
 				.setSaveConsumer(config::setBreakOrder)
 				.build();
 		var treeBreakingEntry = builder.entryBuilder()

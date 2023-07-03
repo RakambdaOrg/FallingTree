@@ -48,6 +48,8 @@ NOTE: In the screenshots the axe indicates where the tree is being cut by you.
 
 - INSTANTANEOUS: The whole tree will be chopped at once.
 image:assets/behavior/break-mode-instantaneous.png[]
+- FALL_ITEM: Same as `INSTANTANEOUS` but blocks will look like falling on the ground. Best used with `break_order=LOWEST_FIRST`.
+- FALL_BLOCK: Same as `INSTANTANEOUS` but blocks will fall on the ground and not all will be broken. Best used with `break_order=LOWEST_FIRST`.
 - SHIFT_DOWN: The furthest log will be broken. This allows you to still cut the tree one by one, but you don't have to climb to get all the logs; just aim at one spot and cut it multiple times.
 image:assets/behavior/break-mode-shift-down.png[]
 
@@ -86,6 +88,7 @@ This only makes sense if `maxSize` < `maxScanSize`.
 
 - FURTHEST_FIRST: The furthest log will be broken first.
 - CLOSEST_FIRST: The closest log will be broken first.
+- LOWEST_FIRST: The lowest log will be broken first.
 
 NOTE: Only applied in `Instantaneous` breaking mode.
 
