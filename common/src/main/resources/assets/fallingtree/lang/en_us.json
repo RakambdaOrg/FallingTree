@@ -247,6 +247,10 @@
   "enchantment.fallingtree.chopper.desc": "Makes the enchanted tool able to chop down trees in one go with the default breaking mode",
   "enchantment.fallingtree.chopper_instantaneous": "Chopper (instantaneous)",
   "enchantment.fallingtree.chopper_instantaneous.desc": "Makes the enchanted tool able to chop down trees in one go with the instantaneous mode",
+  "enchantment.fallingtree.chopper_fall_block": "Chopper (fall block)",
+  "enchantment.fallingtree.chopper_fall_block.desc": "Makes the enchanted tool able to chop down trees in one go with the fall block mode",
+  "enchantment.fallingtree.chopper_fall_item": "Chopper (fall item)",
+  "enchantment.fallingtree.chopper_fall_item.desc": "Makes the enchanted tool able to chop down trees in one go with the fall item mode",
   "enchantment.fallingtree.chopper_shift_down": "Chopper (shift down)",
   "enchantment.fallingtree.chopper_shift_down.desc": "Makes the enchanted tool able to chop down trees in one go with the shift down mode"
 }

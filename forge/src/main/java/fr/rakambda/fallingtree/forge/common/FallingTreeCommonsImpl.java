@@ -178,7 +178,12 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	protected void performCommitEnchantRegister(){
 		FallingTreeEnchantments.commit(FMLJavaModLoadingContext.get().getModEventBus());
 		
-		Stream.of(FallingTreeEnchantments.CHOPPER_ENCHANTMENT, FallingTreeEnchantments.CHOPPER_INSTANTANEOUS_ENCHANTMENT, FallingTreeEnchantments.CHOPPER_SHIFT_DOWN_ENCHANTMENT)
+		Stream.of(FallingTreeEnchantments.CHOPPER_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_INSTANTANEOUS_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_FALL_BLOCK_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_FALL_ITEM_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_SHIFT_DOWN_ENCHANTMENT
+				)
 				.filter(Objects::nonNull)
 				.map(EnchantmentWrapper::new)
 				.forEach(chopperEnchantments::add);
