@@ -20,6 +20,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 
     private final FallingTreeCommon<?> mod;
     private final boolean dropAsItems;
+    private final LeafForceBreaker leafForceBreaker;
 
     @Override
     public boolean breakTree(@NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException {
@@ -79,7 +80,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
         }
 
         if (brokenCount >= toolHandler.getMaxBreakCount()) {
-            forceBreakDecayLeaves(player, tree, level);
+	        leafForceBreaker.forceBreakDecayLeaves(player, tree, level);
         }
         return true;
     }
@@ -117,28 +118,8 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
         fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.above());
     }
 
-    private void forceBreakDecayLeaves(@NotNull IPlayer player, @NotNull Tree tree, @NotNull ILevel level) {
-        var radius = mod.getConfiguration().getTrees().getLeavesBreakingForceRadius();
-        if (radius > 0) {
-            tree.getTopMostLog().ifPresent(topLog -> {
-                var start = topLog.offset(-radius, -radius, -radius);
-                var end = topLog.offset(radius, radius, radius);
-                topLog.betweenClosedStream(start, end).forEach(checkPos -> {
-                    var checkState = level.getBlockState(checkPos);
-                    var checkBlock = checkState.getBlock();
-                    if (mod.isLeafBlock(checkBlock)) {
-                        if (!player.isCreative() || mod.getConfiguration().isLootInCreative()) {
-                            checkState.dropResources(level, checkPos);
-                        }
-                        level.removeBlock(checkPos, false);
-                    }
-                });
-            });
-        }
-    }
-
     @NotNull
-    public static FallingAnimationTreeBreakingHandler getInstance(@NotNull FallingTreeCommon<?> common, boolean dropAsItems) {
-        return INSTANCE.computeIfAbsent(dropAsItems, key -> new FallingAnimationTreeBreakingHandler(common, key));
+    public static FallingAnimationTreeBreakingHandler getInstance(@NotNull FallingTreeCommon<?> mod, boolean dropAsItems) {
+        return INSTANCE.computeIfAbsent(dropAsItems, key -> new FallingAnimationTreeBreakingHandler(mod, key, new LeafForceBreaker(mod)));
     }
 }
