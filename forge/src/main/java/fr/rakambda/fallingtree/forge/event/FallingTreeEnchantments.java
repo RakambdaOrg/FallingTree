@@ -15,6 +15,8 @@ public class FallingTreeEnchantments{
 	
 	public static RegistryObject<Enchantment> CHOPPER_ENCHANTMENT;
 	public static RegistryObject<Enchantment> CHOPPER_INSTANTANEOUS_ENCHANTMENT;
+	public static RegistryObject<Enchantment> CHOPPER_FALL_BLOCK_ENCHANTMENT;
+	public static RegistryObject<Enchantment> CHOPPER_FALL_ITEM_ENCHANTMENT;
 	public static RegistryObject<Enchantment> CHOPPER_SHIFT_DOWN_ENCHANTMENT;
 	
 	public static void registerDefault(){
@@ -23,6 +25,8 @@ public class FallingTreeEnchantments{
 	
 	public static void registerSpecific(){
 		CHOPPER_INSTANTANEOUS_ENCHANTMENT = ENCHANTMENTS.register("chopper_instantaneous", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.INSTANTANEOUS));
+		CHOPPER_FALL_BLOCK_ENCHANTMENT = ENCHANTMENTS.register("chopper_fall_block", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.FALL_BLOCK));
+		CHOPPER_FALL_ITEM_ENCHANTMENT = ENCHANTMENTS.register("chopper_fall_item", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.FALL_ITEM));
 		CHOPPER_SHIFT_DOWN_ENCHANTMENT = ENCHANTMENTS.register("chopper_shift_down", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.SHIFT_DOWN));
 	}
 	
