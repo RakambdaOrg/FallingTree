@@ -179,12 +179,17 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction> {
         )));
         chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
                 BuiltInRegistries.ENCHANTMENT,
-                new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_block_down"),
+                new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_block"),
                 new ChopperEnchantment(this, BreakMode.FALL_BLOCK)
         )));
         chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
                 BuiltInRegistries.ENCHANTMENT,
-                new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_item_down"),
+                new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_all_block"),
+                new ChopperEnchantment(this, BreakMode.FALL_ALL_BLOCK)
+        )));
+        chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
+                BuiltInRegistries.ENCHANTMENT,
+                new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_item"),
                 new ChopperEnchantment(this, BreakMode.FALL_ITEM)
         )));
         chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
