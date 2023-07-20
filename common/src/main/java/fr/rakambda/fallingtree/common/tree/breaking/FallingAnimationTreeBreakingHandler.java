@@ -16,10 +16,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Log4j2
 @RequiredArgsConstructor
 public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler {
-    private final static Map<Boolean, FallingAnimationTreeBreakingHandler> INSTANCE = new ConcurrentHashMap<>();
+    private final static Map<Map.Entry<Boolean, Boolean>, FallingAnimationTreeBreakingHandler> INSTANCE = new ConcurrentHashMap<>();
 
     private final FallingTreeCommon<?> mod;
-    private final boolean dropAsItems;
+    private final boolean dropLogsAsItems;
+    private final boolean dropLeavesAsItems;
     private final LeafForceBreaker leafForceBreaker;
 
     @Override
@@ -53,11 +54,11 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
                     }
 
                     player.awardItemUsed(tool.getItem());
-                    if (!dropAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())) {
+                    if (dropLogsAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())) {
                         logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
                     }
 
-                    level.fallBlock(logBlockPos, dropAsItems,
+                    level.fallBlock(logBlockPos, !dropLogsAsItems,
 							0, 0.5, 0,
 		                    (level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
 
@@ -102,10 +103,10 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
             return;
         }
 
-        if (!dropAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())) {
+        if (dropLeavesAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())) {
             blockState.getBlock().playerDestroy(level, player, blockPos, blockState, level.getBlockEntity(blockPos), mod.getEmptyItemStack());
         }
-        level.fallBlock(blockPos, dropAsItems,
+        level.fallBlock(blockPos, !dropLeavesAsItems,
 		        0, 0.5, 0,
 		        (level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
         level.removeBlock(blockPos, false);
@@ -119,7 +120,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
     }
 
     @NotNull
-    public static FallingAnimationTreeBreakingHandler getInstance(@NotNull FallingTreeCommon<?> mod, boolean dropAsItems) {
-        return INSTANCE.computeIfAbsent(dropAsItems, key -> new FallingAnimationTreeBreakingHandler(mod, key, new LeafForceBreaker(mod)));
+    public static FallingAnimationTreeBreakingHandler getInstance(@NotNull FallingTreeCommon<?> mod, boolean dropLogsAsItems, boolean dropLeavesAsItems) {
+        return INSTANCE.computeIfAbsent(Map.entry(dropLogsAsItems, dropLeavesAsItems), key -> new FallingAnimationTreeBreakingHandler(mod, key.getKey(), key.getValue(), new LeafForceBreaker(mod)));
     }
 }
