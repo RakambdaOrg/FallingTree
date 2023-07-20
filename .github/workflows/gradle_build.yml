@@ -33,11 +33,11 @@ jobs:
           arguments: |
             clean
             build
-            -Dorg.gradle.project.forgeKeyStore="keystoreForgeMods.jks"
-            -Dorg.gradle.project.forgeKeyStoreAlias="${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}"
-            -Dorg.gradle.project.forgeKeyStorePass="${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}"
-            -Dorg.gradle.project.forgeKeyStoreKeyPass="${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}"
-            -Dorg.gradle.project.forgeSignSHA1="f927f4701bf4c0620c7bd0a501ce278f5e5ecc62"
+            -DforgeKeyStore="keystoreForgeMods.jks"
+            -DforgeKeyStoreAlias="${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}"
+            -DforgeKeyStorePass="${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}"
+            -DforgeKeyStoreKeyPass="${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}"
+            -DforgeSignSHA1="f927f4701bf4c0620c7bd0a501ce278f5e5ecc62"
 
       - name: Upload mod file
         uses: actions/upload-artifact@v3
