@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.APP_JAVA_VERSION }}
 
       - name: Restore keystore
         env:
@@ -21,16 +26,7 @@ jobs:
           echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: ${{ env.APP_JAVA_VERSION }}
-
-      - name: Set gradle permissions
-        run: chmod +x gradlew
-
-      - name: Check project
+      - name: Build project
         uses: gradle/gradle-build-action@v2.6.1
         env:
           ORG_GRADLE_PROJECT_forgeKeyStore: keystoreForgeMods.jks
