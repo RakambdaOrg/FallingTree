@@ -92,7 +92,7 @@ public class ClothConfigHook extends ClothHookBase{
 		var breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
 				.setDefaultValue(BreakMode.INSTANTANEOUS)
-				.setTooltip(getTooltips("trees", "breakMode", 9))
+				.setTooltip(getTooltips("trees", "breakMode", 11))
 				.setSaveConsumer(config::setBreakMode)
 				.build();
 		var detectionModeEntry = builder.entryBuilder()
