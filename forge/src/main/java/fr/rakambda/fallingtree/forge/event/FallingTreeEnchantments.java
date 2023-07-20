@@ -26,6 +26,7 @@ public class FallingTreeEnchantments{
 	public static void registerSpecific(){
 		CHOPPER_INSTANTANEOUS_ENCHANTMENT = ENCHANTMENTS.register("chopper_instantaneous", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.INSTANTANEOUS));
 		CHOPPER_FALL_BLOCK_ENCHANTMENT = ENCHANTMENTS.register("chopper_fall_block", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.FALL_BLOCK));
+		CHOPPER_FALL_BLOCK_ENCHANTMENT = ENCHANTMENTS.register("chopper_fall_all_block", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.FALL_ALL_BLOCK));
 		CHOPPER_FALL_ITEM_ENCHANTMENT = ENCHANTMENTS.register("chopper_fall_item", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.FALL_ITEM));
 		CHOPPER_SHIFT_DOWN_ENCHANTMENT = ENCHANTMENTS.register("chopper_shift_down", () -> new ChopperEnchantment(FallingTree.getMod(), BreakMode.SHIFT_DOWN));
 	}
