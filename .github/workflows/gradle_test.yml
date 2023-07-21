@@ -1,0 +1,38 @@
+name: Release
+
+on: workflow_dispatch
+
+env:
+  APP_JAVA_VERSION: 17
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.APP_JAVA_VERSION }}
+
+      - name: Restore keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
+          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+
+      - name: TEST
+        uses: gradle/gradle-build-action@v2.6.1
+        with:
+          cache-disabled: true
+          arguments: |
+            displayVars
+            -Dversion=${{ steps.get_release.outputs.name }}
+            -Dchangelog="[Changelog at test](url)\n\nbody"
+            -DforgeKeyStore=keystoreForgeMods.jks
+            -DforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
+            -DforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
+            -DforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
+            -DforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
