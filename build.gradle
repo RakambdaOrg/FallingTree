@@ -137,9 +137,11 @@ tasks.create("displayVars"){
     def ck = project.findProperty("curseforgeApiKey")
     def mk = project.findProperty("modrinthToken")
     def c = project.findProperty("changelog")
+    def v = project.version
     println("CK: ${ck}")
     println("MK: ${mk}")
     println("C: ${c}")
+    println("V: ${v}")
 }
 
 curseforge {
