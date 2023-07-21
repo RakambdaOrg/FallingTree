@@ -38,13 +38,13 @@ jobs:
           arguments: |
             clean
             build
-            -Dversion=${{ steps.get_release.outputs.name }}
-            -Dchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
-            -DforgeKeyStore=keystoreForgeMods.jks
-            -DforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
-            -DforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
-            -DforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
-            -DforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+            -Pversion=${{ steps.get_release.outputs.name }}
+            -Pchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
+            -PforgeKeyStore=keystoreForgeMods.jks
+            -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
+            -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
+            -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
+            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
 
       - name: Push on stores
         uses: gradle/gradle-build-action@v2.6.1
@@ -54,15 +54,15 @@ jobs:
             curseforge
             modrinth
             modrinthSyncBody
-            -Dversion=${{ steps.get_release.outputs.name }}
-            -Dchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
-            -DcurseforgeApiKey=${{ secrets.CURSEFORGE_API_KEY }}
-            -DmodrinthToken=${{ secrets.MODRINTH_TOKEN }}
-            -DforgeKeyStore=keystoreForgeMods.jks
-            -DforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
-            -DforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
-            -DforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
-            -DforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+            -Pversion=${{ steps.get_release.outputs.name }}
+            -Pchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
+            -PcurseforgeApiKey=${{ secrets.CURSEFORGE_API_KEY }}
+            -PmodrinthToken=${{ secrets.MODRINTH_TOKEN }}
+            -PforgeKeyStore=keystoreForgeMods.jks
+            -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
+            -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
+            -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
+            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
 
       - name: Push changes to the wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v4

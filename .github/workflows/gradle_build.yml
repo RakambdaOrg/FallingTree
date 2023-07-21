@@ -33,11 +33,11 @@ jobs:
           arguments: |
             clean
             build
-            -DforgeKeyStore="keystoreForgeMods.jks"
-            -DforgeKeyStoreAlias="${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}"
-            -DforgeKeyStorePass="${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}"
-            -DforgeKeyStoreKeyPass="${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}"
-            -DforgeSignSHA1="f927f4701bf4c0620c7bd0a501ce278f5e5ecc62"
+            -PforgeKeyStore="keystoreForgeMods.jks"
+            -PforgeKeyStoreAlias="${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}"
+            -PforgeKeyStorePass="${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}"
+            -PforgeKeyStoreKeyPass="${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}"
+            -PforgeSignSHA1="f927f4701bf4c0620c7bd0a501ce278f5e5ecc62"
 
       - name: Upload mod file
         uses: actions/upload-artifact@v3
