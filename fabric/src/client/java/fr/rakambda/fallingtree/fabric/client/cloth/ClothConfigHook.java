@@ -202,12 +202,6 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("trees", "allowMixedLogs", 4))
 				.setSaveConsumer(config::setAllowMixedLogs)
 				.build();
-		var instantlyBreakWartsEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("trees", "instantlyBreakWarts")), config.isInstantlyBreakWarts())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("trees", "instantlyBreakWarts", 2))
-				.setSaveConsumer(config::setInstantlyBreakWarts)
-				.build();
 		var breakNetherTreeWartsEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("trees", "breakNetherTreeWarts")), config.isBreakNetherTreeWarts())
 				.setDefaultValue(false)
@@ -259,7 +253,6 @@ public class ClothConfigHook extends ClothHookBase{
 		trees.addEntry(includePersistentLeavesInRequiredCountEntry);
 		trees.addEntry(allowMixedLogsEntry);
 		trees.addEntry(breakNetherTreeWartsEntry);
-		trees.addEntry(instantlyBreakWartsEntry);
 		trees.addEntry(breakMangroveRootsEntry);
 		trees.addEntry(searchAreaRadiusEntry);
 		trees.addEntry(allowedAdjacentBlocks);
