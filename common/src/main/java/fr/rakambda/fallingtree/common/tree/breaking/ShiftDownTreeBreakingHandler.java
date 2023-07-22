@@ -31,7 +31,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		
 		var treePart = treePartOptional.get();
 		var level = tree.getLevel();
-		if(treePart.treePartType() == NETHER_WART && mod.getConfiguration().getTrees().isInstantlyBreakWarts()){
+		if(treePart.treePartType() == NETHER_WART && mod.getConfiguration().getTrees().isBreakNetherTreeWarts()){
 			return breakElements(tree, level, player, tool, tree.getWarts());
 		}
 		else{

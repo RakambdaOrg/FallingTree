@@ -65,8 +65,6 @@ public interface ITreeConfiguration{
 	
 	boolean isBreakNetherTreeWarts();
 	
-	boolean isInstantlyBreakWarts();
-	
 	boolean isBreakMangroveRoots();
 	
 	int getSearchAreaRadius();
