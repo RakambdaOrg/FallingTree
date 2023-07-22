@@ -145,11 +145,6 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	}
 	
 	@Override
-	public boolean isInstantlyBreakWarts(){
-		return delegate.isInstantlyBreakWarts();
-	}
-	
-	@Override
 	public boolean isBreakMangroveRoots(){
 		return delegate.isBreakMangroveRoots();
 	}
