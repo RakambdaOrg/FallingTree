@@ -39,7 +39,7 @@ jobs:
             clean
             build
             -Pversion=${{ steps.get_release.outputs.name }}
-            -Pchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
+            -Pchangelog=[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}
             -PforgeKeyStore=keystoreForgeMods.jks
             -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
             -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
@@ -55,7 +55,7 @@ jobs:
             modrinth
             modrinthSyncBody
             -Pversion=${{ steps.get_release.outputs.name }}
-            -Pchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}"
+            -Pchangelog=[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})\n\n${{ steps.get_release.outputs.body }}
             -PcurseforgeApiKey=${{ secrets.CURSEFORGE_API_KEY }}
             -PmodrinthToken=${{ secrets.MODRINTH_TOKEN }}
             -PforgeKeyStore=keystoreForgeMods.jks
