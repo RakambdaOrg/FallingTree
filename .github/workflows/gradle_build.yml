@@ -28,7 +28,7 @@ jobs:
           gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
 
       - name: Build project
-        uses: gradle/gradle-build-action@v2.6.1
+        uses: gradle/gradle-build-action@v2.7.0
         with:
           arguments: |
             clean

@@ -32,7 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Push on stores
-        uses: gradle/gradle-build-action@v2.6.1
+        uses: gradle/gradle-build-action@v2.7.0
         with:
           cache-disabled: true
           arguments: |
