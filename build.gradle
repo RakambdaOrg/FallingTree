@@ -155,7 +155,7 @@ curseforge {
         if (project.includeForge.toBoolean()) {
             addGameVersion("Forge")
         }
-        changelog = project.findProperty("changelog") ?: "No changelog provided"
+        changelog = getFTChangelog() ?: "No changelog provided"
         releaseType = relType
         mainArtifact(jar) {
             displayName = "${minecraftVersion}-${project.version}"
@@ -197,7 +197,7 @@ modrinth {
         loaders.add("forge")
     }
     versionType.set(relType)
-    changelog.set(project.findProperty("changelog") ?: "No changelog provided")
+    changelog.set(getFTChangelog() ?: "No changelog provided")
     syncBodyFrom.set(rootProject.file("README.md").getText())
     debugMode.set(false)
 
@@ -216,4 +216,18 @@ modrinth {
     afterEvaluate {
         tasks["modrinth"].dependsOn("buildJar")
     }
+}
+
+String getFTChangelog(){
+    String changelog = project.findProperty("changelog")
+    if(changelog == null){
+        return null;
+    }
+    if(changelog.startsWith("\"")){
+        changelog.substring(1)
+    }
+    if(changelog.endsWith("\"")){
+        changelog.substring(0, changelog.length() - 1)
+    }
+    return changelog
 }
