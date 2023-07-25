@@ -47,7 +47,8 @@ NOTE: This is purely an example, values there won't always make sense.
   "enchantment": {
     "registerEnchant": false,
     "registerSpecificEnchant": true,
-    "hideEnchant": false
+    "hideEnchant": false,
+    "requireEnchant": true
   }
 }
 ----

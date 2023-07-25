@@ -3,15 +3,20 @@
 |Name |Description
 
 |Register enchant
-|If set to true, the chopper enchant will be registered and will be required on tools in order to activate the mod. If set to false it won't be registered, making the mod server-sided.
+|If set to true, the chopper enchant will be registered.
 
+NOTE: INFO: If activated mod will be required on clients.
 NOTE: Server/Client restart needed.
 
 |Register specific enchant
-|If set to true, several chopper enchants will be registered and will be required on tools in order to activate the mod with a specific breaking mode. If set to false it won't be registered, making the mod server-sided.
+|If set to true, several chopper enchants will be registered to activate the mod with a specific breaking mode.
 
+NOTE: INFO: If activated mod will be required on clients.
 NOTE: Server/Client restart needed.
 
 |Hide enchant
 |If set to true the enchant will not be discoverable nor tradeable.
+
+|Require enchant
+|If set to true an enchantment on the tool will be required for the mod to be activated.
 |===
