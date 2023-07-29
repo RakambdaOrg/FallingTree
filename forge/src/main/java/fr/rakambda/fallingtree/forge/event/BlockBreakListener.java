@@ -1,20 +1,18 @@
 package fr.rakambda.fallingtree.forge.event;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.tree.exception.NoTreeFoundException;
-import fr.rakambda.fallingtree.common.tree.exception.NotServerException;
-import fr.rakambda.fallingtree.common.tree.exception.PlayerNotInRightState;
-import fr.rakambda.fallingtree.common.tree.exception.ToolUseForcedException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingNotEnabledException;
+import fr.rakambda.fallingtree.common.tree.exception.*;
 import fr.rakambda.fallingtree.forge.common.wrapper.BlockPosWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.LevelWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.PlayerWrapper;
+import fr.rakambda.fallingtree.forge.common.wrapper.ServerLevelWrapper;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
+
 import javax.annotation.Nonnull;
 
 @RequiredArgsConstructor
@@ -54,7 +52,7 @@ public class BlockBreakListener{
 		}
 		
 		var wrappedPlayer = new PlayerWrapper(event.getPlayer());
-		var wrappedLevel = new LevelWrapper(event.getLevel());
+		var wrappedLevel = event.getLevel() instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(event.getLevel());
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
 		try{
