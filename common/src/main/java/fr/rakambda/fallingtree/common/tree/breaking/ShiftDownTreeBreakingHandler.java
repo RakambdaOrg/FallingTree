@@ -6,11 +6,14 @@ import fr.rakambda.fallingtree.common.tree.TreePart;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
+import fr.rakambda.fallingtree.common.wrapper.IServerLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.List;
+
 import static fr.rakambda.fallingtree.common.tree.TreePartType.NETHER_WART;
 import static java.util.Objects.isNull;
 
@@ -65,6 +68,11 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		if(damage > 0){
 			tool.damage(damage, player);
 		}
+
+        if (level instanceof IServerLevel serverLevel) {
+            serverLevel.spawnParticle(tree.getHitPos(), level.getBlockState(tree.getHitPos()), 10, 1, 1, 1, 5);
+        }
+
 		return true;
 	}
 	
