@@ -8,9 +8,9 @@ log4j2-version = "2.20.0"
 
 # Minecraft / Loaders
 minecraftVersion = "1.20.1"
-fabric-loader-version = "0.14.21"
-fabric-api-version = "0.85.0+1.20.1"
-forge-version = "1.20.1-47.1.0"
+fabric-loader-version = "0.14.22"
+fabric-api-version = "0.86.1+1.20.1"
+forge-version = "1.20.1-47.1.43"
 forgeMappingsVersion = "1.20.1"
 
 # Mod dependencies
