@@ -4,55 +4,16 @@ on:
   release:
     types: [ published ]
 
-env:
-  APP_JAVA_VERSION: 17
-
 jobs:
   publish:
-    name: Publish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: ${{ env.APP_JAVA_VERSION }}
-
-      - name: Restore keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
-
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.3.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Push on stores
-        uses: gradle/gradle-build-action@v2.7.0
-        with:
-          cache-disabled: true
-          arguments: |
-            build
-            curseforge
-            modrinth
-            modrinthSyncBody
-            -Pversion=${{ steps.get_release.outputs.name }}
-            -Pchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})
-            
-            ${{ steps.get_release.outputs.body }}"
-            -PcurseforgeApiKey=${{ secrets.CURSEFORGE_API_KEY }}
-            -PmodrinthToken=${{ secrets.MODRINTH_TOKEN }}
-            -PforgeKeyStore=keystoreForgeMods.jks
-            -PforgeKeyStoreAlias=${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
-            -PforgeKeyStorePass=${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
-            -PforgeKeyStoreKeyPass=${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
-            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
-
-      - name: Push changes to the wiki
-        uses: Andrew-Chen-Wang/github-wiki-action@v4
-        with:
-          path: wiki/
+    uses: Rakambda/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish.yml@main
+    with:
+      java-version: ${{ vars.JAVA_VERSION }}
+    secrets:
+      keystore: ${{ secrets.KEYSTORE_FORGE_MODS }}
+      keystore-passphrase: ${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}
+      key-alias: ${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
+      key-store-pass: ${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
+      key-pass: ${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
+      curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
+      modrinth-token: ${{ secrets.MODRINTH_TOKEN }}

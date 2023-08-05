@@ -1,49 +1,17 @@
-name: CI
+name: Build
 
 on:
   push:
-
-env:
-  APP_JAVA_VERSION: 17
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build mod
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: ${{ env.APP_JAVA_VERSION }}
-
-      - name: Restore keystore
-        env:
-          KEYSTORE_FORGE_MODS: ${{ secrets.KEYSTORE_FORGE_MODS }}
-        if: env.KEYSTORE_FORGE_MODS != null
-        run: |
-          echo "${{ secrets.KEYSTORE_FORGE_MODS }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
-
-      - name: Build project
-        uses: gradle/gradle-build-action@v2.7.0
-        with:
-          arguments: |
-            clean
-            build
-            -PforgeKeyStore="keystoreForgeMods.jks"
-            -PforgeKeyStoreAlias="${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}"
-            -PforgeKeyStorePass="${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}"
-            -PforgeKeyStoreKeyPass="${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}"
-            -PforgeSignSHA1="f927f4701bf4c0620c7bd0a501ce278f5e5ecc62"
-
-      - name: Upload mod file
-        uses: actions/upload-artifact@v3
-        with:
-          name: mod-file
-          path: |
-            build/libs/*.jar
-          if-no-files-found: error
-          retention-days: 14
+    uses: Rakambda/rakambda-github-workflows/.github/workflows/gradle-minecraft-build.yml@main
+    with:
+      java-version: ${{ vars.JAVA_VERSION }}
+    secrets:
+      keystore: ${{ secrets.KEYSTORE_FORGE_MODS }}
+      keystore-passphrase: ${{ secrets.KEYSTORE_FORGE_MODS_PASSPHRASE }}
+      key-alias: ${{ secrets.KEYSTORE_FORGE_MODS_ALIAS }}
+      key-store-pass: ${{ secrets.KEYSTORE_FORGE_MODS_STORE_PASS }}
+      key-pass: ${{ secrets.KEYSTORE_FORGE_MODS_KEY_PASS }}
