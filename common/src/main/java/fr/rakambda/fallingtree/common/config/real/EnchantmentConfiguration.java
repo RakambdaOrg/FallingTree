@@ -12,4 +12,6 @@ public class EnchantmentConfiguration implements IEnchantmentConfiguration{
 	private boolean registerSpecificEnchant = false;
 	@Expose
 	private boolean hideEnchant = false;
+	@Expose
+	private boolean requireEnchantment = false;
 }
