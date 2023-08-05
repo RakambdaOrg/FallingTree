@@ -224,10 +224,10 @@ String getFTChangelog(){
         return null;
     }
     if(changelog.startsWith("\"")){
-        changelog.substring(1)
+        changelog = changelog.substring(1)
     }
     if(changelog.endsWith("\"")){
-        changelog.substring(0, changelog.length() - 1)
+        changelog = changelog.substring(0, changelog.length() - 1)
     }
     return changelog
 }

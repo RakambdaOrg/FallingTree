@@ -120,7 +120,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
             return false;
         }
 
-        if (getConfiguration().getEnchantment().isAtLeastOneEnchantRegistered()
+        if (getConfiguration().getEnchantment().isRequireEnchantment()
                 && !heldItemStack.hasOneOfEnchantAtLeast(getChopperEnchantments(), 1)) {
             return false;
         }
