@@ -33,6 +33,14 @@ body:
     validations:
       required: true
   - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: Please copy the content of the configuration file `fallingtree.json`
+      render: json
+    validations:
+      required: true
+  - type: textarea
     id: logs
     attributes:
       label: Relevant log output
