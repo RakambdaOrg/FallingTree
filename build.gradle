@@ -126,7 +126,7 @@ task buildJar(type: Jar, group: "modding") {
 assemble.finalizedBy("buildJar")
 
 static def extractMainVersion(String ver) {
-    def match = Pattern.compile("(\\d+\\.\\d+(\\.\\d+))(-.*)?").matcher(ver)
+    def match = Pattern.compile("(\\d+\\.\\d+(\\.\\d+)?)(-.*)?").matcher(ver)
     if (match.matches()) {
         return match.group(1)
     }
