@@ -1,9 +1,19 @@
 version: 2
+registries:
+  dockerhub:
+    type: docker-registry
+    url: https://registry.hub.docker.com
+    username: ${{ secrets.DOCKER_USERNAME }}
+    password: ${{ secrets.DOCKER_TOKEN }}
+    replaces-base: true
+
 updates:
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
+      time: "08:00"
+      timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
 #  Disable while paths can't be ignored as it'd update all 'auto-approve-sync-files.yml', Renovate will handle exclusion
@@ -11,35 +21,49 @@ updates:
 #    directory: "/"
 #    schedule:
 #      interval: "daily"
+#      time: "08:00"
+#      timezone: "Europe/Paris"
 #    pull-request-branch-name:
 #      separator: "-"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
+      time: "08:00"
+      timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
+    registries:
+      - dockerhub
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "daily"
+      time: "08:00"
+      timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
+      time: "08:00"
+      timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "daily"
+      time: "08:00"
+      timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "daily"
+      time: "08:00"
+      timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
