@@ -74,7 +74,7 @@ public class LevelWrapper implements ILevel {
     public void fallBlock(@NotNull IBlockPos logBlockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz) {
         var entity = createFallingEntity(logBlockPos, dx, dy, dz);
         if (!drop) {
-            entity.disableDrop();
+            entity.dropItem = false;
         }
         entity.setDeltaMovement(vx, vy, vz);
         raw.addFreshEntity(entity);
