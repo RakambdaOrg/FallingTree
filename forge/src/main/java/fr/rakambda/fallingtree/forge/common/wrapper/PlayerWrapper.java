@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
@@ -69,7 +70,7 @@ public class PlayerWrapper implements IPlayer{
 	@Override
 	@NotNull
 	public ILevel getLevel(){
-		return new LevelWrapper(raw.getCommandSenderWorld());
+		return raw.getCommandSenderWorld() instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(raw.getCommandSenderWorld());
 	}
 	
 	@Override

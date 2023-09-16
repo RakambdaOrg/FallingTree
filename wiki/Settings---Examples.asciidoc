@@ -27,7 +27,6 @@ NOTE: This is purely an example, values there won't always make sense.
     "leavesBreakingForceRadius": 0,
     "allowMixedLogs": false,
     "breakNetherTreeWarts": true,
-    "instantlyBreakWarts": false,
     "breakMangroveRoots": true,
     "searchAreaRadius": -1,
     "whitelistedAdjacentBlocks": ["minecraft:anvil", "#minecraft:beds"],
@@ -48,7 +47,8 @@ NOTE: This is purely an example, values there won't always make sense.
   "enchantment": {
     "registerEnchant": false,
     "registerSpecificEnchant": true,
-    "hideEnchant": false
+    "hideEnchant": false,
+    "requireEnchant": true
   }
 }
 ----

@@ -54,6 +54,8 @@ loom {
         defaultRefmapName.set("fabric.${modId}.refmap.json")
     }
 
+    accessWidenerPath.set(file("src/main/resources/fallingtree.accesswidener"))
+
     runs {
         create("FTFabricClient") {
             client()

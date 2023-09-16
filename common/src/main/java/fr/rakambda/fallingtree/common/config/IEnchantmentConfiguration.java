@@ -5,9 +5,7 @@ public interface IEnchantmentConfiguration{
 	
 	boolean isRegisterSpecificEnchant();
 	
-	boolean isHideEnchant();
+	boolean isRequireEnchantment();
 	
-	default boolean isAtLeastOneEnchantRegistered(){
-		return isRegisterEnchant() || isRegisterSpecificEnchant();
-	}
+	boolean isHideEnchant();
 }

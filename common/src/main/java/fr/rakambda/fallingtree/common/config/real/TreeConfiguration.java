@@ -67,8 +67,6 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	private boolean breakNetherTreeWarts = true;
 	@Expose
-	private boolean instantlyBreakWarts = false;
-	@Expose
 	private boolean breakMangroveRoots = true;
 	@Expose
 	private int searchAreaRadius = -1;

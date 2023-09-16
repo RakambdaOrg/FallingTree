@@ -2,11 +2,14 @@
 [![Curseforge Downloads](http://cf.way2muchnoise.eu/short_349559_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/falling-tree)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/fallingtree?logo=Modrinth)](https://modrinth.com/mod/fallingtree)
 
-This mod will change the way you break trees. 2 modes are available:
+This mod will change the way you break trees. 4 modes are available:
 * Instantaneous: Break one log and the whole tree will fall
 * Shift down: Break a block and the log will slowly shift down as you cut it (good if you don't want to "cheat" too much but are lazy to go cut top log blocks 😛)
+* Fall items: Break one log and the whole tree will fall with an animation
+* Fall blocks: Break one log and the whole tree will fall on the floor with an animation
 
-![Demonstration of breaking a tree](https://github.com/Rakambda/FallingTree/raw/minecraft/1.16.5/assets/demo.gif)
+![Demonstration of breaking a tree](https://github.com/Rakambda/FallingTree/raw/minecraft/1.20.1/assets/demo.gif)
+![Another demonstration of breaking a tree](https://github.com/Rakambda/FallingTree/raw/minecraft/1.20.1/assets/demo2.gif)
 
 Several options are available in the config file:
 

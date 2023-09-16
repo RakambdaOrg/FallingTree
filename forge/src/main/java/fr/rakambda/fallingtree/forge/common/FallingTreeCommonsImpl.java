@@ -3,25 +3,10 @@ package fr.rakambda.fallingtree.forge.common;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
-import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
-import fr.rakambda.fallingtree.common.wrapper.IBlock;
-import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
-import fr.rakambda.fallingtree.common.wrapper.IBlockState;
-import fr.rakambda.fallingtree.common.wrapper.IComponent;
-import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
-import fr.rakambda.fallingtree.common.wrapper.IItem;
-import fr.rakambda.fallingtree.common.wrapper.ILevel;
-import fr.rakambda.fallingtree.common.wrapper.IPlayer;
+import fr.rakambda.fallingtree.common.wrapper.*;
 import fr.rakambda.fallingtree.forge.client.event.PlayerLeaveListener;
-import fr.rakambda.fallingtree.forge.common.wrapper.BlockWrapper;
-import fr.rakambda.fallingtree.forge.common.wrapper.ComponentWrapper;
-import fr.rakambda.fallingtree.forge.common.wrapper.EnchantmentWrapper;
-import fr.rakambda.fallingtree.forge.common.wrapper.ItemWrapper;
-import fr.rakambda.fallingtree.forge.event.BlockBreakListener;
-import fr.rakambda.fallingtree.forge.event.FallingTreeBlockBreakEvent;
-import fr.rakambda.fallingtree.forge.event.FallingTreeEnchantments;
-import fr.rakambda.fallingtree.forge.event.LeafBreakingListener;
-import fr.rakambda.fallingtree.forge.event.ServerCommandRegistrationListener;
+import fr.rakambda.fallingtree.forge.common.wrapper.*;
+import fr.rakambda.fallingtree.forge.event.*;
 import fr.rakambda.fallingtree.forge.network.ForgePacketHandler;
 import fr.rakambda.fallingtree.forge.network.PlayerJoinListener;
 import lombok.Getter;
@@ -34,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -44,13 +30,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
@@ -194,12 +178,23 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	protected void performCommitEnchantRegister(){
 		FallingTreeEnchantments.commit(FMLJavaModLoadingContext.get().getModEventBus());
 		
-		Stream.of(FallingTreeEnchantments.CHOPPER_ENCHANTMENT, FallingTreeEnchantments.CHOPPER_INSTANTANEOUS_ENCHANTMENT, FallingTreeEnchantments.CHOPPER_SHIFT_DOWN_ENCHANTMENT)
+		Stream.of(FallingTreeEnchantments.CHOPPER_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_INSTANTANEOUS_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_FALL_BLOCK_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_FALL_ITEM_ENCHANTMENT,
+						FallingTreeEnchantments.CHOPPER_SHIFT_DOWN_ENCHANTMENT
+				)
 				.filter(Objects::nonNull)
 				.map(EnchantmentWrapper::new)
 				.forEach(chopperEnchantments::add);
 	}
-	
+
+	@Override
+	@NotNull
+	public IItemStack getEmptyItemStack() {
+		return new ItemStackWrapper(ItemStack.EMPTY);
+	}
+
 	@NotNull
 	private <T> Optional<T> getRegistryElement(IForgeRegistry<T> registryKey, ResourceLocation identifier){
 		return registryKey.getHolder(identifier).map(Holder::value);

@@ -1,9 +1,6 @@
 package fr.rakambda.fallingtree.common.tree;
 
-import fr.rakambda.fallingtree.common.tree.breaking.BreakTreeTooBigException;
-import fr.rakambda.fallingtree.common.tree.breaking.ITreeBreakingHandler;
-import fr.rakambda.fallingtree.common.tree.breaking.InstantaneousTreeBreakingHandler;
-import fr.rakambda.fallingtree.common.tree.breaking.ShiftDownTreeBreakingHandler;
+import fr.rakambda.fallingtree.common.tree.breaking.*;
 import fr.rakambda.fallingtree.common.tree.builder.TreeTooBigException;
 import fr.rakambda.fallingtree.common.tree.exception.NoTreeFoundException;
 import fr.rakambda.fallingtree.common.tree.exception.NotServerException;
@@ -86,6 +83,9 @@ public class TreeHandler{
 	private ITreeBreakingHandler getBreakingHandler(@NotNull BreakMode breakMode){
 		return switch(breakMode){
 			case INSTANTANEOUS -> InstantaneousTreeBreakingHandler.getInstance(mod);
+			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, true, true);
+			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, false, true);
+			case FALL_ALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, false, false);
 			case SHIFT_DOWN -> ShiftDownTreeBreakingHandler.getInstance(mod);
 		};
 	}
