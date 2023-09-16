@@ -4,20 +4,31 @@ import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
-import fr.rakambda.fallingtree.common.wrapper.*;
+import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
+import fr.rakambda.fallingtree.common.wrapper.IBlock;
+import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
+import fr.rakambda.fallingtree.common.wrapper.IBlockState;
+import fr.rakambda.fallingtree.common.wrapper.IComponent;
+import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
+import fr.rakambda.fallingtree.common.wrapper.IItem;
+import fr.rakambda.fallingtree.common.wrapper.IItemStack;
+import fr.rakambda.fallingtree.common.wrapper.ILevel;
+import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import fr.rakambda.fallingtree.fabric.FallingTree;
-import fr.rakambda.fallingtree.fabric.common.wrapper.*;
+import fr.rakambda.fallingtree.fabric.common.wrapper.BlockWrapper;
+import fr.rakambda.fallingtree.fabric.common.wrapper.ComponentWrapper;
+import fr.rakambda.fallingtree.fabric.common.wrapper.EnchantmentWrapper;
+import fr.rakambda.fallingtree.fabric.common.wrapper.ItemStackWrapper;
+import fr.rakambda.fallingtree.fabric.common.wrapper.ItemWrapper;
 import fr.rakambda.fallingtree.fabric.enchant.ChopperEnchantment;
 import fr.rakambda.fallingtree.fabric.event.BlockBreakListener;
 import fr.rakambda.fallingtree.fabric.event.LeafBreakingListener;
-import fr.rakambda.fallingtree.fabric.event.PlayerJoinListener;
 import fr.rakambda.fallingtree.fabric.event.ServerCommandRegistrationListener;
 import fr.rakambda.fallingtree.fabric.network.FabricServerPacketHandler;
 import lombok.Getter;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -31,14 +42,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction> {
@@ -229,7 +238,6 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction> {
 
         ServerTickEvents.END_SERVER_TICK.register(new LeafBreakingListener(this));
         PlayerBlockBreakEvents.BEFORE.register(new BlockBreakListener(this));
-        ServerPlayConnectionEvents.JOIN.register(new PlayerJoinListener(this));
 
         CommandRegistrationCallback.EVENT.register(new ServerCommandRegistrationListener(this));
     }

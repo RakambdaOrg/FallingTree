@@ -6,7 +6,9 @@ dependencies {
     minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
 
-    modImplementation(libs.bundles.fabric)
+    modImplementation(libs.bundles.fabric) {
+        exclude(module = "fabric-api-deprecated")
+    }
 
     implementation(project(":common"))
 
