@@ -10,6 +10,8 @@ registries:
 updates:
   - package-ecosystem: "gradle"
     directory: "/"
+    assignees:
+      - "Rakambda"
     schedule:
       interval: "daily"
       time: "08:00"
@@ -19,6 +21,8 @@ updates:
 #  Disable while paths can't be ignored as it'd update all 'auto-approve-sync-files.yml', Renovate will handle exclusion
 #  - package-ecosystem: "github-actions"
 #    directory: "/"
+#    assignees:
+#      - "Rakambda"
 #    schedule:
 #      interval: "daily"
 #      time: "08:00"
@@ -27,6 +31,8 @@ updates:
 #      separator: "-"
   - package-ecosystem: "docker"
     directory: "/"
+    assignees:
+      - "Rakambda"
     schedule:
       interval: "daily"
       time: "08:00"
@@ -37,6 +43,8 @@ updates:
       - dockerhub
   - package-ecosystem: "maven"
     directory: "/"
+    assignees:
+      - "Rakambda"
     schedule:
       interval: "daily"
       time: "08:00"
@@ -45,6 +53,8 @@ updates:
       separator: "-"
   - package-ecosystem: "npm"
     directory: "/"
+    assignees:
+      - "Rakambda"
     schedule:
       interval: "daily"
       time: "08:00"
@@ -53,6 +63,8 @@ updates:
       separator: "-"
   - package-ecosystem: "nuget"
     directory: "/"
+    assignees:
+      - "Rakambda"
     schedule:
       interval: "daily"
       time: "08:00"
@@ -61,6 +73,8 @@ updates:
       separator: "-"
   - package-ecosystem: "pip"
     directory: "/"
+    assignees:
+      - "Rakambda"
     schedule:
       interval: "daily"
       time: "08:00"
