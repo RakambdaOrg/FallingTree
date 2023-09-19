@@ -4,9 +4,12 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
-    uses: Rakambda/rakambda-github-workflows/.github/workflows/gradle-minecraft-build.yml@main
+    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-build.yml@main
     with:
       java-version: ${{ vars.JAVA_VERSION }}
     secrets:
