@@ -1,7 +1,8 @@
 {
     "pack": {
-        "description": "FallingTree",
-        "pack_format": 13,
-        "forge:server_data_pack_format": 12
+        "description": {
+          "text": "FallingTree"
+        },
+        "pack_format": 15
     }
 }
