@@ -6,7 +6,9 @@ dependencies {
     minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
 
-    modImplementation(libs.bundles.fabric)
+    modImplementation(libs.bundles.fabric) {
+        exclude(module = "fabric-api-deprecated")
+    }
 
     implementation(project(":common"))
 
@@ -63,7 +65,7 @@ loom {
 
             property("fabric.log.level", "info")
             vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
-            programArgs("--uuid=123", "--username=Dev")
+            programArgs("--uuid=f13e3278-dfb8-4948-98cc-7701b5c62e8c", "--username=Dev")
         }
         create("FTFabricServer") {
             server()

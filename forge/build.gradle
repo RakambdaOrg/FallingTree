@@ -6,6 +6,7 @@ plugins {
 
 minecraft {
     mappings channel: "official", version: "${libs.versions.forgeMappingsVersion.get()}"
+    copyIdeResources = true
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 

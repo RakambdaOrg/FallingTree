@@ -1,32 +1,21 @@
 package fr.rakambda.fallingtree.fabric.network;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.network.ConfigurationPacket;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
-import fr.rakambda.fallingtree.common.wrapper.IServerPlayer;
-import fr.rakambda.fallingtree.fabric.FallingTree;
-import fr.rakambda.fallingtree.fabric.common.wrapper.FriendlyByteBufWrapper;
 import lombok.RequiredArgsConstructor;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import org.jetbrains.annotations.NotNull;
+import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 
 @RequiredArgsConstructor
 public class FabricServerPacketHandler implements ServerPacketHandler{
-	public static final ResourceLocation CONFIGURATION_MESSAGE_ID = new ResourceLocation(FallingTree.MOD_ID, "configuration-packet");
-	
 	private final FallingTreeCommon<?> mod;
 	
 	@Override
 	public void registerServer(){
-	}
-	
-	@Override
-	public void onPlayerConnected(@NotNull IServerPlayer serverPlayer){
-		var buf = new FriendlyByteBufWrapper(PacketByteBufs.create());
-		var packet = mod.getPacketUtils().createConfigurationPacket();
-		mod.getPacketUtils().encodeConfigurationPacket(packet, buf);
-		ServerPlayNetworking.send((ServerPlayer) serverPlayer.getRaw(), CONFIGURATION_MESSAGE_ID, buf.getRaw());
+		ServerConfigurationConnectionEvents.CONFIGURE.register(((handler, server) -> {
+			var packet = ConfigurationPacket.get(mod.getConfiguration());
+			ServerConfigurationNetworking.send(handler, new FallingTreeConfigPacket(packet));
+		}));
 	}
 }
