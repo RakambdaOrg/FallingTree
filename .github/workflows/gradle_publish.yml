@@ -4,9 +4,12 @@ on:
   release:
     types: [ published ]
 
+permissions:
+  contents: write
+
 jobs:
   publish:
-    uses: Rakambda/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish.yml@main
+    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish.yml@main
     with:
       java-version: ${{ vars.JAVA_VERSION }}
     secrets:
