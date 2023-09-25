@@ -3,7 +3,7 @@
 |Name |Description
 
 |Allowed logs
-|Allows you to define a list of allowed blocks that are considered as logs by the mod. By default, every block tagged as `#minecraft/logs` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
+|Allows you to define a list of allowed blocks that are considered as logs by the mod. By default, every block tagged as `#minecraft/logs` (link:https://minecraft.wiki/w/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
 
 NOTE: This will only add values in allow list on top of the already existing default recognized blocks, if you need to exclude logs look for the `Denied logs`.
 
@@ -13,7 +13,7 @@ The list will contain values under the minecraft resource location format :
 
 TIP: You can find this info by enabling detailed info on blocks by pressing `F3 + H` and hover the block in your inventory.
 
-- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.wiki/w/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
 
 |Denied logs
 |This works similarly to the `Allowed logs` section except that here you define blocks that will never be considered as logs by the mod.
@@ -21,7 +21,7 @@ TIP: You can find this info by enabling detailed info on blocks by pressing `F3 
 NOTE: Deny list takes over the values defined in allow list. So if you defined the same block in allow and deny lists it'll end up denied.
 
 |Allowed leaves
-|Allows you to define a list of allowed blocks that are considered as leaves by the mod. By default, every block tagged as `#minecraft/leaves` (link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
+|Allows you to define a list of allowed blocks that are considered as leaves by the mod. By default, every block tagged as `#minecraft/leaves` (link:https://minecraft.wiki/w/Tag#Blocks[Minecraft Wiki]) will be recognized by default. If it doesn't, you'll have to add it yourself or ask the mod author to tag its blocks accordingly.
 
 NOTE: This will only add values in allow list on top of the already existing default recognized blocks, if you need to exclude leaves look for the `Denied leaves`.
 
@@ -31,7 +31,7 @@ The list will contain values under the minecraft resource location format :
 
 TIP: You can find this info by enabling detailed info on blocks by pressing `F3 + H` and hover the block in your inventory.
 
-- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.wiki/w/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
 
 |Allowed leaves (needs breaking)
 |This is similar to `Allowed leaves` except that here you define values of leaves that needs to be broken because they do not decay over time. This would for example be the case fot the nether trees that got warts as leaves, and it doesn't decay.
@@ -166,7 +166,7 @@ The list will contain values under the minecraft resource location format :
 
 TIP: You can find this info by enabling detailed info on blocks by pressing `F3 + H` and hover the block in your inventory.
 
-- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+- `#modid:tagid` for a tag of blocks (eg: `#minecraft:planks`). To know the values you can look at the link:https://minecraft.wiki/w/Tag#Blocks[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
 
 |Adjacent stop mode
 |Defines the behavior to apply when a not allowed adjacent block is found.
