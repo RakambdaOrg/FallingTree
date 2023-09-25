@@ -13,7 +13,7 @@ The list will contain values under the minecraft resource location format :
 
 TIP: You can find this info by enabling detailed info on items by pressing `F3 + H` and hover the item in your inventory.
 
-- `#modid:tagid` for a tag of items (eg: `#minecraft:beds`). To know the values you can look at the link:https://minecraft.fandom.com/wiki/Tag#Items[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
+- `#modid:tagid` for a tag of items (eg: `#minecraft:beds`). To know the values you can look at the link:https://minecraft.wiki/w/Tag#Items[Minecraft Wiki] for Minecraft tags, or look into the documentation of a mod.
 
 |Denied tools
 |This works similarly to the `Allowed tools` section except that here you define tools that will never be considered as tools by the mod.
