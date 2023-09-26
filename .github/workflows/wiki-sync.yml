@@ -1,0 +1,12 @@
+name: Wiki
+
+on:
+  workflow_dispatch:
+  release:
+    types: [ published ]
+
+jobs:
+  wiki:
+    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/sync-wiki.yml@main
+    with:
+      path: wiki/
