@@ -7,6 +7,8 @@ on:
 
 jobs:
   wiki:
+    permissions:
+      contents: write
     uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/sync-wiki.yml@main
     with:
       path: wiki/
