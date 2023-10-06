@@ -362,7 +362,7 @@ public class ClothConfigHook extends ClothHookBase{
 				.build();
 		var requireEnchantmentEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("enchantment", "requireEnchantment")), config.isRequireEnchantment())
-				.setDefaultValue(true)
+				.setDefaultValue(false)
 				.setTooltip(getTooltips("enchantment", "requireEnchantment"))
 				.setSaveConsumer(config::setRequireEnchantment)
 				.build();
