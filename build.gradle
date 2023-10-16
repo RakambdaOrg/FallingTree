@@ -6,12 +6,13 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.google.guava:guava:32.1.2-jre")
+        classpath("com.google.guava:guava:32.1.3-jre")
         classpath("commons-io:commons-io:2.14.0")
     }
 }
 
 plugins {
+    id("idea")
     alias(libs.plugins.curse)
     alias(libs.plugins.modrinth)
     alias(libs.plugins.names)
@@ -20,6 +21,7 @@ plugins {
 
 allprojects {
     apply plugin: "java"
+    apply plugin: "idea"
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
