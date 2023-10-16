@@ -1,6 +1,7 @@
 package fr.rakambda.fallingtree.forge.network;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.network.ConfigurationPacket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,7 +27,8 @@ public class PlayerJoinListener{
 		if(event.getEntity() instanceof ServerPlayer serverPlayer){
 			var server = serverPlayer.getServer();
 			if(Objects.nonNull(server) && server.isDedicatedServer()){
-				ForgePacketHandler.INSTANCE.send(mod.getConfiguration(), PacketDistributor.PLAYER.with(serverPlayer));
+				var packet = ConfigurationPacket.get(mod.getConfiguration());
+				ForgePacketHandler.INSTANCE.send(packet, PacketDistributor.PLAYER.with(serverPlayer));
 			}
 			else{
 				log.info("Player connected to a local world, not setting up proxy config");
