@@ -1,7 +1,7 @@
 package fr.rakambda.fallingtree.forge.event;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.tree.exception.*;
+import fr.rakambda.fallingtree.common.tree.BreakTreeResult;
 import fr.rakambda.fallingtree.forge.common.wrapper.BlockPosWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.LevelWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.PlayerWrapper;
@@ -12,7 +12,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
-
 import javax.annotation.Nonnull;
 
 @RequiredArgsConstructor
@@ -55,19 +54,14 @@ public class BlockBreakListener{
 		var wrappedLevel = event.getLevel() instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(event.getLevel());
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
-		try{
-			var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
-			if(event.isCancelable()){
-				switch(result.breakMode()){
-					case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK, FALL_ALL_BLOCK -> event.setCanceled(result.shouldCancel());
-					case SHIFT_DOWN -> event.setCanceled(true);
-				}
+		var result = mod.getTreeHandler().attemptTreeBreaking(wrappedLevel, wrappedPlayer, wrappedPos);
+		if (result instanceof BreakTreeResult breakTreeResult) {
+			switch(breakTreeResult.breakMode()){
+				case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK, FALL_ALL_BLOCK -> event.setCanceled(result.shouldCancel());
+				case SHIFT_DOWN -> event.setCanceled(true);
 			}
-		}
-		catch(TreeBreakingNotEnabledException | PlayerNotInRightState | TreeBreakingException | NoTreeFoundException | NotServerException ignored){
-		}
-		catch(ToolUseForcedException e){
-			if(event.isCancelable()){
+		} else {
+			if(result.shouldCancel() && event.isCancelable()){
 				event.setCanceled(true);
 			}
 		}

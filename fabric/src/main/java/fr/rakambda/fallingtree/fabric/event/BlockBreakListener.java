@@ -1,12 +1,7 @@
 package fr.rakambda.fallingtree.fabric.event;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.tree.exception.NoTreeFoundException;
-import fr.rakambda.fallingtree.common.tree.exception.NotServerException;
-import fr.rakambda.fallingtree.common.tree.exception.PlayerNotInRightState;
-import fr.rakambda.fallingtree.common.tree.exception.ToolUseForcedException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingNotEnabledException;
+import fr.rakambda.fallingtree.common.tree.BreakTreeResult;
 import fr.rakambda.fallingtree.fabric.common.wrapper.BlockPosWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.LevelWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.PlayerWrapper;
@@ -32,18 +27,14 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 		var wrappedLevel = level instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(level);
 		var wrappedPos = new BlockPosWrapper(blockPos);
 		
-		try{
-			var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
-			return switch(result.breakMode()){
+		var result = mod.getTreeHandler().attemptTreeBreaking(wrappedLevel, wrappedPlayer, wrappedPos);
+		if (result instanceof BreakTreeResult breakTreeResult) {
+			return switch(breakTreeResult.breakMode()){
 				case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK, FALL_ALL_BLOCK -> !result.shouldCancel();
 				case SHIFT_DOWN -> false;
 			};
-		}
-		catch(TreeBreakingNotEnabledException | PlayerNotInRightState | TreeBreakingException | NoTreeFoundException | NotServerException e){
-			return true;
-		}
-		catch(ToolUseForcedException e){
-			return false;
+		} else {
+			return !result.shouldCancel();
 		}
 	}
 }
