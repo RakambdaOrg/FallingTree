@@ -13,5 +13,8 @@ public enum TreePartType{
 	MANGROVE_ROOTS(true),
 	OTHER(false);
 	
+	@Getter
+	private static final TreePartType[] values = values();
+	
 	private final boolean breakable;
 }
