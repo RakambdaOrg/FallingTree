@@ -12,6 +12,9 @@ public enum TreePartType{
 	NETHER_WART(true),
 	MANGROVE_ROOTS(true),
 	OTHER(false);
+
+	@Getter
+	private static final TreePartType[] values = values();
 	
 	private final boolean breakable;
 }
