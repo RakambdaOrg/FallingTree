@@ -18,6 +18,11 @@ updates:
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
+    groups:
+      log4j:
+        patterns:
+          - "org.apache.logging.log4j:log4j-core"
+          - "org.apache.logging.log4j:log4j-slf4j2-impl"
 #  Disable while paths can't be ignored as it'd update all 'auto-approve-sync-files.yml', Renovate will handle exclusion
 #  - package-ecosystem: "github-actions"
 #    directory: "/"

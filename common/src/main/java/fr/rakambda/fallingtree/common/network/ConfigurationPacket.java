@@ -36,7 +36,7 @@ public class ConfigurationPacket{
 		return builder()
 				.speedMultiplicand(buf.readDouble())
 				.forceToolUsage(buf.readBoolean())
-				.breakMode(BreakMode.values()[buf.readInteger()])
+				.breakMode(BreakMode.getValues()[buf.readInteger()])
 				.build();
 	}
 }

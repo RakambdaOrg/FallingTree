@@ -12,6 +12,9 @@ public enum BreakMode{
 	FALL_ALL_BLOCK(true, true),
 	SHIFT_DOWN(false, false);
 	
+	@Getter
+	private final static BreakMode[] values = values();
+	
 	private final boolean checkLeavesAround;
 	private final boolean applySpeedMultiplier;
 }

@@ -2,14 +2,8 @@ package fr.rakambda.fallingtree.common.tree;
 
 import fr.rakambda.fallingtree.common.tree.breaking.*;
 import fr.rakambda.fallingtree.common.tree.builder.TreeTooBigException;
-import fr.rakambda.fallingtree.common.tree.exception.NoTreeFoundException;
-import fr.rakambda.fallingtree.common.tree.exception.NotServerException;
-import fr.rakambda.fallingtree.common.tree.exception.PlayerNotInRightState;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
-import fr.rakambda.fallingtree.common.tree.exception.ToolUseForcedException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingNotEnabledException;
 import fr.rakambda.fallingtree.common.utils.CacheSpeed;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
@@ -34,27 +28,27 @@ public class TreeHandler{
 	private final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
 	@NotNull
-	public BreakTreeResult breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos) throws TreeBreakingNotEnabledException, PlayerNotInRightState, ToolUseForcedException, TreeBreakingException, NoTreeFoundException, NotServerException{
+	public IBreakAttemptResult breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos){
 		if(!level.isServer()){
-			throw new NotServerException();
+			return AbortedResult.NOT_SERVER;
 		}
 		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
-			throw new TreeBreakingNotEnabledException();
+			return AbortedResult.NOT_ENABLED;
 		}
-
+		
 		if(!mod.checkForceToolUsage(player, level, blockPos)){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
-			throw new ToolUseForcedException();
+			return AbortedResult.REQUIRED_TOOL_ABSENT;
 		}
 		
 		if(!mod.isPlayerInRightState(player)){
-			throw new PlayerNotInRightState();
+			return AbortedResult.INVALID_PLAYER_STATE;
 		}
 		
 		try{
 			var treeOptional = mod.getTreeBuilder().getTree(player, level, blockPos);
 			if(treeOptional.isEmpty()){
-				throw new NoTreeFoundException();
+				return AbortedResult.NO_SUCH_TREE;
 			}
 			
 			var tree = treeOptional.get();
@@ -64,11 +58,11 @@ public class TreeHandler{
 		}
 		catch(TreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.tree_too_big", mod.getConfiguration().getTrees().getMaxScanSize()));
-			throw new TreeBreakingException(e);
+			return AbortedResult.TREE_TOO_BIG_SCAN;
 		}
 		catch(BreakTreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_big", mod.getConfiguration().getTrees().getMaxSize()));
-			throw new TreeBreakingException(e);
+			return AbortedResult.TREE_TOO_BIG_BREAK;
 		}
 	}
 	
