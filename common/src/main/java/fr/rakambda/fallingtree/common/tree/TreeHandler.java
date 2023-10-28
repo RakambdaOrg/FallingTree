@@ -2,14 +2,8 @@ package fr.rakambda.fallingtree.common.tree;
 
 import fr.rakambda.fallingtree.common.tree.breaking.*;
 import fr.rakambda.fallingtree.common.tree.builder.TreeTooBigException;
-import fr.rakambda.fallingtree.common.tree.exception.NoTreeFoundException;
-import fr.rakambda.fallingtree.common.tree.exception.NotServerException;
-import fr.rakambda.fallingtree.common.tree.exception.PlayerNotInRightState;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
-import fr.rakambda.fallingtree.common.tree.exception.ToolUseForcedException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingException;
-import fr.rakambda.fallingtree.common.tree.exception.TreeBreakingNotEnabledException;
 import fr.rakambda.fallingtree.common.utils.CacheSpeed;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
@@ -34,27 +28,27 @@ public class TreeHandler{
 	private final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
 	@NotNull
-	public IBreakAttemptResult attemptTreeBreaking(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos) {
+	public IBreakAttemptResult breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos) {
 		if(!level.isServer()){
-			return BreakAbortionCause.NOT_SERVER;
+			return AbortedResult.NOT_SERVER;
 		}
 		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
-			return BreakAbortionCause.NOT_ENABLED;
+			return AbortedResult.NOT_ENABLED;
 		}
 		
 		if(!mod.checkForceToolUsage(player, level, blockPos)){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
-			return BreakAbortionCause.REQUIRED_TOOL_ABSENT;
+			return AbortedResult.REQUIRED_TOOL_ABSENT;
 		}
 		
 		if(!mod.isPlayerInRightState(player)){
-			return BreakAbortionCause.INVALID_PLAYER_STATE;
+			return AbortedResult.INVALID_PLAYER_STATE;
 		}
 		
 		try{
 			var treeOptional = mod.getTreeBuilder().getTree(player, level, blockPos);
 			if(treeOptional.isEmpty()){
-				return BreakAbortionCause.NO_SUCH_TREE;
+				return AbortedResult.NO_SUCH_TREE;
 			}
 			
 			var tree = treeOptional.get();
@@ -64,34 +58,12 @@ public class TreeHandler{
 		}
 		catch(TreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.tree_too_big", mod.getConfiguration().getTrees().getMaxScanSize()));
-			return BreakAbortionCause.TREE_TOO_BIG_SCAN;
+			return AbortedResult.TREE_TOO_BIG_SCAN;
 		}
 		catch(BreakTreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_big", mod.getConfiguration().getTrees().getMaxSize()));
-			return BreakAbortionCause.TREE_TOO_BIG_BREAK;
+			return AbortedResult.TREE_TOO_BIG_BREAK;
 		}
-	}
-
-	@Deprecated
-	@NotNull
-	public BreakTreeResult breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos) throws TreeBreakingNotEnabledException, PlayerNotInRightState, ToolUseForcedException, TreeBreakingException, NoTreeFoundException, NotServerException{
-		IBreakAttemptResult result = this.attemptTreeBreaking(level, player, blockPos);
-		if (result instanceof BreakTreeResult ret) {
-			return ret;
-		}
-		if (result instanceof BreakAbortionCause cause) {
-			switch (cause) {
-				case NOT_SERVER -> throw new NotServerException();
-				case TREE_TOO_BIG_SCAN -> throw new TreeBreakingException("Tree exceeded scanning limits");
-				case NO_SUCH_TREE -> throw new NoTreeFoundException();
-				case INVALID_PLAYER_STATE -> throw new PlayerNotInRightState();
-				case NOT_ENABLED -> throw new TreeBreakingNotEnabledException();
-				case TREE_TOO_BIG_BREAK -> throw new TreeBreakingException("Tree exceeded breaking limits");
-				case REQUIRED_TOOL_ABSENT -> throw new ToolUseForcedException();
-			}
-		}
-
-		throw new TreeBreakingException("Unknown/Unsupported break result: " + result);
 	}
 	
 	@NotNull

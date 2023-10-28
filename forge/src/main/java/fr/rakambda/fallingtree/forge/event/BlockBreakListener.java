@@ -54,7 +54,7 @@ public class BlockBreakListener{
 		var wrappedLevel = event.getLevel() instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(event.getLevel());
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
-		var result = mod.getTreeHandler().attemptTreeBreaking(wrappedLevel, wrappedPlayer, wrappedPos);
+		var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
 		if (result instanceof BreakTreeResult breakTreeResult) {
 			switch(breakTreeResult.breakMode()){
 				case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK, FALL_ALL_BLOCK -> event.setCanceled(result.shouldCancel());

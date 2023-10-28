@@ -27,7 +27,7 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 		var wrappedLevel = level instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(level);
 		var wrappedPos = new BlockPosWrapper(blockPos);
 		
-		var result = mod.getTreeHandler().attemptTreeBreaking(wrappedLevel, wrappedPlayer, wrappedPos);
+		var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
 		if (result instanceof BreakTreeResult breakTreeResult) {
 			return switch(breakTreeResult.breakMode()){
 				case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK, FALL_ALL_BLOCK -> !result.shouldCancel();

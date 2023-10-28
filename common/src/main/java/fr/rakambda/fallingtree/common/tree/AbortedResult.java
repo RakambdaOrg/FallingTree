@@ -1,6 +1,9 @@
 package fr.rakambda.fallingtree.common.tree;
 
-public enum BreakAbortionCause implements IBreakAttemptResult {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public enum AbortedResult implements IBreakAttemptResult {
 	NOT_SERVER(false),
 	NOT_ENABLED(false),
 	REQUIRED_TOOL_ABSENT(true),
@@ -10,10 +13,6 @@ public enum BreakAbortionCause implements IBreakAttemptResult {
 	TREE_TOO_BIG_BREAK(false);
 	
 	private final boolean cancel;
-	
-	BreakAbortionCause(boolean cancel) {
-		this.cancel = cancel;
-	}
 	
 	@Override
 	public boolean shouldCancel(){
