@@ -1,7 +1,6 @@
 package fr.rakambda.fallingtree.fabric.event;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.tree.BreakTreeResult;
 import fr.rakambda.fallingtree.fabric.common.wrapper.BlockPosWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.LevelWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.PlayerWrapper;
@@ -21,6 +20,9 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 	@NotNull
 	private final FallingTreeCommon<?> mod;
 	
+	/**
+	 * @return true if event is handled successful (not cancelling it), false otherwise (cancelling event)
+	 */
 	@Override
 	public boolean beforeBlockBreak(Level level, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
 		var wrappedPlayer = new PlayerWrapper(player);
@@ -28,13 +30,6 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 		var wrappedPos = new BlockPosWrapper(blockPos);
 		
 		var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
-		if (result instanceof BreakTreeResult breakTreeResult) {
-			return switch(breakTreeResult.breakMode()){
-				case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK, FALL_ALL_BLOCK -> !result.shouldCancel();
-				case SHIFT_DOWN -> false;
-			};
-		} else {
-			return !result.shouldCancel();
-		}
+		return !result.shouldCancel();
 	}
 }

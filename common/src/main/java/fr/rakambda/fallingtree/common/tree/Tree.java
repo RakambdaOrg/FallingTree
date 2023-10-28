@@ -43,7 +43,7 @@ public class Tree{
 	}
 	
 	public int getBreakableCount(){
-		return Arrays.stream(TreePartType.values())
+		return Arrays.stream(TreePartType.getValues())
 				.filter(TreePartType::isBreakable)
 				.mapToInt(this::getPartCount)
 				.sum();

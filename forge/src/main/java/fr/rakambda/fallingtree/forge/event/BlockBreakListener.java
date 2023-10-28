@@ -1,7 +1,6 @@
 package fr.rakambda.fallingtree.forge.event;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.tree.BreakTreeResult;
 import fr.rakambda.fallingtree.forge.common.wrapper.BlockPosWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.LevelWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.PlayerWrapper;
@@ -55,15 +54,8 @@ public class BlockBreakListener{
 		var wrappedPos = new BlockPosWrapper(event.getPos());
 		
 		var result = mod.getTreeHandler().breakTree(wrappedLevel, wrappedPlayer, wrappedPos);
-		if (result instanceof BreakTreeResult breakTreeResult) {
-			switch(breakTreeResult.breakMode()){
-				case INSTANTANEOUS, FALL_ITEM, FALL_BLOCK, FALL_ALL_BLOCK -> event.setCanceled(result.shouldCancel());
-				case SHIFT_DOWN -> event.setCanceled(true);
-			}
-		} else {
-			if(result.shouldCancel() && event.isCancelable()){
-				event.setCanceled(true);
-			}
+		if(result.shouldCancel() && event.isCancelable()){
+			event.setCanceled(true);
 		}
 	}
 }

@@ -28,7 +28,7 @@ public class TreeHandler{
 	private final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
 	@NotNull
-	public IBreakAttemptResult breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos) {
+	public IBreakAttemptResult breakTree(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos){
 		if(!level.isServer()){
 			return AbortedResult.NOT_SERVER;
 		}
