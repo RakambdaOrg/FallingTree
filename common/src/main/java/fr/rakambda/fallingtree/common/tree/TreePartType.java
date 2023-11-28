@@ -6,15 +6,17 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum TreePartType{
-	LEAF(false),
-	LEAF_NEED_BREAK(true),
-	LOG(true),
-	NETHER_WART(true),
-	MANGROVE_ROOTS(true),
-	OTHER(false);
+	LEAF(false, true, false),
+	LEAF_NEED_BREAK(true, true, true),
+	LOG(true, false, true),
+	NETHER_WART(true, false, true),
+	MANGROVE_ROOTS(true, false, true),
+	OTHER(false, false, true);
 	
 	@Getter
 	private static final TreePartType[] values = values();
 	
 	private final boolean breakable;
+	private final boolean alwaysScan;
+	private final boolean includeInTree;
 }

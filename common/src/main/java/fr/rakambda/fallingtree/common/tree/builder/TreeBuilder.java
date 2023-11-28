@@ -39,6 +39,7 @@ public class TreeBuilder{
 			return empty();
 		}
 		
+		var scannedCount = 0;
 		var maxScanSize = mod.getConfiguration().getTrees().getMaxScanSize();
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
@@ -52,11 +53,14 @@ public class TreeBuilder{
 			checkAdjacent(adjacentPredicate, level, originPos);
 			
 			while(!toAnalyzePos.isEmpty()){
+				scannedCount++;
 				var analyzingPos = toAnalyzePos.remove();
-				tree.addPart(analyzingPos.toTreePart());
+				if(analyzingPos.toTreePart().treePartType().isIncludeInTree()){
+					tree.addPart(analyzingPos.toTreePart());
+				}
 				analyzedPos.add(analyzingPos);
 				
-				if(tree.getSize() > maxScanSize){
+				if(scannedCount > maxScanSize){
 					log.debug("Tree at {} reached max scan size of {}", tree.getHitPos(), maxScanSize);
 					throw new TreeTooBigException();
 				}
@@ -134,9 +138,9 @@ public class TreeBuilder{
 		var maxZ = originPos.getZ() + radius;
 		
 		return pos -> minX <= pos.getX()
-		              && maxX >= pos.getX()
-		              && minZ <= pos.getZ()
-		              && maxZ >= pos.getZ();
+				&& maxX >= pos.getX()
+				&& minZ <= pos.getZ()
+				&& maxZ >= pos.getZ();
 	}
 	
 	@NotNull
@@ -210,7 +214,7 @@ public class TreeBuilder{
 				return true;
 			}
 		}
-		return check.treePartType() == TreePartType.LEAF_NEED_BREAK;
+		return check.treePartType().isAlwaysScan();
 	}
 	
 	private boolean isSameTree(@NotNull IBlock parentLogBlock, @NotNull ToAnalyzePos check){
