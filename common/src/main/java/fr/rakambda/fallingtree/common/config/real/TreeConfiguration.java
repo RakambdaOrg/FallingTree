@@ -47,6 +47,8 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	private int maxSize = 100;
 	@Expose
+	private int maxLeafDistanceFromLog = 15;
+	@Expose
 	@NotNull
 	private MaxSizeAction maxSizeAction = MaxSizeAction.ABORT;
 	@Expose

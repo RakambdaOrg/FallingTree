@@ -62,10 +62,8 @@ public class TreeBuilder{
 					log.debug("Tree at {} reached max scan size of {}", tree.getHitPos(), maxScanSize);
 					throw new TreeTooBigException();
 				}
-				if(analyzingPos.treePartType().isEdge()){
-					if(analyzingPos.sequenceSinceLastLog() >= 15){
-						continue;
-					}
+				if(analyzingPos.treePartType().isEdge() && analyzingPos.sequenceSinceLastLog() >= mod.getConfiguration().getTrees().getMaxLeafDistanceFromLog()){
+					continue;
 				}
 				
 				var potentialPositions = analyzingPos.positionFetcher().getPositions(level, originPos, analyzingPos);
