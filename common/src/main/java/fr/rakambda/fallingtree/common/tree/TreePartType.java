@@ -11,12 +11,12 @@ public enum TreePartType{
 	LOG(true, false, true),
 	NETHER_WART(true, false, true),
 	MANGROVE_ROOTS(true, false, true),
-	OTHER(false, false, true);
+	OTHER(false, false, false);
 	
 	@Getter
 	private static final TreePartType[] values = values();
 	
 	private final boolean breakable;
-	private final boolean alwaysScan;
+	private final boolean edge;
 	private final boolean includeInTree;
 }

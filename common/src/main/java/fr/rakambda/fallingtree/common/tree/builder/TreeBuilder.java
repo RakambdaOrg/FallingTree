@@ -39,12 +39,11 @@ public class TreeBuilder{
 			return empty();
 		}
 		
-		var scannedCount = 0;
 		var maxScanSize = mod.getConfiguration().getTrees().getMaxScanSize();
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
 		var tree = new Tree(level, originPos);
-		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0));
+		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0, 0));
 		
 		var boundingBoxSearch = getBoundingBoxSearch(originPos);
 		var adjacentPredicate = getAdjacentPredicate();
@@ -53,16 +52,20 @@ public class TreeBuilder{
 			checkAdjacent(adjacentPredicate, level, originPos);
 			
 			while(!toAnalyzePos.isEmpty()){
-				scannedCount++;
 				var analyzingPos = toAnalyzePos.remove();
 				if(analyzingPos.toTreePart().treePartType().isIncludeInTree()){
 					tree.addPart(analyzingPos.toTreePart());
 				}
 				analyzedPos.add(analyzingPos);
 				
-				if(scannedCount > maxScanSize){
+				if(tree.getSize() > maxScanSize){
 					log.debug("Tree at {} reached max scan size of {}", tree.getHitPos(), maxScanSize);
 					throw new TreeTooBigException();
+				}
+				if(analyzingPos.treePartType().isEdge()){
+					if(analyzingPos.sequenceSinceLastLog() >= 15){
+						continue;
+					}
 				}
 				
 				var potentialPositions = analyzingPos.positionFetcher().getPositions(level, originPos, analyzingPos);
@@ -198,6 +201,9 @@ public class TreeBuilder{
 	}
 	
 	private boolean shouldIncludeInChain(@NotNull Predicate<IBlockPos> boundingBoxSearch, @NotNull IBlockPos originPos, @NotNull IBlock originBlock, @NotNull ToAnalyzePos parent, @NotNull ToAnalyzePos check){
+		if(parent.treePartType().isEdge() && !check.treePartType().isEdge()){
+			return false;
+		}
 		if(parent.treePartType() == TreePartType.LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.checkPos())){
 			return true;
 		}
@@ -214,7 +220,7 @@ public class TreeBuilder{
 				return true;
 			}
 		}
-		return check.treePartType().isAlwaysScan();
+		return check.treePartType().isEdge();
 	}
 	
 	private boolean isSameTree(@NotNull IBlock parentLogBlock, @NotNull ToAnalyzePos check){
