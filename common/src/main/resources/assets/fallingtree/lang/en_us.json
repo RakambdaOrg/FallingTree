@@ -34,6 +34,8 @@
   "text.autoconfig.fallingtree.option.trees.maxSize.@Tooltip": "The maximum size of a tree. If there's more logs than this value max size action will be applied.",
   "text.autoconfig.fallingtree.option.trees.maxSizeAction": "Max size action",
   "text.autoconfig.fallingtree.option.trees.maxSizeAction.@Tooltip": "What to do when the max size of a tree is reached.\n\nABORT: Tree won't be cut.\nCUT: Tree will still be cut leaving some of it untouched.",
+  "text.autoconfig.fallingtree.option.trees.maxLeafDistanceFromLog": "Maximum leaf distance from log",
+  "text.autoconfig.fallingtree.option.trees.maxLeafDistanceFromLog.@Tooltip": "The maximum distance a leaf can be from the tree. This only affects scanning a tree.",
   "text.autoconfig.fallingtree.option.trees.breakOrder": "Break order",
   "text.autoconfig.fallingtree.option.trees.breakOrder.@Tooltip": "In what order logs are broken. This only makes sense if maxSize < maxScanSize.\n\nFURTHEST_FIRST: The furthest log will be broken first.\nCLOSEST_FIRST: The closest log will be broken first.\nLOWEST_FIRST: The lower log will be broken first.\n\nINFO: Only in INSTANTANEOUS mode.",
   "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired": "Minimum leaves around required",
