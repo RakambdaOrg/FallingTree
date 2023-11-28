@@ -45,6 +45,8 @@ public interface ITreeConfiguration{
 	
 	int getMaxSize();
 	
+	int getMaxLeafDistanceFromLog();
+	
 	@NotNull
 	MaxSizeAction getMaxSizeAction();
 	

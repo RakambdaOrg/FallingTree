@@ -43,7 +43,7 @@ public class TreeBuilder{
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
 		var tree = new Tree(level, originPos);
-		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0));
+		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, TreePartType.LOG, 0, 0));
 		
 		var boundingBoxSearch = getBoundingBoxSearch(originPos);
 		var adjacentPredicate = getAdjacentPredicate();
@@ -53,12 +53,17 @@ public class TreeBuilder{
 			
 			while(!toAnalyzePos.isEmpty()){
 				var analyzingPos = toAnalyzePos.remove();
-				tree.addPart(analyzingPos.toTreePart());
+				if(analyzingPos.toTreePart().treePartType().isIncludeInTree()){
+					tree.addPart(analyzingPos.toTreePart());
+				}
 				analyzedPos.add(analyzingPos);
 				
 				if(tree.getSize() > maxScanSize){
 					log.debug("Tree at {} reached max scan size of {}", tree.getHitPos(), maxScanSize);
 					throw new TreeTooBigException();
+				}
+				if(analyzingPos.treePartType().isEdge() && analyzingPos.sequenceSinceLastLog() >= mod.getConfiguration().getTrees().getMaxLeafDistanceFromLog()){
+					continue;
 				}
 				
 				var potentialPositions = analyzingPos.positionFetcher().getPositions(level, originPos, analyzingPos);
@@ -134,9 +139,9 @@ public class TreeBuilder{
 		var maxZ = originPos.getZ() + radius;
 		
 		return pos -> minX <= pos.getX()
-		              && maxX >= pos.getX()
-		              && minZ <= pos.getZ()
-		              && maxZ >= pos.getZ();
+				&& maxX >= pos.getX()
+				&& minZ <= pos.getZ()
+				&& maxZ >= pos.getZ();
 	}
 	
 	@NotNull
@@ -194,6 +199,9 @@ public class TreeBuilder{
 	}
 	
 	private boolean shouldIncludeInChain(@NotNull Predicate<IBlockPos> boundingBoxSearch, @NotNull IBlockPos originPos, @NotNull IBlock originBlock, @NotNull ToAnalyzePos parent, @NotNull ToAnalyzePos check){
+		if(parent.treePartType().isEdge() && !check.treePartType().isEdge()){
+			return false;
+		}
 		if(parent.treePartType() == TreePartType.LOG && isSameTree(originBlock, check) && boundingBoxSearch.test(check.checkPos())){
 			return true;
 		}
@@ -210,7 +218,7 @@ public class TreeBuilder{
 				return true;
 			}
 		}
-		return check.treePartType() == TreePartType.LEAF_NEED_BREAK;
+		return check.treePartType().isEdge();
 	}
 	
 	private boolean isSameTree(@NotNull IBlock parentLogBlock, @NotNull ToAnalyzePos check){
