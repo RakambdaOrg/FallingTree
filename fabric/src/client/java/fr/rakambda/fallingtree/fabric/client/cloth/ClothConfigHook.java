@@ -156,6 +156,12 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("trees", "maxSizeAction"))
 				.setSaveConsumer(config::setMaxSizeAction)
 				.build();
+		var maxLeafDistanceFromLogEntry = builder.entryBuilder()
+				.startIntField(translatable(getFieldName("trees", "maxLeafDistanceFromLog")), config.getMaxLeafDistanceFromLog())
+				.setDefaultValue(15)
+				.setTooltip(getTooltips("trees", "maxLeafDistanceFromLog"))
+				.setSaveConsumer(config::setMaxLeafDistanceFromLog)
+				.build();
 		var breakOrderEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName("trees", "breakOrder")), BreakOrder.class, config.getBreakOrder())
 				.setDefaultValue(BreakOrder.FURTHEST_FIRST)
@@ -245,6 +251,7 @@ public class ClothConfigHook extends ClothHookBase{
 		trees.addEntry(maxScanSizeEntry);
 		trees.addEntry(maxSizeEntry);
 		trees.addEntry(maxSizeActionEntry);
+		trees.addEntry(maxLeafDistanceFromLogEntry);
 		trees.addEntry(breakOrderEntry);
 		trees.addEntry(treeBreakingEntry);
 		trees.addEntry(leavesBreakingEntry);
