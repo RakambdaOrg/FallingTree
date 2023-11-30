@@ -14,7 +14,8 @@ public record ToAnalyzePos(@NotNull IPositionFetcher positionFetcher,
                            @NotNull IBlockPos checkPos,
                            @NotNull IBlock checkBlock,
                            @NotNull TreePartType treePartType,
-                           int sequence)
+                           int sequence,
+                           int sequenceSinceLastLog)
 		implements Comparable<ToAnalyzePos>{
 	
 	@Override
