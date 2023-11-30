@@ -82,6 +82,9 @@ NOTE: Only applied in `Instantaneous` breaking mode.
 - ABORT: Tree won't be cut.
 - CUT: Tree will still be cut leaving some of it untouched.
 
+|Maximum leaf distance from log
+|The maximum distance a leaf can be from the tree. This only affects scanning a tree.
+
 |Max size order
 |In what order logs are broken.
 

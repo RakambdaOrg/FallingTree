@@ -98,6 +98,11 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	}
 	
 	@Override
+	public int getMaxLeafDistanceFromLog(){
+		return delegate.getMaxLeafDistanceFromLog();
+	}
+	
+	@Override
 	@NotNull
 	public MaxSizeAction getMaxSizeAction(){
 		return delegate.getMaxSizeAction();

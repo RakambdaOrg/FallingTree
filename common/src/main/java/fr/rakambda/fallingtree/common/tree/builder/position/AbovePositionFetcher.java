@@ -1,5 +1,6 @@
 package fr.rakambda.fallingtree.common.tree.builder.position;
 
+import fr.rakambda.fallingtree.common.tree.TreePartType;
 import fr.rakambda.fallingtree.common.tree.builder.ToAnalyzePos;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
@@ -33,7 +34,9 @@ public class AbovePositionFetcher implements IPositionFetcher{
 		return parentPos.betweenClosedStream(parentPos.above().north().east(), lowerPosProvider.apply(parentPos).south().west())
 				.map(checkPos -> {
 					var checkBlock = level.getBlockState(checkPos).getBlock();
-					return new ToAnalyzePos(positionFetcherSupplier.get(), parentPos, parentBlock, checkPos.immutable(), checkBlock, mod.getTreePart(checkBlock), parent.sequence() + 1);
+					var treePart = mod.getTreePart(checkBlock);
+					var logSequence = treePart == TreePartType.LOG ? 0 : (parent.sequenceSinceLastLog() + 1);
+					return new ToAnalyzePos(this, parentPos, parentBlock, checkPos.immutable(), checkBlock, treePart, parent.sequence() + 1, logSequence);
 				})
 				.collect(toList());
 	}
