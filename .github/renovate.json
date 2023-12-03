@@ -11,5 +11,7 @@
   "excludeCommitPaths": [".github/workflows/auto-approve-sync-files.yml"],
   "ignorePaths": [
     ".github/workflows/auto-approve-sync-files.yml"
-  ]
+  ],
+  "timezone": "Europe/Paris",
+  "schedule": ["before 5am"]
 }
