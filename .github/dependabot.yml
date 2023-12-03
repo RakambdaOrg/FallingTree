@@ -14,7 +14,7 @@ updates:
       - "Rakambda"
     schedule:
       interval: "daily"
-      time: "08:00"
+      time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
@@ -30,7 +30,7 @@ updates:
 #      - "Rakambda"
 #    schedule:
 #      interval: "daily"
-#      time: "08:00"
+#      time: "05:00"
 #      timezone: "Europe/Paris"
 #    pull-request-branch-name:
 #      separator: "-"
@@ -40,7 +40,7 @@ updates:
       - "Rakambda"
     schedule:
       interval: "daily"
-      time: "08:00"
+      time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
@@ -52,7 +52,7 @@ updates:
       - "Rakambda"
     schedule:
       interval: "daily"
-      time: "08:00"
+      time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
@@ -62,7 +62,7 @@ updates:
       - "Rakambda"
     schedule:
       interval: "daily"
-      time: "08:00"
+      time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
@@ -72,7 +72,7 @@ updates:
       - "Rakambda"
     schedule:
       interval: "daily"
-      time: "08:00"
+      time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
@@ -82,7 +82,7 @@ updates:
       - "Rakambda"
     schedule:
       interval: "daily"
-      time: "08:00"
+      time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
