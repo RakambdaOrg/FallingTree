@@ -53,7 +53,15 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	@NotNull
 	public IComponent translate(@NotNull String key, Object... objects){
-		return new ComponentWrapper(Component.translatable(key, objects));
+		Object[] vars = Arrays.stream(objects)
+				.map(o -> {
+					if(o instanceof IComponent component){
+						return component.getRaw();
+					}
+					return o;
+				})
+				.toArray();
+		return new ComponentWrapper(Component.translatable(key, vars));
 	}
 	
 	@Override

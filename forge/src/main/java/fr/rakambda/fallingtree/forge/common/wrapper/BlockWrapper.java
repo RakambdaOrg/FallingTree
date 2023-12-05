@@ -40,6 +40,11 @@ public class BlockWrapper implements IBlock{
 	}
 	
 	@Override
+	public IComponent getAsComponent(){
+		return new ComponentWrapper(raw.getName());
+	}
+	
+	@Override
 	public boolean equals(Object obj){
 		if(!(obj instanceof IBlock block)){
 			return false;
