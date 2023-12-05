@@ -5,7 +5,7 @@ plugins {
 }
 
 minecraft {
-    mappings channel: "official", version: "${libs.versions.forgeMappingsVersion.get()}"
+    mappings channel: "official", version: "${libs.versions.minecraftVersion.get()}"
     copyIdeResources = true
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -97,7 +97,7 @@ processResources {
 
     from "src/main/resources", "../common/src/main/resources"
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching(["META-INF/mods.toml", "pack.mcmeta"]) {
         expand project.properties
     }
 }

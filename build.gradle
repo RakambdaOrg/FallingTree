@@ -25,7 +25,7 @@ allprojects {
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
         options.compilerArgs = ["-Xlint:deprecation"]
     }
@@ -56,7 +56,7 @@ allprojects {
         }
     }
 
-    if (version == null || version.equals("unspecified")) {
+    if (version == null || version == "unspecified") {
         try {
             def details = versionDetails()
             if (details.commitDistance > 0) {
@@ -84,7 +84,7 @@ if (version.contains("a") || version.contains("dev")) {
     isAlpha = true
 }
 
-task buildJar(type: Jar, group: "modding") {
+tasks.register('buildJar', Jar) {
     dependsOn(assemble)
     dependsOn(":common:build")
     if (project.includeFabric.toBoolean()) {
@@ -93,9 +93,8 @@ task buildJar(type: Jar, group: "modding") {
     if (project.includeForge.toBoolean()) {
         dependsOn(":forge:build")
     }
-
-    if (project.includeForge.toBoolean()) {
-        finalizedBy(":forge:signJar")
+    if (project.includeNeoForge.toBoolean()) {
+        dependsOn(":neoforge:build")
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -110,6 +109,11 @@ task buildJar(type: Jar, group: "modding") {
     if (project.includeForge.toBoolean()) {
         from {
             zipTree("forge/build/libs/forge-${project.version}.jar")
+        }
+    }
+    if (project.includeNeoForge.toBoolean()) {
+        from {
+            zipTree("neoforge/build/libs/neoforge-${project.version}.jar")
         }
     }
 
@@ -157,6 +161,9 @@ curseforge {
         if (project.includeForge.toBoolean()) {
             addGameVersion("Forge")
         }
+        if (project.includeNeoForge.toBoolean()) {
+            addGameVersion("NeoForge")
+        }
         changelog = getFTChangelog() ?: "No changelog provided"
         releaseType = relType
         mainArtifact(jar) {
@@ -172,6 +179,10 @@ curseforge {
             if (project.includeForge.toBoolean()) {
                 optionalDependency("cloth-config")
             }
+
+            if (project.includeNeoForge.toBoolean()) {
+                optionalDependency("cloth-config")
+            }
         }
     }
     options {
@@ -181,7 +192,7 @@ curseforge {
     }
 
     afterEvaluate {
-        tasks["curseforge${project.curseforge_project_id}"].dependsOn("buildJar")
+        tasks.named("curseforge${project.curseforge_project_id}").get().dependsOn("buildJar")
     }
 }
 
@@ -198,6 +209,9 @@ modrinth {
     if (project.includeForge.toBoolean()) {
         loaders.add("forge")
     }
+    if (project.includeNeoForge.toBoolean()) {
+        loaders.add("neoforge")
+    }
     versionType.set(relType)
     changelog.set(getFTChangelog() ?: "No changelog provided")
     syncBodyFrom.set(rootProject.file("README.md").getText())
@@ -213,10 +227,14 @@ modrinth {
         if (project.includeForge.toBoolean()) {
             optional.project("9s6osm5g") //Cloth config
         }
+
+        if (project.includeNeoForge.toBoolean()) {
+            optional.project("9s6osm5g") //Cloth config
+        }
     }
 
     afterEvaluate {
-        tasks["modrinth"].dependsOn("buildJar")
+        tasks.named("modrinth").get().dependsOn("buildJar")
     }
 }
 
