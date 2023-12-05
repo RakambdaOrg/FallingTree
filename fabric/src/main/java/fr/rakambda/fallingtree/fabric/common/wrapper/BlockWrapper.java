@@ -41,6 +41,7 @@ public class BlockWrapper implements IBlock{
 	}
 	
 	@Override
+	@NotNull
 	public IComponent getAsComponent(){
 		return new ComponentWrapper(raw.getName());
 	}

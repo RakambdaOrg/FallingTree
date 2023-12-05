@@ -8,5 +8,6 @@ public interface IBlock extends IWrapper{
 	
 	void playerDestroy(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NotNull IItemStack itemStack);
 
+	@NotNull
 	IComponent getAsComponent();
 }
