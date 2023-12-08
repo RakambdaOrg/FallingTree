@@ -1,69 +1,40 @@
-import net.minecraftforge.gradle.common.tasks.SignJar
-
 plugins {
     alias(libs.plugins.forge)
 }
 
 minecraft {
-    mappings channel: "official", version: "${libs.versions.forgeMappingsVersion.get()}"
+    mappings channel: "official", version: "${libs.versions.minecraftVersion.get()}"
     copyIdeResources = true
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
+        configureEach {
+            property "forge.logging.markers", "REGISTRIES"
+            property "forge.logging.console.level", "error"
+        }
+
         client {
             taskName "runFTForgeClient"
             workingDirectory project.file("./run/client")
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
-            property "forge.enabledGameTestNamespaces", "fallingtree"
-            mods {
-                fallingtree {
-                    source sourceSets.main
-                }
-            }
         }
 
         server {
             taskName "runFTForgeServer"
             workingDirectory project.file("./run/server")
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "info"
-            property "forge.enabledGameTestNamespaces", "fallingtree"
             args "--nogui"
-            mods {
-                fallingtree {
-                    source sourceSets.main
-                }
-            }
         }
 
         gameTestServer {
             taskName "runFTForgeTestServer"
             workingDirectory project.file("./run/test")
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
             property "forge.enabledGameTestNamespaces", "fallingtree"
-
-            mods {
-                fallingtree {
-                    source sourceSets.main
-                }
-            }
         }
 
         data {
             taskName "runFTForgeData"
             workingDirectory project.file("./run/data")
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
             args '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                fallingtree {
-                    source sourceSets.main
-                }
-            }
         }
     }
 }
@@ -97,26 +68,9 @@ processResources {
 
     from "src/main/resources", "../common/src/main/resources"
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching(["META-INF/mods.toml", "pack.mcmeta"]) {
         expand project.properties
     }
 }
 
 jar.finalizedBy('reobfJar')
-
-task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
-    onlyIf {
-        project.hasProperty("forgeKeyStore")
-                && project.hasProperty("forgeKeyStoreAlias")
-                && project.hasProperty("forgeKeyStorePass")
-                && project.hasProperty("forgeKeyStoreKeyPass")
-                && rootProject.file(project.findProperty("forgeKeyStore")).exists()
-    }
-
-    keyStore = project.findProperty("forgeKeyStore") == null ? null : rootProject.file(project.findProperty("forgeKeyStore")).absolutePath
-    alias = project.findProperty("forgeKeyStoreAlias")
-    storePass = project.findProperty("forgeKeyStorePass")
-    keyPass = project.findProperty("forgeKeyStoreKeyPass")
-    inputFile = rootProject.jar.getArchiveFile()
-    outputFile = rootProject.jar.getArchiveFile()
-}
