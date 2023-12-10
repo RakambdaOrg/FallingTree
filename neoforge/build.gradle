@@ -23,24 +23,20 @@ runs {
     }
 
     client {
-//        named("runFTForgeClient")
         workingDirectory project.file("./run/client")
     }
 
     server {
-//        named("runFTForgeServer")
         workingDirectory project.file("./run/server")
         programArguments.addAll "--nogui"
     }
 
     gameTestServer {
-//        named("runFTForgeTestServer")
         systemProperty 'forge.enabledGameTestNamespaces', 'fallingtree'
         workingDirectory project.file("./run/test")
     }
 
     data {
-//        named("runFTForgeData")
         workingDirectory project.file("./run/data")
         programArguments.addAll '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
