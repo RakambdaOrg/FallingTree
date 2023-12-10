@@ -46,22 +46,11 @@ runs {
     }
 }
 
-configurations {
-    library
-    implementation.extendsFrom library
-}
-
-//minecraft.runs.all {
-//    lazyToken('minecraft_classpath') {
-//        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-//    }
-//}
-
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation(libs.neoforge)
-    library(project(":common"))
+    implementation(project(":common"))
 
     implementation(libs.clothConfigNeoforge)
 }

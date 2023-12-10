@@ -6,7 +6,7 @@ minecraft {
     mappings channel: "official", version: "${libs.versions.minecraftVersion.get()}"
     copyIdeResources = true
 
-    accessTransformer = rootProject.file('common/src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         configureEach {
@@ -67,7 +67,6 @@ processResources {
     var replaceProperties = [
             minecraftVersion: libs.versions.minecraftVersion.get()
     ]
-
 
     filesMatching(["META-INF/mods.toml", "pack.mcmeta"]) {
         expand replaceProperties + project.properties
