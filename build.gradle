@@ -85,6 +85,7 @@ if (version.contains("a") || version.contains("dev")) {
 }
 
 tasks.register('buildJar', Jar) {
+    group("Modding")
     dependsOn(assemble)
     dependsOn(":common:build")
     if (project.includeFabric.toBoolean()) {
@@ -164,6 +165,7 @@ curseforge {
         if (project.includeNeoForge.toBoolean()) {
             addGameVersion("NeoForge")
         }
+
         changelog = getFTChangelog() ?: "No changelog provided"
         releaseType = relType
         mainArtifact(jar) {
@@ -212,6 +214,7 @@ modrinth {
     if (project.includeNeoForge.toBoolean()) {
         loaders.add("neoforge")
     }
+
     versionType.set(relType)
     changelog.set(getFTChangelog() ?: "No changelog provided")
     syncBodyFrom.set(rootProject.file("README.md").getText())

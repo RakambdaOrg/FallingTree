@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[48,)"
+loaderVersion = "[49,)"
 issueTrackerURL = "https://github.com/${repoUser}/${repoName}/issues"
 license = "LGPL-3.0"
 
@@ -21,7 +21,7 @@ side = "BOTH"
 [[dependencies.fallingtree]]
 modId = "neoforge"
 mandatory = false
-versionRange = "[20.3,)"
+versionRange = "[20.4,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.fallingtree]]

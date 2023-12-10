@@ -4,6 +4,7 @@ import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.wrapper.IBlockEntity;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
+import fr.rakambda.fallingtree.common.wrapper.IComponent;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
@@ -39,6 +40,7 @@ public class BlockWrapper implements IBlock{
 		raw.playerDestroy((Level) level.getRaw(), (Player) player.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), entity, (ItemStack) itemStack.getRaw());
 	}
 	
+	@NotNull
 	@Override
 	public IComponent getAsComponent(){
 		return new ComponentWrapper(raw.getName());
