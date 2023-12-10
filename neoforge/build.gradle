@@ -1,43 +1,48 @@
 plugins {
     alias(libs.plugins.neoforge)
+    alias(libs.plugins.neoforgeMixin)
+}
+
+mixin {
+    config '${modId}.neoforge.mixins.json'
 }
 
 minecraft {
-    mappings channel: "official", version: "${libs.versions.minecraftVersion.get()}"
-    copyIdeResources = true
+    mappings {
+        channel = official()
+        version.put "minecraft", libs.versions.minecraftVersion.get()
+    }
+}
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+runs {
+    configureEach {
+        systemProperty "forge.logging.markers", "REGISTRIES"
+        systemProperty "forge.logging.console.level", "debug"
 
-    runs {
-        configureEach {
-            systemProperty "forge.logging.markers", "REGISTRIES"
-            systemProperty "forge.logging.console.level", "debug"
+        modSource project.sourceSets.main
+    }
 
-            modSource project.sourceSets.main
-        }
+    client {
+//        named("runFTForgeClient")
+        workingDirectory project.file("./run/client")
+    }
 
-        client {
-            taskName "runFTForgeClient"
-            workingDirectory project.file("./run/client")
-        }
+    server {
+//        named("runFTForgeServer")
+        workingDirectory project.file("./run/server")
+        programArguments.addAll "--nogui"
+    }
 
-        server {
-            taskName "runFTForgeServer"
-            workingDirectory project.file("./run/server")
-            programArguments.addAll "--nogui"
-        }
+    gameTestServer {
+//        named("runFTForgeTestServer")
+        systemProperty 'forge.enabledGameTestNamespaces', 'fallingtree'
+        workingDirectory project.file("./run/test")
+    }
 
-        gameTestServer {
-            taskName "runFTForgeTestServer"
-            systemProperty 'forge.enabledGameTestNamespaces', 'fallingtree'
-            workingDirectory project.file("./run/test")
-        }
-
-        data {
-            taskName "runFTForgeData"
-            workingDirectory project.file("./run/data")
-            programArguments.addAll '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
+    data {
+//        named("runFTForgeData")
+        workingDirectory project.file("./run/data")
+        programArguments.addAll '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
@@ -46,23 +51,19 @@ configurations {
     implementation.extendsFrom library
 }
 
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
+//minecraft.runs.all {
+//    lazyToken('minecraft_classpath') {
+//        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+//    }
+//}
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft(libs.neoforge)
+    implementation(libs.neoforge)
     library(project(":common"))
 
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}"))
-}
-
-ext {
-    minecraftVersion = libs.versions.minecraftVersion.get()
+    implementation(libs.clothConfigNeoforge)
 }
 
 processResources {
@@ -70,7 +71,11 @@ processResources {
 
     from "src/main/resources", "../common/src/main/resources"
 
+    var replaceProperties = [
+            minecraftVersion: libs.versions.minecraftVersion.get()
+    ]
+
     filesMatching(["META-INF/mods.toml", "pack.mcmeta"]) {
-        expand project.properties
+        expand replaceProperties + project.properties
     }
 }

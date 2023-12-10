@@ -6,7 +6,7 @@ minecraft {
     mappings channel: "official", version: "${libs.versions.minecraftVersion.get()}"
     copyIdeResources = true
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = rootProject.file('common/src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         configureEach {
@@ -59,17 +59,18 @@ dependencies {
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}"))
 }
 
-ext {
-    minecraftVersion = libs.versions.minecraftVersion.get()
-}
-
 processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
     from "src/main/resources", "../common/src/main/resources"
 
+    var replaceProperties = [
+            minecraftVersion: libs.versions.minecraftVersion.get()
+    ]
+
+
     filesMatching(["META-INF/mods.toml", "pack.mcmeta"]) {
-        expand project.properties
+        expand replaceProperties + project.properties
     }
 }
 

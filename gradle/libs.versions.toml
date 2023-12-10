@@ -15,16 +15,15 @@ neoforge-version = "20.4.6-beta"
 
 # Mod dependencies
 modmenu-version = "9.0.0-pre.1"
-clothConfigVersion = "12.0.111"
+clothConfigVersion = "13.0.114"
 
 fabric-loom-version = "1.4+"
 forge-plugin-version = "[6.0.16,6.2)"
-neoforge-plugin-version = "7.0+"
+neoforge-plugin-version = "7.0.57"
 curse-version = "1.4.0"
 modrinth-version = "2.8.7"
 names-version = "0.50.0"
 git-version-plugin-version = "3.0.0"
-foojay-version = "0.5.0"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok-version" }
@@ -39,6 +38,7 @@ neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
 clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "clothConfigVersion" }
 clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version.ref = "clothConfigVersion" }
+clothConfigNeoforge = { group = "me.shedaniel.cloth", name = "cloth-config-neoforge", version.ref = "clothConfigVersion" }
 
 [bundles]
 fabric = ["fabric-loader", "fabric-api"]
@@ -50,5 +50,5 @@ names = { id = "com.github.ben-manes.versions", version.ref = "names-version" }
 loom = { id = "fabric-loom", version.ref = "fabric-loom-version" }
 forge = { id = "net.minecraftforge.gradle", version.ref = "forge-plugin-version" }
 neoforge = { id = "net.neoforged.gradle.userdev", version.ref = "neoforge-plugin-version" }
+neoforgeMixin = { id = "net.neoforged.gradle.mixin", version.ref = "neoforge-plugin-version" }
 gitVersion = { id = "com.palantir.git-version", version.ref = "git-version-plugin-version" }
-foojay = {id = "org.gradle.toolchains.foojay-resolver-convention", version.ref= 'foojay-version'}

@@ -36,3 +36,6 @@ mandatory = false
 versionRange = "[12.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[accessTransformers]]
+file="fallingtree.neoforge.at"
