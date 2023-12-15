@@ -16,7 +16,7 @@ import net.minecraftforge.network.SimpleChannel;
 @RequiredArgsConstructor
 public class ForgePacketHandler implements ClientPacketHandler, ServerPacketHandler{
 	public static final SimpleChannel INSTANCE = net.minecraftforge.network.ChannelBuilder.named(new ResourceLocation(FallingTree.MOD_ID, "main"))
-			.optionalClient()
+			.optional()
 			.simpleChannel();
 	
 	private static final int CONFIGURATION_MESSAGE_ID = 1;
