@@ -33,7 +33,7 @@ public class ForgePacketHandler implements ClientPacketHandler, ServerPacketHand
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
 			new ResourceLocation(FallingTree.MOD_ID, "main"),
 			() -> PROTOCOL_VERSION,
-			PROTOCOL_VERSION::equals,
+			NetworkRegistry.acceptMissingOr(PROTOCOL_VERSION),
 			v -> ALLOWED_VERSIONS.stream().anyMatch(v::equals)
 	);
 	
