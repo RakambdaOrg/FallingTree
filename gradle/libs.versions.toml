@@ -11,6 +11,7 @@ minecraftVersion = "1.20.4"
 fabric-loader-version = "0.15.1"
 fabric-api-version = "0.91.2+1.20.4"
 forge-version = "1.20.4-49.0.3"
+neoforge-version = "20.4.6-beta"
 
 # Mod dependencies
 modmenu-version = "9.0.0-pre.1"
@@ -18,6 +19,7 @@ clothConfigVersion = "13.0.114"
 
 fabric-loom-version = "1.4+"
 forge-plugin-version = "[6.0.16,6.2)"
+neoforge-plugin-version = "7.0.57"
 curse-version = "1.4.0"
 modrinth-version = "2.8.7"
 names-version = "0.50.0"
@@ -32,9 +34,11 @@ minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft
 fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader-version" }
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api-version" }
 forge = { group = "net.minecraftforge", name = "forge", version.ref = "forge-version" }
+neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge-version" }
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
 clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "clothConfigVersion" }
 clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version.ref = "clothConfigVersion" }
+clothConfigNeoforge = { group = "me.shedaniel.cloth", name = "cloth-config-neoforge", version.ref = "clothConfigVersion" }
 
 [bundles]
 fabric = ["fabric-loader", "fabric-api"]
@@ -45,4 +49,6 @@ modrinth = { id = "com.modrinth.minotaur", version.ref = "modrinth-version"}
 names = { id = "com.github.ben-manes.versions", version.ref = "names-version" }
 loom = { id = "fabric-loom", version.ref = "fabric-loom-version" }
 forge = { id = "net.minecraftforge.gradle", version.ref = "forge-plugin-version" }
+neoforge = { id = "net.neoforged.gradle.userdev", version.ref = "neoforge-plugin-version" }
+neoforgeMixin = { id = "net.neoforged.gradle.mixin", version.ref = "neoforge-plugin-version" }
 gitVersion = { id = "com.palantir.git-version", version.ref = "git-version-plugin-version" }

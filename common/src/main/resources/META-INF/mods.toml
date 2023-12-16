@@ -14,8 +14,14 @@ authors = "Rakambda"
 
 [[dependencies.fallingtree]]
 modId = "forge"
-mandatory = true
+mandatory = false
 versionRange = "[49,)"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.fallingtree]]
+modId = "neoforge"
+mandatory = false
+versionRange = "[20.4,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.fallingtree]]
@@ -30,3 +36,6 @@ mandatory = false
 versionRange = "[12.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[accessTransformers]]
+file="fallingtree.neoforge.at"

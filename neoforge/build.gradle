@@ -1,0 +1,66 @@
+plugins {
+    alias(libs.plugins.neoforge)
+    alias(libs.plugins.neoforgeMixin)
+}
+
+mixin {
+    config '${modId}.neoforge.mixins.json'
+}
+
+minecraft {
+    mappings {
+        channel = official()
+        version.put "minecraft", libs.versions.minecraftVersion.get()
+    }
+}
+
+runs {
+    configureEach {
+        systemProperty "forge.logging.markers", "REGISTRIES"
+        systemProperty "forge.logging.console.level", "debug"
+
+        modSource project.sourceSets.main
+    }
+
+    client {
+        workingDirectory project.file("./run/client")
+    }
+
+    server {
+        workingDirectory project.file("./run/server")
+        programArguments.addAll "--nogui"
+    }
+
+    gameTestServer {
+        systemProperty 'forge.enabledGameTestNamespaces', 'fallingtree'
+        workingDirectory project.file("./run/test")
+    }
+
+    data {
+        workingDirectory project.file("./run/data")
+        programArguments.addAll '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    implementation(libs.neoforge)
+    implementation(project(":common"))
+
+    implementation(libs.clothConfigNeoforge)
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    from "src/main/resources", "../common/src/main/resources"
+
+    var replaceProperties = [
+            minecraftVersion: libs.versions.minecraftVersion.get()
+    ]
+
+    filesMatching(["META-INF/mods.toml", "pack.mcmeta"]) {
+        expand replaceProperties + project.properties
+    }
+}

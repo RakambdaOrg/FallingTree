@@ -28,7 +28,7 @@
     ]
   },
   "mixins": [
-    "fallingtree.mixins.json"
+    "fallingtree.fabric.mixins.json"
   ],
   "accessWidener" : "fallingtree.accesswidener",
   "depends": {
