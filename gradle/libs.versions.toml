@@ -14,7 +14,7 @@ forge-version = "1.20.4-49.0.3"
 
 # Mod dependencies
 modmenu-version = "9.0.0-pre.1"
-clothConfigVersion = "13.0.114"
+clothConfigVersion = "13.0.121"
 
 fabric-loom-version = "1.4+"
 forge-plugin-version = "[6.0.16,6.2)"
