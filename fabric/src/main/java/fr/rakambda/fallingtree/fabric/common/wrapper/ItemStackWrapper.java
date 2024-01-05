@@ -7,6 +7,7 @@ import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -46,7 +47,7 @@ public class ItemStackWrapper implements IItemStack{
 	
 	@Override
 	public void damage(int amount, @NotNull IPlayer player){
-		raw.hurtAndBreak(amount, (Player) player.getRaw(), entity -> {});
+		raw.hurtAndBreak(amount, (Player) player.getRaw(), EquipmentSlot.MAINHAND);
 	}
 	
 	@Override
@@ -65,13 +66,10 @@ public class ItemStackWrapper implements IItemStack{
 	
 	@Override
 	public boolean hasOneOfEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel){
-		var itemEnchantments = EnchantmentHelper.getEnchantments(raw);
 		for(var enchantment : enchantments){
 			var key = (Enchantment) enchantment.getRaw();
-			if(itemEnchantments.containsKey(key)){
-				if(itemEnchantments.get(key) >= minLevel){
-					return true;
-				}
+			if(EnchantmentHelper.getItemEnchantmentLevel(key, raw) >= minLevel){
+				return true;
 			}
 		}
 		return false;
@@ -79,10 +77,9 @@ public class ItemStackWrapper implements IItemStack{
 	
 	@NotNull
 	public Optional<IEnchantment> getAnyEnchant(@NotNull Collection<IEnchantment> enchantments){
-		var itemEnchantments = EnchantmentHelper.getEnchantments(raw);
 		for(var enchantment : enchantments){
 			var key = (Enchantment) enchantment.getRaw();
-			if(itemEnchantments.containsKey(key)){
+			if(EnchantmentHelper.getItemEnchantmentLevel(key, raw) > 0){
 				return Optional.of(enchantment);
 			}
 		}
