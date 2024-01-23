@@ -20,7 +20,7 @@ fabric-loom-version = "1.4+"
 forge-plugin-version = "[6.0.16,6.2)"
 curse-version = "1.4.0"
 modrinth-version = "2.8.7"
-names-version = "0.50.0"
+names-version = "0.51.0"
 git-version-plugin-version = "3.0.0"
 
 [libraries]
