@@ -5,7 +5,5 @@ on:
 jobs:
   auto-approve-synced-files:
     uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/approve-sync-files.yml@main
-    with:
-      runs-on: self-hosted
     secrets:
       sync-token: ${{ secrets.SYNC_TOKEN }}
