@@ -13,7 +13,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -29,7 +29,7 @@ updates:
 #    assignees:
 #      - "Rakambda"
 #    schedule:
-#      interval: "daily"
+#      interval: "weekly"
 #      time: "05:00"
 #      timezone: "Europe/Paris"
 #    pull-request-branch-name:
@@ -39,7 +39,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -51,7 +51,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -61,7 +61,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -71,7 +71,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -81,7 +81,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
