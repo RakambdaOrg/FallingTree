@@ -7,16 +7,16 @@ gson-version = "2.10.1"
 log4j2-version = "2.23.1"
 
 # Minecraft / Loaders
-minecraftVersion = "1.20.4"
-fabric-loader-version = "0.15.1"
-fabric-api-version = "0.91.2+1.20.4"
+minecraftVersion = "1.20.5"
+fabric-loader-version = "0.15.10"
+fabric-api-version = "0.97.8+1.20.5"
 forge-version = "1.20.4-49.0.3"
 
 # Mod dependencies
-modmenu-version = "9.0.0-pre.1"
-clothConfigVersion = "13.0.121"
+modmenu-version = "10.0.0-beta.1"
+clothConfigVersion = "14.0.126"
 
-fabric-loom-version = "1.4+"
+fabric-loom-version = "1.6+"
 forge-plugin-version = "[6.0.16,6.2)"
 curse-version = "1.4.0"
 modrinth-version = "2.8.7"
