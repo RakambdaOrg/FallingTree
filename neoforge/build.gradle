@@ -1,0 +1,66 @@
+plugins {
+    id("java-library")
+    alias(libs.plugins.neoforge)
+}
+
+runs {
+    configureEach {
+        systemProperty "forge.logging.markers", "REGISTRIES"
+        systemProperty "forge.logging.console.level", "error"
+    }
+
+    client {
+//        name "runFTNeoForgeClient"
+        workingDirectory.set(project.file("./run/client"))
+    }
+
+    server {
+//        taskName "runFTNeoForgeServer"
+        workingDirectory.set(project.file("./run/server"))
+        programArgument "--nogui"
+    }
+
+    gameTestServer {
+//        taskName "runFTNeoForgeTestServer"
+        workingDirectory.set(project.file("./run/test"))
+        systemProperty "forge.enabledGameTestNamespaces", "fallingtree"
+    }
+
+    data {
+//        taskName "runFTNeoForgeData"
+        workingDirectory.set(project.file("./run/data"))
+        programArguments.addAll '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+minecraft {
+    mappings {
+        channel = official()
+        version.put "minecraft", libs.versions.minecraftVersion.get()
+    }
+
+    accessTransformers.file('src/main/resources/META-INF/neoforge.accesstransformer.cfg')
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    implementation(libs.neoforge)
+    implementation(project(":common"))
+
+    implementation("me.shedaniel.cloth:cloth-config-neoforge:${libs.versions.clothConfigVersion.get()}")
+}
+
+ext {
+    minecraftVersion = libs.versions.minecraftVersion.get()
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    from "src/main/resources", "../common/src/main/resources"
+
+    filesMatching(["META-INF/neoforge.mods.toml"]) {
+        expand project.properties
+    }
+}
