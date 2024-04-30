@@ -1,0 +1,34 @@
+modLoader="javafml" #mandatory
+loaderVersion="[2,)"
+license="LGPL-3.0"
+
+[[mods]]
+modId = "${modId}"
+version = "${version}"
+displayName = "${modName}"
+description = '''Change the way you cut trees.'''
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/falling-tree"
+logoFile = "logo.png"
+authors = "Rakambda"
+
+[[accessTransformers]]
+file="META-INF/neoforge.accesstransformer.cfg"
+
+[[dependencies.fallingtree]]
+modId="neoforge"
+type="required"
+versionRange="[20.6,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.fallingtree]]
+modId="minecraft"
+type="required"
+versionRange = "[${minecraftVersion}]"
+ordering="NONE"
+side="BOTH"
+[[dependencies.fallingtree]]
+modId = "cloth-config"
+type="optional"
+versionRange = "[14.0.0,)"
+ordering = "NONE"
+side = "CLIENT"

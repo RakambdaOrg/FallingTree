@@ -34,7 +34,7 @@ minecraft {
         data {
             taskName "runFTForgeData"
             workingDirectory project.file("./run/data")
-            args '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
     }
 }

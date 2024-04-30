@@ -10,6 +10,10 @@ pluginManagement {
             name = "MinecraftForge"
             url = uri("https://maven.minecraftforge.net")
         }
+        maven {
+            name = "MinecraftNeoForge"
+            url = uri("https://maven.neoforged.net/releases")
+        }
         gradlePluginPortal()
     }
     resolutionStrategy {
@@ -27,6 +31,7 @@ plugins {
 
 val includeFabric: String by settings
 val includeForge: String by settings
+val includeNeoForge: String by settings
 
 include("common")
 if (includeFabric.toBoolean()) {
@@ -34,4 +39,7 @@ if (includeFabric.toBoolean()) {
 }
 if (includeForge.toBoolean()) {
     include("forge")
+}
+if (includeNeoForge.toBoolean()) {
+    include("neoforge")
 }
