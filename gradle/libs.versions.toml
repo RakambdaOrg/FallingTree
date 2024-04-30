@@ -7,9 +7,9 @@ gson-version = "2.10.1"
 log4j2-version = "2.23.1"
 
 # Minecraft / Loaders
-minecraftVersion = "1.20.5"
+minecraftVersion = "1.20.6"
 fabric-loader-version = "0.15.10"
-fabric-api-version = "0.97.8+1.20.5"
+fabric-api-version = "0.97.8+1.20.6"
 forge-version = "1.20.4-49.0.3"
 
 # Mod dependencies
