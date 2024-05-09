@@ -26,6 +26,6 @@ Check out the [wiki](https://github.com/Rakambda/FallingTree/wiki) for some more
 ---
 
 * For Fabric users, **Fabric API** is required.
-* For Forge users, **Cloth Config API** is optional on the client and allows you to have a config GUI in game.
+* For Neoforge/Forge users, **Cloth Config API** is optional on the client and allows you to have a config GUI in game.
 
 NOTE: On servers this mod can be server-side only, client isn't required (except if you use the change speed feature and/or enchants configurations).

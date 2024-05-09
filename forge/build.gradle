@@ -56,7 +56,7 @@ dependencies {
     minecraft(libs.forge)
     library(project(":common"))
 
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}"))
+    //implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}"))
 }
 
 ext {

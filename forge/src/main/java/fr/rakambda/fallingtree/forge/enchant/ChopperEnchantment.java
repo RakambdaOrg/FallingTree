@@ -4,10 +4,10 @@ import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.enchant.IFallingTreeEnchantment;
 import fr.rakambda.fallingtree.forge.common.wrapper.ItemStackWrapper;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
@@ -17,19 +17,9 @@ public class ChopperEnchantment extends Enchantment implements IFallingTreeEncha
 	private final BreakMode breakMode;
 	
 	public ChopperEnchantment(@NotNull FallingTreeCommon<?> mod, @Nullable BreakMode breakMode){
-		super(Rarity.COMMON, EnchantmentCategory.BREAKABLE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+		super(Enchantment.definition(ItemTags.MINING_ENCHANTABLE, 1, 1, constantCost(1), constantCost(10), 1, EquipmentSlot.MAINHAND));
 		this.mod = mod;
 		this.breakMode = breakMode;
-	}
-	
-	@Override
-	public int getMinCost(int i){
-		return 1;
-	}
-	
-	@Override
-	public int getMaxCost(int i){
-		return 10;
 	}
 	
 	@Override
