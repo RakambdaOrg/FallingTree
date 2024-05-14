@@ -1,5 +1,5 @@
 name: Forge bug report
-description: Create a report to help us improve the Forge version
+description: Create a report to help us improve the NeoForge version
 labels: ["modloader: Neoforge", "type: 🐛 bug"]
 assignees:
   - Rakambda
