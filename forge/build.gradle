@@ -5,6 +5,7 @@ plugins {
 minecraft {
     mappings channel: "official", version: "${libs.versions.minecraftVersion.get()}"
     copyIdeResources = true
+    reobf = false
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -57,6 +58,9 @@ dependencies {
     library(project(":common"))
 
     //implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}"))
+
+    // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transitive dependencies request 6.0+
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 ext {
@@ -73,4 +77,12 @@ processResources {
     }
 }
 
-jar.finalizedBy('reobfJar')
+// Merge the resources and classes into the same directory.
+// This is done because java expects modules to be in a single directory.
+// And if we have it in multiple we have to do performance intensive hacks like having the UnionFileSystem
+// This will eventually be migrated to ForgeGradle so modders don't need to manually do it. But that is later.
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
+}
