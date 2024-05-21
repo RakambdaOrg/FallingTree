@@ -62,16 +62,16 @@ updates:
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
-  - package-ecosystem: "npm"
-    directory: "/"
-    assignees:
-      - "Rakambda"
-    schedule:
-      interval: "weekly"
-      time: "05:00"
-      timezone: "Europe/Paris"
-    pull-request-branch-name:
-      separator: "-"
+#  - package-ecosystem: "npm"
+#    directory: "/"
+#    assignees:
+#      - "Rakambda"
+#    schedule:
+#      interval: "weekly"
+#      time: "05:00"
+#      timezone: "Europe/Paris"
+#    pull-request-branch-name:
+#      separator: "-"
   - package-ecosystem: "nuget"
     directory: "/"
     assignees:
