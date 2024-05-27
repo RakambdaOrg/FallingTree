@@ -82,6 +82,11 @@ updates:
       timezone: "Europe/Paris"
     pull-request-branch-name:
       separator: "-"
+    groups:
+      restsharp:
+        patterns:
+          - "restsharp"
+          - "restsharp.serializers.newtonsoftjson"
   - package-ecosystem: "pip"
     directory: "/"
     assignees:
