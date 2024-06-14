@@ -42,9 +42,10 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		}
 		
 		var scannedLeaves = new LinkedList<IBlockPos>();
+		var wantToBreakCount = Math.min(tree.getBreakableCount(), toolHandler.getMaxBreakCount());
 		var brokenCount = tree.getParts().stream()
 				.sorted(mod.getConfiguration().getTrees().getBreakOrder().getComparator())
-				.limit(toolHandler.getMaxBreakCount())
+				.limit(wantToBreakCount)
 				.mapToInt(part -> {
 					var logBlockPos = part.blockPos();
 					var logState = level.getBlockState(logBlockPos);
@@ -80,7 +81,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 			tool.damage(toolDamage, player);
 		}
 		
-		if(brokenCount >= toolHandler.getMaxBreakCount()){
+		if(brokenCount >= wantToBreakCount){
 			leafForceBreaker.forceBreakDecayLeaves(player, tree, level);
 		}
 		return true;
