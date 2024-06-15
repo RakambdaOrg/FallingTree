@@ -1,12 +1,27 @@
 package fr.rakambda.fallingtree.forge.common;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
-import fr.rakambda.fallingtree.common.wrapper.*;
+import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
+import fr.rakambda.fallingtree.common.wrapper.IBlock;
+import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
+import fr.rakambda.fallingtree.common.wrapper.IBlockState;
+import fr.rakambda.fallingtree.common.wrapper.IComponent;
+import fr.rakambda.fallingtree.common.wrapper.IItem;
+import fr.rakambda.fallingtree.common.wrapper.IItemStack;
+import fr.rakambda.fallingtree.common.wrapper.ILevel;
+import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import fr.rakambda.fallingtree.forge.client.event.PlayerLeaveListener;
-import fr.rakambda.fallingtree.forge.common.wrapper.*;
-import fr.rakambda.fallingtree.forge.event.*;
+import fr.rakambda.fallingtree.forge.common.wrapper.BlockWrapper;
+import fr.rakambda.fallingtree.forge.common.wrapper.ComponentWrapper;
+import fr.rakambda.fallingtree.forge.common.wrapper.ItemStackWrapper;
+import fr.rakambda.fallingtree.forge.common.wrapper.ItemWrapper;
+import fr.rakambda.fallingtree.forge.event.BlockBreakListener;
+import fr.rakambda.fallingtree.forge.event.FallingTreeBlockBreakEvent;
+import fr.rakambda.fallingtree.forge.event.LeafBreakingListener;
+import fr.rakambda.fallingtree.forge.event.ServerCommandRegistrationListener;
 import fr.rakambda.fallingtree.forge.network.ForgePacketHandler;
 import fr.rakambda.fallingtree.forge.network.PlayerJoinListener;
 import lombok.Getter;
@@ -20,21 +35,25 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+import static fr.rakambda.fallingtree.forge.FallingTreeUtils.id;
+import static fr.rakambda.fallingtree.forge.FallingTreeUtils.idExternal;
 import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
@@ -42,12 +61,22 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	private final LeafBreakingHandler leafBreakingHandler;
 	private final ForgePacketHandler packetHandler;
 	@Getter
-	private Collection<IEnchantment> chopperEnchantments;
+	private final TagKey<Enchantment> chopperEnchantmentTag;
+	@Getter
+	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
-		chopperEnchantments = new ArrayList<>();
 		packetHandler = new ForgePacketHandler(this);
+		
+		chopperEnchantmentTag = TagKey.create(Registries.ENCHANTMENT, id("chopper_all"));
+		
+		breakModeChopperEnchantmentTag = new HashMap<>();
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ALL_BLOCK, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_all_block")));
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_BLOCK, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_block")));
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ITEM, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_item")));
+		breakModeChopperEnchantmentTag.put(BreakMode.INSTANTANEOUS, TagKey.create(Registries.ENCHANTMENT, id("chopper_instantaneous")));
+		breakModeChopperEnchantmentTag.put(BreakMode.SHIFT_DOWN, TagKey.create(Registries.ENCHANTMENT, id("chopper_shift_down")));
 	}
 	
 	@Override
@@ -78,7 +107,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			if(isTag){
 				name = name.substring(1);
 			}
-			var resourceLocation = new ResourceLocation(name);
+			var resourceLocation = idExternal(name);
 			if(isTag){
 				var tag = TagKey.create(Registries.BLOCK, resourceLocation);
 				return getRegistryTagContent(ForgeRegistries.BLOCKS, tag).map(BlockWrapper::new);
@@ -98,7 +127,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			if(isTag){
 				name = name.substring(1);
 			}
-			var resourceLocation = new ResourceLocation(name);
+			var resourceLocation = idExternal(name);
 			if(isTag){
 				var tag = TagKey.create(Registries.ITEM, resourceLocation);
 				return getRegistryTagContent(ForgeRegistries.ITEMS, tag).map(ItemWrapper::new);
@@ -113,7 +142,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	public boolean isLeafBlock(@NotNull IBlock block){
 		var isAllowedBlock = registryTagContains(ForgeRegistries.BLOCKS, BlockTags.LEAVES, (Block) block.getRaw())
-		                     || getConfiguration().getTrees().getAllowedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
+				|| getConfiguration().getTrees().getAllowedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
 		if(isAllowedBlock){
 			var isDeniedBlock = getConfiguration().getTrees().getDeniedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
 			return !isDeniedBlock;
@@ -124,7 +153,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	public boolean isLogBlock(@NotNull IBlock block){
 		var isAllowedBlock = getConfiguration().getTrees().getDefaultLogsBlocks(this).stream().anyMatch(log -> log.equals(block))
-		                     || getConfiguration().getTrees().getAllowedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
+				|| getConfiguration().getTrees().getAllowedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
 		if(isAllowedBlock){
 			var isDeniedBlock = getConfiguration().getTrees().getDeniedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
 			return !isDeniedBlock;
@@ -159,7 +188,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	public boolean isNetherWartOrShroomlight(@NotNull IBlock block){
 		return registryTagContains(ForgeRegistries.BLOCKS, BlockTags.WART_BLOCKS, (Block) block.getRaw())
-		       || Blocks.SHROOMLIGHT.equals(block.getRaw());
+				|| Blocks.SHROOMLIGHT.equals(block.getRaw());
 	}
 	
 	@Override
@@ -173,36 +202,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	protected void performDefaultEnchantRegister(){
-		FallingTreeEnchantments.registerDefault();
-	}
-	
-	@Override
-	protected void performSpecificEnchantRegister(){
-		FallingTreeEnchantments.registerSpecific();
-	}
-	
-	@Override
-	protected void performCommitEnchantRegister(){
-		FallingTreeEnchantments.commit(FMLJavaModLoadingContext.get().getModEventBus());
-		
-		Stream.of(FallingTreeEnchantments.CHOPPER_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_INSTANTANEOUS_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_FALL_BLOCK_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_FALL_ITEM_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_SHIFT_DOWN_ENCHANTMENT
-				)
-				.filter(Objects::nonNull)
-				.map(EnchantmentWrapper::new)
-				.forEach(chopperEnchantments::add);
-	}
-
-	@Override
 	@NotNull
-	public IItemStack getEmptyItemStack() {
+	public IItemStack getEmptyItemStack(){
 		return new ItemStackWrapper(ItemStack.EMPTY);
 	}
-
+	
 	@NotNull
 	private <T> Optional<T> getRegistryElement(IForgeRegistry<T> registryKey, ResourceLocation identifier){
 		return registryKey.getHolder(identifier).map(Holder::value);

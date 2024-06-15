@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[2,)"
+loaderVersion="[4,)"
 license="LGPL-3.0"
 
 [[mods]]
@@ -17,7 +17,7 @@ file="META-INF/neoforge.accesstransformer.cfg"
 [[dependencies.fallingtree]]
 modId="neoforge"
 type="required"
-versionRange="[20.6,)"
+versionRange="[21.0,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.fallingtree]]
@@ -29,6 +29,6 @@ side="BOTH"
 [[dependencies.fallingtree]]
 modId = "cloth-config"
 type="optional"
-versionRange = "[14.0.0,)"
+versionRange = "[15.0.0,)"
 ordering = "NONE"
 side = "CLIENT"

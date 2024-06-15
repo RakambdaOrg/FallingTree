@@ -36,7 +36,6 @@ public class FallingTree{
 			}
 		}
 		
-		mod.registerEnchant();
 		mod.registerForge(NeoForge.EVENT_BUS);
 	}
 }

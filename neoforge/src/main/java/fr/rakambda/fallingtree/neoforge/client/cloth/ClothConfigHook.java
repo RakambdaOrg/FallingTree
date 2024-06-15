@@ -349,24 +349,6 @@ public class ClothConfigHook extends ClothHookBase{
 	
 	@OnlyIn(Dist.CLIENT)
 	private void fillEnchantmentConfigScreen(@NotNull ConfigBuilder builder, @NotNull EnchantmentConfiguration config){
-		var registerEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("enchantment", "registerEnchant")), config.isRegisterEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("enchantment", "registerEnchant"))
-				.setSaveConsumer(config::setRegisterEnchant)
-				.build();
-		var registerSpecificEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("enchantment", "registerSpecificEnchant")), config.isRegisterSpecificEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("enchantment", "registerSpecificEnchant"))
-				.setSaveConsumer(config::setRegisterSpecificEnchant)
-				.build();
-		var hideEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("enchantment", "hideEnchant")), config.isHideEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("enchantment", "hideEnchant"))
-				.setSaveConsumer(config::setHideEnchant)
-				.build();
 		var requireEnchantmentEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("enchantment", "requireEnchantment")), config.isRequireEnchantment())
 				.setDefaultValue(false)
@@ -375,9 +357,6 @@ public class ClothConfigHook extends ClothHookBase{
 				.build();
 		
 		var enchantment = builder.getOrCreateCategory(translatable("text.autoconfig.fallingtree.category.enchantment"));
-		enchantment.addEntry(registerEnchantEntry);
-		enchantment.addEntry(registerSpecificEnchantEntry);
-		enchantment.addEntry(hideEnchantEntry);
 		enchantment.addEntry(requireEnchantmentEntry);
 	}
 	

@@ -10,9 +10,4 @@ public class FallingTreeBlockBreakEvent extends BlockEvent.BreakEvent{
 	public FallingTreeBlockBreakEvent(Level level, BlockPos pos, BlockState state, Player player){
 		super(level, pos, state, player);
 	}
-	
-	@Override
-	public int getExpToDrop(){
-		return 0;
-	}
 }
