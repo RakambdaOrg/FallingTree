@@ -1,9 +1,10 @@
 package fr.rakambda.fallingtree.neoforge.common.wrapper;
 
-import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
+import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
+import fr.rakambda.fallingtree.neoforge.FallingTree;
 import fr.rakambda.fallingtree.neoforge.compat.TetraCompat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,9 @@ import lombok.ToString;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.neoforged.neoforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import java.util.Collection;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -59,30 +58,19 @@ public class ItemStackWrapper implements IItemStack{
 	}
 	
 	@Override
-	public int getEnchantLevel(@Nullable IEnchantment enchantment){
-		if(enchantment == null){
-			return 0;
-		}
-		return raw.getEnchantmentLevel((Enchantment) enchantment.getRaw());
-	}
-	
-	@Override
-	public boolean hasOneOfEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel){
-		for(var enchantment : enchantments){
-			var key = (Enchantment) enchantment.getRaw();
-			if(raw.getEnchantmentLevel(key) >= minLevel){
-				return true;
-			}
-		}
-		return false;
+	public boolean hasChopperEnchant(){
+		return EnchantmentHelper.hasTag(raw, FallingTree.getMod().getChopperEnchantmentTag());
 	}
 	
 	@NotNull
-	public Optional<IEnchantment> getAnyEnchant(@NotNull Collection<IEnchantment> enchantments){
-		for(var enchantment : enchantments){
-			var key = (Enchantment) enchantment.getRaw();
-			if(raw.getEnchantmentLevel(key) > 0){
-				return Optional.of(enchantment);
+	public Optional<BreakMode> getBreakModeFromEnchant(){
+		if(!hasChopperEnchant()){
+			return Optional.empty();
+		}
+		var tags = FallingTree.getMod().getBreakModeChopperEnchantmentTag();
+		for(var breakMode : tags.keySet()){
+			if(EnchantmentHelper.hasTag(raw, tags.get(breakMode))){
+				return Optional.of(breakMode);
 			}
 		}
 		return Optional.empty();

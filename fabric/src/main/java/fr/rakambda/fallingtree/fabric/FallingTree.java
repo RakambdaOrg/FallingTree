@@ -11,7 +11,6 @@ public class FallingTree implements ModInitializer{
 	
 	@Override
 	public void onInitialize(){
-		mod.registerEnchant();
 		mod.register();
 	}
 }

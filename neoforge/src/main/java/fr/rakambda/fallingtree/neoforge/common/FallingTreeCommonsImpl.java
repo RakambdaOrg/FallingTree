@@ -1,6 +1,7 @@
 package fr.rakambda.fallingtree.neoforge.common;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
 import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
@@ -8,7 +9,6 @@ import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
-import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
 import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
@@ -16,12 +16,10 @@ import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import fr.rakambda.fallingtree.neoforge.client.event.PlayerLeaveListener;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.BlockWrapper;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.ComponentWrapper;
-import fr.rakambda.fallingtree.neoforge.common.wrapper.EnchantmentWrapper;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.ItemStackWrapper;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.ItemWrapper;
 import fr.rakambda.fallingtree.neoforge.event.BlockBreakListener;
 import fr.rakambda.fallingtree.neoforge.event.FallingTreeBlockBreakEvent;
-import fr.rakambda.fallingtree.neoforge.event.FallingTreeEnchantments;
 import fr.rakambda.fallingtree.neoforge.event.LeafBreakingListener;
 import fr.rakambda.fallingtree.neoforge.event.ServerCommandRegistrationListener;
 import fr.rakambda.fallingtree.neoforge.network.NeoForgePacketHandler;
@@ -38,22 +36,23 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import static fr.rakambda.fallingtree.neoforge.FallingTreeUtils.id;
+import static fr.rakambda.fallingtree.neoforge.FallingTreeUtils.idExternal;
 import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
@@ -62,14 +61,24 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	private final LeafBreakingHandler leafBreakingHandler;
 	private final NeoForgePacketHandler packetHandler;
 	@Getter
-	private Collection<IEnchantment> chopperEnchantments;
+	private final TagKey<Enchantment> chopperEnchantmentTag;
+	@Getter
+	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
 	
 	public FallingTreeCommonsImpl(@NotNull IEventBus modEventBus){
 		this.modEventBus = modEventBus;
 		
 		leafBreakingHandler = new LeafBreakingHandler(this);
-		chopperEnchantments = new ArrayList<>();
 		packetHandler = new NeoForgePacketHandler(this);
+		
+		chopperEnchantmentTag = TagKey.create(Registries.ENCHANTMENT, id("chopper_all"));
+		
+		breakModeChopperEnchantmentTag = new HashMap<>();
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ALL_BLOCK, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_all_block")));
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_BLOCK, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_block")));
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ITEM, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_item")));
+		breakModeChopperEnchantmentTag.put(BreakMode.INSTANTANEOUS, TagKey.create(Registries.ENCHANTMENT, id("chopper_instantaneous")));
+		breakModeChopperEnchantmentTag.put(BreakMode.SHIFT_DOWN, TagKey.create(Registries.ENCHANTMENT, id("chopper_shift_down")));
 	}
 	
 	@Override
@@ -100,7 +109,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			if(isTag){
 				name = name.substring(1);
 			}
-			var resourceLocation = new ResourceLocation(name);
+			var resourceLocation = idExternal(name);
 			if(isTag){
 				var tag = TagKey.create(Registries.BLOCK, resourceLocation);
 				return getRegistryTagContent(BuiltInRegistries.BLOCK, tag).map(BlockWrapper::new);
@@ -120,7 +129,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			if(isTag){
 				name = name.substring(1);
 			}
-			var resourceLocation = new ResourceLocation(name);
+			var resourceLocation = idExternal(name);
 			if(isTag){
 				var tag = TagKey.create(Registries.ITEM, resourceLocation);
 				return getRegistryTagContent(BuiltInRegistries.ITEM, tag).map(ItemWrapper::new);
@@ -193,33 +202,6 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
 		var event = NeoForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw()));
 		return !event.isCanceled();
-	}
-	
-	@Override
-	protected void performDefaultEnchantRegister(){
-		FallingTreeEnchantments.registerDefault();
-	}
-	
-	@Override
-	protected void performSpecificEnchantRegister(){
-		FallingTreeEnchantments.registerSpecific();
-	}
-	
-	@Override
-	protected void performCommitEnchantRegister(){
-		FallingTreeEnchantments.commit(modEventBus);
-		
-		Stream.of(FallingTreeEnchantments.CHOPPER_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_INSTANTANEOUS_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_FALL_BLOCK_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_FALL_ITEM_ENCHANTMENT,
-						FallingTreeEnchantments.CHOPPER_SHIFT_DOWN_ENCHANTMENT
-				)
-				.filter(Objects::nonNull)
-				.map(DeferredHolder::asOptional)
-				.flatMap(Optional::stream)
-				.map(EnchantmentWrapper::new)
-				.forEach(chopperEnchantments::add);
 	}
 
 	@Override

@@ -9,18 +9,14 @@ import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
-import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
 import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
-import fr.rakambda.fallingtree.fabric.FallingTree;
 import fr.rakambda.fallingtree.fabric.common.wrapper.BlockWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.ComponentWrapper;
-import fr.rakambda.fallingtree.fabric.common.wrapper.EnchantmentWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.ItemStackWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.ItemWrapper;
-import fr.rakambda.fallingtree.fabric.enchant.ChopperEnchantment;
 import fr.rakambda.fallingtree.fabric.event.BlockBreakListener;
 import fr.rakambda.fallingtree.fabric.event.LeafBreakingListener;
 import fr.rakambda.fallingtree.fabric.event.ServerCommandRegistrationListener;
@@ -39,16 +35,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.id;
+import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.idExternal;
 import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
@@ -57,12 +56,22 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
 	private final ServerPacketHandler serverPacketHandler;
 	@Getter
-	private Collection<IEnchantment> chopperEnchantments;
+	private final TagKey<Enchantment> chopperEnchantmentTag;
+	@Getter
+	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
-		chopperEnchantments = new ArrayList<>();
 		serverPacketHandler = new FabricServerPacketHandler(this);
+		
+		chopperEnchantmentTag = TagKey.create(Registries.ENCHANTMENT, id("chopper_all"));
+		
+		breakModeChopperEnchantmentTag = new HashMap<>();
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ALL_BLOCK, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_all_block")));
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_BLOCK, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_block")));
+		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ITEM, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_item")));
+		breakModeChopperEnchantmentTag.put(BreakMode.INSTANTANEOUS, TagKey.create(Registries.ENCHANTMENT, id("chopper_instantaneous")));
+		breakModeChopperEnchantmentTag.put(BreakMode.SHIFT_DOWN, TagKey.create(Registries.ENCHANTMENT, id("chopper_shift_down")));
 	}
 	
 	@Override
@@ -87,7 +96,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			if(isTag){
 				name = name.substring(1);
 			}
-			var identifier = new ResourceLocation(name);
+			var identifier = idExternal(name);
 			if(isTag){
 				var tag = TagKey.create(Registries.BLOCK, identifier);
 				return getRegistryTagContent(BuiltInRegistries.BLOCK, tag).map(BlockWrapper::new);
@@ -107,7 +116,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 			if(isTag){
 				name = name.substring(1);
 			}
-			var identifier = new ResourceLocation(name);
+			var identifier = idExternal(name);
 			if(isTag){
 				var tag = TagKey.create(Registries.ITEM, identifier);
 				return getRegistryTagContent(BuiltInRegistries.ITEM, tag).map(ItemWrapper::new);
@@ -179,48 +188,6 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
 		return true;
-	}
-	
-	@Override
-	protected void performDefaultEnchantRegister(){
-		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
-				BuiltInRegistries.ENCHANTMENT,
-				new ResourceLocation(FallingTree.MOD_ID, "chopper"),
-				new ChopperEnchantment(this, null)
-		)));
-	}
-	
-	@Override
-	protected void performSpecificEnchantRegister(){
-		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
-				BuiltInRegistries.ENCHANTMENT,
-				new ResourceLocation(FallingTree.MOD_ID, "chopper_instantaneous"),
-				new ChopperEnchantment(this, BreakMode.INSTANTANEOUS)
-		)));
-		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
-				BuiltInRegistries.ENCHANTMENT,
-				new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_block"),
-				new ChopperEnchantment(this, BreakMode.FALL_BLOCK)
-		)));
-		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
-				BuiltInRegistries.ENCHANTMENT,
-				new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_all_block"),
-				new ChopperEnchantment(this, BreakMode.FALL_ALL_BLOCK)
-		)));
-		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
-				BuiltInRegistries.ENCHANTMENT,
-				new ResourceLocation(FallingTree.MOD_ID, "chopper_fall_item"),
-				new ChopperEnchantment(this, BreakMode.FALL_ITEM)
-		)));
-		chopperEnchantments.add(new EnchantmentWrapper(Registry.register(
-				BuiltInRegistries.ENCHANTMENT,
-				new ResourceLocation(FallingTree.MOD_ID, "chopper_shift_down"),
-				new ChopperEnchantment(this, BreakMode.SHIFT_DOWN)
-		)));
-	}
-	
-	@Override
-	protected void performCommitEnchantRegister(){
 	}
 	
 	@Override

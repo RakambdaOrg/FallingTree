@@ -4,18 +4,17 @@ import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.network.ClientPacketHandler;
 import fr.rakambda.fallingtree.common.network.ConfigurationPacket;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
-import fr.rakambda.fallingtree.forge.FallingTree;
 import fr.rakambda.fallingtree.forge.common.wrapper.FriendlyByteBufWrapper;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.SimpleChannel;
+import static fr.rakambda.fallingtree.forge.FallingTreeUtils.id;
 
 @RequiredArgsConstructor
 public class ForgePacketHandler implements ClientPacketHandler, ServerPacketHandler{
-	public static final SimpleChannel INSTANCE = net.minecraftforge.network.ChannelBuilder.named(new ResourceLocation(FallingTree.MOD_ID, "main"))
+	public static final SimpleChannel INSTANCE = net.minecraftforge.network.ChannelBuilder.named(id("main"))
 			.optional()
 			.simpleChannel();
 	

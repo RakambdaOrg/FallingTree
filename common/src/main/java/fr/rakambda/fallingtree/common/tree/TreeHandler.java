@@ -1,12 +1,15 @@
 package fr.rakambda.fallingtree.common.tree;
 
-import fr.rakambda.fallingtree.common.tree.breaking.*;
-import fr.rakambda.fallingtree.common.tree.builder.TreeTooBigException;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
+import fr.rakambda.fallingtree.common.tree.breaking.BreakTreeTooBigException;
+import fr.rakambda.fallingtree.common.tree.breaking.FallingAnimationTreeBreakingHandler;
+import fr.rakambda.fallingtree.common.tree.breaking.ITreeBreakingHandler;
+import fr.rakambda.fallingtree.common.tree.breaking.InstantaneousTreeBreakingHandler;
+import fr.rakambda.fallingtree.common.tree.breaking.ShiftDownTreeBreakingHandler;
+import fr.rakambda.fallingtree.common.tree.builder.TreeTooBigException;
 import fr.rakambda.fallingtree.common.utils.CacheSpeed;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
-import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
@@ -68,8 +71,7 @@ public class TreeHandler{
 	
 	@NotNull
 	private BreakMode getBreakMode(@NotNull IItemStack itemStack){
-		return itemStack.getAnyEnchant(mod.getChopperEnchantments())
-				.flatMap(IEnchantment::getBreakMode)
+		return itemStack.getBreakModeFromEnchant()
 				.orElseGet(() -> mod.getConfiguration().getTrees().getBreakMode());
 	}
 	

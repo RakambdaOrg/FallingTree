@@ -4,7 +4,6 @@ import fr.rakambda.fallingtree.forge.common.FallingTreeCommonsImpl;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 
 @Log4j2
@@ -15,20 +14,19 @@ public class FallingTree{
 	private static final FallingTreeCommonsImpl mod = new FallingTreeCommonsImpl();
 	
 	public FallingTree(){
-		if(ModList.get().isLoaded("cloth_config")){
-			// try{
-				// Class.forName("fr.rakambda.fallingtree.forge.client.cloth.ClothConfigHook")
-				// 		.asSubclass(ClothConfigHook.class)
-				// 		.getConstructor(FallingTreeCommon.class)
-				// 		.newInstance(mod)
-				// 		.load();
-			// }
-			// catch(ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e){
-			// 	log.error("Failed to hook into ClothConfig", e);
-			// }
-		}
+		// if(ModList.get().isLoaded("cloth_config")){
+		// 	try{
+		// 		Class.forName("fr.rakambda.fallingtree.forge.client.cloth.ClothConfigHook")
+		// 				.asSubclass(ClothConfigHook.class)
+		// 				.getConstructor(FallingTreeCommon.class)
+		// 				.newInstance(mod)
+		// 				.load();
+		// 	}
+		// 	catch(ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e){
+		// 		log.error("Failed to hook into ClothConfig", e);
+		// 	}
+		// }
 		
-		mod.registerEnchant();
 		mod.registerForge(MinecraftForge.EVENT_BUS);
 	}
 }
