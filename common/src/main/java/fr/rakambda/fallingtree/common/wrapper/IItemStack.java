@@ -1,8 +1,7 @@
 package fr.rakambda.fallingtree.common.wrapper;
 
+import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import java.util.Collection;
 import java.util.Optional;
 
 public interface IItemStack extends IWrapper{
@@ -19,12 +18,10 @@ public interface IItemStack extends IWrapper{
 	@NotNull
 	IItem getItem();
 	
-	int getEnchantLevel(@Nullable IEnchantment enchantment);
-	
-	boolean hasOneOfEnchantAtLeast(@NotNull Collection<IEnchantment> enchantments, int minLevel);
+	boolean hasChopperEnchant();
 	
 	@NotNull
-	Optional<IEnchantment> getAnyEnchant(@NotNull Collection<IEnchantment> enchantments);
+	Optional<BreakMode> getBreakModeFromEnchant();
 	
 	boolean canPerformAxeAction();
 }

@@ -1,0 +1,32 @@
+{
+  "anvil_cost": 6,
+  "description": {
+    "translate": "enchantment.fallingtree.chopper_fall_block",
+    "fallback": "Chopper (fall block)"
+  },
+  "effects": {
+    "minecraft:block_experience": [
+      {
+        "effect": {
+          "type": "minecraft:set",
+          "value": 0
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 65,
+    "per_level_above_first": 0
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 15,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "exclusive_set": "#fallingtree:exclusive_set/chopper",
+  "supported_items": "#minecraft:enchantable/mining_loot",
+  "weight": 1
+}

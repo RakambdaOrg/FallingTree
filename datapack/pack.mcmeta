@@ -1,0 +1,8 @@
+{
+  "pack" : {
+    "pack_format" : 32,
+    "description" : {
+      "text" : "Add FallingTree enchantments"
+    }
+  }
+}

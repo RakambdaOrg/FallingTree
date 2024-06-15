@@ -1,35 +1,32 @@
 package fr.rakambda.fallingtree.common;
 
 import fr.rakambda.fallingtree.common.command.ToggleCommand;
-import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
-import fr.rakambda.fallingtree.common.tree.TreeHandler;
-import fr.rakambda.fallingtree.common.tree.TreePartType;
-import fr.rakambda.fallingtree.common.tree.builder.TreeBuilder;
-import fr.rakambda.fallingtree.common.wrapper.IBlock;
-import fr.rakambda.fallingtree.common.wrapper.IBlockState;
-import fr.rakambda.fallingtree.common.wrapper.IComponent;
-import fr.rakambda.fallingtree.common.wrapper.IItem;
-import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.config.IConfiguration;
 import fr.rakambda.fallingtree.common.config.IToolConfiguration;
 import fr.rakambda.fallingtree.common.config.proxy.ProxyConfiguration;
 import fr.rakambda.fallingtree.common.config.real.Configuration;
+import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.PacketUtils;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
+import fr.rakambda.fallingtree.common.tree.TreeHandler;
+import fr.rakambda.fallingtree.common.tree.TreePartType;
+import fr.rakambda.fallingtree.common.tree.builder.TreeBuilder;
 import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
+import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
-import fr.rakambda.fallingtree.common.wrapper.IEnchantment;
+import fr.rakambda.fallingtree.common.wrapper.IBlockState;
+import fr.rakambda.fallingtree.common.wrapper.IComponent;
+import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
+import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
-
 import static java.util.stream.Collectors.toSet;
 
 @RequiredArgsConstructor
@@ -121,7 +118,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         }
 
         if (getConfiguration().getEnchantment().isRequireEnchantment()
-                && !heldItemStack.hasOneOfEnchantAtLeast(getChopperEnchantments(), 1)) {
+                && !heldItemStack.hasChopperEnchant()) {
             return false;
         }
 
@@ -233,25 +230,6 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
     }
 
     public abstract boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player);
-
-    public void registerEnchant() {
-        if (getConfiguration().getEnchantment().isRegisterEnchant()) {
-            performDefaultEnchantRegister();
-        }
-        if (getConfiguration().getEnchantment().isRegisterSpecificEnchant()) {
-            performSpecificEnchantRegister();
-        }
-        performCommitEnchantRegister();
-    }
-
-    protected abstract void performDefaultEnchantRegister();
-
-    protected abstract void performSpecificEnchantRegister();
-
-    protected abstract void performCommitEnchantRegister();
-
-    @NotNull
-    public abstract Collection<IEnchantment> getChopperEnchantments();
 
     @NotNull
     public abstract IItemStack getEmptyItemStack();
