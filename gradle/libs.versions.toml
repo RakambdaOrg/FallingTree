@@ -14,7 +14,7 @@ forge-version = "1.21-51.0.8"
 neoforge-version = "21.0.8-beta"
 
 # Mod dependencies
-modmenu-version = "11.0.0-beta.1"
+modmenu-version = "11.0.0-rc.4"
 clothConfigVersion = "15.0.127"
 
 fabric-loom-version = "1.6+"
