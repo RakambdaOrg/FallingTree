@@ -8,6 +8,6 @@ body:
     id: describing
     attributes:
       label: Describe the feature
-      description: Describe the feature/enhacement you wish to have
+      description: Describe the feature/enhancement you wish to have
     validations:
       required: true
