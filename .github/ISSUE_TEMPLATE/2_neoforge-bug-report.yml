@@ -1,4 +1,4 @@
-name: Forge bug report
+name: NeoForge bug report
 description: Create a report to help us improve the NeoForge version
 labels: ["modloader: Neoforge", "type: 🐛 bug"]
 assignees:
