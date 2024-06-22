@@ -11,9 +11,11 @@
   ],
   "enabledManagers" : [
     "dockerfile",
+    "maven",
     "nuget",
     "pip_requirements",
     "github-actions",
+    "gradle",
     "gradle-wrapper"
   ],
   "dependencyDashboard" : false,
@@ -46,6 +48,26 @@
       "matchPackagePatterns" : [
         "opencvsharp4",
         "opencvsharp4.*"
+      ]
+    },
+    {
+      "matchManagers" : [
+        "gradle"
+      ],
+      "groupName" : "Log4j",
+      "matchPackagePatterns" : [
+        "org.apache.logging.log4j:*"
+      ]
+    },
+    {
+      "matchManagers" : [
+        "gradle"
+      ],
+      "groupName" : "Google API",
+      "matchPackagePatterns" : [
+        "com.google.api-client:*",
+        "com.google.oauth-client:*",
+        "com.google.apis:*"
       ]
     }
   ]
