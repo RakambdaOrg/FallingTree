@@ -1,17 +1,52 @@
 {
+  "$schema" : "https://docs.renovatebot.com/renovate-schema.json",
   "assignees" : [
     "Rakambda"
   ],
   "extends" : [
     "config:base"
   ],
-  "labels" : ["type: \uD83D\uDCDA dependencies"],
-  "enabledManagers": ["dockerfile", "nuget", "pip_requirements", "github-actions", "gradle-wrapper"],
+  "labels" : [
+    "type: \uD83D\uDCDA dependencies"
+  ],
+  "enabledManagers" : [
+    "dockerfile",
+    "nuget",
+    "pip_requirements",
+    "github-actions",
+    "gradle-wrapper"
+  ],
   "dependencyDashboard" : false,
-  "excludeCommitPaths": [".github/workflows/auto-approve-sync-files.yml"],
-  "ignorePaths": [
+  "excludeCommitPaths" : [
     ".github/workflows/auto-approve-sync-files.yml"
   ],
-  "timezone": "Europe/Paris",
-  "schedule": ["on saturday"]
+  "ignorePaths" : [
+    ".github/workflows/auto-approve-sync-files.yml"
+  ],
+  "timezone" : "Europe/Paris",
+  "schedule" : [
+    "before 5am"
+  ],
+  "packageRules" : [
+    {
+      "matchManagers" : [
+        "nuget"
+      ],
+      "groupName" : "RestSharp",
+      "matchPackagePatterns" : [
+        "restsharp",
+        "restsharp.*"
+      ]
+    },
+    {
+      "matchManagers" : [
+        "nuget"
+      ],
+      "groupName" : "OpenCVSharp4",
+      "matchPackagePatterns" : [
+        "opencvsharp4",
+        "opencvsharp4.*"
+      ]
+    }
+  ]
 }

@@ -13,7 +13,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -35,7 +35,7 @@ updates:
 #    assignees:
 #      - "Rakambda"
 #    schedule:
-#      interval: "weekly"
+#      interval: "daily"
 #      time: "05:00"
 #      timezone: "Europe/Paris"
 #    pull-request-branch-name:
@@ -45,7 +45,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -57,7 +57,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -67,7 +67,7 @@ updates:
 #    assignees:
 #      - "Rakambda"
 #    schedule:
-#      interval: "weekly"
+#      interval: "daily"
 #      time: "05:00"
 #      timezone: "Europe/Paris"
 #    pull-request-branch-name:
@@ -77,7 +77,7 @@ updates:
     assignees:
       - "Rakambda"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
@@ -86,13 +86,17 @@ updates:
       restsharp:
         patterns:
           - "restsharp"
-          - "restsharp.serializers.newtonsoftjson"
+          - "restsharp.*"
+      opencvsharp4:
+        patterns:
+          - "opencvsharp4"
+          - "opencvsharp4.*"
   - package-ecosystem: "pip"
     directory: "/"
     assignees:
       - "Rakambda"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/Paris"
     pull-request-branch-name:
