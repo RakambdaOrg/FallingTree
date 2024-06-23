@@ -45,9 +45,6 @@ NOTE: This is purely an example, values there won't always make sense.
     "allowedTags": ["playerTag1", "playerTag2"]
   },
   "enchantment": {
-    "registerEnchant": false,
-    "registerSpecificEnchant": true,
-    "hideEnchant": false,
     "requireEnchant": true
   }
 }

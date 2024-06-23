@@ -2,21 +2,7 @@
 |===
 |Name |Description
 
-|Register enchant
-|If set to true, the chopper enchant will be registered.
-
-NOTE: INFO: If activated mod will be required on clients.
-NOTE: Server/Client restart needed.
-
-|Register specific enchant
-|If set to true, several chopper enchants will be registered to activate the mod with a specific breaking mode.
-
-NOTE: INFO: If activated mod will be required on clients.
-NOTE: Server/Client restart needed.
-
-|Hide enchant
-|If set to true the enchant will not be discoverable nor tradeable.
-
 |Require enchant
-|If set to true an enchantment on the tool will be required for the mod to be activated.
+|If set to true a Chopper enchantment on the tool will be required for the mod to be activated.
+This need to be added through a Datapack, see the link at the bottom of the description page on CurseForge/Modrinth.
 |===
