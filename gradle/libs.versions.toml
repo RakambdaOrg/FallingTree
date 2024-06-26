@@ -23,7 +23,7 @@ curse-version = "1.4.0"
 modrinth-version = "2.8.7"
 names-version = "0.51.0"
 git-version-plugin-version = "3.1.0"
-neoforge-plugin-version = "7.0.150"
+neoforge-plugin-version = "7.0.151"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok-version" }
