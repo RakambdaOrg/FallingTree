@@ -13,7 +13,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
@@ -78,6 +78,6 @@ public class ItemStackWrapper implements IItemStack{
 	
 	@Override
 	public boolean canPerformAxeAction(){
-		return raw.canPerformAction(ToolActions.AXE_DIG);
+		return raw.canPerformAction(ItemAbilities.AXE_DIG);
 	}
 }

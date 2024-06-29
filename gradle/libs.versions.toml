@@ -9,9 +9,9 @@ log4j2-version = "2.23.1"
 # Minecraft / Loaders
 minecraftVersion = "1.21"
 fabric-loader-version = "0.15.11"
-fabric-api-version = "0.100.1+1.21"
-forge-version = "1.21-51.0.8"
-neoforge-version = "21.0.8-beta"
+fabric-api-version = "0.100.4+1.21"
+forge-version = "1.21-51.0.18"
+neoforge-version = "21.0.42-beta"
 
 # Mod dependencies
 modmenu-version = "11.0.1"
