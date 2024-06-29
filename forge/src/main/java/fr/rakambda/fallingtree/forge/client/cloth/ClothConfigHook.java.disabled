@@ -239,6 +239,12 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("trees", "adjacentStopMode"))
 				.setSaveConsumer(config::setAdjacentStopMode)
 				.build();
+		var spawnItemsAtBreakPointEntry = builder.entryBuilder()
+				.startBooleanToggle(translatable(getFieldName("trees", "spawnItemsAtBreakPoint")), config.isSpawnItemsAtBreakPoint())
+				.setDefaultValue(false)
+				.setTooltip(getTooltips("trees", "spawnItemsAtBreakPoint"))
+				.setSaveConsumer(config::setSpawnItemsAtBreakPoint)
+				.build();
 		
 		var trees = builder.getOrCreateCategory(translatable("text.autoconfig.fallingtree.category.trees"));
 		trees.addEntry(breakModeEntry);
@@ -264,6 +270,7 @@ public class ClothConfigHook extends ClothHookBase{
 		trees.addEntry(searchAreaRadiusEntry);
 		trees.addEntry(allowedAdjacentBlocks);
 		trees.addEntry(adjacentStopModeEntry);
+		trees.addEntry(spawnItemsAtBreakPointEntry);
 	}
 	
 	@OnlyIn(Dist.CLIENT)

@@ -10,26 +10,26 @@ import org.jetbrains.annotations.NotNull;
 
 @Log4j2
 @RequiredArgsConstructor
-public class LeafForceBreaker {
-    private final FallingTreeCommon<?> mod;
+public class LeafForceBreaker{
+	private final FallingTreeCommon<?> mod;
 	
-    public void forceBreakDecayLeaves(@NotNull IPlayer player, @NotNull Tree tree, @NotNull ILevel level) {
-        var radius = mod.getConfiguration().getTrees().getLeavesBreakingForceRadius();
-        if (radius > 0) {
-            tree.getTopMostLog().ifPresent(topLog -> {
-                var start = topLog.offset(-radius, -radius, -radius);
-                var end = topLog.offset(radius, radius, radius);
-                topLog.betweenClosedStream(start, end).forEach(checkPos -> {
-                    var checkState = level.getBlockState(checkPos);
-                    var checkBlock = checkState.getBlock();
-                    if (mod.isLeafBlock(checkBlock)) {
-                        if (!player.isCreative() || mod.getConfiguration().isLootInCreative()) {
-                            checkState.dropResources(level, checkPos);
-                        }
-                        level.removeBlock(checkPos, false);
-                    }
-                });
-            });
-        }
-    }
+	public void forceBreakDecayLeaves(@NotNull IPlayer player, @NotNull Tree tree, @NotNull ILevel level){
+		var radius = mod.getConfiguration().getTrees().getLeavesBreakingForceRadius();
+		if(radius > 0){
+			tree.getTopMostLog().ifPresent(topLog -> {
+				var start = topLog.offset(-radius, -radius, -radius);
+				var end = topLog.offset(radius, radius, radius);
+				topLog.betweenClosedStream(start, end).forEach(checkPos -> {
+					var checkState = level.getBlockState(checkPos);
+					var checkBlock = checkState.getBlock();
+					if(mod.isLeafBlock(checkBlock)){
+						if(!player.isCreative() || mod.getConfiguration().isLootInCreative()){
+							checkState.dropResources(level, mod.getConfiguration().getTrees().isSpawnItemsAtBreakPoint() ? tree.getHitPos() : checkPos);
+						}
+						level.removeBlock(checkPos, false);
+					}
+				});
+			});
+		}
+	}
 }

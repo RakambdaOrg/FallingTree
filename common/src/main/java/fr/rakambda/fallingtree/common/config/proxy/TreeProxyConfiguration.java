@@ -164,4 +164,9 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	public AdjacentStopMode getAdjacentStopMode(){
 		return delegate.getAdjacentStopMode();
 	}
+	
+	@Override
+	public boolean isSpawnItemsAtBreakPoint(){
+		return delegate.isSpawnItemsAtBreakPoint();
+	}
 }
