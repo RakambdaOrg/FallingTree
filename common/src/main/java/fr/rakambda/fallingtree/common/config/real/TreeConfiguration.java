@@ -78,6 +78,8 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	@NotNull
 	private AdjacentStopMode adjacentStopMode = AdjacentStopMode.STOP_ALL;
+	@Expose
+	private boolean spawnItemsAtBreakPoint = false;
 	
 	//Cache
 	private Set<IBlock> deniedLeavesCache;
