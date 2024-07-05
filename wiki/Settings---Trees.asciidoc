@@ -103,6 +103,9 @@ This value can be useful for people that have houses made of logs and doesn't wa
 
 NOTE: Only applied in `Instantaneous` breaking mode.
 
+|Include persistent leaves in required count
+|If this is true leaves with the persistent flag (player placed or sheared) will be counted in the `minimum leaves required` counter. Otherwise, they won't.
+
 |Trunk breaking
 |Defines if the mod should cut trees in one cut.
 
