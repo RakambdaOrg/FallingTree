@@ -60,6 +60,8 @@
   "text.autoconfig.fallingtree.option.trees.allowedAdjacentBlocks.@Tooltip": "Define a list of blocks that are allowed to be next to the trunk of the tree. If a block that isn't in that list is found around the trunk then the tree won't be cut according to the adjacentStopMode property.\n\nINFO: If this is empty no restriction will be applied.",
   "text.autoconfig.fallingtree.option.trees.adjacentStopMode": "Adjacent stop mode",
   "text.autoconfig.fallingtree.option.trees.adjacentStopMode.@Tooltip": "Defines what happens when an adjacent block that isn't allowed is found.\n\nSTOP_ALL will make it so that the tree isn't cut at all.\nSTOP_BRANCH will stop the current branch but still cut the rest of the tree and up to the adjacent block.",
+  "text.autoconfig.fallingtree.option.trees.spawnItemsAtBreakPoint": "Spawn logs at break point",
+  "text.autoconfig.fallingtree.option.trees.spawnItemsAtBreakPoint.@Tooltip": "If enabled, all logs will spawn where the log was broken instead of at their own location.\n\nINFO: Only in INSTANTANEOUS mode.",
   "text.autoconfig.fallingtree.option.tools.allowed": "Allowed tools",
   "text.autoconfig.fallingtree.option.tools.allowed.@Tooltip": "Additional list of tools that can be used to chop down a tree.\n\nINFO: Items marked with the axe tag will already be allowed.",
   "text.autoconfig.fallingtree.option.tools.denied": "Denied tools",
