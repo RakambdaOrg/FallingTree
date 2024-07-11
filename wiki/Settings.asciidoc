@@ -30,9 +30,9 @@ Instead of going into the configuration files and edit them manually, just navig
 
 This GUI isn't activated by default and need a dependency for that.
 
-=== Forge
+=== NeoForge/Forge
 
-You'll need to install the dependency https://www.curseforge.com/minecraft/mc-mods/cloth-config-forge[Cloth Config API (Forge)].
+You'll need to install the dependency https://www.curseforge.com/minecraft/mc-mods/cloth-config[Cloth Config API] if available.
 When it is installed alongside FallingTree, you'll be able to go into `Main menu > Mods > FallingTree > Config`.
 
 image::assets/settings/forge-config-button.png[Config button in the mod list]
@@ -42,7 +42,7 @@ image::assets/settings/forge-config-button.png[Config button in the mod list]
 You'll need 2 dependencies :
 
 - https://www.curseforge.com/minecraft/mc-mods/modmenu[Mod Menu].
-- https://www.curseforge.com/minecraft/mc-mods/cloth-config[Cloth Config API (Fabric)].
+- https://www.curseforge.com/minecraft/mc-mods/cloth-config[Cloth Config API].
 
 When they are installed alongside FallingTree, you'll be able to go inside `Mods > FallingTree > Config`.
 
