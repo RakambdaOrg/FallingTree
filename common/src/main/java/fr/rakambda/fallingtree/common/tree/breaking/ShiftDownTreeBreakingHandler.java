@@ -47,7 +47,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		var damageMultiplicand = mod.getConfiguration().getTools().getDamageMultiplicand();
 		var toolHandler = new ToolDamageHandler(tool,
 				damageMultiplicand,
-				mod.getConfiguration().getTools().isPreserve(),
+				mod.getConfiguration().getTools().getDurabilityMode(),
 				count,
 				mod.getConfiguration().getTrees().getMaxSize(),
 				mod.getConfiguration().getTrees().getMaxSizeAction(),
