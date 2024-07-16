@@ -36,8 +36,8 @@
       ],
       "groupName" : "RestSharp",
       "matchPackagePatterns" : [
-        "restsharp",
-        "restsharp.*"
+        "^restsharp$",
+        "^restsharp\."
       ]
     },
     {
@@ -45,9 +45,9 @@
         "nuget"
       ],
       "groupName" : "OpenCVSharp4",
-      "matchPackagePatterns" : [
-        "opencvsharp4",
-        "opencvsharp4.*"
+      "matchPackagePrefixes" : [
+        "^opencvsharp4$",
+        "^opencvsharp4\."
       ]
     },
     {
@@ -56,7 +56,7 @@
       ],
       "groupName" : "Log4j",
       "matchPackagePatterns" : [
-        "org.apache.logging.log4j:*"
+        "^org\.apache\.logging\.log4j:"
       ]
     },
     {
@@ -65,9 +65,9 @@
       ],
       "groupName" : "Google API",
       "matchPackagePatterns" : [
-        "com.google.api-client:*",
-        "com.google.oauth-client:*",
-        "com.google.apis:*"
+        "^com\.google\.api-client:",
+        "^com\.google\.oauth-client:",
+        "^com\.google\.apis:"
       ]
     }
   ]
