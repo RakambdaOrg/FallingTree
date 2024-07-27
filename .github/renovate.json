@@ -16,7 +16,8 @@
     "pip_requirements",
     "github-actions",
     "gradle",
-    "gradle-wrapper"
+    "gradle-wrapper",
+    "cargo"
   ],
   "dependencyDashboard" : false,
   "excludeCommitPaths" : [
@@ -37,7 +38,7 @@
       "groupName" : "RestSharp",
       "matchPackagePatterns" : [
         "^restsharp$",
-        "^restsharp\."
+        "^restsharp\\."
       ]
     },
     {
@@ -47,7 +48,7 @@
       "groupName" : "OpenCVSharp4",
       "matchPackagePrefixes" : [
         "^opencvsharp4$",
-        "^opencvsharp4\."
+        "^opencvsharp4\\."
       ]
     },
     {
@@ -56,7 +57,7 @@
       ],
       "groupName" : "Log4j",
       "matchPackagePatterns" : [
-        "^org\.apache\.logging\.log4j:"
+        "^org\\.apache\\.logging\\.log4j:"
       ]
     },
     {
@@ -65,9 +66,29 @@
       ],
       "groupName" : "Google API",
       "matchPackagePatterns" : [
-        "^com\.google\.api-client:",
-        "^com\.google\.oauth-client:",
-        "^com\.google\.apis:"
+        "^com\\.google\\.api-client:",
+        "^com\\.google\\.oauth-client:",
+        "^com\\.google\\.apis:"
+      ]
+    },
+    {
+      "matchManagers" : [
+        "github-actions"
+      ],
+      "groupName" : "Actions artifacts",
+      "matchPackagePatterns" : [
+        "actions/download-artifact",
+        "actions/upload-artifact"
+      ]
+    },
+    {
+      "matchManagers" : [
+        "github-actions"
+      ],
+      "groupName" : "Actions artifacts",
+      "matchPackagePatterns" : [
+        "actions/download-artifact",
+        "actions/upload-artifact"
       ]
     }
   ]
