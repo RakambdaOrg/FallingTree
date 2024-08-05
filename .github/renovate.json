@@ -38,7 +38,9 @@
       "groupName" : "RestSharp",
       "matchPackagePatterns" : [
         "^restsharp$",
-        "^restsharp\\."
+        "^restsharp\\.",
+        "^RestSharp$",
+        "^RestSharp\\."
       ]
     },
     {
