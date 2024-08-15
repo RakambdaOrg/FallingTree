@@ -7,6 +7,7 @@ import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.config.enums.BreakOrder;
 import fr.rakambda.fallingtree.common.config.enums.DamageRounding;
 import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
+import fr.rakambda.fallingtree.common.config.enums.DurabilityMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.config.enums.NotificationMode;
 import fr.rakambda.fallingtree.common.config.enums.SneakMode;
@@ -317,11 +318,11 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("tools", "speedMultiplicand"))
 				.setSaveConsumer(config::setSpeedMultiplicand)
 				.build();
-		var preserveEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("tools", "preserve")), config.isPreserve())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("tools", "preserve"))
-				.setSaveConsumer(config::setPreserve)
+		var durabilityModeEntry = builder.entryBuilder()
+				.startEnumSelector(translatable(getFieldName("tools", "durabilityMode")), DurabilityMode.class, config.getDurabilityMode())
+				.setDefaultValue(DurabilityMode.NORMAL)
+				.setTooltip(getTooltips("tools", "durabilityMode"))
+				.setSaveConsumer(config::setDurabilityMode)
 				.build();
 		var forceToolUsageEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("tools", "forceToolUsage")), config.isForceToolUsage())
@@ -337,7 +338,7 @@ public class ClothConfigHook extends ClothHookBase{
 		tools.addEntry(damageMultiplicandEntry);
 		tools.addEntry(damageRoundingEntry);
 		tools.addEntry(speedMultiplicandEntry);
-		tools.addEntry(preserveEntry);
+		tools.addEntry(durabilityModeEntry);
 		tools.addEntry(forceToolUsageEntry);
 	}
 	
@@ -356,24 +357,6 @@ public class ClothConfigHook extends ClothHookBase{
 	
 	@OnlyIn(Dist.CLIENT)
 	private void fillEnchantmentConfigScreen(@NotNull ConfigBuilder builder, @NotNull EnchantmentConfiguration config){
-		var registerEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("enchantment", "registerEnchant")), config.isRegisterEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("enchantment", "registerEnchant"))
-				.setSaveConsumer(config::setRegisterEnchant)
-				.build();
-		var registerSpecificEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("enchantment", "registerSpecificEnchant")), config.isRegisterSpecificEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("enchantment", "registerSpecificEnchant"))
-				.setSaveConsumer(config::setRegisterSpecificEnchant)
-				.build();
-		var hideEnchantEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("enchantment", "hideEnchant")), config.isHideEnchant())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("enchantment", "hideEnchant"))
-				.setSaveConsumer(config::setHideEnchant)
-				.build();
 		var requireEnchantmentEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("enchantment", "requireEnchantment")), config.isRequireEnchantment())
 				.setDefaultValue(false)
@@ -382,9 +365,6 @@ public class ClothConfigHook extends ClothHookBase{
 				.build();
 		
 		var enchantment = builder.getOrCreateCategory(translatable("text.autoconfig.fallingtree.category.enchantment"));
-		enchantment.addEntry(registerEnchantEntry);
-		enchantment.addEntry(registerSpecificEnchantEntry);
-		enchantment.addEntry(hideEnchantEntry);
 		enchantment.addEntry(requireEnchantmentEntry);
 	}
 	
