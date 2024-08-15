@@ -2,6 +2,7 @@ package fr.rakambda.fallingtree.common.config.real;
 
 import com.google.gson.annotations.Expose;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.config.enums.DurabilityMode;
 import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.config.IResettable;
 import fr.rakambda.fallingtree.common.config.IToolConfiguration;
@@ -23,7 +24,7 @@ public class ToolConfiguration implements IToolConfiguration, IResettable{
 	@NotNull
 	private List<String> denied = new ArrayList<>();
 	@Expose
-	private boolean preserve = false;
+	private DurabilityMode durabilityMode = DurabilityMode.NORMAL;
 	@Expose
 	private boolean ignoreTools = false;
 	@Expose

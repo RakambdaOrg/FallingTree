@@ -23,13 +23,13 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		var level = tree.getLevel();
 		var toolHandler = new ToolDamageHandler(tool,
 				mod.getConfiguration().getTools().getDamageMultiplicand(),
-				mod.getConfiguration().getTools().isPreserve(),
+				mod.getConfiguration().getTools().getDurabilityMode(),
 				tree.getBreakableCount(),
 				mod.getConfiguration().getTrees().getMaxSize(),
 				mod.getConfiguration().getTrees().getMaxSizeAction(),
 				mod.getConfiguration().getTools().getDamageRounding());
 		
-		if(mod.getConfiguration().getTools().isPreserve() && toolHandler.getMaxBreakCount() <= 0){
+		if(toolHandler.isPreserveTool()){
 			log.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.prevented_break_tool"));
 			return false;

@@ -47,13 +47,13 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		var damageMultiplicand = mod.getConfiguration().getTools().getDamageMultiplicand();
 		var toolHandler = new ToolDamageHandler(tool,
 				damageMultiplicand,
-				mod.getConfiguration().getTools().isPreserve(),
+				mod.getConfiguration().getTools().getDurabilityMode(),
 				count,
 				mod.getConfiguration().getTrees().getMaxSize(),
 				mod.getConfiguration().getTrees().getMaxSizeAction(),
 				mod.getConfiguration().getTools().getDamageRounding());
 		
-		if(toolHandler.getMaxBreakCount() <= 0){
+		if(toolHandler.isPreserveTool()){
 			log.debug("Didn't break tree at {} as {}'s tool was about to break", tree.getHitPos(), player);
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.prevented_break_tool"));
 			return false;

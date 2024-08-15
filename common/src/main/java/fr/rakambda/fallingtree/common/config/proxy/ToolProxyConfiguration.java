@@ -1,6 +1,7 @@
 package fr.rakambda.fallingtree.common.config.proxy;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.config.enums.DurabilityMode;
 import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.config.IResettable;
 import fr.rakambda.fallingtree.common.config.IToolConfiguration;
@@ -39,8 +40,8 @@ public class ToolProxyConfiguration implements IToolConfiguration, IResettable{
 	}
 	
 	@Override
-	public boolean isPreserve(){
-		return delegate.isPreserve();
+	public DurabilityMode getDurabilityMode(){
+		return delegate.getDurabilityMode();
 	}
 	
 	@Override

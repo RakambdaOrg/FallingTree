@@ -1,6 +1,7 @@
 package fr.rakambda.fallingtree.common.tree.breaking;
 
 import fr.rakambda.fallingtree.common.config.enums.DamageRounding;
+import fr.rakambda.fallingtree.common.config.enums.DurabilityMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
@@ -15,8 +16,10 @@ public class ToolDamageHandler{
 	private final int maxDurabilityTaken;
 	@Getter
 	private final int maxBreakCount;
+	@Getter
+	private boolean preserveTool;
 	
-	public ToolDamageHandler(@NotNull IItemStack tool, double damageMultiplicand, boolean preserve, int breakableCount, int maxSize, @NotNull MaxSizeAction maxSizeAction, @NotNull DamageRounding damageRounding) throws BreakTreeTooBigException{
+	public ToolDamageHandler(@NotNull IItemStack tool, double damageMultiplicand, @NotNull DurabilityMode durabilityMode, int breakableCount, int maxSize, @NotNull MaxSizeAction maxSizeAction, @NotNull DamageRounding damageRounding) throws BreakTreeTooBigException{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		this.damageRounding = damageRounding;
@@ -29,15 +32,15 @@ public class ToolDamageHandler{
 		int tempMaxBreakCount;
 		if(tool.isDamageable()){
 			var breakCount = damageMultiplicand == 0 ? maxSize : (int) Math.floor(getToolDurability() / damageMultiplicand);
-			if(preserve && breakCount <= breakableCount){
-				breakCount--;
-			}
-			
+			breakCount = durabilityMode.postProcess(breakCount, breakableCount);
 			tempMaxBreakCount = breakCount;
 		}
 		else{
 			tempMaxBreakCount = maxSize;
 		}
+		
+		preserveTool = tempMaxBreakCount < 0;
+		tempMaxBreakCount = Math.max(0, tempMaxBreakCount);
 		
 		maxBreakCount = Math.min(maxSize, tempMaxBreakCount);
 		maxDurabilityTaken = getDamage(maxBreakCount);

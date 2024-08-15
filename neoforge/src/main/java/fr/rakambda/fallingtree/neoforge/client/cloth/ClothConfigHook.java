@@ -7,6 +7,7 @@ import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.config.enums.BreakOrder;
 import fr.rakambda.fallingtree.common.config.enums.DamageRounding;
 import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
+import fr.rakambda.fallingtree.common.config.enums.DurabilityMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.config.enums.NotificationMode;
 import fr.rakambda.fallingtree.common.config.enums.SneakMode;
@@ -317,11 +318,11 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("tools", "speedMultiplicand"))
 				.setSaveConsumer(config::setSpeedMultiplicand)
 				.build();
-		var preserveEntry = builder.entryBuilder()
-				.startBooleanToggle(translatable(getFieldName("tools", "preserve")), config.isPreserve())
-				.setDefaultValue(false)
-				.setTooltip(getTooltips("tools", "preserve"))
-				.setSaveConsumer(config::setPreserve)
+		var durabilityModeEntry = builder.entryBuilder()
+				.startEnumSelector(translatable(getFieldName("tools", "durabilityMode")), DurabilityMode.class, config.getDurabilityMode())
+				.setDefaultValue(DurabilityMode.NORMAL)
+				.setTooltip(getTooltips("tools", "durabilityMode"))
+				.setSaveConsumer(config::setDurabilityMode)
 				.build();
 		var forceToolUsageEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("tools", "forceToolUsage")), config.isForceToolUsage())
@@ -337,7 +338,7 @@ public class ClothConfigHook extends ClothHookBase{
 		tools.addEntry(damageMultiplicandEntry);
 		tools.addEntry(damageRoundingEntry);
 		tools.addEntry(speedMultiplicandEntry);
-		tools.addEntry(preserveEntry);
+		tools.addEntry(durabilityModeEntry);
 		tools.addEntry(forceToolUsageEntry);
 	}
 	
