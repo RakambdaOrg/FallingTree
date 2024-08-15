@@ -17,7 +17,7 @@ neoforge-version = "21.0.42-beta"
 modmenu-version = "11.0.1"
 clothConfigVersion = "15.0.128"
 
-fabric-loom-version = "1.6+"
+fabric-loom-version = "1.7+"
 forge-plugin-version = "[6.0.24,6.2)"
 curse-version = "1.4.0"
 modrinth-version = "2.8.7"
