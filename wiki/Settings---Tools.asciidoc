@@ -20,11 +20,13 @@ TIP: You can find this info by enabling detailed info on items by pressing `F3 +
 
 NOTE: Deny list takes over the values defined in allow list. So if you defined the same item in allow and deny lists it'll end up denied.
 
-|Preserve tools
-|This controls how the mod behaves when a tree is cut with a tool that is going to break.
+|Durability mode
+|Defines how tool durability is handled when it is about to break.
 
-- No: The tool will be fully used and broken.
-- Yes: The tool won't be fully used and be left with 1 of durability.
+- ABORT: Will abort tree breaking, tool will be saved and nothing is broken.
+- SAVE: The most blocks will be broken, leaving 1 durability. If tool has 1 durability it'll break.
+- NORMAL: Will break the most blocks possible, breaking the tool.
+- BYPASS: Will break the whole tree regardless of durability left. Tool will break as a result.
 
 |Require enchantment
 |Define if the tool must be enchanted in order to be able to chop trees with it (allow/deny lists still apply).
