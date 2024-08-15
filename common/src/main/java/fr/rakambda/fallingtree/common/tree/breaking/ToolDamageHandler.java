@@ -16,6 +16,7 @@ public class ToolDamageHandler{
 	private final int maxDurabilityTaken;
 	@Getter
 	private final int maxBreakCount;
+	@Getter
 	private boolean preserveTool;
 	
 	public ToolDamageHandler(@NotNull IItemStack tool, double damageMultiplicand, @NotNull DurabilityMode durabilityMode, int breakableCount, int maxSize, @NotNull MaxSizeAction maxSizeAction, @NotNull DamageRounding damageRounding) throws BreakTreeTooBigException{
@@ -81,9 +82,5 @@ public class ToolDamageHandler{
 			return tool.getMaxDamage() - tool.getDamage();
 		}
 		return Integer.MAX_VALUE;
-	}
-	
-	public boolean isPreserveTool(){
-		return preserveTool;
 	}
 }
