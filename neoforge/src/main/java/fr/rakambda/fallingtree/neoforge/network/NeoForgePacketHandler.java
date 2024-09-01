@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class NeoForgePacketHandler implements ClientPacketHandler, ServerPacketHandler{
 	@SubscribeEvent
 	public void register(@NotNull RegisterPayloadHandlersEvent event){
-		var registrar = event.registrar(FallingTree.MOD_ID);
+		var registrar = event.registrar(FallingTree.MOD_ID).optional();
 		
 		registrar.configurationToClient(FallingTreeConfigPacket.TYPE, FallingTreeConfigPacket.CODEC,
 				(packet, sender) -> mod.getPacketUtils().onClientConfigurationPacket(packet.getPacket()));
