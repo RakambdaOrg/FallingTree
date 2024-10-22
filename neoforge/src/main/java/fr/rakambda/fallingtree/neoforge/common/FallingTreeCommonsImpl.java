@@ -212,12 +212,12 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 
 	@NotNull
 	private <T> Optional<T> getRegistryElement(Registry<T> registryKey, ResourceLocation identifier){
-		return registryKey.getHolder(identifier).map(Holder::value);
+		return registryKey.get(identifier).map(Holder::value);
 	}
 	
 	@NotNull
 	private <T> Stream<T> getRegistryTagContent(@NotNull Registry<T> registry, @NotNull TagKey<T> tag){
-		return registry.getTag(tag).stream()
+		return registry.get(tag).stream()
 				.flatMap(a -> a.stream().map(Holder::value));
 	}
 	
