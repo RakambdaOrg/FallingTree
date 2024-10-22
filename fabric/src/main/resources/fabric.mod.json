@@ -35,7 +35,7 @@
     "fabricloader": ">=0.15.0",
     "fabric-resource-loader-v0": "*",
     "fabric-api": ">=0.91",
-    "java": ">=17"
+    "java": ">=21"
   },
   "suggests": {
     "modmenu": "*",
