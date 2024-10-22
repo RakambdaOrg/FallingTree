@@ -203,7 +203,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@NotNull
 	private <T> Stream<T> getRegistryTagContent(@NotNull Registry<T> registry, @NotNull TagKey<T> tag){
-		return registry.getTag(tag).stream()
+		return registry.get(tag).stream()
 				.flatMap(a -> a.stream().map(Holder::value));
 	}
 	
