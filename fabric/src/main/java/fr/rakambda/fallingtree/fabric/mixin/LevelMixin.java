@@ -9,6 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,7 +32,7 @@ public abstract class LevelMixin{
 	}
 	
 	@Inject(method = "updateNeighborsAtExceptFromFacing", at = @At(value = "TAIL"))
-	public void updateNeighborsExcept(BlockPos pos, Block sourceBlock, Direction direction, CallbackInfo callbackInfo){
+	public void updateNeighborsExcept(BlockPos blockPos, Block block, Direction direction, @Nullable Orientation orientation, CallbackInfo callbackInfo){
 		//noinspection ConstantConditions
 		var serverLevel = (ServerLevel) (Object) this;
 		var directions = EnumSet.allOf(Direction.class);
@@ -38,8 +40,8 @@ public abstract class LevelMixin{
 		
 		FallingTree.getMod().getLeafBreakingHandler().onBlockUpdate(
 				new ServerLevelWrapper(serverLevel),
-				new BlockPosWrapper(pos),
-				new BlockStateWrapper(serverLevel.getBlockState(pos)),
+				new BlockPosWrapper(blockPos),
+				new BlockStateWrapper(serverLevel.getBlockState(blockPos)),
 				directions.stream().map(FallingTree.getMod()::asDirectionCompat).collect(Collectors.toSet()));
 	}
 }
