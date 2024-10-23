@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BlockBehaviour.class)
 public abstract class AbstractBlockMixin{
 	@Inject(method = "getDestroyProgress", at = @At(value = "TAIL"), cancellable = true)
-	public void calcBlockBreakingDelta(BlockState state, Player player, BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> callbackInfoReturnable){
+	public void calcBlockBreakingDelta(BlockState blockState, Player player, BlockGetter blockGetter, BlockPos blockPos, CallbackInfoReturnable<Float> callbackInfoReturnable){
 		var wrappedPlayer = new PlayerWrapper(player);
-		var wrappedPos = new BlockPosWrapper(pos);
+		var wrappedPos = new BlockPosWrapper(blockPos);
 		
 		var result = FallingTree.getMod().getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, callbackInfoReturnable.getReturnValue());
 		if(result.isEmpty()){
