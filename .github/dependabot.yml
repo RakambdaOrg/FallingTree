@@ -36,3 +36,6 @@ updates:
       exposed:
         patterns:
           - org.jetbrains.exposed:*
+      lets-plot:
+        patterns:
+          - org.jetbrains.lets-plot:*
