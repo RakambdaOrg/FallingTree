@@ -69,7 +69,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 				.mapToInt(part -> breakPart(tree, part, level, player, tool, true))
 				.sum()
 				+
-				breakPart(tree, logPart, level, player, tool, false);
+				breakPart(tree, logPart, level, player, tool, isCancellable);
 		
 		var damage = toolHandler.getActualDamage(breakCount - (isCancellable ? 0 : 1));
 		if(damage > 0){
