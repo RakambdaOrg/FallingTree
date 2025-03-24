@@ -39,3 +39,9 @@ updates:
       lets-plot:
         patterns:
           - org.jetbrains.lets-plot:*
+      compose:
+        patterns:
+          - org.jetbrains.compose
+        update-types:
+          - major
+          - minor
