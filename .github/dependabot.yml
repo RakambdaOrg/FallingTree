@@ -5,8 +5,8 @@ updates:
     assignees:
       - Rakambda
     schedule:
-      interval: daily
-      time: '05:00'
+      interval: cron
+      cronjob: 0 7 * * *
       timezone: Europe/Paris
     pull-request-branch-name:
       separator: '-'
@@ -19,8 +19,8 @@ updates:
     assignees:
       - Rakambda
     schedule:
-      interval: daily
-      time: '05:00'
+      interval: cron
+      cronjob: 0 7 * * *
       timezone: Europe/Paris
     pull-request-branch-name:
       separator: '-'
