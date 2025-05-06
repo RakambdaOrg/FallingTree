@@ -45,6 +45,8 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	private int maxScanSize = 500;
 	@Expose
+	private int minSize = 0;
+	@Expose
 	private int maxSize = 100;
 	@Expose
 	private int maxLeafDistanceFromLog = 15;

@@ -43,6 +43,8 @@ public interface ITreeConfiguration{
 	
 	int getMaxScanSize();
 	
+	int getMinSize();
+	
 	int getMaxSize();
 	
 	int getMaxLeafDistanceFromLog();
