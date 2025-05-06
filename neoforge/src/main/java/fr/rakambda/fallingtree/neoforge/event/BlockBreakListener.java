@@ -1,7 +1,7 @@
 package fr.rakambda.fallingtree.neoforge.event;
 
-import javax.annotation.Nonnull;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.neoforge.common.wrapper.BlockBreakEventWrapper;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.BlockPosWrapper;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.BlockStateWrapper;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.LevelWrapper;
@@ -13,6 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 @RequiredArgsConstructor
 public class BlockBreakListener{
@@ -47,7 +48,7 @@ public class BlockBreakListener{
 		if(event.isCanceled()){
 			return;
 		}
-		if(event instanceof FallingTreeBlockBreakEvent){
+		if(mod.isOwnEvent(new BlockBreakEventWrapper(event))){
 			return;
 		}
 		
