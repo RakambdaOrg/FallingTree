@@ -10,6 +10,7 @@
   "text.autoconfig.fallingtree.option.trees.deniedLeaves": "Feuilles bannies",
   "text.autoconfig.fallingtree.option.trees.breakMode": "Mode de casse",
   "text.autoconfig.fallingtree.option.trees.detectionMode": "Mode de détection",
+  "text.autoconfig.fallingtree.option.trees.minSize": "Taille minimum",
   "text.autoconfig.fallingtree.option.trees.maxSize": "Taille maximum",
   "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired": "Nombre minimum de feuilles autour",
   "text.autoconfig.fallingtree.option.trees.treeBreaking": "Cassage des troncs",

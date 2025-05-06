@@ -19,11 +19,15 @@ public class ToolDamageHandler{
 	@Getter
 	private boolean preserveTool;
 	
-	public ToolDamageHandler(@NotNull IItemStack tool, double damageMultiplicand, @NotNull DurabilityMode durabilityMode, int breakableCount, int maxSize, @NotNull MaxSizeAction maxSizeAction, @NotNull DamageRounding damageRounding) throws BreakTreeTooBigException{
+	public ToolDamageHandler(@NotNull IItemStack tool, double damageMultiplicand, @NotNull DurabilityMode durabilityMode, int breakableCount, int minSize, int maxSize, @NotNull MaxSizeAction maxSizeAction, @NotNull DamageRounding damageRounding) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		this.damageRounding = damageRounding;
 		
+		if(breakableCount < minSize){
+			log.info("Tree isn't big enough {}", minSize);
+			throw new BreakTreeTooSmallException();
+		}
 		if(breakableCount > maxSize && maxSizeAction == MaxSizeAction.ABORT){
 			log.info("Tree reached max size of {}", maxSize);
 			throw new BreakTreeTooBigException();

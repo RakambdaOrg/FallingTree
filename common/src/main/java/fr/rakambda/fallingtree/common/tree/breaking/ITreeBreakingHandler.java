@@ -7,5 +7,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ITreeBreakingHandler{
 	@NotNull
-	IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException;
+	IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException;
 }
