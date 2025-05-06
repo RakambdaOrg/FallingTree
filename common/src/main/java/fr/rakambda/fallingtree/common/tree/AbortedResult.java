@@ -9,6 +9,7 @@ public enum AbortedResult implements IBreakAttemptResult {
     NOT_SERVER(false),
     NO_SUCH_TREE(false),
     REQUIRED_TOOL_ABSENT(true),
+    TREE_TOO_SMALL_BREAK(false),
     TREE_TOO_BIG_BREAK(false),
     TREE_TOO_BIG_SCAN(false);
 
