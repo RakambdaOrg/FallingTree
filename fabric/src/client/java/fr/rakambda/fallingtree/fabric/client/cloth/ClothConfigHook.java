@@ -145,7 +145,7 @@ public class ClothConfigHook extends ClothHookBase{
 				.setSaveConsumer(config::setMaxScanSize)
 				.build();
 		var minSizeEntry = builder.entryBuilder()
-				.startIntField(translatable(getFieldName("trees", "minSize")), config.getMaxSize())
+				.startIntField(translatable(getFieldName("trees", "minSize")), config.getMinSize())
 				.setDefaultValue(0)
 				.setMin(0)
 				.setTooltip(getTooltips("trees", "minSize"))
