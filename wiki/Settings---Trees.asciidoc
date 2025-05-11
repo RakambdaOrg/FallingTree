@@ -71,6 +71,9 @@ image:assets/behavior/detection-mode-above-y.png[]
 |Max scan size
 |The maximum number of blocks to scan when trying to detect a tree. If there's more than this value the tree won't be cut.
 
+|Min (break) size
+|The minimum size of a tree. If a tree with less elements than this value is attempted to be cut, the mod will skip it.
+
 |Max (break) size
 |The maximum size of a tree. If a tree with more elements than this value is attempted to be cut, the mod will refuse to do it.
 
