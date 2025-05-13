@@ -41,7 +41,10 @@ public class ClothConfigHook extends ClothHookBase{
 					.setTitle(Component.literal("FallingTree"));
 			
 			var configuration = getMod().getOwnConfiguration();
-			builder.setSavingRunnable(configuration::onUpdate);
+			builder.setSavingRunnable(() -> {
+				configuration.onUpdate();
+				getMod().onConfigUpdate();
+			});
 			
 			fillConfigScreen(builder, configuration);
 			

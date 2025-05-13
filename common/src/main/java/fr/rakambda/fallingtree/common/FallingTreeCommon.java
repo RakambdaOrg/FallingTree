@@ -233,4 +233,6 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
 
     @NotNull
     public abstract IItemStack getEmptyItemStack();
+	
+	public abstract void onConfigUpdate();
 }
