@@ -1,7 +1,6 @@
 package fr.rakambda.fallingtree.fabric.client.cloth;
 
 import com.google.common.collect.Lists;
-import com.terraformersmc.modmenu.util.mod.Mod;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.AdjacentStopMode;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
