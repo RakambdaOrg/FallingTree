@@ -1,21 +1,13 @@
 package fr.rakambda.fallingtree.fabric.common;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.id;
-import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.idExternal;
-import static java.util.stream.Stream.empty;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
+import fr.rakambda.fallingtree.common.utils.BoundedList;
 import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
+import fr.rakambda.fallingtree.common.wrapper.IBlockBreakEvent;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
@@ -55,6 +47,17 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.id;
+import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.idExternal;
+import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Getter
@@ -65,6 +68,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	private final TagKey<Enchantment> chopperEnchantmentTag;
 	@Getter
 	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
+	private final List<IBlockPos> breakEvents;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
@@ -78,6 +82,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ITEM, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_item")));
 		breakModeChopperEnchantmentTag.put(BreakMode.INSTANTANEOUS, TagKey.create(Registries.ENCHANTMENT, id("chopper_instantaneous")));
 		breakModeChopperEnchantmentTag.put(BreakMode.SHIFT_DOWN, TagKey.create(Registries.ENCHANTMENT, id("chopper_shift_down")));
+		
+		breakEvents = new BoundedList<>(50);
 	}
 	
 	@Override
@@ -193,6 +199,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
+		breakEvents.add(blockPos);
 		return PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(
 				(Level) level.getRaw(),
 				(Player) player.getRaw(),
@@ -200,6 +207,15 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 				(BlockState) blockState.getRaw(),
 				(BlockEntity) Optional.ofNullable(level.getBlockEntity(blockPos)).map(IWrapper::getRaw).orElse(null)
 		);
+	}
+	
+	@Override
+	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
+		var result = breakEvents.contains(event.getBlockPos());
+		if(result){
+			breakEvents.remove(event.getBlockPos());
+		}
+		return result;
 	}
 	
 	@Override

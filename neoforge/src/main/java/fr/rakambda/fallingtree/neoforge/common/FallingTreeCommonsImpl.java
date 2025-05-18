@@ -214,7 +214,11 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
-		return breakEvents.contains((BlockEvent.BreakEvent) event.getRaw()) || event instanceof FallingTreeBlockBreakEvent;
+		var result = breakEvents.contains((BlockEvent.BreakEvent) event.getRaw()) || event instanceof FallingTreeBlockBreakEvent;
+		if(result){
+			breakEvents.remove((BlockEvent.BreakEvent) event.getRaw());
+		}
+		return result;
 	}
 
 	@Override
