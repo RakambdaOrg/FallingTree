@@ -75,7 +75,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
-		packetHandler = new ForgePacketHandler(this);
+		packetHandler = new ForgePacketHandler();
 		
 		isLogBlockCache = new HashMap<>();
 		isLeafBlockCache = new HashMap<>();
