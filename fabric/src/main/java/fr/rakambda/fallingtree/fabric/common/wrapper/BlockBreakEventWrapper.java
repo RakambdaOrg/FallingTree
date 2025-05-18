@@ -1,11 +1,11 @@
-package fr.rakambda.fallingtree.forge.common.wrapper;
+package fr.rakambda.fallingtree.fabric.common.wrapper;
 
 import fr.rakambda.fallingtree.common.wrapper.IBlockBreakEvent;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import net.minecraftforge.event.level.BlockEvent;
+import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
@@ -13,11 +13,11 @@ import org.jetbrains.annotations.NotNull;
 public class BlockBreakEventWrapper implements IBlockBreakEvent{
 	@NotNull
 	@Getter
-	private final BlockEvent.BreakEvent raw;
+	private final BlockPos raw;
 	
 	@Override
 	@NotNull
 	public IBlockPos getBlockPos(){
-		return new BlockPosWrapper(raw.getPos());
+		return new BlockPosWrapper(raw);
 	}
 }
