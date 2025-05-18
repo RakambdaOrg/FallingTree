@@ -37,6 +37,12 @@ allprojects {
     }
 
     repositories {
+        maven {
+            url "https://libraries.minecraft.net"
+            content {
+                includeModule("org.lwjgl", "lwjgl-freetype")
+            }
+        }
         mavenCentral()
         maven {
             name = "Minecraft Libraries"

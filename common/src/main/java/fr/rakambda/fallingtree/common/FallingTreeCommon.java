@@ -238,4 +238,6 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
 	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
 		return false;
 	}
+	
+	public abstract void onConfigUpdate();
 }
