@@ -31,7 +31,7 @@ public class PlayerJoinListener{
 			var server = serverPlayer.getServer();
 			if(Objects.nonNull(server) && server.isDedicatedServer()){
 				var packet = ConfigurationPacket.get(mod.getConfiguration());
-				ForgePacketHandler.INSTANCE.send(packet, PacketDistributor.PLAYER.with(serverPlayer));
+				ForgePacketHandler.INSTANCE.send(new FallingTreeConfigPacket(packet), PacketDistributor.PLAYER.with(serverPlayer));
 			}
 			else{
 				log.info("Player connected to a local world, not setting up proxy config");
