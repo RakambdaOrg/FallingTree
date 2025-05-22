@@ -1,6 +1,7 @@
 name: Fabric bug report
 description: Create a report to help us improve the Fabric version
 labels: ["modloader: Fabric", "type: 🐛 bug"]
+type: Bug
 assignees:
   - Rakambda
 body:

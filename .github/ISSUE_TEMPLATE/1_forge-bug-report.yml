@@ -1,6 +1,7 @@
 name: Forge bug report
 description: Create a report to help us improve the Forge version
 labels: ["modloader: Forge", "type: 🐛 bug"]
+type: Bug
 assignees:
   - Rakambda
 body:

@@ -1,6 +1,7 @@
 name: Feature request
 description: Suggest an idea for this project
 labels: ["type: 🧱 enhancement"]
+type: Enhancement
 assignees:
   - Rakambda
 body:

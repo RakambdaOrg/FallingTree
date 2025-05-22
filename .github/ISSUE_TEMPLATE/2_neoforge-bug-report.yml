@@ -1,6 +1,7 @@
 name: NeoForge bug report
 description: Create a report to help us improve the NeoForge version
 labels: ["modloader: Neoforge", "type: 🐛 bug"]
+type: Bug
 assignees:
   - Rakambda
 body:
