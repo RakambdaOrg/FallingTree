@@ -77,7 +77,7 @@ image:assets/behavior/detection-mode-above-y.png[]
 |Max (break) size
 |The maximum size of a tree. If a tree with more elements than this value is attempted to be cut, the mod will refuse to do it.
 
-NOTE: Only applied in `Instantaneous` breaking mode.
+NOTE: Does not apply to `SHIFT_DOWN` breaking mode.
 
 |Max size action
 |What to do when the max size of a tree is reached.
@@ -97,14 +97,14 @@ This only makes sense if `maxSize` < `maxScanSize`.
 - CLOSEST_FIRST: The closest log will be broken first.
 - LOWEST_FIRST: The lowest log will be broken first.
 
-NOTE: Only applied in `Instantaneous` breaking mode.
+NOTE: Does not apply to `SHIFT_DOWN` breaking mode.
 
 |Minimum leaves around required
 |Defines how many leaves should be around the top most log of the tree. If not enough leaves are found, then the broken block won't be considered as part of a tree.
 
 This value can be useful for people that have houses made of logs and doesn't want to chop it all down in one cut.
 
-NOTE: Only applied in `Instantaneous` breaking mode.
+NOTE: Does not apply to `SHIFT_DOWN` breaking mode.
 
 |Include persistent leaves in required count
 |If this is true leaves with the persistent flag (player placed or sheared) will be counted in the `minimum leaves required` counter. Otherwise, they won't.
@@ -129,7 +129,7 @@ I highly discourage using this feature as it'll cut leaves in a not so elegant w
 WARNING: This will break leaves placed by a player.
 
 NOTE: `Leaves breaking` must be activated.
-NOTE: This only works in the `Instantaneous` breaking mode.
+NOTE: Does not apply to `SHIFT_DOWN` breaking mode.
 
 |Allow trunks with mixed log blocks
 |Defines if a tree can be composed of different log types or not.
