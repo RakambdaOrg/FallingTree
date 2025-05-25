@@ -30,7 +30,7 @@ public class PlayerJoinListener{
 		if(event.getEntity() instanceof ServerPlayer serverPlayer){
 			var server = serverPlayer.getServer();
 			if(Objects.nonNull(server) && server.isDedicatedServer()){
-				var packet = ConfigurationPacket.get(mod.getConfiguration());
+				var packet = ConfigurationPacket.get(server.isDedicatedServer(), mod.getConfiguration());
 				ForgePacketHandler.INSTANCE.send(new FallingTreeConfigPacket(packet), PacketDistributor.PLAYER.with(serverPlayer));
 			}
 			else{

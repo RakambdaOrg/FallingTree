@@ -11,6 +11,10 @@ public class PacketUtils{
 	private final FallingTreeCommon<?> mod;
 	
 	public void onClientConfigurationPacket(@NotNull ConfigurationPacket packet){
+		if(!packet.isDedicated()){
+			log.info("Received FT configuration packet from own server, skipping");
+			return;	
+		}
 		log.info("Received FT configuration packet from server, setting up proxy config values");
 		mod.getProxyConfiguration().getTools().setSpeedMultiplicand(packet.getSpeedMultiplicand());
 		mod.getProxyConfiguration().getTools().setForceToolUsage(packet.isForceToolUsage());
