@@ -160,7 +160,6 @@ curseforge {
             addGameVersion(minecraftVersion)
         }
 
-        addGameVersion("Server")
         addGameVersion("Java 21")
         if (project.includeFabric.toBoolean()) {
             addGameVersion("Fabric")
