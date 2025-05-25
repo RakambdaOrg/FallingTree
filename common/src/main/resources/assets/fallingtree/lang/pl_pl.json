@@ -32,7 +32,6 @@
   "text.autoconfig.fallingtree.option.trees.breakOrder" : "Kolejność ścinania",
   "text.autoconfig.fallingtree.option.trees.breakOrder.@Tooltip": "W jakiej kolejności bloki są niszczone. Ma zastosowanie tylko jeżeli maxSize < maxScanSize.\n\nFURTHEST_FIRST: Najpierw będą niszczone bloki, które są najdalej.\nCLOSEST_FIRST: Najpierw będą niszczone bloki, które są najbliżej.\nLOWEST_FIRST: The lower log will be broken first.\n\nINFO: Tylko w trybie NATYCHMIASTOWYM.",
   "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired" : "Minimalna ilość liści",
-  "text.autoconfig.fallingtree.option.trees.minimumLeavesAroundRequired.@Tooltip": "Minimalna ilość liści jaka jest wymagana wokół najwyższego bloku aby wykryć drzewo.\n\nINFO: Tylko w trybie INSTANTANEOUS/NATYCHMIASTOWYM.",
   "text.autoconfig.fallingtree.option.trees.treeBreaking" : "Niszczenie pnia",
   "text.autoconfig.fallingtree.option.trees.treeBreaking.@Tooltip" : "Ustawienie true sprawi, że całe drzewo będzie ścinane po zniszczeniu jednego bloku.",
   "text.autoconfig.fallingtree.option.trees.leavesBreaking" : "Niszczenie liści",
