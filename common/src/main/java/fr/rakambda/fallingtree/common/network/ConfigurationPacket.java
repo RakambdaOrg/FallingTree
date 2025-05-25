@@ -14,12 +14,14 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 @Builder
 public class ConfigurationPacket{
+	private boolean dedicated;
 	private double speedMultiplicand;
 	private boolean forceToolUsage;
 	private BreakMode breakMode;
 	
-	public static ConfigurationPacket get(@NotNull IConfiguration configuration){
+	public static ConfigurationPacket get(boolean dedicated, @NotNull IConfiguration configuration){
 		return builder()
+				.dedicated(dedicated)
 				.speedMultiplicand(configuration.getTools().getSpeedMultiplicand())
 				.forceToolUsage(configuration.getTools().isForceToolUsage())
 				.breakMode(configuration.getTrees().getBreakMode())
@@ -27,6 +29,7 @@ public class ConfigurationPacket{
 	}
 	
 	public void write(IFriendlyByteBuf buf){
+		buf.writeBoolean(isDedicated());
 		buf.writeDouble(getSpeedMultiplicand());
 		buf.writeBoolean(isForceToolUsage());
 		buf.writeInteger(getBreakMode().ordinal());
@@ -34,6 +37,7 @@ public class ConfigurationPacket{
 	
 	public static ConfigurationPacket read(IFriendlyByteBuf buf){
 		return builder()
+				.dedicated(buf.readBoolean())
 				.speedMultiplicand(buf.readDouble())
 				.forceToolUsage(buf.readBoolean())
 				.breakMode(BreakMode.getValues()[buf.readInteger()])
