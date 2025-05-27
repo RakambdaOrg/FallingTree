@@ -98,6 +98,7 @@
   "chat.fallingtree.search_aborted" : "Tree detection stopped, reason: ",
   "chat.fallingtree.search_aborted.adjacent" : "Found block %s that isn't allowed in the adjacent blocks.",
   "chat.fallingtree.force_tool_usage" : "Tool usage is forced, but you didn't use a valid tool.",
+  "chat.fallingtree.veinminer_incompatibility": "FallingTree: VeinMiner is present, this may lead to incompatibilities. It is recommended to run the following command: /veinminer groups remove Wood",
   "command.fallingtree.toggle.enabled" : "FallingTree enabled",
   "command.fallingtree.toggle.disabled" : "FallingTree disabled",
   "enchantment.fallingtree.chopper" : "Chopper",
