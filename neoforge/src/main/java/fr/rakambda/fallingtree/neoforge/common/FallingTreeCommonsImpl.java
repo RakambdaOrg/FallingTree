@@ -4,8 +4,10 @@ import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
+import fr.rakambda.fallingtree.common.utils.BoundedList;
 import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
+import fr.rakambda.fallingtree.common.wrapper.IBlockBreakEvent;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
@@ -43,9 +45,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -64,6 +68,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	private final TagKey<Enchantment> chopperEnchantmentTag;
 	@Getter
 	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
+	private final List<BlockEvent.BreakEvent> breakEvents;
 	
 	public FallingTreeCommonsImpl(@NotNull IEventBus modEventBus){
 		this.modEventBus = modEventBus;
@@ -79,6 +84,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ITEM, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_item")));
 		breakModeChopperEnchantmentTag.put(BreakMode.INSTANTANEOUS, TagKey.create(Registries.ENCHANTMENT, id("chopper_instantaneous")));
 		breakModeChopperEnchantmentTag.put(BreakMode.SHIFT_DOWN, TagKey.create(Registries.ENCHANTMENT, id("chopper_shift_down")));
+		
+		breakEvents = new BoundedList<>(50);
 	}
 	
 	@Override
@@ -201,7 +208,17 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@Override
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
 		var event = NeoForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw()));
+		breakEvents.add(event);
 		return !event.isCanceled();
+	}
+	
+	@Override
+	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
+		var result = breakEvents.contains((BlockEvent.BreakEvent) event.getRaw()) || event instanceof FallingTreeBlockBreakEvent;
+		if(result){
+			breakEvents.remove((BlockEvent.BreakEvent) event.getRaw());
+		}
+		return result;
 	}
 
 	@Override

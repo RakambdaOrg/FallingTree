@@ -13,6 +13,7 @@ import fr.rakambda.fallingtree.common.tree.TreePartType;
 import fr.rakambda.fallingtree.common.tree.builder.TreeBuilder;
 import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
+import fr.rakambda.fallingtree.common.wrapper.IBlockBreakEvent;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
@@ -233,4 +234,8 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
 
     @NotNull
     public abstract IItemStack getEmptyItemStack();
+	
+	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
+		return false;
+	}
 }
