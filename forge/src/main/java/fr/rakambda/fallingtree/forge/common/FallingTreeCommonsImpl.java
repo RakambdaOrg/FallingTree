@@ -4,8 +4,10 @@ import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.leaf.LeafBreakingHandler;
 import fr.rakambda.fallingtree.common.network.ServerPacketHandler;
+import fr.rakambda.fallingtree.common.utils.BoundedList;
 import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
+import fr.rakambda.fallingtree.common.wrapper.IBlockBreakEvent;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
@@ -19,7 +21,6 @@ import fr.rakambda.fallingtree.forge.common.wrapper.ComponentWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.ItemStackWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.ItemWrapper;
 import fr.rakambda.fallingtree.forge.event.BlockBreakListener;
-import fr.rakambda.fallingtree.forge.event.FallingTreeBlockBreakEvent;
 import fr.rakambda.fallingtree.forge.event.LeafBreakingListener;
 import fr.rakambda.fallingtree.forge.event.ServerCommandRegistrationListener;
 import fr.rakambda.fallingtree.forge.network.ForgePacketHandler;
@@ -43,10 +44,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -64,6 +67,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	private final TagKey<Enchantment> chopperEnchantmentTag;
 	@Getter
 	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
+	private final List<BlockEvent.BreakEvent> breakEvents;
 	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
@@ -77,6 +81,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ITEM, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_item")));
 		breakModeChopperEnchantmentTag.put(BreakMode.INSTANTANEOUS, TagKey.create(Registries.ENCHANTMENT, id("chopper_instantaneous")));
 		breakModeChopperEnchantmentTag.put(BreakMode.SHIFT_DOWN, TagKey.create(Registries.ENCHANTMENT, id("chopper_shift_down")));
+	
+		breakEvents = new BoundedList<>(50);
 	}
 	
 	@Override
@@ -199,7 +205,18 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
-		return !MinecraftForge.EVENT_BUS.post(new FallingTreeBlockBreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw()));
+		var event = new BlockEvent.BreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw());
+		breakEvents.add(event);
+		return !MinecraftForge.EVENT_BUS.post(event);
+	}
+	
+	@Override
+	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
+		var result = breakEvents.contains((BlockEvent.BreakEvent) event.getRaw());
+		if(result){
+			breakEvents.remove((BlockEvent.BreakEvent) event.getRaw());
+		}
+		return result;
 	}
 	
 	@Override

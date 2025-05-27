@@ -1,7 +1,7 @@
 package fr.rakambda.fallingtree.fabric.event;
 
-import java.util.Optional;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.fabric.common.wrapper.BlockBreakEventWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.BlockEntityWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.BlockPosWrapper;
 import fr.rakambda.fallingtree.fabric.common.wrapper.BlockStateWrapper;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class BlockBreakListener implements PlayerBlockBreakEvents.Before, PlayerBlockBreakEvents.After{
@@ -33,6 +34,10 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before, Player
 		var wrappedPos = new BlockPosWrapper(blockPos);
 		var wrappedState = new BlockStateWrapper(blockState);
 		var wrappedEntity = Optional.ofNullable(blockEntity).map(BlockEntityWrapper::new).orElse(null);
+		
+		if(mod.isOwnEvent(new BlockBreakEventWrapper(blockPos))){
+			return true;
+		}
 		
 		return !mod.getTreeHandler().shouldCancelEvent(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
 	}
