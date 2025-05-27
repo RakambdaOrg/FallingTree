@@ -1,5 +1,10 @@
 package fr.rakambda.fallingtree.common.tree;
 
+import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
+import fr.rakambda.fallingtree.common.wrapper.ILevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -10,11 +15,6 @@ import java.util.Set;
 import static java.util.Comparator.comparingInt;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
-import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
-import fr.rakambda.fallingtree.common.wrapper.ILevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class Tree{
@@ -114,9 +114,16 @@ public class Tree{
 	}
 	
 	@NotNull
-	public Collection<TreePart> getWarts(){
+	public Collection<TreePart> getNetherWarts(){
 		return getParts().stream()
 				.filter(part -> part.treePartType() == TreePartType.NETHER_WART)
+				.collect(toSet());
+	}
+	
+	@NotNull
+	public Collection<TreePart> getMangroveRoots(){
+		return getParts().stream()
+				.filter(part -> part.treePartType() == TreePartType.MANGROVE_ROOTS)
 				.collect(toSet());
 	}
 	
