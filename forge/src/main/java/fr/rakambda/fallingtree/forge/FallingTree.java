@@ -31,6 +31,10 @@ public class FallingTree{
 			}
 		}
 		
+		if(ModList.get().isLoaded("veinminer")){
+			log.warn("VeinMiner is present, this may lead to incompatibilities. It is recommended to run the following command: /veinminer groups remove Wood");
+		}
+		
 		mod.registerForge(MinecraftForge.EVENT_BUS);
 	}
 }
