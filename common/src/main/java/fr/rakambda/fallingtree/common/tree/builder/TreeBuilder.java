@@ -89,7 +89,8 @@ public class TreeBuilder{
 			if(tree.getTopMostLog()
 					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
 					.orElse(true)){
-				log.info("Tree at {} doesn't have enough leaves around top most log", originPos);
+				// TODO Set it back as info, see #845
+				log.debug("Tree at {} doesn't have enough leaves around top most log", originPos);
 				return empty();
 			}
 		}
