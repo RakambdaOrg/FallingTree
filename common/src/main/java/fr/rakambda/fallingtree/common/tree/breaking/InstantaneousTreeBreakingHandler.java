@@ -21,13 +21,14 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	@Override
 	@NotNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException{
+	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var level = tree.getLevel();
 		var toolHandler = new ToolDamageHandler(tool,
 				mod.getConfiguration().getTools().getDamageMultiplicand(),
 				mod.getConfiguration().getTools().getDurabilityMode(),
 				tree.getBreakableCount(),
+				mod.getConfiguration().getTrees().getMinSize(),
 				mod.getConfiguration().getTrees().getMaxSize(),
 				mod.getConfiguration().getTrees().getMaxSizeAction(),
 				mod.getConfiguration().getTools().getDamageRounding());

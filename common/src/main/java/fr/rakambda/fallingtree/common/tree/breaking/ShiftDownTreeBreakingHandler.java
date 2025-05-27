@@ -28,7 +28,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	@Override
 	@NotNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException{
+	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var treePartOptional = tree.getLastSequencePart();
 		var treePartLogOptional = tree.getLastSequenceLogPart();
@@ -51,13 +51,14 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	}
 	
 	@NotNull
-	private IBreakAttemptResult breakElements(boolean isCancellable, @NotNull Tree tree, @NotNull ILevel level, @NotNull IPlayer player, @NotNull IItemStack tool, @NotNull TreePart logPart, @NotNull Collection<TreePart> leaves) throws BreakTreeTooBigException{
+	private IBreakAttemptResult breakElements(boolean isCancellable, @NotNull Tree tree, @NotNull ILevel level, @NotNull IPlayer player, @NotNull IItemStack tool, @NotNull TreePart logPart, @NotNull Collection<TreePart> leaves) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var count = leaves.size();
 		var damageMultiplicand = mod.getConfiguration().getTools().getDamageMultiplicand();
 		var toolHandler = new ToolDamageHandler(tool,
 				damageMultiplicand,
 				mod.getConfiguration().getTools().getDurabilityMode(),
 				count,
+				mod.getConfiguration().getTrees().getMinSize(),
 				mod.getConfiguration().getTrees().getMaxSize(),
 				mod.getConfiguration().getTrees().getMaxSizeAction(),
 				mod.getConfiguration().getTools().getDamageRounding());
