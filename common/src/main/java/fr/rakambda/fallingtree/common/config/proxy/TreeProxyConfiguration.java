@@ -93,6 +93,11 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	}
 	
 	@Override
+	public int getMinSize(){
+		return delegate.getMinSize();
+	}
+	
+	@Override
 	public int getMaxSize(){
 		return delegate.getMaxSize();
 	}
