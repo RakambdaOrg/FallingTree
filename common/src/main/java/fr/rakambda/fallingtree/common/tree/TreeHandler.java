@@ -37,11 +37,11 @@ public class TreeHandler{
 		if(!mod.isPlayerInRightState(player)){
 			return false;
 		}
-		if(!shouldPreserveTool(player)){
-			return false;
+		if(shouldPreserveTool(player)){
+			return true;
 		}
 		try{
-			return mod.getTreeBuilder().getTree(player, level, originPos, originState, originEntity).isPresent();
+			return mod.getTreeBuilder().getTree(player, level, originPos, originState, originEntity).isEmpty();
 		}
 		catch(TreeTooBigException e){
 			return false;
