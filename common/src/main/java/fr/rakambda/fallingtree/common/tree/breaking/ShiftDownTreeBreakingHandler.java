@@ -1,9 +1,5 @@
 package fr.rakambda.fallingtree.common.tree.breaking;
 
-import java.util.Collection;
-import java.util.List;
-import static fr.rakambda.fallingtree.common.tree.TreePartType.NETHER_WART;
-import static java.util.Objects.isNull;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.tree.IBreakAttemptResult;
 import fr.rakambda.fallingtree.common.tree.SuccessResult;
@@ -17,6 +13,11 @@ import fr.rakambda.fallingtree.common.wrapper.IServerLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
+import java.util.Collection;
+import java.util.List;
+import static fr.rakambda.fallingtree.common.tree.TreePartType.MANGROVE_ROOTS;
+import static fr.rakambda.fallingtree.common.tree.TreePartType.NETHER_WART;
+import static java.util.Objects.isNull;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -39,7 +40,10 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		var treePartLog = treePartLogOptional.get();
 		var level = tree.getLevel();
 		if(treePart.treePartType() == NETHER_WART && mod.getConfiguration().getTrees().isBreakNetherTreeWarts()){
-			return breakElements(isCancellable, tree, level, player, tool, treePartLog, tree.getWarts());
+			return breakElements(isCancellable, tree, level, player, tool, treePartLog, tree.getNetherWarts());
+		}
+		else if(treePart.treePartType() == MANGROVE_ROOTS && mod.getConfiguration().getTrees().isBreakMangroveRoots()){
+			return breakElements(isCancellable, tree, level, player, tool, treePartLog, tree.getMangroveRoots());
 		}
 		else{
 			return breakElements(isCancellable, tree, level, player, tool, treePartLog, List.of());
