@@ -69,9 +69,17 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
 	private final List<BlockEvent.BreakEvent> breakEvents;
 	
+	private final Map<IBlock, Boolean> isLogBlockCache;
+	private final Map<IBlock, Boolean> isLeafBlockCache;
+	private final Map<IBlock, Boolean> isWartBlockCache;
+	
 	public FallingTreeCommonsImpl(){
 		leafBreakingHandler = new LeafBreakingHandler(this);
 		packetHandler = new ForgePacketHandler(this);
+		
+		isLogBlockCache = new HashMap<>();
+		isLeafBlockCache = new HashMap<>();
+		isWartBlockCache = new HashMap<>();
 		
 		chopperEnchantmentTag = TagKey.create(Registries.ENCHANTMENT, id("chopper_all"));
 		
@@ -147,24 +155,28 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean isLeafBlock(@NotNull IBlock block){
-		var isAllowedBlock = registryTagContains(ForgeRegistries.BLOCKS, BlockTags.LEAVES, (Block) block.getRaw())
-				|| getConfiguration().getTrees().getAllowedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
-		if(isAllowedBlock){
-			var isDeniedBlock = getConfiguration().getTrees().getDeniedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
-			return !isDeniedBlock;
-		}
-		return false;
+		return isLeafBlockCache.computeIfAbsent(block, Key -> {
+			var isAllowedBlock = registryTagContains(ForgeRegistries.BLOCKS, BlockTags.LEAVES, (Block) block.getRaw())
+					|| getConfiguration().getTrees().getAllowedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
+			if(isAllowedBlock){
+				var isDeniedBlock = getConfiguration().getTrees().getDeniedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
+				return !isDeniedBlock;
+			}
+			return false;
+		});
 	}
 	
 	@Override
 	public boolean isLogBlock(@NotNull IBlock block){
-		var isAllowedBlock = getConfiguration().getTrees().getDefaultLogsBlocks(this).stream().anyMatch(log -> log.equals(block))
-				|| getConfiguration().getTrees().getAllowedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
-		if(isAllowedBlock){
-			var isDeniedBlock = getConfiguration().getTrees().getDeniedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
-			return !isDeniedBlock;
-		}
-		return false;
+		return isLogBlockCache.computeIfAbsent(block, Key -> {
+			var isAllowedBlock = getConfiguration().getTrees().getDefaultLogsBlocks(this).stream().anyMatch(log -> log.equals(block))
+					|| getConfiguration().getTrees().getAllowedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
+			if(isAllowedBlock){
+				var isDeniedBlock = getConfiguration().getTrees().getDeniedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
+				return !isDeniedBlock;
+			}
+			return false;
+		});
 	}
 	
 	@Override
@@ -222,6 +234,13 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	@NotNull
 	public IItemStack getEmptyItemStack(){
 		return new ItemStackWrapper(ItemStack.EMPTY);
+	}
+	
+	@Override
+	public void onConfigUpdate(){
+		isLogBlockCache.clear();
+		isLeafBlockCache.clear();
+		isWartBlockCache.clear();
 	}
 	
 	@NotNull
