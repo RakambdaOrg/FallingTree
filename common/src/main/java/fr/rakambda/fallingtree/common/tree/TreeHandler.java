@@ -41,11 +41,12 @@ public class TreeHandler{
 			return true;
 		}
 		try{
-			return mod.getTreeBuilder().getTree(player, level, originPos, originState, originEntity).isEmpty();
+			mod.getTreeBuilder().getTree(player, level, originPos, originState, originEntity).isEmpty();
 		}
 		catch(TreeTooBigException e){
 			return false;
 		}
+		return false;
 	}
 	
 	private boolean shouldPreserveTool(@NotNull IPlayer player){
