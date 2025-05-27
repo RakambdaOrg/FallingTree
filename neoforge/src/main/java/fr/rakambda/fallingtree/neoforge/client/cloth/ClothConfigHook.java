@@ -144,6 +144,13 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("trees", "maxScanSize"))
 				.setSaveConsumer(config::setMaxScanSize)
 				.build();
+		var minSizeEntry = builder.entryBuilder()
+				.startIntField(translatable(getFieldName("trees", "minSize")), config.getMaxSize())
+				.setDefaultValue(0)
+				.setMin(0)
+				.setTooltip(getTooltips("trees", "minSize"))
+				.setSaveConsumer(config::setMinSize)
+				.build();
 		var maxSizeEntry = builder.entryBuilder()
 				.startIntField(translatable(getFieldName("trees", "maxSize")), config.getMaxSize())
 				.setDefaultValue(100)
@@ -256,6 +263,7 @@ public class ClothConfigHook extends ClothHookBase{
 		trees.addEntry(allowedNonDecayLeavesEntry);
 		trees.addEntry(deniedLeavesEntry);
 		trees.addEntry(maxScanSizeEntry);
+		trees.addEntry(minSizeEntry);
 		trees.addEntry(maxSizeEntry);
 		trees.addEntry(maxSizeActionEntry);
 		trees.addEntry(maxLeafDistanceFromLogEntry);
