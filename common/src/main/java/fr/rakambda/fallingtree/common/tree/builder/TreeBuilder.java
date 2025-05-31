@@ -162,7 +162,7 @@ public class TreeBuilder{
 			case ABOVE_Y -> AboveYFetcher.getInstance(mod);
 			case BELOW_CUT -> BelowPositionFetcher.getInstance(mod);
 			case BELOW_Y -> BelowYFetcher.getInstance(mod);
-			case WHOLE_TREE -> BasicPositionFetcher.getInstance(mod);
+			case WHOLE_TREE, WHOLE_TREE_DOWNWARDS -> BasicPositionFetcher.getInstance(mod);
 		};
 	}
 	
