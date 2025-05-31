@@ -9,6 +9,7 @@ import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
+import java.util.Map;
 
 public interface ITreeConfiguration{
 	@NotNull
@@ -40,6 +41,9 @@ public interface ITreeConfiguration{
 	
 	@NotNull
 	DetectionMode getDetectionMode();
+	
+	@NotNull
+	Map<String, DetectionMode> getDetectionModeBiomeOverride();
 	
 	int getMaxScanSize();
 	
