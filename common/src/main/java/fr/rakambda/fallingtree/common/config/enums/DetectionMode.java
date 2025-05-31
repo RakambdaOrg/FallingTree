@@ -10,11 +10,12 @@ import java.util.stream.Stream;
 @Getter
 @RequiredArgsConstructor
 public enum DetectionMode{
-	WHOLE_TREE(tree -> tree.getTopMostLog().stream()),
 	ABOVE_CUT(tree -> tree.getTopMostLog().stream()),
 	ABOVE_Y(tree -> tree.getTopMostLog().stream()),
 	BELOW_CUT(tree -> tree.getBottomMostLog().stream()),
-	BELOW_Y(tree -> tree.getBottomMostLog().stream());
+	BELOW_Y(tree -> tree.getBottomMostLog().stream()),
+	WHOLE_DOWNWARDS(tree -> tree.getBottomMostLog().stream()),
+	WHOLE_TREE(tree -> tree.getTopMostLog().stream());
 	
 	private final Function<Tree, Stream<IBlockPos>> leafAroundPosProvider;
 }
