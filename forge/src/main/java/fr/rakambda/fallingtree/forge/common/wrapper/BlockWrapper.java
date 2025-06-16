@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.minecraft.core.BlockPos;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -35,9 +36,16 @@ public class BlockWrapper implements IBlock{
 	}
 	
 	@Override
-	public void playerDestroy(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NotNull IItemStack itemStack){
+	public void playerDestroy(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NotNull IItemStack itemStack, boolean dropResources){
 		var entity = blockEntity == null ? null : (BlockEntity) blockEntity.getRaw();
-		raw.playerDestroy((Level) level.getRaw(), (Player) player.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), entity, (ItemStack) itemStack.getRaw());
+		var realPlayer = (Player) player;
+		
+		// See Block.playerDestroy
+		realPlayer.awardStat(Stats.BLOCK_MINED.get(raw));
+		realPlayer.causeFoodExhaustion(0.005F);
+		if(dropResources){
+			Block.dropResources((BlockState) blockState.getRaw(), (Level) level.getRaw(), (BlockPos) blockPos.getRaw(), entity, realPlayer, (ItemStack) itemStack.getRaw());
+		}
 	}
 	
 	@NotNull

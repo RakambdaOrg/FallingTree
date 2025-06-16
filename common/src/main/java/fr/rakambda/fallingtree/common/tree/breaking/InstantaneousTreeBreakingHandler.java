@@ -40,6 +40,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		var wantToBreakCount = Math.min(tree.getBreakableCount(), toolHandler.getMaxBreakCount());
+		var lootHandler = new LootHandler(wantToBreakCount, mod.getConfiguration().getTrees().getTrunkLootPercentage());
 		var brokenCount = tree.getBreakableParts().stream()
 				.sorted(mod.getConfiguration().getTrees().getBreakOrder().getComparator())
 				.limit(wantToBreakCount)
@@ -59,7 +60,8 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 								mod.getConfiguration().getTrees().isSpawnItemsAtBreakPoint() ? tree.getHitPos() : logBlockPos,
 								logState,
 								level.getBlockEntity(logBlockPos),
-								tool
+								tool,
+								lootHandler.breakNewTrunk()
 						);
 					}
 					var isRemoved = level.removeBlock(logBlockPos, false);
@@ -76,7 +78,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 			leafForceBreaker.forceBreakDecayLeaves(player, tree, level);
 		}
 		if(player.isCreative() && mod.getConfiguration().isLootInCreative()){
-			tree.getStart().ifPresent(part -> part.blockState().getBlock().playerDestroy(level, player, tree.getHitPos(), part.blockState(), part.blockEntity(), tool));
+			tree.getStart().ifPresent(part -> part.blockState().getBlock().playerDestroy(level, player, tree.getHitPos(), part.blockState(), part.blockEntity(), tool, true));
 		}
 		return SuccessResult.DO_NOT_CANCEL;
 	}
