@@ -83,7 +83,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		
 		if(breakCount == 0){ // Last block of the tree
 			if(player.isCreative() && mod.getConfiguration().isLootInCreative()){
-				tree.getStart().ifPresent(part -> part.blockState().getBlock().playerDestroy(level, player, tree.getHitPos(), part.blockState(), part.blockEntity(), tool));
+				tree.getStart().ifPresent(part -> part.blockState().getBlock().playerDestroy(level, player, tree.getHitPos(), part.blockState(), part.blockEntity(), tool, true));
 			}
 			return SuccessResult.DO_NOT_CANCEL;
 		}
@@ -111,7 +111,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		
 		player.awardItemUsed(tool.getItem());
 		if((!player.isCreative() && spawnLoot) || (player.isCreative() && mod.getConfiguration().isLootInCreative())){
-			logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(blockPos), tool);
+			logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(blockPos), tool, true);
 		}
 		level.removeBlock(blockPos, false);
 		return 1;
