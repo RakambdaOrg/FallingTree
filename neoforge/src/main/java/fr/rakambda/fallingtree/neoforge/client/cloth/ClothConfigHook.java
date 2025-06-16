@@ -257,11 +257,11 @@ public class ClothConfigHook extends ClothHookBase{
 				.setSaveConsumer(config::setSpawnItemsAtBreakPoint)
 				.build();
 		var trunkLootPercentageEntry = builder.entryBuilder()
-				.startFloatField(translatable(getFieldName("tools", "trunkLootPercentage")), config.getTrunkLootPercentage())
+				.startFloatField(translatable(getFieldName("trees", "trunkLootPercentage")), config.getTrunkLootPercentage())
 				.setDefaultValue(1)
 				.setMin(0)
 				.setMax(1)
-				.setTooltip(getTooltips("tools", "trunkLootPercentage"))
+				.setTooltip(getTooltips("trees", "trunkLootPercentage"))
 				.setSaveConsumer(config::setTrunkLootPercentage)
 				.build();
 		

@@ -38,7 +38,7 @@ public class BlockWrapper implements IBlock{
 	@Override
 	public void playerDestroy(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NotNull IItemStack itemStack, boolean dropResources){
 		var entity = blockEntity == null ? null : (BlockEntity) blockEntity.getRaw();
-		var realPlayer = (Player) player;
+		var realPlayer = (Player) player.getRaw();
 		
 		// See Block.playerDestroy
 		realPlayer.awardStat(Stats.BLOCK_MINED.get(raw));
