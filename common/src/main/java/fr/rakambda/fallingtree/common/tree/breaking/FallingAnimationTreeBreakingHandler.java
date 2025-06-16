@@ -10,7 +10,6 @@ import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,6 +46,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		
 		var scannedLeaves = new LinkedList<IBlockPos>();
 		var wantToBreakCount = Math.min(tree.getBreakableCount(), toolHandler.getMaxBreakCount());
+		var lootHandler = new LootHandler(wantToBreakCount, mod.getConfiguration().getTrees().getTrunkLootPercentage());
 		var brokenCount = tree.getParts().stream()
 				.sorted(mod.getConfiguration().getTrees().getBreakOrder().getComparator())
 				.limit(wantToBreakCount)
@@ -60,7 +60,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 					
 					player.awardItemUsed(tool.getItem());
 					if(dropLogsAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
-						logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool);
+						logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool, !part.treePartType().isIncludeInTree() || lootHandler.breakNewTrunk());
 					}
 					
 					level.fallBlock(logBlockPos, !dropLogsAsItems,
@@ -89,7 +89,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 			leafForceBreaker.forceBreakDecayLeaves(player, tree, level);
 		}
 		if(player.isCreative() && mod.getConfiguration().isLootInCreative()){
-			tree.getStart().ifPresent(part -> part.blockState().getBlock().playerDestroy(level, player, tree.getHitPos(), part.blockState(), part.blockEntity(), tool));
+			tree.getStart().ifPresent(part -> part.blockState().getBlock().playerDestroy(level, player, tree.getHitPos(), part.blockState(), part.blockEntity(), tool, lootHandler.breakNewTrunk()));
 		}
 		return SuccessResult.DO_NOT_CANCEL;
 	}
@@ -115,7 +115,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		}
 		
 		if(dropLeavesAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
-			blockState.getBlock().playerDestroy(level, player, blockPos, blockState, level.getBlockEntity(blockPos), mod.getEmptyItemStack());
+			blockState.getBlock().playerDestroy(level, player, blockPos, blockState, level.getBlockEntity(blockPos), mod.getEmptyItemStack(), true);
 		}
 		level.fallBlock(blockPos, !dropLeavesAsItems,
 				0, 0.5, 0,
