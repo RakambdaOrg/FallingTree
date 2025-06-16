@@ -64,6 +64,8 @@
   "text.autoconfig.fallingtree.option.trees.adjacentStopMode.@Tooltip" : "Defines what happens when an adjacent block that isn't allowed is found.\n\nSTOP_ALL will make it so that the tree isn't cut at all.\nSTOP_BRANCH will stop the current branch but still cut the rest of the tree and up to the adjacent block.",
   "text.autoconfig.fallingtree.option.trees.spawnItemsAtBreakPoint" : "Spawn logs at break point",
   "text.autoconfig.fallingtree.option.trees.spawnItemsAtBreakPoint.@Tooltip" : "If enabled, all logs will spawn where the log was broken instead of at their own location.\n\nINFO: Does not apply to SHIFT_DOWN mode.",
+  "text.autoconfig.fallingtree.option.trees.trunkLootPercentage" : "Trunk loot percentage",
+  "text.autoconfig.fallingtree.option.trees.trunkLootPercentage.@Tooltip" : "Percentage of the logs that make up the trunk to be dropped as items.\n\nINFO: Does not apply to SHIFT_DOWN mode.",
   "text.autoconfig.fallingtree.option.tools.allowed" : "Allowed tools",
   "text.autoconfig.fallingtree.option.tools.allowed.@Tooltip" : "Additional list of tools that can be used to chop down a tree.\n\nINFO: Items marked with the axe tag will already be allowed.",
   "text.autoconfig.fallingtree.option.tools.denied" : "Denied tools",
