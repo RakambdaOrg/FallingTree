@@ -256,6 +256,14 @@ public class ClothConfigHook extends ClothHookBase{
 				.setTooltip(getTooltips("trees", "spawnItemsAtBreakPoint"))
 				.setSaveConsumer(config::setSpawnItemsAtBreakPoint)
 				.build();
+		var trunkLootPercentageEntry = builder.entryBuilder()
+				.startFloatField(translatable(getFieldName("trees", "trunkLootPercentage")), config.getTrunkLootPercentage())
+				.setDefaultValue(1)
+				.setMin(0)
+				.setMax(1)
+				.setTooltip(getTooltips("trees", "trunkLootPercentage"))
+				.setSaveConsumer(config::setTrunkLootPercentage)
+				.build();
 		
 		var trees = builder.getOrCreateCategory(translatable("text.autoconfig.fallingtree.category.trees"));
 		trees.addEntry(breakModeEntry);
@@ -283,6 +291,7 @@ public class ClothConfigHook extends ClothHookBase{
 		trees.addEntry(allowedAdjacentBlocks);
 		trees.addEntry(adjacentStopModeEntry);
 		trees.addEntry(spawnItemsAtBreakPointEntry);
+		trees.addEntry(trunkLootPercentageEntry);
 	}
 	
 	@OnlyIn(Dist.CLIENT)

@@ -179,4 +179,14 @@ TIP: You can find this info by enabling detailed info on blocks by pressing `F3 
 
 - Stop all: The detection will be stopped and no tree will be found.
 - Stop branch: Only the current branch will be stopped (ie: no logs will be fetched from that block)
+
+|Spawn items at break point
+|If enabled, all logs will spawn where the log was broken instead of at their own location.
+
+INFO: Only in INSTANTANEOUS mode.
+
+|Trunk loot percentage
+|Percentage of the logs that make up the trunk to be dropped as items.
+
+INFO: Does not apply to SHIFT_DOWN mode.
 |===
