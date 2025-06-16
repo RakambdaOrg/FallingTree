@@ -77,4 +77,6 @@ public interface ITreeConfiguration{
 	AdjacentStopMode getAdjacentStopMode();
 	
 	boolean isSpawnItemsAtBreakPoint();
+	
+	float getTrunkLootPercentage();
 }
