@@ -1,5 +1,3 @@
-modLoader="javafml" #mandatory
-loaderVersion="[4,)"
 license="LGPL-3.0"
 
 [[mods]]
@@ -17,7 +15,7 @@ file="META-INF/neoforge.accesstransformer.cfg"
 [[dependencies.fallingtree]]
 modId="neoforge"
 type="required"
-versionRange="[21.5,)"
+versionRange="[21.6,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.fallingtree]]
