@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 
@@ -20,12 +19,7 @@ public class BlockBreakListener{
 	@NotNull
 	private final FallingTreeCommon<?> mod;
 	
-	@SubscribeEvent
 	public void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
-		if(event.isCanceled()){
-			return;
-		}
-		
 		var optionalPos = event.getPosition();
 		if(optionalPos.isEmpty()){
 			return;
@@ -43,13 +37,9 @@ public class BlockBreakListener{
 		event.setNewSpeed(result.get());
 	}
 	
-	@SubscribeEvent
-	public void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
-		if(event.isCanceled()){
-			return;
-		}
+	public boolean onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
 		if(mod.isOwnEvent(new BlockBreakEventWrapper(event))){
-			return;
+			return false;
 		}
 		
 		var wrappedPlayer = new PlayerWrapper(event.getPlayer());
@@ -59,13 +49,10 @@ public class BlockBreakListener{
 		var wrappedEntity = wrappedLevel.getBlockEntity(wrappedPos);
 		
 		if(mod.getTreeHandler().shouldCancelEvent(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity)){
-			event.setCanceled(true);
-			return;
+			return true;
 		}
 		
-		var result = mod.getTreeHandler().breakTree(event.isCancelable(), wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
-		if(result.shouldCancel()){
-			event.setCanceled(true);
-		}
+		var result = mod.getTreeHandler().breakTree(true, wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		return result.shouldCancel();
 	}
 }

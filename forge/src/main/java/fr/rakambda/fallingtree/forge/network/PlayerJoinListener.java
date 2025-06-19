@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -21,12 +20,7 @@ public class PlayerJoinListener{
 	@NotNull
 	private final FallingTreeCommon<?> mod;
 	
-	@SubscribeEvent
 	public void onPlayerLoggedInEvent(@Nonnull PlayerEvent.PlayerLoggedInEvent event){
-		if(event.isCanceled()){
-			return;
-		}
-		
 		if(event.getEntity() instanceof ServerPlayer serverPlayer){
 			var server = serverPlayer.getServer();
 			if(Objects.nonNull(server) && server.isDedicatedServer()){
