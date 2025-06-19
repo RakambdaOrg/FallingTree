@@ -44,8 +44,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.common.EventBusMigrationHelper;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Result;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -265,7 +263,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		return getRegistryTagContent(registry, tag).anyMatch(element::equals);
 	}
 	
-	public void registerForge(@NotNull EventBusMigrationHelper eventBus){
+	public void registerForge(){
 		getServerPacketHandler().registerServer();
 		
 		var blockBreakListener = new BlockBreakListener(this);
