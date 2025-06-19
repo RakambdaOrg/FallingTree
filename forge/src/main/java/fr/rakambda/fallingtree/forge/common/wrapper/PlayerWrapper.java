@@ -70,7 +70,7 @@ public class PlayerWrapper implements IPlayer{
 	@Override
 	@NotNull
 	public ILevel getLevel(){
-		return raw.getCommandSenderWorld() instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(raw.getCommandSenderWorld());
+		return raw.level() instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(raw.level());
 	}
 	
 	@Override

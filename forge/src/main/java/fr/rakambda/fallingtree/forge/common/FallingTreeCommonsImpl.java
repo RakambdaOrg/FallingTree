@@ -43,9 +43,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.common.EventBusMigrationHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Result;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.event.level.LevelEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -217,9 +223,9 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
-		var event = new BlockEvent.BreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw());
+		var event = new BlockEvent.BreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw(), Result.DEFAULT);
 		breakEvents.add(event);
-		return !MinecraftForge.EVENT_BUS.post(event);
+		return !BlockEvent.BreakEvent.BUS.post(event);
 	}
 	
 	@Override
@@ -259,13 +265,25 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		return getRegistryTagContent(registry, tag).anyMatch(element::equals);
 	}
 	
-	public void registerForge(@NotNull IEventBus eventBus){
+	public void registerForge(@NotNull EventBusMigrationHelper eventBus){
 		getServerPacketHandler().registerServer();
 		
-		eventBus.register(new BlockBreakListener(this));
-		eventBus.register(new LeafBreakingListener(this));
-		eventBus.register(new PlayerJoinListener(this));
-		eventBus.register(new PlayerLeaveListener(this));
-		eventBus.register(new ServerCommandRegistrationListener(this));
+		var blockBreakListener = new BlockBreakListener(this);
+		BlockEvent.BreakEvent.BUS.addListener(blockBreakListener::onBlockBreakEvent);
+		PlayerEvent.BreakSpeed.BUS.addListener(blockBreakListener::onBreakSpeed);
+		
+		var leafBreakingListener = new LeafBreakingListener(this);
+		TickEvent.ServerTickEvent.Post.BUS.addListener(leafBreakingListener::onServerTick);
+		BlockEvent.NeighborNotifyEvent.BUS.addListener(leafBreakingListener::onNeighborNotifyEvent);
+		LevelEvent.Unload.BUS.addListener(leafBreakingListener::onWorldUnload);
+		
+		var playerJoinListener = new PlayerJoinListener(this);
+		PlayerEvent.PlayerLoggedInEvent.BUS.addListener(playerJoinListener::onPlayerLoggedInEvent);
+		
+		var playerLeaveListener = new PlayerLeaveListener(this);
+		ClientPlayerNetworkEvent.LoggingOut.BUS.addListener(playerLeaveListener::onPlayerLoggedOutEvent);
+		
+		var serverCommandRegistrationListener = new ServerCommandRegistrationListener(this);
+		RegisterCommandsEvent.BUS.addListener(serverCommandRegistrationListener::onRegisterCommands);
 	}
 }

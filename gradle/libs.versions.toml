@@ -10,12 +10,13 @@ log4j2-version = "2.25.0"
 minecraftVersion = "1.21.6"
 fabric-loader-version = "0.16.14"
 fabric-api-version = "0.127.0+1.21.6"
-forge-version = "1.21.5-55.0.12"
+forge-version = "1.21.6-56.0.2"
+forgeEventbusValidator-version = "7.0-beta.7"
 neoforge-version = "21.6.4-beta"
 
 # Mod dependencies
 modmenu-version = "15.0.0-beta.2"
-clothConfigVersion = "18.0.145"
+clothConfigVersion = "19.0.147"
 
 fabric-loom-version = "1.10+"
 forge-plugin-version = "[6.0.24,6.2)"
@@ -34,6 +35,7 @@ minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft
 fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader-version" }
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api-version" }
 forge = { group = "net.minecraftforge", name = "forge", version.ref = "forge-version" }
+forgeEventbusValidator = { group = "net.minecraftforge", name = "eventbus-validator", version.ref = "forgeEventbusValidator-version" }
 neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge-version" }
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
 clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "clothConfigVersion" }

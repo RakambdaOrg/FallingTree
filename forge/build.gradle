@@ -13,6 +13,7 @@ minecraft {
         configureEach {
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "error"
+            property "eventbus.api.strictRuntimeChecks", "true"
         }
 
         client {
@@ -61,6 +62,8 @@ dependencies {
 
     // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transitive dependencies request 6.0+
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
+
+    annotationProcessor(libs.forgeEventbusValidator)
 }
 
 ext {
