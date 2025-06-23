@@ -43,6 +43,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.util.Result;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -50,6 +51,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -93,7 +95,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		breakModeChopperEnchantmentTag.put(BreakMode.FALL_ITEM, TagKey.create(Registries.ENCHANTMENT, id("chopper_fall_item")));
 		breakModeChopperEnchantmentTag.put(BreakMode.INSTANTANEOUS, TagKey.create(Registries.ENCHANTMENT, id("chopper_instantaneous")));
 		breakModeChopperEnchantmentTag.put(BreakMode.SHIFT_DOWN, TagKey.create(Registries.ENCHANTMENT, id("chopper_shift_down")));
-	
+		
 		breakEvents = new BoundedList<>(50);
 	}
 	
@@ -279,7 +281,9 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		PlayerEvent.PlayerLoggedInEvent.BUS.addListener(playerJoinListener::onPlayerLoggedInEvent);
 		
 		var playerLeaveListener = new PlayerLeaveListener(this);
-		ClientPlayerNetworkEvent.LoggingOut.BUS.addListener(playerLeaveListener::onPlayerLoggedOutEvent);
+		if(FMLEnvironment.dist == Dist.CLIENT){
+			ClientPlayerNetworkEvent.LoggingOut.BUS.addListener(playerLeaveListener::onPlayerLoggedOutEvent);
+		}
 		
 		var serverCommandRegistrationListener = new ServerCommandRegistrationListener(this);
 		RegisterCommandsEvent.BUS.addListener(serverCommandRegistrationListener::onRegisterCommands);
