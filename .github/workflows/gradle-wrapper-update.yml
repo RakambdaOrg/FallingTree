@@ -1,0 +1,22 @@
+name: Update Gradle Wrapper
+'on':
+  workflow_dispatch: null
+  schedule:
+    - cron: 0 7 * * *
+jobs:
+  update-gradle-wrapper:
+    name: Update Gradle Wrapper
+    runs-on:
+      - ubuntu-latest
+    concurrency:
+      group: update-gradle-wrapper
+      cancel-in-progress: true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.2
+      - name: Update Gradle Wrapper
+        uses: gradle-update/update-gradle-wrapper-action@v2.1.0
+        with:
+          labels: |
+            dependencies
+            gradle-wrapper
