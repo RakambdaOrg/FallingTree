@@ -21,6 +21,8 @@ jobs:
         uses: gradle-update/update-gradle-wrapper-action@v2.1.0
         with:
           repo-token: ${{ secrets.SYNC_TOKEN }}
+          reviewers: |
+            RakambdaOrg/Owners
           labels: |
             dependencies
             gradle-wrapper
