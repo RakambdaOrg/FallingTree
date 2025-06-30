@@ -8,7 +8,7 @@ permissions:
   pull-requests: write
 jobs:
   update:
-    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-wrapper-update.yml@main
+    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-update-wrapper.yml@main
     with:
       reviewers: Rakambda
       labels: dependencies,gradle-wrapper
