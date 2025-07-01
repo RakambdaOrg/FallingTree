@@ -1,7 +1,6 @@
 package fr.rakambda.fallingtree.common.config.proxy;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.config.IResettable;
 import fr.rakambda.fallingtree.common.config.ITreeConfiguration;
 import fr.rakambda.fallingtree.common.config.enums.AdjacentStopMode;
@@ -9,10 +8,12 @@ import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.config.enums.BreakOrder;
 import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
+import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -85,6 +86,12 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	@NotNull
 	public DetectionMode getDetectionMode(){
 		return delegate.getDetectionMode();
+	}
+	
+	@Override
+	@NotNull
+	public Map<String, DetectionMode> getDetectionModeBiomeOverride(){
+		return delegate.getDetectionModeBiomeOverride();
 	}
 	
 	@Override

@@ -2,7 +2,6 @@ package fr.rakambda.fallingtree.common.config.real;
 
 import com.google.gson.annotations.Expose;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
-import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.config.IResettable;
 import fr.rakambda.fallingtree.common.config.ITreeConfiguration;
 import fr.rakambda.fallingtree.common.config.enums.AdjacentStopMode;
@@ -10,12 +9,15 @@ import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.config.enums.BreakOrder;
 import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
+import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import static java.util.Objects.isNull;
 
@@ -42,6 +44,9 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	@NotNull
 	private DetectionMode detectionMode = DetectionMode.WHOLE_TREE;
+	@Expose
+	@NotNull
+	private Map<String, DetectionMode> detectionModeBiomeOverride = new HashMap<>();
 	@Expose
 	private int maxScanSize = 500;
 	@Expose
