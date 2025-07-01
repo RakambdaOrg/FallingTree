@@ -13,20 +13,20 @@ import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class AbovePositionFetcher implements IPositionFetcher{
-	private static AbovePositionFetcher INSTANCE;
+public class BelowPositionFetcher implements IPositionFetcher{
+	private static BelowPositionFetcher INSTANCE;
 	
 	@NotNull
 	private final FallingTreeCommon<?> mod;
 	@NotNull
-	private final Function<IBlockPos, IBlockPos> lowerPosProvider;
+	private final Function<IBlockPos, IBlockPos> higherPosProvider;
 	
 	@Override
 	@NotNull
 	public Collection<ToAnalyzePos> getPositions(@NotNull ILevel level, @NotNull IBlockPos originPos, @NotNull ToAnalyzePos parent){
 		var parentPos = parent.checkPos();
 		var parentBlock = level.getBlockState(parentPos).getBlock();
-		return parentPos.betweenClosedStream(parentPos.above().north().east(), lowerPosProvider.apply(parentPos).south().west())
+		return parentPos.betweenClosedStream(parentPos.below().south().west(), higherPosProvider.apply(parentPos).north().east())
 				.map(checkPos -> {
 					var checkedState = level.getBlockState(checkPos);
 					var checkedEntity = level.getBlockEntity(checkPos);
@@ -38,9 +38,9 @@ public class AbovePositionFetcher implements IPositionFetcher{
 				.collect(toList());
 	}
 	
-	public static AbovePositionFetcher getInstance(@NotNull FallingTreeCommon<?> common){
+	public static BelowPositionFetcher getInstance(@NotNull FallingTreeCommon<?> common){
 		if(isNull(INSTANCE)){
-			INSTANCE = new AbovePositionFetcher(common, IBlockPos::above);
+			INSTANCE = new BelowPositionFetcher(common, IBlockPos::below);
 		}
 		return INSTANCE;
 	}

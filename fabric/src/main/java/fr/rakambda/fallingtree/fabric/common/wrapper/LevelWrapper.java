@@ -1,5 +1,6 @@
 package fr.rakambda.fallingtree.fabric.common.wrapper;
 
+import fr.rakambda.fallingtree.common.wrapper.IBiome;
 import fr.rakambda.fallingtree.common.wrapper.IBlockEntity;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
@@ -101,5 +102,11 @@ public class LevelWrapper implements ILevel{
 	@NotNull
 	public IRandomSource getRandom(){
 		return new RandomSourceWrapper(raw.getRandom());
+	}
+	
+	@Override
+	@NotNull
+	public IBiome getBiome(@NotNull IBlockPos blockPos){
+		return new BiomeWrapper(raw.getBiome((BlockPos) blockPos.getRaw()));
 	}
 }
