@@ -181,4 +181,9 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	public boolean isSpawnItemsAtBreakPoint(){
 		return delegate.isSpawnItemsAtBreakPoint();
 	}
+	
+	@Override
+	public float getTrunkLootPercentage(){
+		return delegate.getTrunkLootPercentage();
+	}
 }
