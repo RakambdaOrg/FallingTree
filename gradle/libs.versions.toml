@@ -7,12 +7,12 @@ gson-version = "2.13.1"
 log4j2-version = "2.25.0"
 
 # Minecraft / Loaders
-minecraftVersion = "1.21.6"
+minecraftVersion = "1.21.7"
 fabric-loader-version = "0.16.14"
-fabric-api-version = "0.127.0+1.21.6"
-forge-version = "1.21.6-56.0.7"
-forgeEventbusValidator-version = "7.0-beta.7"
-neoforge-version = "21.6.4-beta"
+fabric-api-version = "0.128.1+1.21.7"
+forge-version = "1.21.7-57.0.0"
+forgeEventbusValidator-version = "7.0-beta.10"
+neoforge-version = "21.7.1-beta"
 
 # Mod dependencies
 modmenu-version = "15.0.0-beta.3"

@@ -15,7 +15,7 @@ file="META-INF/neoforge.accesstransformer.cfg"
 [[dependencies.fallingtree]]
 modId="neoforge"
 type="required"
-versionRange="[21.6,)"
+versionRange="[21.7,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.fallingtree]]
@@ -27,6 +27,6 @@ side="BOTH"
 [[dependencies.fallingtree]]
 modId = "cloth-config"
 type="optional"
-versionRange = "[19.0.0,)"
+versionRange = "[20.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
