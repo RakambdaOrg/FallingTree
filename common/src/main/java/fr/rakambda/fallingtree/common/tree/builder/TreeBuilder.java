@@ -1,12 +1,15 @@
 package fr.rakambda.fallingtree.common.tree.builder;
 
+import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
 import fr.rakambda.fallingtree.common.tree.Tree;
 import fr.rakambda.fallingtree.common.tree.TreePartType;
 import fr.rakambda.fallingtree.common.tree.builder.position.AbovePositionFetcher;
 import fr.rakambda.fallingtree.common.tree.builder.position.AboveYFetcher;
 import fr.rakambda.fallingtree.common.tree.builder.position.BasicPositionFetcher;
+import fr.rakambda.fallingtree.common.tree.builder.position.BelowPositionFetcher;
+import fr.rakambda.fallingtree.common.tree.builder.position.BelowYFetcher;
 import fr.rakambda.fallingtree.common.tree.builder.position.IPositionFetcher;
-import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.wrapper.DirectionCompat;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.wrapper.IBlockEntity;
@@ -21,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.function.Predicate;
@@ -45,7 +49,9 @@ public class TreeBuilder{
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
 		var tree = new Tree(level, originPos);
-		toAnalyzePos.add(new ToAnalyzePos(getFirstPositionFetcher(), originPos, originBlock, originPos, originBlock, originState, originEntity, TreePartType.LOG_START, 0, 0));
+		var detectionMode = getDetectionMode(level, originPos);
+		var firstPositionFetcher = getFirstPositionFetcher(detectionMode);
+		toAnalyzePos.add(new ToAnalyzePos(firstPositionFetcher, originPos, originBlock, originPos, originBlock, originState, originEntity, TreePartType.LOG_START, 0, 0));
 		
 		var boundingBoxSearch = getBoundingBoxSearch(originPos);
 		var adjacentPredicate = getAdjacentPredicate();
@@ -86,9 +92,11 @@ public class TreeBuilder{
 		
 		if(mod.getConfiguration().getTrees().getBreakMode().isCheckLeavesAround()){
 			var aroundRequired = mod.getConfiguration().getTrees().getMinimumLeavesAroundRequired();
-			if(tree.getTopMostLog()
-					.map(topLog -> getLeavesAround(level, topLog) < aroundRequired)
-					.orElse(true)){
+			if(detectionMode.getLeafAroundPosProvider()
+					.apply(tree)
+					.mapToLong(topLog -> getLeavesAround(level, topLog))
+					.sum() < aroundRequired
+			){
 				// TODO Set it back as info, see #845
 				log.debug("Tree at {} doesn't have enough leaves around top most log", originPos);
 				return empty();
@@ -148,13 +156,27 @@ public class TreeBuilder{
 	}
 	
 	@NotNull
-	private IPositionFetcher getFirstPositionFetcher(){
-		var detectionMode = mod.getConfiguration().getTrees().getDetectionMode();
+	private IPositionFetcher getFirstPositionFetcher(@NotNull DetectionMode detectionMode){
 		return switch(detectionMode){
 			case ABOVE_CUT -> AbovePositionFetcher.getInstance(mod);
 			case ABOVE_Y -> AboveYFetcher.getInstance(mod);
-			case WHOLE_TREE -> BasicPositionFetcher.getInstance(mod);
+			case BELOW_CUT -> BelowPositionFetcher.getInstance(mod);
+			case BELOW_Y -> BelowYFetcher.getInstance(mod);
+			case WHOLE_TREE, WHOLE_TREE_DOWNWARDS -> BasicPositionFetcher.getInstance(mod);
 		};
+	}
+	
+	@NotNull
+	private DetectionMode getDetectionMode(@NotNull ILevel level, @NotNull IBlockPos originPos){
+		var biomeOverrides = mod.getConfiguration().getTrees().getDetectionModeBiomeOverride();
+		if(!biomeOverrides.isEmpty()){
+			var biome = level.getBiome(originPos);
+			var override = biomeOverrides.get(biome.getId());
+			if(Objects.nonNull(override)){
+				return override;
+			}
+		}
+		return mod.getConfiguration().getTrees().getDetectionMode();
 	}
 	
 	@NotNull
