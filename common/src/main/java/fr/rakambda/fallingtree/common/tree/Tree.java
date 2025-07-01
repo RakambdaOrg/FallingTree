@@ -107,6 +107,13 @@ public class Tree{
 	}
 	
 	@NotNull
+	public Optional<IBlockPos> getBottomMostLog(){
+		return getBreakableLogs().stream()
+				.map(TreePart::blockPos)
+				.min(comparingInt(IBlockPos::getY));
+	}
+	
+	@NotNull
 	private Optional<IBlockPos> getTopMostPart(){
 		return getParts().stream()
 				.map(TreePart::blockPos)
