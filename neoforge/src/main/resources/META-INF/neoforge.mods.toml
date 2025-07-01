@@ -27,6 +27,6 @@ side="BOTH"
 [[dependencies.fallingtree]]
 modId = "cloth-config"
 type="optional"
-versionRange = "[18.0.0,)"
+versionRange = "[19.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
