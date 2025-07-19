@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("commons-io:commons-io:2.19.0")
+        classpath("commons-io:commons-io:2.20.0")
     }
 }
 
