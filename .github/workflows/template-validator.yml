@@ -1,0 +1,42 @@
+name: Template Validator
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+      - reopened
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  template_validator:
+    runs-on: ubuntu-latest
+    name: Template Validator
+    steps:
+      - name: Checkout Repository
+        id: checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Parse Issue Body
+        id: parse
+        uses: issue-ops/parser@v4.1.0
+        with:
+          body: ${{ github.event.issue.body }}
+          issue-form-template: 0_fabric_bug_report.yml
+          workspace: ${{ github.workspace }}
+      - name: Validate Issue
+        id: validate
+        uses: issue-ops/validator@v3.3.0
+        with:
+          issue-form-template: 0_fabric_bug_report.yml
+          parsed-issue-body: ${{ steps.parse.outputs.json }}
+          workspace: ${{ github.workspace }}
+
+      - name: Output Validation Results
+        id: output
+        run: |
+          echo "Result: ${{ steps.validate.outputs.result }}"
+          echo "Errors: ${{ steps.validate.outputs.errors }}"
