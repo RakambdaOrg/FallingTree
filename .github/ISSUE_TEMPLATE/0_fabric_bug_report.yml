@@ -17,8 +17,8 @@ body:
       label: Isolated reproduction
       description: If playing with several mods, can you reproduce the issue with just FallingTree and no other mods
       options:
-        - No
-        - Yes
+        - "No"
+        - "Yes"
       default: 0
     validations:
       required: true
