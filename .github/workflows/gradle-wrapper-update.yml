@@ -2,7 +2,7 @@ name: Update Gradle Wrapper
 'on':
   workflow_dispatch: null
   schedule:
-    - cron: 0 7 * * *
+    - cron: 0 6 * * 0
 permissions:
   contents: write
   pull-requests: write
