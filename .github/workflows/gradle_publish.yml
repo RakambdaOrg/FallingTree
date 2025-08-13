@@ -8,12 +8,18 @@ permissions:
   contents: write
 
 jobs:
-  publish:
-    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish.yml@main
+  publish-curseforge:
+    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish-curseforge.yml@main
     with:
       java-version: ${{ vars.JAVA_VERSION }}
+      environment: MinecraftCurseforge
     secrets:
       curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
+
+  publish-modrinth:
+    uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish-modrinth.yml@main
+    with:
+      java-version: ${{ vars.JAVA_VERSION }}
+      environment: MinecraftModrinth
+    secrets:
       modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-  
-  
