@@ -7,12 +7,12 @@ import fr.rakambda.fallingtree.neoforge.FallingTree;
 import lombok.RequiredArgsConstructor;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 public class NeoForgePacketHandler implements ClientPacketHandler, ServerPacketHandler{
 	@SubscribeEvent
-	public void register(@NotNull RegisterPayloadHandlersEvent event){
+	public void register(@NonNull RegisterPayloadHandlersEvent event){
 		var registrar = event.registrar(FallingTree.MOD_ID).optional();
 		
 		registrar.configurationToClient(FallingTreeConfigPacket.TYPE, FallingTreeConfigPacket.CODEC,

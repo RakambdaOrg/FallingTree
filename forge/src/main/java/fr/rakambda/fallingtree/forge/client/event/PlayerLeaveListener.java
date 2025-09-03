@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import javax.annotation.Nonnull;
 
 @RequiredArgsConstructor
 public class PlayerLeaveListener{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	@OnlyIn(Dist.CLIENT)

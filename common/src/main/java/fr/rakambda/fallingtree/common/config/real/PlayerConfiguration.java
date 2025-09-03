@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import fr.rakambda.fallingtree.common.config.IPlayerConfiguration;
 import fr.rakambda.fallingtree.common.config.IResettable;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import static java.util.Objects.isNull;
@@ -12,14 +12,14 @@ import static java.util.Objects.isNull;
 @Data
 public class PlayerConfiguration implements IPlayerConfiguration, IResettable{
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> allowedTags = new ArrayList<>();
 	
 	//Cache
 	private List<String> allowedTagsCache;
 	
 	@Override
-	@NotNull
+	@NonNull
 	public List<String> getAllowedTagsNormalized(){
 		if(isNull(allowedTagsCache)){
 			allowedTagsCache = allowedTags.stream()

@@ -1,16 +1,16 @@
 package fr.rakambda.fallingtree.fabric;
 
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class FallingTreeUtils{
-	@NotNull
-	public static ResourceLocation id(@NotNull String name){
+	@NonNull
+	public static ResourceLocation id(@NonNull String name){
 		return ResourceLocation.fromNamespaceAndPath(FallingTree.MOD_ID, name);
 	}
 	
-	@NotNull
-	public static ResourceLocation idExternal(@NotNull String fullName){
+	@NonNull
+	public static ResourceLocation idExternal(@NonNull String fullName){
 		return ResourceLocation.parse(fullName);
 	}
 }

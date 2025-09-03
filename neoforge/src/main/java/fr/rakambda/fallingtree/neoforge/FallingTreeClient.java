@@ -8,13 +8,13 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.lang.reflect.InvocationTargetException;
 
 @Log4j2
 @Mod(value = FallingTree.MOD_ID, dist = Dist.CLIENT)
 public class FallingTreeClient {
-	public FallingTreeClient(@NotNull IEventBus modEventBus, @NotNull ModContainer modContainer){
+	public FallingTreeClient(@NonNull IEventBus modEventBus, @NonNull ModContainer modContainer){
 		if(ModList.get().isLoaded("cloth_config")){
 			try{
 				Class.forName("fr.rakambda.fallingtree.neoforge.client.cloth.ClothConfigHook")

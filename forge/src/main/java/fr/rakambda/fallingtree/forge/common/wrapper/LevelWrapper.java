@@ -18,14 +18,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 @RequiredArgsConstructor
 @ToString
 @Log4j2
 public class LevelWrapper implements ILevel {
-    @NotNull
+    @NonNull
     @Getter
     private final LevelAccessor raw;
 
@@ -35,8 +35,8 @@ public class LevelWrapper implements ILevel {
     }
 
     @Override
-    @NotNull
-    public IChunk getChunk(@NotNull IBlockPos blockPos) {
+    @NonNull
+    public IChunk getChunk(@NonNull IBlockPos blockPos) {
         var pos = (BlockPos) blockPos.getRaw();
         return new ChunkAccessWrapper(raw.getChunk(pos));
     }
@@ -47,37 +47,37 @@ public class LevelWrapper implements ILevel {
     }
 
     @Override
-    @NotNull
-    public IBlockState getBlockState(@NotNull IBlockPos blockPos) {
+    @NonNull
+    public IBlockState getBlockState(@NonNull IBlockPos blockPos) {
         var pos = (BlockPos) blockPos.getRaw();
         return new BlockStateWrapper(raw.getBlockState(pos));
     }
 
     @Override
     @Nullable
-    public IBlockEntity getBlockEntity(@NotNull IBlockPos blockPos) {
+    public IBlockEntity getBlockEntity(@NonNull IBlockPos blockPos) {
         var entity = raw.getBlockEntity((BlockPos) blockPos.getRaw());
         return entity == null ? null : new BlockEntityWrapper(entity);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public IRandomSource getRandom() {
         return new RandomSourceWrapper(raw.getRandom());
     }
 
     @Override
-    public boolean removeBlock(@NotNull IBlockPos blockPos, boolean b) {
+    public boolean removeBlock(@NonNull IBlockPos blockPos, boolean b) {
         return raw.removeBlock((BlockPos) blockPos.getRaw(), b);
     }
 	
 	@Override
-	public void setBlock(@NotNull IBlockPos blockPos, @NotNull IBlockState blockState) {
+	public void setBlock(@NonNull IBlockPos blockPos, @NonNull IBlockState blockState) {
 		raw.setBlock((BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(),1 );
 	}
 
     @Override
-    public void fallBlock(@NotNull IBlockPos logBlockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz) {
+    public void fallBlock(@NonNull IBlockPos logBlockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz) {
         var entity = createFallingEntity(logBlockPos, dx, dy, dz);
         if (!drop) {
             entity.disableDrop();
@@ -86,8 +86,8 @@ public class LevelWrapper implements ILevel {
         raw.addFreshEntity(entity);
     }
 
-    @NotNull
-    private FallingBlockEntity createFallingEntity(@NotNull IBlockPos logBlockPos, double dx, double dy, double dz) {
+    @NonNull
+    private FallingBlockEntity createFallingEntity(@NonNull IBlockPos logBlockPos, double dx, double dy, double dz) {
         var x = (double) logBlockPos.getX() + dx;
         var y = (double) logBlockPos.getY() + dy;
         var z = (double) logBlockPos.getZ() + dz;
@@ -105,8 +105,8 @@ public class LevelWrapper implements ILevel {
     }
 	
 	@Override
-	@NotNull
-	public IBiome getBiome(@NotNull IBlockPos blockPos){
+	@NonNull
+	public IBiome getBiome(@NonNull IBlockPos blockPos){
 		return new BiomeWrapper(raw.getBiome((BlockPos) blockPos.getRaw()));
 	}
 }

@@ -1,31 +1,31 @@
 package fr.rakambda.fallingtree.common.wrapper;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public interface ILevel extends IWrapper{
-	@NotNull
-	IChunk getChunk(@NotNull IBlockPos blockPos);
+	@NonNull
+	IChunk getChunk(@NonNull IBlockPos blockPos);
 	
 	boolean hasChunk(int x, int z);
 	
-	@NotNull
+	@NonNull
 	IRandomSource getRandom();
 	
 	boolean isServer();
 	
-	@NotNull
-	IBlockState getBlockState(@NotNull IBlockPos blockPos);
+	@NonNull
+	IBlockState getBlockState(@NonNull IBlockPos blockPos);
 	
 	@Nullable
-	IBlockEntity getBlockEntity(@NotNull IBlockPos blockPos);
+	IBlockEntity getBlockEntity(@NonNull IBlockPos blockPos);
 	
-	boolean removeBlock(@NotNull IBlockPos blockPos, boolean b);
+	boolean removeBlock(@NonNull IBlockPos blockPos, boolean b);
 	
-	void setBlock(@NotNull IBlockPos blockPos, @NotNull IBlockState blockState);
+	void setBlock(@NonNull IBlockPos blockPos, @NonNull IBlockState blockState);
 
-    void fallBlock(@NotNull IBlockPos blockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz);
+    void fallBlock(@NonNull IBlockPos blockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz);
 	
-	@NotNull
-	IBiome getBiome(@NotNull IBlockPos blockPos);
+	@NonNull
+	IBiome getBiome(@NonNull IBlockPos blockPos);
 }

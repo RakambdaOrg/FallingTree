@@ -8,7 +8,7 @@ import fr.rakambda.fallingtree.common.tree.TreePart;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import static java.util.Objects.isNull;
 
 @Log4j2
@@ -20,8 +20,8 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	private final LeafForceBreaker leafForceBreaker;
 	
 	@Override
-	@NotNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	@NonNull
+	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var level = tree.getLevel();
 		var toolHandler = new ToolDamageHandler(tool,
@@ -83,8 +83,8 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 		return SuccessResult.DO_NOT_CANCEL;
 	}
 	
-	@NotNull
-	public static InstantaneousTreeBreakingHandler getInstance(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public static InstantaneousTreeBreakingHandler getInstance(@NonNull FallingTreeCommon<?> mod){
 		if(isNull(INSTANCE)){
 			INSTANCE = new InstantaneousTreeBreakingHandler(mod, new LeafForceBreaker(mod));
 		}

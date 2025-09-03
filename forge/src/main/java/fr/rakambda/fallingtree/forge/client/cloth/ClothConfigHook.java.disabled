@@ -24,17 +24,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.fml.ModLoadingContext;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Function;
 
 public class ClothConfigHook extends ClothHookBase{
-	public ClothConfigHook(@NotNull FallingTreeCommon<?> mod){
+	public ClothConfigHook(@NonNull FallingTreeCommon<?> mod){
 		super(mod);
 	}
 	
-	public void load(@NotNull ModLoadingContext context){
+	public void load(@NonNull ModLoadingContext context){
 		context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> {
 			var builder = ConfigBuilder.create()
 					.setParentScreen(screen)
@@ -53,7 +53,7 @@ public class ClothConfigHook extends ClothHookBase{
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void fillConfigScreen(@NotNull ConfigBuilder builder, @NotNull Configuration config){
+	public void fillConfigScreen(@NonNull ConfigBuilder builder, @NonNull Configuration config){
 		var reverseSneakingEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName(null, "sneakMode")), SneakMode.class, config.getSneakMode())
 				.setDefaultValue(SneakMode.SNEAK_DISABLE)
@@ -92,7 +92,7 @@ public class ClothConfigHook extends ClothHookBase{
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	private void fillTreesConfigScreen(@NotNull ConfigBuilder builder, @NotNull TreeConfiguration config){
+	private void fillTreesConfigScreen(@NonNull ConfigBuilder builder, @NonNull TreeConfiguration config){
 		var breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
 				.setDefaultValue(BreakMode.INSTANTANEOUS)
@@ -295,7 +295,7 @@ public class ClothConfigHook extends ClothHookBase{
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	private void fillToolsConfigScreen(@NotNull ConfigBuilder builder, @NotNull ToolConfiguration config){
+	private void fillToolsConfigScreen(@NonNull ConfigBuilder builder, @NonNull ToolConfiguration config){
 		var ignoreToolsEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())
 				.setDefaultValue(false)
@@ -363,7 +363,7 @@ public class ClothConfigHook extends ClothHookBase{
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	private void fillPlayerConfigScreen(@NotNull ConfigBuilder builder, @NotNull PlayerConfiguration config){
+	private void fillPlayerConfigScreen(@NonNull ConfigBuilder builder, @NonNull PlayerConfiguration config){
 		var allowedTagsEntry = builder.entryBuilder()
 				.startStrList(translatable(getFieldName("player", "allowedTags")), config.getAllowedTags())
 				.setDefaultValue(Lists.newArrayList())
@@ -376,7 +376,7 @@ public class ClothConfigHook extends ClothHookBase{
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	private void fillEnchantmentConfigScreen(@NotNull ConfigBuilder builder, @NotNull EnchantmentConfiguration config){
+	private void fillEnchantmentConfigScreen(@NonNull ConfigBuilder builder, @NonNull EnchantmentConfiguration config){
 		var requireEnchantmentEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("enchantment", "requireEnchantment")), config.isRequireEnchantment())
 				.setDefaultValue(false)
@@ -388,18 +388,18 @@ public class ClothConfigHook extends ClothHookBase{
 		enchantment.addEntry(requireEnchantmentEntry);
 	}
 	
-	@NotNull
-	private Component translatable(@NotNull String key){
+	@NonNull
+	private Component translatable(@NonNull String key){
 		return (Component) getMod().translate(key).getRaw();
 	}
 	
-	@NotNull
-	private Function<String, Optional<Component>> map(@NotNull Function<String, Optional<IComponent>> fct){
+	@NonNull
+	private Function<String, Optional<Component>> map(@NonNull Function<String, Optional<IComponent>> fct){
 		return str -> fct.apply(str).map(IComponent::getRaw).map(Component.class::cast);
 	}
 	
-	@NotNull
-	protected Component[] getTooltips(@Nullable String category, @NotNull String fieldName){
+	@NonNull
+	protected Component[] getTooltips(@Nullable String category, @NonNull String fieldName){
 		return getTooltipsInternal(category, fieldName, 1)
 				.map(IComponent::getRaw)
 				.map(Component.class::cast)

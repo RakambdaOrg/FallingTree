@@ -4,7 +4,7 @@ import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -19,16 +19,16 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor
 public class Tree{
 	@Getter
-	@NotNull
+	@NonNull
 	private final ILevel level;
 	@Getter
-	@NotNull
+	@NonNull
 	private final IBlockPos hitPos;
 	@Getter
 	private final Set<TreePart> parts = new LinkedHashSet<>();
 	private final Map<TreePartType, Integer> partCounts = new LinkedHashMap<>();
 	
-	public void addPart(@NotNull TreePart treePart){
+	public void addPart(@NonNull TreePart treePart){
 		parts.add(treePart);
 		partCounts.compute(treePart.treePartType(), (key, value) -> {
 			if(isNull(value)){
@@ -38,7 +38,7 @@ public class Tree{
 		});
 	}
 	
-	public void removePartsHigherThan(int y, @NotNull TreePartType partType){
+	public void removePartsHigherThan(int y, @NonNull TreePartType partType){
 		parts.removeIf(part -> {
 			if(part.treePartType() == partType && part.blockPos().getY() > y){
 				decrementPartCount(partType);
@@ -55,7 +55,7 @@ public class Tree{
 				.sum();
 	}
 	
-	private int getPartCount(@NotNull TreePartType treePartType){
+	private int getPartCount(@NonNull TreePartType treePartType){
 		return partCounts.computeIfAbsent(treePartType, key -> 0);
 	}
 	
@@ -63,24 +63,24 @@ public class Tree{
 		return partCounts.values().stream().mapToInt(i -> i).sum();
 	}
 	
-	private void decrementPartCount(@NotNull TreePartType partType){
+	private void decrementPartCount(@NonNull TreePartType partType){
 		partCounts.computeIfPresent(partType, (type, count) -> Math.max(0, count - 1));
 	}
 	
-	@NotNull
+	@NonNull
 	public Optional<TreePart> getLastSequencePart(){
 		return getParts().stream()
 				.max(comparingInt(TreePart::sequence));
 	}
 	
-	@NotNull
+	@NonNull
 	public Optional<TreePart> getLastSequenceLogPart(){
 		return getParts().stream()
 				.filter(part -> part.treePartType().isLog())
 				.max(comparingInt(TreePart::sequence));
 	}
 	
-	@NotNull
+	@NonNull
 	public Collection<TreePart> getBreakableLogs(){
 		return getParts().stream()
 				.filter(part -> part.treePartType().isLog())
@@ -88,7 +88,7 @@ public class Tree{
 				.collect(toSet());
 	}
 	
-	@NotNull
+	@NonNull
 	public Collection<TreePart> getBreakableParts(){
 		return getParts().stream()
 				.filter(part -> part.treePartType().isBreakable())
@@ -99,42 +99,42 @@ public class Tree{
 		return getPartCount(TreePartType.LOG);
 	}
 	
-	@NotNull
+	@NonNull
 	public Optional<IBlockPos> getTopMostLog(){
 		return getBreakableLogs().stream()
 				.map(TreePart::blockPos)
 				.max(comparingInt(IBlockPos::getY));
 	}
 	
-	@NotNull
+	@NonNull
 	public Optional<IBlockPos> getBottomMostLog(){
 		return getBreakableLogs().stream()
 				.map(TreePart::blockPos)
 				.min(comparingInt(IBlockPos::getY));
 	}
 	
-	@NotNull
+	@NonNull
 	private Optional<IBlockPos> getTopMostPart(){
 		return getParts().stream()
 				.map(TreePart::blockPos)
 				.max(comparingInt(IBlockPos::getY));
 	}
 	
-	@NotNull
+	@NonNull
 	public Collection<TreePart> getNetherWarts(){
 		return getParts().stream()
 				.filter(part -> part.treePartType() == TreePartType.NETHER_WART)
 				.collect(toSet());
 	}
 	
-	@NotNull
+	@NonNull
 	public Collection<TreePart> getMangroveRoots(){
 		return getParts().stream()
 				.filter(part -> part.treePartType() == TreePartType.MANGROVE_ROOTS)
 				.collect(toSet());
 	}
 	
-	@NotNull
+	@NonNull
 	public Optional<TreePart> getStart(){
 		return getParts().stream()
 				.filter(part -> part.treePartType() == TreePartType.LOG_START)

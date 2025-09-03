@@ -9,7 +9,7 @@ import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,8 +25,8 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 	private final LeafForceBreaker leafForceBreaker;
 	
 	@Override
-	@NotNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	@NonNull
+	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var level = tree.getLevel();
 		var toolHandler = new ToolDamageHandler(tool,
@@ -94,7 +94,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		return SuccessResult.DO_NOT_CANCEL;
 	}
 	
-	private void fallLeaf(LinkedList<IBlockPos> scannedLeaves, @NotNull IPlayer player, @NotNull ILevel level, int distance, @NotNull IBlockPos blockPos){
+	private void fallLeaf(LinkedList<IBlockPos> scannedLeaves, @NonNull IPlayer player, @NonNull ILevel level, int distance, @NonNull IBlockPos blockPos){
 		if(!mod.getConfiguration().getTrees().isLeavesBreaking()){
 			return;
 		}
@@ -130,8 +130,8 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.above());
 	}
 	
-	@NotNull
-	public static FallingAnimationTreeBreakingHandler getInstance(@NotNull FallingTreeCommon<?> mod, boolean dropLogsAsItems, boolean dropLeavesAsItems){
+	@NonNull
+	public static FallingAnimationTreeBreakingHandler getInstance(@NonNull FallingTreeCommon<?> mod, boolean dropLogsAsItems, boolean dropLeavesAsItems){
 		return INSTANCE.computeIfAbsent(Map.entry(dropLogsAsItems, dropLeavesAsItems), key -> new FallingAnimationTreeBreakingHandler(mod, key.getKey(), key.getValue(), new LeafForceBreaker(mod)));
 	}
 }

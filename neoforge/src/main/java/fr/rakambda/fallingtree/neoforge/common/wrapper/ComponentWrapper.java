@@ -6,18 +6,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @ToString
 public class ComponentWrapper implements IComponent{
-	@NotNull
+	@NonNull
 	@Getter
 	private final MutableComponent raw;
 	
 	@Override
-	@NotNull
-	public IComponent append(@NotNull IComponent component){
+	@NonNull
+	public IComponent append(@NonNull IComponent component){
 		raw.append((Component) component.getRaw());
 		return this;
 	}

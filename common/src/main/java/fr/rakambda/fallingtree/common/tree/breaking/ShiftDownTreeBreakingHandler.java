@@ -12,7 +12,7 @@ import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import fr.rakambda.fallingtree.common.wrapper.IServerLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.List;
 import static fr.rakambda.fallingtree.common.tree.TreePartType.MANGROVE_ROOTS;
@@ -27,8 +27,8 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	private final FallingTreeCommon<?> mod;
 	
 	@Override
-	@NotNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull IPlayer player, @NotNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	@NonNull
+	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var treePartOptional = tree.getLastSequencePart();
 		var treePartLogOptional = tree.getLastSequenceLogPart();
@@ -50,8 +50,8 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 	}
 	
-	@NotNull
-	private IBreakAttemptResult breakElements(boolean isCancellable, @NotNull Tree tree, @NotNull ILevel level, @NotNull IPlayer player, @NotNull IItemStack tool, @NotNull TreePart logPart, @NotNull Collection<TreePart> leaves) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	@NonNull
+	private IBreakAttemptResult breakElements(boolean isCancellable, @NonNull Tree tree, @NonNull ILevel level, @NonNull IPlayer player, @NonNull IItemStack tool, @NonNull TreePart logPart, @NonNull Collection<TreePart> leaves) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var count = leaves.size();
 		var damageMultiplicand = mod.getConfiguration().getTools().getDamageMultiplicand();
 		var toolHandler = new ToolDamageHandler(tool,
@@ -98,7 +98,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		return SuccessResult.DO_NOT_CANCEL;
 	}
 	
-	private int breakPart(@NotNull Tree tree, @NotNull TreePart treePart, @NotNull ILevel level, @NotNull IPlayer player, @NotNull IItemStack tool, boolean spawnLoot){
+	private int breakPart(@NonNull Tree tree, @NonNull TreePart treePart, @NonNull ILevel level, @NonNull IPlayer player, @NonNull IItemStack tool, boolean spawnLoot){
 		var blockPos = treePart.blockPos();
 		var logState = level.getBlockState(blockPos);
 		
@@ -117,8 +117,8 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		return 1;
 	}
 	
-	@NotNull
-	public static ShiftDownTreeBreakingHandler getInstance(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public static ShiftDownTreeBreakingHandler getInstance(@NonNull FallingTreeCommon<?> common){
 		if(isNull(INSTANCE)){
 			INSTANCE = new ShiftDownTreeBreakingHandler(common);
 		}

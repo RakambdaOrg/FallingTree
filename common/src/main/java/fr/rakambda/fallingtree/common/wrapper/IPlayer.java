@@ -1,32 +1,32 @@
 package fr.rakambda.fallingtree.common.wrapper;
 
 import fr.rakambda.fallingtree.common.config.enums.NotificationMode;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Set;
 import java.util.UUID;
 
 public interface IPlayer extends IWrapper{
-	void sendMessage(@NotNull IComponent component, @NotNull NotificationMode mode);
+	void sendMessage(@NonNull IComponent component, @NonNull NotificationMode mode);
 	
-	@NotNull
+	@NonNull
 	IItemStack getMainHandItem();
 	
-	void awardItemUsed(@NotNull IItem item);
+	void awardItemUsed(@NonNull IItem item);
 	
 	boolean isCreative();
 	
 	boolean isCrouching();
 	
-	@NotNull
+	@NonNull
 	UUID getUUID();
 	
-	@NotNull
+	@NonNull
 	ILevel getLevel();
 	
-	@NotNull
+	@NonNull
 	Set<String> getTags();
 	
-	boolean addTag(@NotNull String tag);
+	boolean addTag(@NonNull String tag);
 	
-	boolean removeTag(@NotNull String tag);
+	boolean removeTag(@NonNull String tag);
 }

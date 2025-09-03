@@ -3,14 +3,14 @@ package fr.rakambda.fallingtree.common.tree;
 import fr.rakambda.fallingtree.common.wrapper.IBlockEntity;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public record TreePart(
-		@NotNull IBlockPos blockPos,
-		@NotNull TreePartType treePartType,
+		@NonNull IBlockPos blockPos,
+		@NonNull TreePartType treePartType,
 		int sequence,
-		@NotNull IBlockState blockState,
+		@NonNull IBlockState blockState,
 		@Nullable IBlockEntity blockEntity
 ){
 }

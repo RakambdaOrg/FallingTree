@@ -2,28 +2,28 @@ package fr.rakambda.fallingtree.common.config;
 
 import fr.rakambda.fallingtree.common.config.enums.NotificationMode;
 import fr.rakambda.fallingtree.common.config.enums.SneakMode;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface IConfiguration{
-	@NotNull
+	@NonNull
 	ITreeConfiguration getTrees();
 	
-	@NotNull
+	@NonNull
 	IToolConfiguration getTools();
 	
-	@NotNull
+	@NonNull
 	IPlayerConfiguration getPlayer();
 	
-	@NotNull
+	@NonNull
 	IEnchantmentConfiguration getEnchantment();
 	
-	@NotNull
+	@NonNull
 	SneakMode getSneakMode();
 	
 	boolean isBreakInCreative();
 	
 	boolean isLootInCreative();
 	
-	@NotNull
+	@NonNull
 	NotificationMode getNotificationMode();
 }

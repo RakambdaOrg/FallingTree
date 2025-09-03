@@ -19,8 +19,8 @@ import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -38,8 +38,8 @@ public class TreeBuilder{
 	
 	private final FallingTreeCommon<?> mod;
 	
-	@NotNull
-	public Optional<Tree> getTree(@NotNull IPlayer player, @NotNull ILevel level, @NotNull IBlockPos originPos, @NotNull IBlockState originState, @Nullable IBlockEntity originEntity) throws TreeTooBigException{
+	@NonNull
+	public Optional<Tree> getTree(@NonNull IPlayer player, @NonNull ILevel level, @NonNull IBlockPos originPos, @NonNull IBlockState originState, @Nullable IBlockEntity originEntity) throws TreeTooBigException{
 		var originBlock = originState.getBlock();
 		if(!mod.isLogBlock(originBlock)){
 			return empty();
@@ -106,11 +106,11 @@ public class TreeBuilder{
 		return Optional.of(tree);
 	}
 	
-	private static void postProcess(@NotNull Tree tree){
+	private static void postProcess(@NonNull Tree tree){
 		tree.getTopMostLog().ifPresent(topMostLog -> tree.removePartsHigherThan(topMostLog.getY() + 1, TreePartType.NETHER_WART));
 	}
 	
-	@NotNull
+	@NonNull
 	private Predicate<IBlock> getAdjacentPredicate(){
 		var allowedList = mod.getConfiguration().getTrees().getAllowedAdjacentBlockBlocks(mod);
 		var base = mod.getConfiguration().getTrees().getAllAllowedAdjacentBlockBlocks(mod);
@@ -137,8 +137,8 @@ public class TreeBuilder{
 		};
 	}
 	
-	@NotNull
-	private Predicate<IBlockPos> getBoundingBoxSearch(@NotNull IBlockPos originPos){
+	@NonNull
+	private Predicate<IBlockPos> getBoundingBoxSearch(@NonNull IBlockPos originPos){
 		var radius = mod.getConfiguration().getTrees().getSearchAreaRadius();
 		if(radius < 0){
 			return pos -> true;
@@ -155,8 +155,8 @@ public class TreeBuilder{
 				&& maxZ >= pos.getZ();
 	}
 	
-	@NotNull
-	private IPositionFetcher getFirstPositionFetcher(@NotNull DetectionMode detectionMode){
+	@NonNull
+	private IPositionFetcher getFirstPositionFetcher(@NonNull DetectionMode detectionMode){
 		return switch(detectionMode){
 			case ABOVE_CUT -> AbovePositionFetcher.getInstance(mod);
 			case ABOVE_Y -> AboveYFetcher.getInstance(mod);
@@ -166,8 +166,8 @@ public class TreeBuilder{
 		};
 	}
 	
-	@NotNull
-	private DetectionMode getDetectionMode(@NotNull ILevel level, @NotNull IBlockPos originPos){
+	@NonNull
+	private DetectionMode getDetectionMode(@NonNull ILevel level, @NonNull IBlockPos originPos){
 		var biomeOverrides = mod.getConfiguration().getTrees().getDetectionModeBiomeOverride();
 		if(!biomeOverrides.isEmpty()){
 			var biome = level.getBiome(originPos);
@@ -179,15 +179,15 @@ public class TreeBuilder{
 		return mod.getConfiguration().getTrees().getDetectionMode();
 	}
 	
-	@NotNull
-	private Collection<ToAnalyzePos> filterPotentialPos(@NotNull Predicate<IBlockPos> boundingBoxSearch,
-			@NotNull Predicate<IBlock> adjacentPredicate,
-			@NotNull ILevel level,
-			@NotNull IBlockPos originPos,
-			@NotNull IBlock originBlock,
-			@NotNull ToAnalyzePos parent,
-			@NotNull Collection<ToAnalyzePos> potentialPos,
-			@NotNull Collection<ToAnalyzePos> analyzedPos){
+	@NonNull
+	private Collection<ToAnalyzePos> filterPotentialPos(@NonNull Predicate<IBlockPos> boundingBoxSearch,
+			@NonNull Predicate<IBlock> adjacentPredicate,
+			@NonNull ILevel level,
+			@NonNull IBlockPos originPos,
+			@NonNull IBlock originBlock,
+			@NonNull ToAnalyzePos parent,
+			@NonNull Collection<ToAnalyzePos> potentialPos,
+			@NonNull Collection<ToAnalyzePos> analyzedPos){
 		return potentialPos.stream()
 				.filter(pos -> !analyzedPos.contains(pos))
 				.filter(pos -> shouldIncludeInChain(boundingBoxSearch, originPos, originBlock, parent, pos))
@@ -195,7 +195,7 @@ public class TreeBuilder{
 				.collect(Collectors.toList());
 	}
 	
-	private static boolean checkAdjacent(@NotNull Predicate<IBlock> adjacentPredicate, @NotNull ILevel level, IBlockPos pos){
+	private static boolean checkAdjacent(@NonNull Predicate<IBlock> adjacentPredicate, @NonNull ILevel level, IBlockPos pos){
 		return EnumSet.allOf(DirectionCompat.class).stream()
 				.map(pos::relative)
 				.map(level::getBlockState)
@@ -203,7 +203,7 @@ public class TreeBuilder{
 				.allMatch(adjacentPredicate);
 	}
 	
-	private long getLeavesAround(@NotNull ILevel level, @NotNull IBlockPos blockPos){
+	private long getLeavesAround(@NonNull ILevel level, @NonNull IBlockPos blockPos){
 		return ALL_DIRECTIONS.stream()
 				.map(blockPos::relative)
 				.filter(testPos -> {
@@ -223,7 +223,7 @@ public class TreeBuilder{
 				.count();
 	}
 	
-	private boolean shouldIncludeInChain(@NotNull Predicate<IBlockPos> boundingBoxSearch, @NotNull IBlockPos originPos, @NotNull IBlock originBlock, @NotNull ToAnalyzePos parent, @NotNull ToAnalyzePos check){
+	private boolean shouldIncludeInChain(@NonNull Predicate<IBlockPos> boundingBoxSearch, @NonNull IBlockPos originPos, @NonNull IBlock originBlock, @NonNull ToAnalyzePos parent, @NonNull ToAnalyzePos check){
 		if(parent.treePartType().isEdge() && !check.treePartType().isEdge()){
 			return false;
 		}
@@ -246,7 +246,7 @@ public class TreeBuilder{
 		return check.treePartType().isEdge();
 	}
 	
-	private boolean isSameTree(@NotNull IBlock parentLogBlock, @NotNull ToAnalyzePos check){
+	private boolean isSameTree(@NonNull IBlock parentLogBlock, @NonNull ToAnalyzePos check){
 		if(mod.getConfiguration().getTrees().isAllowMixedLogs()){
 			return check.treePartType().isLog();
 		}

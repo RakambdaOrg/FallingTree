@@ -6,14 +6,14 @@ import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Log4j2
 @RequiredArgsConstructor
 public class LeafForceBreaker{
 	private final FallingTreeCommon<?> mod;
 	
-	public void forceBreakDecayLeaves(@NotNull IPlayer player, @NotNull Tree tree, @NotNull ILevel level){
+	public void forceBreakDecayLeaves(@NonNull IPlayer player, @NonNull Tree tree, @NonNull ILevel level){
 		var radius = mod.getConfiguration().getTrees().getLeavesBreakingForceRadius();
 		if(radius > 0){
 			tree.getTopMostLog().ifPresent(topLog -> {

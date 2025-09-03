@@ -7,21 +7,21 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ServerLevelWrapper extends LevelWrapper implements IServerLevel {
-    public ServerLevelWrapper(@NotNull ServerLevel serverLevel) {
+    public ServerLevelWrapper(@NonNull ServerLevel serverLevel) {
         super(serverLevel);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public ServerLevel getRaw() {
         return (ServerLevel) super.getRaw();
     }
 
     @Override
-    public void spawnParticle(@NotNull IBlockPos blockPos, @NotNull IBlockState blockState, int count, float xDist, float yDist, float zDist, float maxSpeed) {
+    public void spawnParticle(@NonNull IBlockPos blockPos, @NonNull IBlockState blockState, int count, float xDist, float yDist, float zDist, float maxSpeed) {
         getRaw().sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, (BlockState) blockState.getRaw()),
                 blockPos.getX() + 0.5f, blockPos.getY() + 0.5f, blockPos.getZ() + 0.5f,
                 count,

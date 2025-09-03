@@ -6,17 +6,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.minecraft.core.BlockPos;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @ToString
 public class BlockBreakEventWrapper implements IBlockBreakEvent{
-	@NotNull
+	@NonNull
 	@Getter
 	private final BlockPos raw;
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IBlockPos getBlockPos(){
 		return new BlockPosWrapper(raw);
 	}

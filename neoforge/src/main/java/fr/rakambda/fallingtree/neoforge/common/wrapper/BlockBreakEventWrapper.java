@@ -6,17 +6,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @ToString
 public class BlockBreakEventWrapper implements IBlockBreakEvent{
-	@NotNull
 	@Getter
-	private final BlockEvent.BreakEvent raw;
+	private final BlockEvent.@NonNull BreakEvent raw;
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IBlockPos getBlockPos(){
 		return new BlockPosWrapper(raw.getPos());
 	}

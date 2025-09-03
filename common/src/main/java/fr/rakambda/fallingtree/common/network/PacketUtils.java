@@ -3,14 +3,14 @@ package fr.rakambda.fallingtree.common.network;
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Log4j2
 @RequiredArgsConstructor
 public class PacketUtils{
 	private final FallingTreeCommon<?> mod;
 	
-	public void onClientConfigurationPacket(@NotNull ConfigurationPacket packet){
+	public void onClientConfigurationPacket(@NonNull ConfigurationPacket packet){
 		if(!packet.isDedicated()){
 			log.info("Received FT configuration packet from own server, skipping");
 			return;	

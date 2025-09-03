@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TetraCompat{
 	private static Map<Class<?>, Optional<Method>> honingProgressMethod = new ConcurrentHashMap<>();
 	
-	public static void tickHoningProgression(@NotNull IItemStack itemStack, @NotNull IPlayer player){
+	public static void tickHoningProgression(@NonNull IItemStack itemStack, @NonNull IPlayer player){
 		try{
 			var rawItemStack = (ItemStack) itemStack.getRaw();
 			var rawItem = (Item) itemStack.getItem().getRaw();

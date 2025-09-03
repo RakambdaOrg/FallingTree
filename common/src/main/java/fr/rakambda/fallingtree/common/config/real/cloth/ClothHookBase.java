@@ -5,8 +5,8 @@ import fr.rakambda.fallingtree.common.wrapper.IComponent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.Function;
@@ -17,20 +17,20 @@ import java.util.stream.Stream;
 public abstract class ClothHookBase{
 	private static final Pattern MINECRAFT_ID_PATTERN = Pattern.compile("#?[a-z0-9_.-]+:[a-z0-9/._-]+");
 	
-	@NotNull
+	@NonNull
 	@Getter(AccessLevel.PROTECTED)
 	private final FallingTreeCommon<?> mod;
 	
-	@NotNull
-	protected String getFieldName(@Nullable String category, @NotNull String fieldName){
+	@NonNull
+	protected String getFieldName(@Nullable String category, @NonNull String fieldName){
 		return Optional.ofNullable(category)
 				.filter(c -> !c.isBlank())
 				.map(c -> "text.autoconfig.fallingtree.option." + c + "." + fieldName)
 				.orElseGet(() -> "text.autoconfig.fallingtree.option." + fieldName);
 	}
 	
-	@NotNull
-	protected Stream<IComponent> getTooltipsInternal(@Nullable String category, @NotNull String fieldName, int count){
+	@NonNull
+	protected Stream<IComponent> getTooltipsInternal(@Nullable String category, @NonNull String fieldName, int count){
 		var tooltipKey = getFieldName(category, fieldName) + ".@Tooltip";
 		var keys = new LinkedList<String>();
 		if(count <= 1){
@@ -45,7 +45,7 @@ public abstract class ClothHookBase{
 		return keys.stream().map(mod::translate);
 	}
 	
-	@NotNull
+	@NonNull
 	protected Function<String, Optional<IComponent>> getMinecraftBlockIdCellError(){
 		return value -> Optional.ofNullable(value)
 				.map(v -> MINECRAFT_ID_PATTERN.matcher(v).matches())
@@ -53,7 +53,7 @@ public abstract class ClothHookBase{
 				.map(v -> mod.translate("text.autoconfig.fallingtree.error.invalidBlockResourceLocation"));
 	}
 	
-	@NotNull
+	@NonNull
 	protected Function<String, Optional<IComponent>> getMinecraftItemIdCellError(){
 		return value -> Optional.ofNullable(value)
 				.map(v -> MINECRAFT_ID_PATTERN.matcher(v).matches())

@@ -12,12 +12,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import javax.annotation.Nonnull;
 
 @RequiredArgsConstructor
 public class BlockBreakListener{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	@SubscribeEvent

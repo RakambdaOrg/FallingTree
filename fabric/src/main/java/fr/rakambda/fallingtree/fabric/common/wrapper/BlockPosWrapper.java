@@ -7,30 +7,30 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.minecraft.core.BlockPos;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @ToString
 public class BlockPosWrapper implements IBlockPos{
-	@NotNull
+	@NonNull
 	@Getter
 	private final BlockPos raw;
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IBlockPos immutable(){
 		return new BlockPosWrapper(raw.immutable());
 	}
 	
 	@Override
-	@NotNull
-	public IBlockPos relative(@NotNull DirectionCompat direction){
+	@NonNull
+	public IBlockPos relative(@NonNull DirectionCompat direction){
 		return new BlockPosWrapper(raw.relative(FallingTree.getMod().asDirection(direction)));
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IBlockPos offset(int dx, int dy, int dz){
 		return new BlockPosWrapper(raw.offset(dx, dy, dz));
 	}
@@ -51,8 +51,8 @@ public class BlockPosWrapper implements IBlockPos{
 	}
 	
 	@Override
-	@NotNull
-	public Stream<IBlockPos> betweenClosedStream(@NotNull IBlockPos start, @NotNull IBlockPos end){
+	@NonNull
+	public Stream<IBlockPos> betweenClosedStream(@NonNull IBlockPos start, @NonNull IBlockPos end){
 		return BlockPos.betweenClosedStream((BlockPos) start.getRaw(), (BlockPos) end.getRaw()).map(BlockPosWrapper::new);
 	}
 	

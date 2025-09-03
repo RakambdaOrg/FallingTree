@@ -10,14 +10,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
 @Log4j2
 @RequiredArgsConstructor
 public class PlayerJoinListener{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	public void onPlayerLoggedInEvent(@Nonnull PlayerEvent.PlayerLoggedInEvent event){

@@ -9,18 +9,18 @@ import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class BasicPositionFetcher implements IPositionFetcher{
 	private static BasicPositionFetcher INSTANCE;
 	
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	@Override
-	@NotNull
-	public Collection<ToAnalyzePos> getPositions(@NotNull ILevel level, @NotNull IBlockPos originPos, @NotNull ToAnalyzePos parent){
+	@NonNull
+	public Collection<ToAnalyzePos> getPositions(@NonNull ILevel level, @NonNull IBlockPos originPos, @NonNull ToAnalyzePos parent){
 		var parentPos = parent.checkPos();
 		var parentBlock = level.getBlockState(parentPos).getBlock();
 		return parentPos.betweenClosedStream(parentPos.above().north().east(), parentPos.below().south().west())
@@ -35,8 +35,8 @@ public class BasicPositionFetcher implements IPositionFetcher{
 				.collect(toList());
 	}
 	
-	@NotNull
-	public static BasicPositionFetcher getInstance(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public static BasicPositionFetcher getInstance(@NonNull FallingTreeCommon<?> common){
 		if(isNull(INSTANCE)){
 			INSTANCE = new BasicPositionFetcher(common);
 		}

@@ -1,13 +1,13 @@
 package fr.rakambda.fallingtree.common.wrapper;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public interface IBlock extends IWrapper{
 	boolean isAir();
 	
-	void playerDestroy(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NotNull IItemStack itemStack, boolean dropResources);
+	void playerDestroy(@NonNull ILevel level, @NonNull IPlayer player, @NonNull IBlockPos blockPos, @NonNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NonNull IItemStack itemStack, boolean dropResources);
 
-	@NotNull
+	@NonNull
 	IComponent getAsComponent();
 }

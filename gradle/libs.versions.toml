@@ -2,7 +2,7 @@
 
 [versions]
 lombok-version = "1.18.38"
-jetbrains-annotations-version = "26.0.2"
+jspecify-version = "1.0.0"
 gson-version = "2.13.1"
 log4j2-version = "2.25.1"
 
@@ -28,7 +28,7 @@ git-version-plugin-version = "4.0.0"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok-version" }
-jetbrainsAnnotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrains-annotations-version" }
+jSpecify = { group = "org.jspecify", name = "jspecify", version.ref = "jspecify-version" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson-version" }
 log4j2 = { group = "org.apache.logging.log4j", name = "log4j-api", version.ref = "log4j2-version" }
 minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraftVersion" }

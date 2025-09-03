@@ -11,12 +11,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class LeafBreakingListener{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<Direction> mod;
 	
 	@SubscribeEvent

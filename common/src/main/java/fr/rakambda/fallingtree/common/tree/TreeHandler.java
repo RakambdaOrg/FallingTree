@@ -18,8 +18,8 @@ import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,11 +29,11 @@ import static java.util.Objects.isNull;
 @Log4j2
 @RequiredArgsConstructor
 public class TreeHandler{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	private final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
 	
-	public boolean shouldCancelEvent(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos originPos, @NotNull IBlockState originState, @Nullable IBlockEntity originEntity){
+	public boolean shouldCancelEvent(@NonNull ILevel level, @NonNull IPlayer player, @NonNull IBlockPos originPos, @NonNull IBlockState originState, @Nullable IBlockEntity originEntity){
 		if(!mod.isPlayerInRightState(player)){
 			return false;
 		}
@@ -49,13 +49,13 @@ public class TreeHandler{
 		return false;
 	}
 	
-	private boolean shouldPreserveTool(@NotNull IPlayer player){
+	private boolean shouldPreserveTool(@NonNull IPlayer player){
 		var handItem = player.getMainHandItem();
 		return mod.getConfiguration().getTools().getDurabilityMode().shouldPreserve(handItem.getDurability());
 	}
 	
-	@NotNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos originPos, @NotNull IBlockState originState, @Nullable IBlockEntity originEntity){
+	@NonNull
+	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull ILevel level, @NonNull IPlayer player, @NonNull IBlockPos originPos, @NonNull IBlockState originState, @Nullable IBlockEntity originEntity){
 		if(!level.isServer()){
 			return AbortedResult.NOT_SERVER;
 		}
@@ -96,14 +96,14 @@ public class TreeHandler{
 		}
 	}
 	
-	@NotNull
-	private BreakMode getBreakMode(@NotNull IItemStack itemStack){
+	@NonNull
+	private BreakMode getBreakMode(@NonNull IItemStack itemStack){
 		return itemStack.getBreakModeFromEnchant()
 				.orElseGet(() -> mod.getConfiguration().getTrees().getBreakMode());
 	}
 	
-	@NotNull
-	private ITreeBreakingHandler getBreakingHandler(@NotNull BreakMode breakMode){
+	@NonNull
+	private ITreeBreakingHandler getBreakingHandler(@NonNull BreakMode breakMode){
 		return switch(breakMode){
 			case INSTANTANEOUS -> InstantaneousTreeBreakingHandler.getInstance(mod);
 			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, true, true);
@@ -113,8 +113,8 @@ public class TreeHandler{
 		};
 	}
 	
-	@NotNull
-	public Optional<Float> getBreakSpeed(@NotNull IPlayer player, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, float originalSpeed){
+	@NonNull
+	public Optional<Float> getBreakSpeed(@NonNull IPlayer player, @NonNull IBlockPos blockPos, @NonNull IBlockState blockState, float originalSpeed){
 		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
 			return Optional.empty();
 		}
@@ -135,7 +135,7 @@ public class TreeHandler{
 	}
 	
 	@Nullable
-	private CacheSpeed getSpeed(@NotNull IPlayer player, @NotNull IBlockPos pos, @NotNull IBlockState blockState, float originalSpeed){
+	private CacheSpeed getSpeed(@NonNull IPlayer player, @NonNull IBlockPos pos, @NonNull IBlockState blockState, float originalSpeed){
 		var speedMultiplicand = mod.getConfiguration().getTools().getSpeedMultiplicand();
 		try{
 			return speedMultiplicand <= 0 ? null :

@@ -4,11 +4,11 @@ import fr.rakambda.fallingtree.common.wrapper.IRandomSource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 public class RandomSourceWrapper implements IRandomSource{
-	@NotNull
+	@NonNull
 	@Getter
 	private final RandomSource raw;
 

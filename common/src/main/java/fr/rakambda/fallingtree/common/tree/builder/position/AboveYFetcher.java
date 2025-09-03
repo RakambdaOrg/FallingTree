@@ -9,18 +9,18 @@ import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AboveYFetcher implements IPositionFetcher{
 	private static AboveYFetcher INSTANCE;
 	
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	@Override
-	@NotNull
-	public Collection<ToAnalyzePos> getPositions(@NotNull ILevel level, @NotNull IBlockPos originPos, @NotNull ToAnalyzePos parent){
+	@NonNull
+	public Collection<ToAnalyzePos> getPositions(@NonNull ILevel level, @NonNull IBlockPos originPos, @NonNull ToAnalyzePos parent){
 		var parentPos = parent.checkPos();
 		var parentBlock = level.getBlockState(parentPos).getBlock();
 		return parentPos.betweenClosedStream(parentPos.above().north().east(), parentPos.below().south().west())
@@ -36,7 +36,7 @@ public class AboveYFetcher implements IPositionFetcher{
 				.collect(toList());
 	}
 	
-	public static AboveYFetcher getInstance(@NotNull FallingTreeCommon<?> common){
+	public static AboveYFetcher getInstance(@NonNull FallingTreeCommon<?> common){
 		if(isNull(INSTANCE)){
 			INSTANCE = new AboveYFetcher(common);
 		}

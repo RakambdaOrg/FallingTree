@@ -7,24 +7,24 @@ import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.wrapper.IBlockEntity;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.Objects;
 
-public record ToAnalyzePos(@NotNull IPositionFetcher positionFetcher,
-                           @NotNull IBlockPos parentPos,
-                           @NotNull IBlock parentBlock,
-                           @NotNull IBlockPos checkPos,
-                           @NotNull IBlock checkBlock,
-                           @NotNull IBlockState checkState,
+public record ToAnalyzePos(@NonNull IPositionFetcher positionFetcher,
+                           @NonNull IBlockPos parentPos,
+                           @NonNull IBlock parentBlock,
+                           @NonNull IBlockPos checkPos,
+                           @NonNull IBlock checkBlock,
+                           @NonNull IBlockState checkState,
                            @Nullable IBlockEntity checkEntity,
-                           @NotNull TreePartType treePartType,
+                           @NonNull TreePartType treePartType,
                            int sequence,
                            int sequenceSinceLastLog)
 		implements Comparable<ToAnalyzePos>{
 	
 	@Override
-	public int compareTo(@NotNull ToAnalyzePos o){
+	public int compareTo(@NonNull ToAnalyzePos o){
 		return 0;
 	}
 	

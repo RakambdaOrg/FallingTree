@@ -6,7 +6,7 @@ import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IBlockState;
 import fr.rakambda.fallingtree.common.wrapper.IServerLevel;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LeafBreakingHandler{
 	private final Set<LeafBreakingSchedule> scheduledLeavesBreaking = ConcurrentHashMap.newKeySet();
 	
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	public void onServerTick(){
@@ -44,7 +44,7 @@ public class LeafBreakingHandler{
 		}
 	}
 	
-	public void onBlockUpdate(@NotNull IServerLevel level, @NotNull IBlockPos eventPos, @NotNull IBlockState eventState, Set<DirectionCompat> directions){
+	public void onBlockUpdate(@NonNull IServerLevel level, @NonNull IBlockPos eventPos, @NonNull IBlockState eventState, Set<DirectionCompat> directions){
 		if(!mod.getConfiguration().getTrees().isLeavesBreaking()){
 			return;
 		}
@@ -70,11 +70,11 @@ public class LeafBreakingHandler{
 		}
 	}
 	
-	public void addSchedule(@NotNull LeafBreakingSchedule schedule){
+	public void addSchedule(@NonNull LeafBreakingSchedule schedule){
 		scheduledLeavesBreaking.add(schedule);
 	}
 	
-	public void onWorldUnload(@NotNull IServerLevel level){
+	public void onWorldUnload(@NonNull IServerLevel level){
 		scheduledLeavesBreaking.removeIf(leafBreakingSchedule -> Objects.equals(level.getRaw(), leafBreakingSchedule.getLevel().getRaw()));
 	}
 }

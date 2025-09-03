@@ -4,12 +4,12 @@ import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import lombok.RequiredArgsConstructor;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import javax.annotation.Nonnull;
 
 @RequiredArgsConstructor
 public class PlayerLeaveListener{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	@SubscribeEvent

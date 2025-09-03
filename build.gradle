@@ -30,7 +30,7 @@ allprojects {
     }
 
     dependencies {
-        compileOnly(libs.jetbrainsAnnotations)
+        implementation("org.jspecify:jspecify:1.0.0") //TODO Use version catalog
         compileOnly(libs.lombok)
         annotationProcessor(libs.lombok)
     }

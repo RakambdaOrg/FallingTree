@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.id;
 
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class FallingTreeConfigPacket implements CustomPacketPayload{
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public Type<? extends CustomPacketPayload> type(){
 		return TYPE;
 	}

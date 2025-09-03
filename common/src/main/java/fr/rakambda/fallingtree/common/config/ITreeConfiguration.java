@@ -7,42 +7,42 @@ import fr.rakambda.fallingtree.common.config.enums.BreakOrder;
 import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.Map;
 
 public interface ITreeConfiguration{
-	@NotNull
-	Collection<IBlock> getAllowedNonDecayLeaveBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getAllowedNonDecayLeaveBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
-	Collection<IBlock> getDeniedLeaveBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getDeniedLeaveBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
-	Collection<IBlock> getDeniedLogBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getDeniedLogBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
-	Collection<IBlock> getAllowedLeaveBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getAllowedLeaveBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
-	Collection<IBlock> getAllowedLogBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getAllowedLogBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
-	Collection<IBlock> getAllowedAdjacentBlockBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getAllowedAdjacentBlockBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
-	Collection<IBlock> getDefaultLogsBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getDefaultLogsBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
-	Collection<IBlock> getAllAllowedAdjacentBlockBlocks(@NotNull FallingTreeCommon<?> common);
+	@NonNull
+	Collection<IBlock> getAllAllowedAdjacentBlockBlocks(@NonNull FallingTreeCommon<?> common);
 	
-	@NotNull
+	@NonNull
 	BreakMode getBreakMode();
 	
-	@NotNull
+	@NonNull
 	DetectionMode getDetectionMode();
 	
-	@NotNull
+	@NonNull
 	Map<String, DetectionMode> getDetectionModeBiomeOverride();
 	
 	int getMaxScanSize();
@@ -53,10 +53,10 @@ public interface ITreeConfiguration{
 	
 	int getMaxLeafDistanceFromLog();
 	
-	@NotNull
+	@NonNull
 	MaxSizeAction getMaxSizeAction();
 	
-	@NotNull
+	@NonNull
 	BreakOrder getBreakOrder();
 	
 	int getMinimumLeavesAroundRequired();
@@ -77,7 +77,7 @@ public interface ITreeConfiguration{
 	
 	int getSearchAreaRadius();
 	
-	@NotNull
+	@NonNull
 	AdjacentStopMode getAdjacentStopMode();
 	
 	boolean isSpawnItemsAtBreakPoint();

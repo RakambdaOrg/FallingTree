@@ -15,19 +15,19 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @ToString
 public class PlayerWrapper implements IPlayer{
-	@NotNull
+	@NonNull
 	@Getter
 	private final Player raw;
 	
 	@Override
-	public void sendMessage(@NotNull IComponent component, @NotNull NotificationMode mode){
+	public void sendMessage(@NonNull IComponent component, @NonNull NotificationMode mode){
 		var text = (Component) component.getRaw();
 		if(raw instanceof ServerPlayer serverPlayer){
 			switch(mode){
@@ -41,13 +41,13 @@ public class PlayerWrapper implements IPlayer{
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IItemStack getMainHandItem(){
 		return new ItemStackWrapper(raw.getMainHandItem());
 	}
 	
 	@Override
-	public void awardItemUsed(@NotNull IItem item){
+	public void awardItemUsed(@NonNull IItem item){
 		raw.awardStat(Stats.ITEM_USED.get((Item) item.getRaw()));
 	}
 	
@@ -62,30 +62,30 @@ public class PlayerWrapper implements IPlayer{
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public UUID getUUID(){
 		return raw.getUUID();
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public ILevel getLevel(){
 		return raw.level() instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(raw.level());
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public Set<String> getTags(){
 		return raw.getTags();
 	}
 	
 	@Override
-	public boolean addTag(@NotNull String tag){
+	public boolean addTag(@NonNull String tag){
 		return raw.addTag(tag);
 	}
 	
 	@Override
-	public boolean removeTag(@NotNull String tag){
+	public boolean removeTag(@NonNull String tag){
 		return raw.removeTag(tag);
 	}
 }

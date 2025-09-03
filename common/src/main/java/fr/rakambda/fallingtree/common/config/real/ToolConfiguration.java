@@ -8,7 +8,7 @@ import fr.rakambda.fallingtree.common.config.IResettable;
 import fr.rakambda.fallingtree.common.config.IToolConfiguration;
 import fr.rakambda.fallingtree.common.config.enums.DamageRounding;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,10 +18,10 @@ import static java.util.Objects.isNull;
 @Data
 public class ToolConfiguration implements IToolConfiguration, IResettable{
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> allowed = new ArrayList<>();
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> denied = new ArrayList<>();
 	@Expose
 	private DurabilityMode durabilityMode = DurabilityMode.NORMAL;
@@ -30,7 +30,7 @@ public class ToolConfiguration implements IToolConfiguration, IResettable{
 	@Expose
 	private double damageMultiplicand = 1d;
 	@Expose
-	@NotNull
+	@NonNull
 	private DamageRounding damageRounding = DamageRounding.ROUND_DOWN;
 	@Expose
 	private double speedMultiplicand = 0d;
@@ -41,16 +41,16 @@ public class ToolConfiguration implements IToolConfiguration, IResettable{
 	private Set<IItem> deniedCache;
 	private Set<IItem> allowedCache;
 	
-	@NotNull
-	public Collection<IItem> getDeniedItems(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IItem> getDeniedItems(@NonNull FallingTreeCommon<?> common){
 		if(isNull(deniedCache)){
 			deniedCache = common.getAsItems(getDenied());
 		}
 		return deniedCache;
 	}
 	
-	@NotNull
-	public Collection<IItem> getAllowedItems(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IItem> getAllowedItems(@NonNull FallingTreeCommon<?> common){
 		if(isNull(allowedCache)){
 			allowedCache = common.getAsItems(getAllowed());
 		}

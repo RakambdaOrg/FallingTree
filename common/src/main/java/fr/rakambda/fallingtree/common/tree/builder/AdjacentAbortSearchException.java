@@ -4,13 +4,13 @@ import fr.rakambda.fallingtree.common.FallingTreeCommon;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class AdjacentAbortSearchException extends AbortSearchException{
 	@Getter
 	private final IComponent component;
 	
-	public AdjacentAbortSearchException(@NotNull IBlock block, @NotNull FallingTreeCommon<?> common){
+	public AdjacentAbortSearchException(@NonNull IBlock block, @NonNull FallingTreeCommon<?> common){
 		super("Found block " + block.getRaw() + " that isn't allowed in the adjacent blocks");
 		component = common.translate("chat.fallingtree.search_aborted.adjacent", block);
 	}

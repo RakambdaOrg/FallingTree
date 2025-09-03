@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class ConfigurationPacket{
 	private boolean forceToolUsage;
 	private BreakMode breakMode;
 	
-	public static ConfigurationPacket get(boolean dedicated, @NotNull IConfiguration configuration){
+	public static ConfigurationPacket get(boolean dedicated, @NonNull IConfiguration configuration){
 		return builder()
 				.dedicated(dedicated)
 				.speedMultiplicand(configuration.getTools().getSpeedMultiplicand())

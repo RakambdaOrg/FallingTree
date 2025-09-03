@@ -10,12 +10,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class LeafBreakingListener{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<Direction> mod;
 	
 	public void onServerTick(TickEvent.ServerTickEvent.Post event){

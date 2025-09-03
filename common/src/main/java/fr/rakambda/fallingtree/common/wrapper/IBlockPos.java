@@ -1,44 +1,44 @@
 package fr.rakambda.fallingtree.common.wrapper;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.stream.Stream;
 
 public interface IBlockPos extends IWrapper{
-	@NotNull
+	@NonNull
 	IBlockPos immutable();
 	
-	@NotNull
+	@NonNull
 	IBlockPos offset(int dx, int dy, int dz);
 	
-	@NotNull
-	IBlockPos relative(@NotNull DirectionCompat direction);
+	@NonNull
+	IBlockPos relative(@NonNull DirectionCompat direction);
 	
-	@NotNull
+	@NonNull
 	default IBlockPos above(){
 		return relative(DirectionCompat.UP);
 	}
 	
-	@NotNull
+	@NonNull
 	default IBlockPos below(){
 		return relative(DirectionCompat.DOWN);
 	}
 	
-	@NotNull
+	@NonNull
 	default IBlockPos north(){
 		return relative(DirectionCompat.NORTH);
 	}
 	
-	@NotNull
+	@NonNull
 	default IBlockPos east(){
 		return relative(DirectionCompat.EAST);
 	}
 	
-	@NotNull
+	@NonNull
 	default IBlockPos south(){
 		return relative(DirectionCompat.SOUTH);
 	}
 	
-	@NotNull
+	@NonNull
 	default IBlockPos west(){
 		return relative(DirectionCompat.WEST);
 	}
@@ -49,6 +49,6 @@ public interface IBlockPos extends IWrapper{
 	
 	int getZ();
 	
-	@NotNull
-	Stream<IBlockPos> betweenClosedStream(@NotNull IBlockPos start, @NotNull IBlockPos end);
+	@NonNull
+	Stream<IBlockPos> betweenClosedStream(@NonNull IBlockPos start, @NonNull IBlockPos end);
 }

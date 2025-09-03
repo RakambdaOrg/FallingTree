@@ -7,7 +7,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Log4j2
 @Mod(FallingTree.MOD_ID)
@@ -16,7 +16,7 @@ public class FallingTree{
 	@Getter
 	private static FallingTreeCommonsImpl mod;
 	
-	public FallingTree(@NotNull IEventBus modEventBus, @NotNull ModContainer modContainer){
+	public FallingTree(@NonNull IEventBus modEventBus, @NonNull ModContainer modContainer){
 		mod = new FallingTreeCommonsImpl(modEventBus);
 		mod.registerForge(NeoForge.EVENT_BUS);
 	}

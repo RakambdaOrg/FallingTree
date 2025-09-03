@@ -3,7 +3,7 @@ package fr.rakambda.fallingtree.common.config.enums;
 import fr.rakambda.fallingtree.common.tree.TreePart;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Comparator;
 
 @RequiredArgsConstructor
@@ -13,6 +13,6 @@ public enum BreakOrder{
 	CLOSEST_FIRST(Comparator.comparingInt(TreePart::sequence)),
 	LOWEST_FIRST(Comparator.comparingInt(part -> part.blockPos().getY()));
 
-	@NotNull
+	@NonNull
 	private final Comparator<? super TreePart> comparator;
 }

@@ -8,7 +8,7 @@ import fr.rakambda.fallingtree.common.config.IToolConfiguration;
 import fr.rakambda.fallingtree.common.config.enums.DamageRounding;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -28,14 +28,14 @@ public class ToolProxyConfiguration implements IToolConfiguration, IResettable{
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IItem> getDeniedItems(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IItem> getDeniedItems(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getDeniedItems(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IItem> getAllowedItems(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IItem> getAllowedItems(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getAllowedItems(mod);
 	}
 	

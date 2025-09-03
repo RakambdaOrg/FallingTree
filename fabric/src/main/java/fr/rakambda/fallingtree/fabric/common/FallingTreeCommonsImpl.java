@@ -47,7 +47,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -96,8 +96,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	@NotNull
-	public IComponent translate(@NotNull String key, Object... objects){
+	@NonNull
+	public IComponent translate(@NonNull String key, Object... objects){
 		Object[] vars = Arrays.stream(objects)
 				.map(o -> {
 					if(o instanceof IComponent component){
@@ -110,8 +110,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	@NotNull
-	public Stream<IBlock> getBlock(@NotNull String name){
+	@NonNull
+	public Stream<IBlock> getBlock(@NonNull String name){
 		try{
 			var isTag = name.startsWith("#");
 			if(isTag){
@@ -130,8 +130,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	@NotNull
-	public Stream<IItem> getItem(@NotNull String name){
+	@NonNull
+	public Stream<IItem> getItem(@NonNull String name){
 		try{
 			var isTag = name.startsWith("#");
 			if(isTag){
@@ -150,7 +150,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	public boolean isLeafBlock(@NotNull IBlock block){
+	public boolean isLeafBlock(@NonNull IBlock block){
 		return isLeafBlockCache.computeIfAbsent(block, Key -> {
 			var isAllowedBlock = registryTagContains(BuiltInRegistries.BLOCK, BlockTags.LEAVES, (Block) block.getRaw())
 					|| getConfiguration().getTrees().getAllowedLeaveBlocks(this).stream().anyMatch(leaf -> leaf.equals(block));
@@ -163,7 +163,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	public boolean isLogBlock(@NotNull IBlock block){
+	public boolean isLogBlock(@NonNull IBlock block){
 		return isLogBlockCache.computeIfAbsent(block, Key -> {
 			var isAllowedBlock = getConfiguration().getTrees().getDefaultLogsBlocks(this).stream().anyMatch(log -> log.equals(block))
 					|| getConfiguration().getTrees().getAllowedLogBlocks(this).stream().anyMatch(log -> log.equals(block));
@@ -176,7 +176,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public Set<IBlock> getAllNonStrippedLogsBlocks(){
 		return getRegistryTagContent(BuiltInRegistries.BLOCK, BlockTags.LOGS)
 				.filter(block -> !Optional.of(BuiltInRegistries.BLOCK.getKey(block))
@@ -188,30 +188,30 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	@NotNull
-	public DirectionCompat asDirectionCompat(@NotNull Direction dir){
+	@NonNull
+	public DirectionCompat asDirectionCompat(@NonNull Direction dir){
 		return DirectionCompat.valueOf(dir.name());
 	}
 	
 	@Override
-	@NotNull
-	public Direction asDirection(@NotNull DirectionCompat dir){
+	@NonNull
+	public Direction asDirection(@NonNull DirectionCompat dir){
 		return Direction.valueOf(dir.name());
 	}
 	
 	@Override
-	public boolean isNetherWartOrShroomlight(@NotNull IBlock block){
+	public boolean isNetherWartOrShroomlight(@NonNull IBlock block){
 		return isWartBlockCache.computeIfAbsent(block,
 				Key -> registryTagContains(BuiltInRegistries.BLOCK, BlockTags.WART_BLOCKS, (Block) block.getRaw()) || Blocks.SHROOMLIGHT.equals(block.getRaw()));
 	}
 	
 	@Override
-	public boolean isMangroveRoots(@NotNull IBlock block){
+	public boolean isMangroveRoots(@NonNull IBlock block){
 		return Blocks.MANGROVE_ROOTS.equals(block.getRaw());
 	}
 	
 	@Override
-	public boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player){
+	public boolean checkCanBreakBlock(@NonNull ILevel level, @NonNull IBlockPos blockPos, @NonNull IBlockState blockState, @NonNull IPlayer player){
 		breakEvents.add(blockPos);
 		return PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(
 				(Level) level.getRaw(),
@@ -223,7 +223,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
+	public boolean isOwnEvent(@NonNull IBlockBreakEvent event){
 		var result = breakEvents.contains(event.getBlockPos());
 		if(result){
 			breakEvents.remove(event.getBlockPos());
@@ -232,7 +232,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IItemStack getEmptyItemStack(){
 		return new ItemStackWrapper(ItemStack.EMPTY);
 	}
@@ -244,18 +244,18 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		isWartBlockCache.clear();
 	}
 	
-	@NotNull
+	@NonNull
 	private <T> Optional<T> getRegistryElement(Registry<T> registryKey, ResourceLocation identifier){
 		return registryKey.getOptional(identifier);
 	}
 	
-	@NotNull
-	private <T> Stream<T> getRegistryTagContent(@NotNull Registry<T> registry, @NotNull TagKey<T> tag){
+	@NonNull
+	private <T> Stream<T> getRegistryTagContent(@NonNull Registry<T> registry, @NonNull TagKey<T> tag){
 		return registry.get(tag).stream()
 				.flatMap(a -> a.stream().map(Holder::value));
 	}
 	
-	private <T> boolean registryTagContains(@NotNull Registry<T> registry, @NotNull TagKey<T> tag, @NotNull T element){
+	private <T> boolean registryTagContains(@NonNull Registry<T> registry, @NonNull TagKey<T> tag, @NonNull T element){
 		return getRegistryTagContent(registry, tag).anyMatch(element::equals);
 	}
 	

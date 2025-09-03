@@ -14,12 +14,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @ToString
 public class ItemStackWrapper implements IItemStack{
-	@NotNull
+	@NonNull
 	@Getter
 	private final ItemStack raw;
 	
@@ -44,12 +44,12 @@ public class ItemStackWrapper implements IItemStack{
 	}
 	
 	@Override
-	public void damage(int amount, @NotNull IPlayer player){
+	public void damage(int amount, @NonNull IPlayer player){
 		raw.hurtAndBreak(amount, (Player) player.getRaw(), EquipmentSlot.MAINHAND);
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IItem getItem(){
 		return new ItemWrapper(raw.getItem());
 	}
@@ -59,7 +59,7 @@ public class ItemStackWrapper implements IItemStack{
 		return EnchantmentHelper.hasTag(raw, FallingTree.getMod().getChopperEnchantmentTag());
 	}
 	
-	@NotNull
+	@NonNull
 	public Optional<BreakMode> getBreakModeFromEnchant(){
 		if(!hasChopperEnchant()){
 			return Optional.empty();

@@ -1,10 +1,10 @@
 package fr.rakambda.fallingtree.common.enchant;
 
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
 public interface IFallingTreeEnchantment{
-	@NotNull
+	@NonNull
 	Optional<BreakMode> getBreakMode();
 }

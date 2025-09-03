@@ -1,8 +1,8 @@
 package fr.rakambda.fallingtree.common.wrapper;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface IChunk extends IWrapper{
-	@NotNull
+	@NonNull
 	IChunkPos getPos();
 }

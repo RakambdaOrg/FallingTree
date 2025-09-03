@@ -7,7 +7,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ConfigLoader{
 	private static final Gson gson = new GsonBuilder()
@@ -16,8 +16,8 @@ public class ConfigLoader{
 			.excludeFieldsWithoutExposeAnnotation()
 			.create();
 	
-	@NotNull
-	static <T> T loadConfig(@NotNull T defaultConfiguration, @NotNull Class<T> clazz, @NotNull Path path) throws IOException{
+	@NonNull
+	static <T> T loadConfig(@NonNull T defaultConfiguration, @NonNull Class<T> clazz, @NonNull Path path) throws IOException{
 		var config = defaultConfiguration;
 		if(Files.isRegularFile(path)){
 			try(var reader = Files.newBufferedReader(path)){
@@ -30,8 +30,8 @@ public class ConfigLoader{
 		return saveConfig(config, path);
 	}
 	
-	@NotNull
-	static <T> T saveConfig(@NotNull T config, @NotNull Path path) throws IOException{
+	@NonNull
+	static <T> T saveConfig(@NonNull T config, @NonNull Path path) throws IOException{
 		if(!Files.exists(path)){
 			Files.createDirectories(path.getParent());
 		}

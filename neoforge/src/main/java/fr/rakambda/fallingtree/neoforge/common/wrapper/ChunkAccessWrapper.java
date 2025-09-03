@@ -6,17 +6,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @ToString
 public class ChunkAccessWrapper implements IChunk{
-	@NotNull
+	@NonNull
 	@Getter
 	private final ChunkAccess raw;
 	
 	@Override
-	@NotNull
+	@NonNull
 	public IChunkPos getPos(){
 		return new ChunkPosWrapper(raw.getPos());
 	}

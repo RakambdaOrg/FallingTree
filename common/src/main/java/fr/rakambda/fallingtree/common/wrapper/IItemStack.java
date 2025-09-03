@@ -2,7 +2,7 @@ package fr.rakambda.fallingtree.common.wrapper;
 
 import java.util.Optional;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface IItemStack extends IWrapper{
 	boolean isEmpty();
@@ -13,14 +13,14 @@ public interface IItemStack extends IWrapper{
 	
 	int getMaxDamage();
 	
-	void damage(int amount, @NotNull IPlayer player);
+	void damage(int amount, @NonNull IPlayer player);
 	
-	@NotNull
+	@NonNull
 	IItem getItem();
 	
 	boolean hasChopperEnchant();
 	
-	@NotNull
+	@NonNull
 	Optional<BreakMode> getBreakModeFromEnchant();
 	
 	boolean canPerformAxeAction();

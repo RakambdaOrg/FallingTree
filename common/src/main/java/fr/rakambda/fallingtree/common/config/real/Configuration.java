@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,26 +18,26 @@ import java.nio.file.Paths;
 @Log4j2
 public class Configuration implements IConfiguration{
 	@Expose
-	@NotNull
+	@NonNull
 	private TreeConfiguration trees = new TreeConfiguration();
 	@Expose
-	@NotNull
+	@NonNull
 	private ToolConfiguration tools = new ToolConfiguration();
 	@Expose
-	@NotNull
+	@NonNull
 	private PlayerConfiguration player = new PlayerConfiguration();
 	@Expose
-	@NotNull
+	@NonNull
 	private EnchantmentConfiguration enchantment = new EnchantmentConfiguration();
 	@Expose
-	@NotNull
+	@NonNull
 	private SneakMode sneakMode = SneakMode.SNEAK_DISABLE;
 	@Expose
 	private boolean breakInCreative = false;
 	@Expose
 	private boolean lootInCreative = true;
 	@Expose
-	@NotNull
+	@NonNull
 	private NotificationMode notificationMode = NotificationMode.ACTION_BAR;
 	
 	public static Configuration read() throws RuntimeException{

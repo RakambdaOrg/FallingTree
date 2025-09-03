@@ -11,12 +11,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @ToString
 public class ItemWrapper implements IItem{
-	@NotNull
+	@NonNull
 	@Getter
 	private final Item raw;
 	
@@ -31,7 +31,7 @@ public class ItemWrapper implements IItem{
 	}
 	
 	@Override
-	public float getDestroySpeed(@NotNull IItemStack itemStack, @NotNull IBlockState blockState){
+	public float getDestroySpeed(@NonNull IItemStack itemStack, @NonNull IBlockState blockState){
 		return raw.getDestroySpeed((ItemStack) itemStack.getRaw(), (BlockState) blockState.getRaw());
 	}
 	

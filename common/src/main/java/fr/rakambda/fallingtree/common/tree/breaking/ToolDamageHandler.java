@@ -6,7 +6,7 @@ import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Log4j2
 public class ToolDamageHandler{
@@ -19,7 +19,7 @@ public class ToolDamageHandler{
 	@Getter
 	private boolean preserveTool;
 	
-	public ToolDamageHandler(@NotNull IItemStack tool, double damageMultiplicand, @NotNull DurabilityMode durabilityMode, int breakableCount, int minSize, int maxSize, @NotNull MaxSizeAction maxSizeAction, @NotNull DamageRounding damageRounding) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	public ToolDamageHandler(@NonNull IItemStack tool, double damageMultiplicand, @NonNull DurabilityMode durabilityMode, int breakableCount, int minSize, int maxSize, @NonNull MaxSizeAction maxSizeAction, @NonNull DamageRounding damageRounding) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		this.tool = tool;
 		this.damageMultiplicand = damageMultiplicand;
 		this.damageRounding = damageRounding;

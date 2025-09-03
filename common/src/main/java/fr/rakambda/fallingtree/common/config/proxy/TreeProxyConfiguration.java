@@ -11,7 +11,7 @@ import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -29,67 +29,67 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getAllowedNonDecayLeaveBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getAllowedNonDecayLeaveBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getAllowedNonDecayLeaveBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getDeniedLeaveBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getDeniedLeaveBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getDeniedLeaveBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getDeniedLogBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getDeniedLogBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getDeniedLogBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getAllowedLeaveBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getAllowedLeaveBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getAllowedLeaveBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getAllowedLogBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getAllowedLogBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getAllowedLogBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getAllowedAdjacentBlockBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getAllowedAdjacentBlockBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getAllowedAdjacentBlockBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getDefaultLogsBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getDefaultLogsBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getDefaultLogsBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
-	public Collection<IBlock> getAllAllowedAdjacentBlockBlocks(@NotNull FallingTreeCommon<?> mod){
+	@NonNull
+	public Collection<IBlock> getAllAllowedAdjacentBlockBlocks(@NonNull FallingTreeCommon<?> mod){
 		return delegate.getAllAllowedAdjacentBlockBlocks(mod);
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public BreakMode getBreakMode(){
 		return Optional.ofNullable(breakMode).orElseGet(delegate::getBreakMode);
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public DetectionMode getDetectionMode(){
 		return delegate.getDetectionMode();
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public Map<String, DetectionMode> getDetectionModeBiomeOverride(){
 		return delegate.getDetectionModeBiomeOverride();
 	}
@@ -115,13 +115,13 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public MaxSizeAction getMaxSizeAction(){
 		return delegate.getMaxSizeAction();
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public BreakOrder getBreakOrder(){
 		return delegate.getBreakOrder();
 	}
@@ -172,7 +172,7 @@ public class TreeProxyConfiguration implements ITreeConfiguration, IResettable{
 	}
 	
 	@Override
-	@NotNull
+	@NonNull
 	public AdjacentStopMode getAdjacentStopMode(){
 		return delegate.getAdjacentStopMode();
 	}

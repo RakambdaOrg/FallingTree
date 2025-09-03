@@ -20,13 +20,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 @RequiredArgsConstructor
 @ToString
 public class BlockWrapper implements IBlock{
-	@NotNull
+	@NonNull
 	@Getter
 	private final Block raw;
 	
@@ -36,7 +36,7 @@ public class BlockWrapper implements IBlock{
 	}
 	
 	@Override
-	public void playerDestroy(@NotNull ILevel level, @NotNull IPlayer player, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NotNull IItemStack itemStack, boolean dropResources){
+	public void playerDestroy(@NonNull ILevel level, @NonNull IPlayer player, @NonNull IBlockPos blockPos, @NonNull IBlockState blockState, @Nullable IBlockEntity blockEntity, @NonNull IItemStack itemStack, boolean dropResources){
 		var entity = blockEntity == null ? null : (BlockEntity) blockEntity.getRaw();
 		var realPlayer = (Player) player.getRaw();
 		
@@ -48,7 +48,7 @@ public class BlockWrapper implements IBlock{
 		}
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public IComponent getAsComponent(){
 		return new ComponentWrapper(raw.getName());

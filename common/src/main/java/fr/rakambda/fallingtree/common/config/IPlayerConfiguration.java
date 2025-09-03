@@ -1,9 +1,9 @@
 package fr.rakambda.fallingtree.common.config;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 public interface IPlayerConfiguration{
-	@NotNull
+	@NonNull
 	List<String> getAllowedTagsNormalized();
 }

@@ -23,7 +23,7 @@ import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -51,10 +51,10 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         return getProxyConfiguration();
     }
 
-    @NotNull
-    public abstract IComponent translate(@NotNull String key, Object... objects);
+    @NonNull
+    public abstract IComponent translate(@NonNull String key, Object... objects);
 
-    public void notifyPlayer(@NotNull IPlayer player, @NotNull IComponent component) {
+    public void notifyPlayer(@NonNull IPlayer player, @NonNull IComponent component) {
         player.sendMessage(component, getConfiguration().getNotificationMode());
     }
 
@@ -70,7 +70,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
      *
      * @return true if the player is allowed to break that block, false otherwise.
      */
-    public boolean checkForceToolUsage(@NotNull IPlayer player, @NotNull ILevel level, @NotNull IBlockPos blockPos) {
+    public boolean checkForceToolUsage(@NonNull IPlayer player, @NonNull ILevel level, @NonNull IBlockPos blockPos) {
         if (!getConfiguration().getTools().isForceToolUsage()) {
             return true;
         }
@@ -81,7 +81,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         return isValidTool(player.getMainHandItem());
     }
 
-    public boolean isPlayerInRightState(@NotNull IPlayer player) {
+    public boolean isPlayerInRightState(@NonNull IPlayer player) {
         if (player.isCreative() && !getConfiguration().isBreakInCreative()) {
             return false;
         }
@@ -97,11 +97,11 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         return canPlayerBreakTree(player);
     }
 
-    private boolean playerHasToggledOff(@NotNull IPlayer player) {
+    private boolean playerHasToggledOff(@NonNull IPlayer player) {
         return player.getTags().contains(ToggleCommand.FALLINGTREE_DISABLE_TAG);
     }
 
-    private boolean playerHasRequiredTags(@NotNull IPlayer player) {
+    private boolean playerHasRequiredTags(@NonNull IPlayer player) {
         var tags = getConfiguration().getPlayer().getAllowedTagsNormalized();
         if (tags.isEmpty()) {
             return true;
@@ -111,7 +111,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         return tags.stream().anyMatch(playerTags::contains);
     }
 
-    public boolean canPlayerBreakTree(@NotNull IPlayer player) {
+    public boolean canPlayerBreakTree(@NonNull IPlayer player) {
         var heldItemStack = player.getMainHandItem();
 
         if (!isValidTool(heldItemStack)) {
@@ -126,7 +126,7 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         return true;
     }
 
-    public boolean isValidTool(@NotNull IItemStack heldItemStack) {
+    public boolean isValidTool(@NonNull IItemStack heldItemStack) {
         var toolConfiguration = getConfiguration().getTools();
         var heldItem = heldItemStack.getItem();
 
@@ -142,24 +142,24 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         return !isDeniedTool;
     }
 
-    @NotNull
+    @NonNull
     public TreeHandler getTreeHandler() {
         return treeHandler;
     }
 
-    @NotNull
+    @NonNull
     public TreeBuilder getTreeBuilder() {
         return treeBuilder;
     }
 
-    @NotNull
+    @NonNull
     public abstract LeafBreakingHandler getLeafBreakingHandler();
 
-    @NotNull
+    @NonNull
     public abstract ServerPacketHandler getServerPacketHandler();
 
-    @NotNull
-    public Set<IBlock> getAsBlocks(@NotNull Collection<String> names) {
+    @NonNull
+    public Set<IBlock> getAsBlocks(@NonNull Collection<String> names) {
         return names.stream()
                 .filter(Objects::nonNull)
                 .filter(val -> !val.isEmpty())
@@ -169,10 +169,10 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
                 .collect(toSet());
     }
 
-    @NotNull
-    public abstract Stream<IBlock> getBlock(@NotNull String name);
+    @NonNull
+    public abstract Stream<IBlock> getBlock(@NonNull String name);
 
-    @NotNull
+    @NonNull
     public Set<IItem> getAsItems(Collection<String> names) {
         return names.stream()
                 .filter(Objects::nonNull)
@@ -183,35 +183,35 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
                 .collect(toSet());
     }
 
-    @NotNull
-    public abstract Stream<IItem> getItem(@NotNull String name);
+    @NonNull
+    public abstract Stream<IItem> getItem(@NonNull String name);
 
-    public abstract boolean isLeafBlock(@NotNull IBlock block);
+    public abstract boolean isLeafBlock(@NonNull IBlock block);
 
-    public abstract boolean isLogBlock(@NotNull IBlock block);
+    public abstract boolean isLogBlock(@NonNull IBlock block);
 
-    @NotNull
+    @NonNull
     public abstract Set<IBlock> getAllNonStrippedLogsBlocks();
 
-    @NotNull
-    public abstract DirectionCompat asDirectionCompat(@NotNull D dir);
+    @NonNull
+    public abstract DirectionCompat asDirectionCompat(@NonNull D dir);
 
-    @NotNull
-    public abstract D asDirection(@NotNull DirectionCompat dir);
+    @NonNull
+    public abstract D asDirection(@NonNull DirectionCompat dir);
 
-    public boolean isLeafNeedBreakBlock(@NotNull IBlock block) {
+    public boolean isLeafNeedBreakBlock(@NonNull IBlock block) {
         return getConfiguration().getTrees()
                 .getAllowedNonDecayLeaveBlocks(this)
                 .stream()
                 .anyMatch(log -> log.equals(block));
     }
 
-    public abstract boolean isNetherWartOrShroomlight(@NotNull IBlock block);
+    public abstract boolean isNetherWartOrShroomlight(@NonNull IBlock block);
 
-    public abstract boolean isMangroveRoots(@NotNull IBlock block);
+    public abstract boolean isMangroveRoots(@NonNull IBlock block);
 
-    @NotNull
-    public TreePartType getTreePart(@NotNull IBlock checkBlock) {
+    @NonNull
+    public TreePartType getTreePart(@NonNull IBlock checkBlock) {
         if (isLogBlock(checkBlock)) {
             return TreePartType.LOG;
         }
@@ -230,12 +230,12 @@ public abstract class FallingTreeCommon<D extends Enum<D>> {
         return TreePartType.OTHER;
     }
 
-    public abstract boolean checkCanBreakBlock(@NotNull ILevel level, @NotNull IBlockPos blockPos, @NotNull IBlockState blockState, @NotNull IPlayer player);
+    public abstract boolean checkCanBreakBlock(@NonNull ILevel level, @NonNull IBlockPos blockPos, @NonNull IBlockState blockState, @NonNull IPlayer player);
 
-    @NotNull
+    @NonNull
     public abstract IItemStack getEmptyItemStack();
 	
-	public boolean isOwnEvent(@NotNull IBlockBreakEvent event){
+	public boolean isOwnEvent(@NonNull IBlockBreakEvent event){
 		return false;
 	}
 	

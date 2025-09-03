@@ -7,18 +7,18 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @ToString
 @Log4j2
 public class BiomeWrapper implements IBiome{
-	@NotNull
+	@NonNull
 	@Getter
 	private final Holder<Biome> raw;
 	
 	@Override
-	@NotNull
+	@NonNull
 	public String getId(){
 		return raw.getRegisteredName();
 	}

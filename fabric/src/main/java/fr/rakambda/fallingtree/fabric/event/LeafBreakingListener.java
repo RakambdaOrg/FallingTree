@@ -7,11 +7,11 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 public class LeafBreakingListener implements ServerTickEvents.EndTick, ServerWorldEvents.Unload{
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
 	
 	@Override

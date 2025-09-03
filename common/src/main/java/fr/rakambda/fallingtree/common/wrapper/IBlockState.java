@@ -1,20 +1,20 @@
 package fr.rakambda.fallingtree.common.wrapper;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
 public interface IBlockState extends IWrapper{
-	void tick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull IRandomSource random);
+	void tick(@NonNull IServerLevel level, @NonNull IBlockPos blockPos, @NonNull IRandomSource random);
 	
-	void randomTick(@NotNull IServerLevel level, @NotNull IBlockPos blockPos, @NotNull IRandomSource random);
+	void randomTick(@NonNull IServerLevel level, @NonNull IBlockPos blockPos, @NonNull IRandomSource random);
 	
-	@NotNull
+	@NonNull
 	IBlock getBlock();
 	
 	boolean isRandomlyTicking();
 	
-	@NotNull
+	@NonNull
 	Optional<Boolean> hasLeafPersistentFlag();
 	
-	void dropResources(@NotNull ILevel level, @NotNull IBlockPos blockPos);
+	void dropResources(@NonNull ILevel level, @NonNull IBlockPos blockPos);
 }

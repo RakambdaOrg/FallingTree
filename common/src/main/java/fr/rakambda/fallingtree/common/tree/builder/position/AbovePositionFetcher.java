@@ -6,7 +6,7 @@ import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.function.Function;
 import static java.util.Objects.isNull;
@@ -16,14 +16,14 @@ import static java.util.stream.Collectors.toList;
 public class AbovePositionFetcher implements IPositionFetcher{
 	private static AbovePositionFetcher INSTANCE;
 	
-	@NotNull
+	@NonNull
 	private final FallingTreeCommon<?> mod;
-	@NotNull
+	@NonNull
 	private final Function<IBlockPos, IBlockPos> lowerPosProvider;
 	
 	@Override
-	@NotNull
-	public Collection<ToAnalyzePos> getPositions(@NotNull ILevel level, @NotNull IBlockPos originPos, @NotNull ToAnalyzePos parent){
+	@NonNull
+	public Collection<ToAnalyzePos> getPositions(@NonNull ILevel level, @NonNull IBlockPos originPos, @NonNull ToAnalyzePos parent){
 		var parentPos = parent.checkPos();
 		var parentBlock = level.getBlockState(parentPos).getBlock();
 		return parentPos.betweenClosedStream(parentPos.above().north().east(), lowerPosProvider.apply(parentPos).south().west())
@@ -38,7 +38,7 @@ public class AbovePositionFetcher implements IPositionFetcher{
 				.collect(toList());
 	}
 	
-	public static AbovePositionFetcher getInstance(@NotNull FallingTreeCommon<?> common){
+	public static AbovePositionFetcher getInstance(@NonNull FallingTreeCommon<?> common){
 		if(isNull(INSTANCE)){
 			INSTANCE = new AbovePositionFetcher(common, IBlockPos::above);
 		}

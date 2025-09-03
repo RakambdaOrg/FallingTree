@@ -11,7 +11,7 @@ import fr.rakambda.fallingtree.common.config.enums.DetectionMode;
 import fr.rakambda.fallingtree.common.config.enums.MaxSizeAction;
 import fr.rakambda.fallingtree.common.wrapper.IBlock;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,28 +24,28 @@ import static java.util.Objects.isNull;
 @Data
 public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> allowedLogs = new ArrayList<>();
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> deniedLogs = new ArrayList<>();
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> allowedLeaves = new ArrayList<>();
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> allowedNonDecayLeaves = new ArrayList<>();
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> deniedLeaves = new ArrayList<>();
 	@Expose
-	@NotNull
+	@NonNull
 	private BreakMode breakMode = BreakMode.INSTANTANEOUS;
 	@Expose
-	@NotNull
+	@NonNull
 	private DetectionMode detectionMode = DetectionMode.WHOLE_TREE;
 	@Expose
-	@NotNull
+	@NonNull
 	private Map<String, DetectionMode> detectionModeBiomeOverride = new HashMap<>();
 	@Expose
 	private int maxScanSize = 500;
@@ -56,10 +56,10 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	private int maxLeafDistanceFromLog = 15;
 	@Expose
-	@NotNull
+	@NonNull
 	private MaxSizeAction maxSizeAction = MaxSizeAction.ABORT;
 	@Expose
-	@NotNull
+	@NonNull
 	private BreakOrder breakOrder = BreakOrder.FURTHEST_FIRST;
 	@Expose
 	private int minimumLeavesAroundRequired = 1;
@@ -80,10 +80,10 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	@Expose
 	private int searchAreaRadius = -1;
 	@Expose
-	@NotNull
+	@NonNull
 	private List<String> allowedAdjacentBlocks = new ArrayList<>();
 	@Expose
-	@NotNull
+	@NonNull
 	private AdjacentStopMode adjacentStopMode = AdjacentStopMode.STOP_ALL;
 	@Expose
 	private boolean spawnItemsAtBreakPoint = false;
@@ -100,64 +100,64 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	private Set<IBlock> adjacentBlocksBaseCache;
 	private Set<IBlock> defaultLogsBlocksCache;
 	
-	@NotNull
-	public Collection<IBlock> getAllowedNonDecayLeaveBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getAllowedNonDecayLeaveBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(allowedNonDecayLeavesCache)){
 			allowedNonDecayLeavesCache = common.getAsBlocks(getAllowedNonDecayLeaves());
 		}
 		return allowedNonDecayLeavesCache;
 	}
 	
-	@NotNull
-	public Collection<IBlock> getDeniedLeaveBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getDeniedLeaveBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(deniedLeavesCache)){
 			deniedLeavesCache = common.getAsBlocks(getDeniedLeaves());
 		}
 		return deniedLeavesCache;
 	}
 	
-	@NotNull
-	public Collection<IBlock> getDeniedLogBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getDeniedLogBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(deniedLogsCache)){
 			deniedLogsCache = common.getAsBlocks(getDeniedLogs());
 		}
 		return deniedLogsCache;
 	}
 	
-	@NotNull
-	public Collection<IBlock> getAllowedLeaveBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getAllowedLeaveBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(allowedLeavesCache)){
 			allowedLeavesCache = common.getAsBlocks(getAllowedLeaves());
 		}
 		return allowedLeavesCache;
 	}
 	
-	@NotNull
-	public Collection<IBlock> getAllowedLogBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getAllowedLogBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(allowedLogsCache)){
 			allowedLogsCache = common.getAsBlocks(getAllowedLogs());
 		}
 		return allowedLogsCache;
 	}
 	
-	@NotNull
-	public Collection<IBlock> getAllowedAdjacentBlockBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getAllowedAdjacentBlockBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(allowedAdjacentBlocksCache)){
 			allowedAdjacentBlocksCache = common.getAsBlocks(getAllowedAdjacentBlocks());
 		}
 		return allowedAdjacentBlocksCache;
 	}
 	
-	@NotNull
-	public Collection<IBlock> getDefaultLogsBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getDefaultLogsBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(defaultLogsBlocksCache)){
 			defaultLogsBlocksCache = common.getAllNonStrippedLogsBlocks();
 		}
 		return defaultLogsBlocksCache;
 	}
 	
-	@NotNull
-	public Collection<IBlock> getAllAllowedAdjacentBlockBlocks(@NotNull FallingTreeCommon<?> common){
+	@NonNull
+	public Collection<IBlock> getAllAllowedAdjacentBlockBlocks(@NonNull FallingTreeCommon<?> common){
 		if(isNull(allowedAdjacentBlocksCache)){
 			allowedAdjacentBlocksCache = new HashSet<>();
 			common.getBlock("minecraft:air").forEach(allowedAdjacentBlocksCache::add);
