@@ -39,3 +39,6 @@ updates:
       lets-plot:
         patterns:
           - org.jetbrains.lets-plot:*
+      kotlin:
+        patterns:
+          - org.jetbrains.kotlin.*
