@@ -27,7 +27,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "破壞模式",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip": "如何破壞樹木。\n\nINSTANTANEOUS 將一次性破壞它。\nFALL_ITEM 將一次性破壞樹木並帶有動畫。\nFALL_BLOCK 將使原木掉落在地面上，樹葉將作為物品掉落。\nFALL_ALL_BLOCK 將使樹木掉落在地面上。\nSHIFT_DOWN 將使樹木在你砍伐時掉落，因此你仍然需要破壞 x 個方塊，但不必爬上樹木。",
   "text.autoconfig.fallingtree.option.trees.detectionMode": "偵測模式",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "應該砍伐樹木的哪個部分。\n\nWHOLE_TREE 將會破壞整棵樹。\nABOVE_CUT 只會破壞從砍伐點上方連接的方塊。\nABOVE_Y 只會破壞在砍伐點 Y 值以上的方塊。",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "應該砍伐樹木的哪個部分。\n\nWHOLE_TREE 將會破壞整棵樹。\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y 只會破壞在砍伐點 Y 值以上的方塊。",
   "text.autoconfig.fallingtree.option.trees.maxScanSize": "最大掃描大小",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip": "應該掃描樹木的最大方塊數。如果超過此值，則不會砍伐樹木。",
   "text.autoconfig.fallingtree.option.trees.maxSize": "最大尺寸",

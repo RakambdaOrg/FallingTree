@@ -22,7 +22,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode" : "Sposób ścinania",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip": "Jak modyfikacja ma niszczyć bloki drzewa.\n\nINSTANTANEOUS - NATYCHMIAST niszczy po zniszczeniu jednego.\nSHIFT_DOWN - OD GÓRY drzewo będzie niszczone po kolei, więc nadal musisz zniszczyć pewną ilość bloków, ale nie musisz się wspinać po drzewach.",
   "text.autoconfig.fallingtree.option.trees.detectionMode" : "Tryb wykrywania",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Która część drzewa powinna byc ścięta.\n\nWHOLE_TREE całe drzewo.\nABOVE_CUT zniszczy tylko bloki nad blokiem niszczonym.\nABOVE_Y zniszczy tylko bloki nad wysokością y od punktu niszczenia.",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Która część drzewa powinna byc ścięta.\n\nWHOLE_TREE całe drzewo.\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y zniszczy tylko bloki nad wysokością y od punktu niszczenia.",
   "text.autoconfig.fallingtree.option.trees.maxScanSize" : "Rozmiar obszaru wykrywania",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip": "Maksymalna ilość bloków jaka powinna być przeszukana w celu znalezienia drzewa. Jeżeli trzeba szukać dalej niż ustawiono, drzewo nie zostanie ścięte.",
   "text.autoconfig.fallingtree.option.trees.maxSize" : "Rozmiar maksymalny",

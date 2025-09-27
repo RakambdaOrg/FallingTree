@@ -63,7 +63,7 @@ NOTE: In the screenshots the axe indicates where the tree is being cut by you, a
 
 - WHOLE_TREE: The whole tree will be scanned, searching in all 6 directions.
 image:assets/behavior/detection-mode-whole-tree.png[]
-- ABOVE_CUT: Will search in all directions except at the cutting point where it'll only look up.
+- ABOVE_CUT: ABOVE_CUT will only follow a path of logs that goes up, never down.
 image:assets/behavior/detection-mode-above-cut.png[]
 - ABOVE_Y: Will search in all directions but retain only logs with a `y` value greater than the cutting point.
 image:assets/behavior/detection-mode-above-y.png[]

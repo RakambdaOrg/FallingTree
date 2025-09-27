@@ -27,7 +27,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "벌목 모드",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip": "나무를 어떻게 벨 것인지 설정합니다.\n\nINSTANTANEOUS는 한 번에 나무를 벌목합니다.\nSHIFT_DOWN는 플레이어가 나무를 벨 때 점점 하나씩 벌목되도록 합니다. 여전히 플레이어는 x 블록을 부셔야하지만 나무에 올라 하나씩 벨 필요가 없습니다.",
   "text.autoconfig.fallingtree.option.trees.detectionMode": "감지 모드",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "나무의 어느 부분을 벨 것인지 설정합니다.\n\nWHOLE_TREE는 나무 전체를 벱니다.\nABOVE_CUT는 베는 지점 위로 연결된 블록만 벱니다.\nABOVE_Y는 베는 지점이 설정된 y 값보다 높은 블록만 벱니다.",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "나무의 어느 부분을 벨 것인지 설정합니다.\n\nWHOLE_TREE는 나무 전체를 벱니다.\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y는 베는 지점이 설정된 y 값보다 높은 블록만 벱니다.",
   "text.autoconfig.fallingtree.option.trees.maxScanSize": "최대 스캔 크기",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip": "스캔되는 나무의 최대 블록 수를 설정합니다. 이 값보다 크면 나무를 벨 수 없습니다.",
   "text.autoconfig.fallingtree.option.trees.maxSize": "최대 크기",

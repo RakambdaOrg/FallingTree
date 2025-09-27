@@ -24,7 +24,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "Режим рубання",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip": "Яким чином рубатиметься дерево.\n\nINSTANTANEOUS зрубить дерево з одного разу.\nSHIFT_DOWN спускатиме дерево донизу, поки ви його рубите, щоб вам все ще довелося зламати x блоків, але без необхідності лазати за ними по всьому дереву.",
   "text.autoconfig.fallingtree.option.trees.detectionMode": "Режим виявлення",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Яким чином визначатиметься процесс виявлення дерева.\n\nWHOLE_TREE зрубить усе дерево.\nABOVE_CUT зрубить лише блоки, які знаходяться над місцем зрубу.\nABOVE_Y зрубить лише блоки, які знаходяться вище y рівня місця зрубу.",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Яким чином визначатиметься процесс виявлення дерева.\n\nWHOLE_TREE зрубить усе дерево.\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y зрубить лише блоки, які знаходяться вище y рівня місця зрубу.",
   "text.autoconfig.fallingtree.option.trees.maxScanSize": "Максимальний розмір сканування",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip": "Максимальная кількість блоків, яка иоже бути просканована у дереві. Якщо блоків більше, дерево не буде зрублено.",
   "text.autoconfig.fallingtree.option.trees.maxSize": "Максимальний розмір ствола",

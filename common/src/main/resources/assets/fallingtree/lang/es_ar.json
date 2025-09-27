@@ -27,7 +27,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode" : "Modo de ruptura",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip" : "Cómo romper el árbol.\n\nINSTANTANEOUS lo va a romper de una vez.\nFALL_ITEM lo va a romper de una vez con animación.\nFALL_BLOCK va a hacer que los troncos caigan al piso y las hojas se van a dropear como ítems.\nFALL_ALL_BLOCK va a hacer que todo el árbol caiga al piso.\nSHIFT_DOWN va a hacer que el árbol se caiga a medida que lo cortás, por lo que igual tenés que romper x bloques pero no tenés que subir al árbol para alcanzarlos.",
   "text.autoconfig.fallingtree.option.trees.detectionMode" : "Modo de detección",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip" : "Qué parte del árbol se debe cortar.\n\nWHOLE_TREE va a romper todo el árbol.\nABOVE_CUT va a romper solo los bloques que están conectados por encima del punto de corte.\nABOVE_Y va a romper solo los bloques que están por encima del valor Y del punto de corte.",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip" : "Qué parte del árbol se debe cortar.\n\nWHOLE_TREE va a romper todo el árbol.\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y va a romper solo los bloques que están por encima del valor Y del punto de corte.",
   "text.autoconfig.fallingtree.option.trees.maxScanSize" : "Tamaño máximo de escaneo",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip" : "El número máximo de bloques que se deben escanear de un árbol. Si hay más de este valor, el árbol no se va a cortar.",
   "text.autoconfig.fallingtree.option.trees.minSize" : "Tamaño mínimo",

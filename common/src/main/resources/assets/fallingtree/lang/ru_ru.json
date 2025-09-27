@@ -27,7 +27,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "Режим разрушения",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip": "Способ разрушения дерева.\n\nINSTANTANEOUS — мгновенно.\nFALL_ITEM — мгновенно с анимацией.\nFALL_BLOCK — брёвна падают как блоки, а листья — как предметы.\nFALL_ALL_BLOCK — всё дерево падает как блоки.\nSHIFT_DOWN — дерево постепенно опускается при рубке, так что вам придётся разбивать x блоков, но не придётся карабкаться за ними на дерево.",
   "text.autoconfig.fallingtree.option.trees.detectionMode": "Режим обнаружения",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Какая часть дерева будет срублена.\n\nWHOLE_TREE — всё дерево целиком.\nABOVE_CUT — блоки выше точки разрушения.\nABOVE_Y — блоки выше координаты Y точки разрушения.",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Какая часть дерева будет срублена.\n\nWHOLE_TREE — всё дерево целиком.\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y — блоки выше координаты Y точки разрушения.",
   "text.autoconfig.fallingtree.option.trees.maxScanSize": "Максимальный размер сканирования",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip": "Максимальное количество блоков для сканирования дерева. Превышение этого значения отменит рубку.",
   "text.autoconfig.fallingtree.option.trees.minSize": "Минимальный размер",

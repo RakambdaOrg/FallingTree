@@ -27,7 +27,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode" : "Break mode",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip" : "How to break the tree.\n\nINSTANTANEOUS will break it in one go.\nFALL_ITEM will break tree in one go with animation.\nFALL_BLOCK will make the logs fall on the ground and leaves will be dropped as items.\nFALL_ALL_BLOCK will make the tree fall on the ground.\nSHIFT_DOWN will make the tree fall down as you cut it, so you still have to break x blocks but don't have to climb the tree for them.",
   "text.autoconfig.fallingtree.option.trees.detectionMode" : "Detection mode",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip" : "What part of the tree should be cut.\n\nWHOLE_TREE will break the whole tree.\nABOVE_CUT will break only blocks that are connected from above the cut point.\nABOVE_Y will break only blocks that are above the y value of the cut point.",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip" : "What part of the tree should be cut.\n\nWHOLE_TREE will break the whole tree.\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y will break only blocks that are above the y value of the cut point.",
   "text.autoconfig.fallingtree.option.trees.maxScanSize" : "Max scan size",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip" : "The maximum number of blocks that should be scanned of a tree. If there's more than this value the tree won't be cut.",
   "text.autoconfig.fallingtree.option.trees.minSize" : "Min size",

@@ -27,7 +27,7 @@
   "text.autoconfig.fallingtree.option.trees.breakMode": "Chế độ phá vỡ",
   "text.autoconfig.fallingtree.option.trees.breakMode.@Tooltip": "Cách phá cây.\n\nTức_Thời sẽ phá ngay lập tức.\nVật_Phẩm_Rơi sẽ phá cây ngay lập tức với hoạt ảnh.\nKhối_Rơi sẽ làm rơi gỗ xuống đất và lá sẽ rơi dưới dạng mục.\nTất_Cả_Khối_Rơi sẽ làm cây rơi xuống đất.\nnhấn giữ Shift sẽ làm cây rơi xuống khi bạn cắt nó, vì vậy bạn vẫn phải phá x khối nhưng không cần phải leo cây để lấy chúng.",
   "text.autoconfig.fallingtree.option.trees.detectionMode": "Chế độ phát hiện",
-  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Phần nào của cây sẽ bị cắt.\n\nWHOLE_TREE sẽ phá cả cây.\nABOVE_CUT sẽ chỉ phá các khối được kết nối từ phía trên điểm cắt.\nABOVE_Y sẽ chỉ phá các khối ở trên giá trị y của điểm cắt.",
+  "text.autoconfig.fallingtree.option.trees.detectionMode.@Tooltip": "Phần nào của cây sẽ bị cắt.\n\nWHOLE_TREE sẽ phá cả cây.\nABOVE_CUT will only follow a path of logs that goes up, never down.\nABOVE_Y sẽ chỉ phá các khối ở trên giá trị y của điểm cắt.",
   "text.autoconfig.fallingtree.option.trees.maxScanSize": "Kích thước quét tối đa",
   "text.autoconfig.fallingtree.option.trees.maxScanSize.@Tooltip": "Số lượng khối tối đa nên được quét của một cây. Nếu có nhiều hơn giá trị này cây sẽ không bị cắt.",
   "text.autoconfig.fallingtree.option.trees.minSize": "Kích Thước Tối Thiểu",
