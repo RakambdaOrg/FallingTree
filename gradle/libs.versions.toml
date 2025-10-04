@@ -9,14 +9,14 @@ log4j2-version = "2.25.2"
 # Minecraft / Loaders
 minecraftVersion = "1.21.9"
 fabric-loader-version = "0.17.2"
-fabric-api-version = "0.133.14+1.21.9"
-forge-version = "1.21.8-58.0.0"
+fabric-api-version = "0.134.0+1.21.9"
+forge-version = "1.21.9-59.0.1"
 forgeEventbusValidator-version = "7.0-beta.10"
-neoforge-version = "21.9.3-beta"
+neoforge-version = "21.9.11-beta"
 
 # Mod dependencies
-modmenu-version = "15.0.0"
-clothConfigVersion = "19.0.147"
+modmenu-version = "16.0.0-rc.1"
+clothConfigVersion = "20.0.148"
 
 fabric-loom-version = "1.11+"
 forge-plugin-version = "[6.0.36,6.2)"
