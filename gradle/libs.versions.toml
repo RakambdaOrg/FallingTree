@@ -11,7 +11,7 @@ minecraftVersion = "1.21.9"
 fabric-loader-version = "0.17.2"
 fabric-api-version = "0.134.0+1.21.9"
 forge-version = "1.21.9-59.0.1"
-forgeEventbusValidator-version = "7.0-beta.10"
+forgeEventbusValidator-version = "7.0-beta.12"
 neoforge-version = "21.9.11-beta"
 
 # Mod dependencies
