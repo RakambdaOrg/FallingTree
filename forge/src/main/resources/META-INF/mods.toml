@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[59,)"
+loaderVersion = "[60,)"
 issueTrackerURL = "https://github.com/${repoUser}/${repoName}/issues"
 license = "LGPL-3.0"
 
@@ -15,7 +15,7 @@ authors = "Rakambda"
 [[dependencies.fallingtree]]
 modId = "forge"
 mandatory = true
-versionRange = "[59,)"
+versionRange = "[60,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.fallingtree]]

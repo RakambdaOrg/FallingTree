@@ -22,7 +22,7 @@ public class PlayerJoinListener{
 	
 	public void onPlayerLoggedInEvent(@Nonnull PlayerEvent.PlayerLoggedInEvent event){
 		if(event.getEntity() instanceof ServerPlayer serverPlayer){
-			var server = serverPlayer.getServer();
+			var server = serverPlayer.server;
 			if(Objects.nonNull(server) && server.isDedicatedServer()){
 				var packet = ConfigurationPacket.get(server.isDedicatedServer(), mod.getConfiguration());
 				ForgePacketHandler.INSTANCE.send(new FallingTreeConfigPacket(packet), PacketDistributor.PLAYER.with(serverPlayer));
