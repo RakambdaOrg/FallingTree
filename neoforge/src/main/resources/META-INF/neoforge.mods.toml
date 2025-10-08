@@ -15,7 +15,7 @@ file="META-INF/neoforge.accesstransformer.cfg"
 [[dependencies.fallingtree]]
 modId="neoforge"
 type="required"
-versionRange="[21.9,)"
+versionRange="[21.10,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.fallingtree]]
