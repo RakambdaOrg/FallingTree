@@ -1,16 +1,16 @@
 package fr.rakambda.fallingtree.forge;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 
 public class FallingTreeUtils{
 	@NonNull
-	public static ResourceLocation id(@NonNull String name){
-		return ResourceLocation.fromNamespaceAndPath(FallingTree.MOD_ID, name);
+	public static Identifier id(@NonNull String name){
+		return Identifier.fromNamespaceAndPath(FallingTree.MOD_ID, name);
 	}
 	
 	@NonNull
-	public static ResourceLocation idExternal(@NonNull String fullName){
-		return ResourceLocation.parse(fullName);
+	public static Identifier idExternal(@NonNull String fullName){
+		return Identifier.parse(fullName);
 	}
 }

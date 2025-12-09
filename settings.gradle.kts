@@ -4,15 +4,15 @@ pluginManagement {
     repositories {
         maven {
             name = "Fabric"
-            url = uri("https://maven.fabricmc.net/")
+            url = java.net.URI.create("https://maven.fabricmc.net/")
         }
         maven {
             name = "MinecraftForge"
-            url = uri("https://maven.minecraftforge.net")
+            url = java.net.URI.create("https://maven.minecraftforge.net")
         }
         maven {
             name = "MinecraftNeoForge"
-            url = uri("https://maven.neoforged.net/releases")
+            url = java.net.URI.create("https://maven.neoforged.net/releases")
         }
         gradlePluginPortal()
     }
@@ -25,9 +25,9 @@ pluginManagement {
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention").version("0.8.0")
-}
+//plugins {
+//    id("org.gradle.toolchains.foojay-resolver-convention").version("1.0.0")
+//}
 
 val includeFabric: String by settings
 val includeForge: String by settings

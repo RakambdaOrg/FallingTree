@@ -88,7 +88,7 @@ allprojects {
 
 def minecraftVersion = libs.versions.minecraftVersion.get()
 group = "fr.rakambda"
-archivesBaseName = "${project.modName}-${minecraftVersion}"
+def archivesBaseName = "${project.modName}-${minecraftVersion}"
 
 def relType = "release"
 def isAlpha = false

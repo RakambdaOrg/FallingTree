@@ -33,7 +33,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
@@ -190,7 +190,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	public Set<IBlock> getAllNonStrippedLogsBlocks(){
 		return getRegistryTagContent(BuiltInRegistries.BLOCK, BlockTags.LOGS)
 				.filter(block -> !Optional.of(BuiltInRegistries.BLOCK.getKey(block))
-						.map(ResourceLocation::getPath)
+						.map(Identifier::getPath)
 						.map(name -> name.startsWith("stripped"))
 						.orElse(false)
 				)
@@ -251,7 +251,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	}
 	
 	@NonNull
-	private <T> Optional<T> getRegistryElement(Registry<T> registryKey, ResourceLocation identifier){
+	private <T> Optional<T> getRegistryElement(Registry<T> registryKey, Identifier identifier){
 		return registryKey.get(identifier).map(Holder::value);
 	}
 	
