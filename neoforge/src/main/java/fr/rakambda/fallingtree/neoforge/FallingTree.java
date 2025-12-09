@@ -18,6 +18,6 @@ public class FallingTree{
 	
 	public FallingTree(@NonNull IEventBus modEventBus, @NonNull ModContainer modContainer){
 		mod = new FallingTreeCommonsImpl(modEventBus);
-		mod.registerForge(NeoForge.EVENT_BUS);
+		mod.registerNeoForge(NeoForge.EVENT_BUS);
 	}
 }
