@@ -10,17 +10,17 @@ log4j2-version = "2.25.2"
 minecraftVersion = "1.21.11"
 fabric-loader-version = "0.18.2"
 fabric-api-version = "0.139.4+1.21.11"
-forge-version = "1.21.10-60.0.18"
+forge-version = "1.21.11-61.0.1"
 forgeEventbusValidator-version = "7.0-beta.12"
-neoforge-version = "21.11.0-beta"
+neoforgeVersion = "21.11.0-beta"
 
 # Mod dependencies
 modmenu-version = "17.0.0-alpha.1"
 clothConfigVersion = "20.0.149"
 
-fabric-loom-version = "1.14-SNAPSHOT"
-forge-plugin-version = "[6.0.36,6.2)"
-neoforge-plugin-version = "7.1.9"
+fabric-loom-version = "1.13-SNAPSHOT"
+forge-plugin-version = "[6.0.46,6.2)"
+neoforge-plugin-version = "2.0.123"
 curse-version = "1.4.0"
 modrinth-version = "2.8.10"
 names-version = "0.53.0"
@@ -36,7 +36,7 @@ fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = 
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api-version" }
 forge = { group = "net.minecraftforge", name = "forge", version.ref = "forge-version" }
 forgeEventbusValidator = { group = "net.minecraftforge", name = "eventbus-validator", version.ref = "forgeEventbusValidator-version" }
-neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge-version" }
+neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforgeVersion" }
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu-version" }
 clothConfigFabric = { group = "me.shedaniel.cloth", name = "cloth-config-fabric", version.ref = "clothConfigVersion" }
 clothConfigForge = { group = "me.shedaniel.cloth", name = "cloth-config-forge", version.ref = "clothConfigVersion" }
@@ -48,7 +48,7 @@ fabric = ["fabric-loader", "fabric-api"]
 curse = { id = "com.matthewprenger.cursegradle", version.ref = "curse-version"}
 modrinth = { id = "com.modrinth.minotaur", version.ref = "modrinth-version"}
 names = { id = "com.github.ben-manes.versions", version.ref = "names-version" }
-loom = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric-loom-version" }
+loom = { id = "fabric-loom", version.ref = "fabric-loom-version" }
 forge = { id = "net.minecraftforge.gradle", version.ref = "forge-plugin-version" }
-neoforge = { id = "net.neoforged.gradle.userdev", version.ref = "neoforge-plugin-version" }
+neoforge = { id = "net.neoforged.moddev", version.ref = "neoforge-plugin-version" }
 gitVersion = { id = "com.palantir.git-version", version.ref = "git-version-plugin-version" }

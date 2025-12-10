@@ -72,6 +72,14 @@ allprojects {
         }
     }
 
+    idea {
+        module {
+            for (fileName in ["run", "out", "logs"]) {
+                excludeDirs.add(file(fileName))
+            }
+        }
+    }
+
     if (version == null || version == "unspecified") {
         try {
             def details = versionDetails()
@@ -88,7 +96,10 @@ allprojects {
 
 def minecraftVersion = libs.versions.minecraftVersion.get()
 group = "fr.rakambda"
-def archivesBaseName = "${project.modName}-${minecraftVersion}"
+
+base {
+    archivesName = "${project.modName}-${minecraftVersion}"
+}
 
 def relType = "release"
 def isAlpha = false
@@ -242,15 +253,15 @@ modrinth {
     }
 }
 
-String getFTChangelog(){
+String getFTChangelog() {
     String changelog = project.findProperty("changelog")
-    if(changelog == null){
+    if (changelog == null) {
         return null;
     }
-    if(changelog.startsWith("\"")){
+    if (changelog.startsWith("\"")) {
         changelog = changelog.substring(1)
     }
-    if(changelog.endsWith("\"")){
+    if (changelog.endsWith("\"")) {
         changelog = changelog.substring(0, changelog.length() - 1)
     }
     return changelog
