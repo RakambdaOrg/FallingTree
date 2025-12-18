@@ -8,7 +8,7 @@ log4j2-version = "2.25.3"
 
 # Minecraft / Loaders
 minecraftVersion = "1.21.11"
-fabric-loader-version = "0.18.2"
+fabric-loader-version = "0.18.3"
 fabric-api-version = "0.139.5+"
 forge-version = "1.21.11-61.0.3"
 forgeEventbusValidator-version = "7.0-beta.12"
