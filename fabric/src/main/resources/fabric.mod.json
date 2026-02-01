@@ -33,7 +33,6 @@
   "accessWidener" : "fallingtree.accesswidener",
   "depends": {
     "fabricloader": ">=0.18.2",
-    "fabric-resource-loader-v0": "*",
     "fabric-lifecycle-events-v1": "*",
     "fabric-api": ">=0.91",
     "java": ">=21"

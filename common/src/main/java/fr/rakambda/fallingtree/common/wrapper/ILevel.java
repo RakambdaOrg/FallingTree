@@ -23,8 +23,6 @@ public interface ILevel extends IWrapper{
 	boolean removeBlock(@NonNull IBlockPos blockPos, boolean b);
 	
 	void setBlock(@NonNull IBlockPos blockPos, @NonNull IBlockState blockState);
-
-    void fallBlock(@NonNull IBlockPos blockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz);
 	
 	@NonNull
 	IBiome getBiome(@NonNull IBlockPos blockPos);

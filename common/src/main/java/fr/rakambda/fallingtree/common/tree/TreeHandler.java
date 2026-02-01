@@ -5,6 +5,7 @@ import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.tree.breaking.BreakTreeTooBigException;
 import fr.rakambda.fallingtree.common.tree.breaking.BreakTreeTooSmallException;
 import fr.rakambda.fallingtree.common.tree.breaking.FallingAnimationTreeBreakingHandler;
+import fr.rakambda.fallingtree.common.tree.breaking.FallingAnimationTreeBreakingHandler.FallingAnimationTreeBreakingConfig;
 import fr.rakambda.fallingtree.common.tree.breaking.ITreeBreakingHandler;
 import fr.rakambda.fallingtree.common.tree.breaking.InstantaneousTreeBreakingHandler;
 import fr.rakambda.fallingtree.common.tree.breaking.ShiftDownTreeBreakingHandler;
@@ -106,9 +107,10 @@ public class TreeHandler{
 	private ITreeBreakingHandler getBreakingHandler(@NonNull BreakMode breakMode){
 		return switch(breakMode){
 			case INSTANTANEOUS -> InstantaneousTreeBreakingHandler.getInstance(mod);
-			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, true, true);
-			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, false, true);
-			case FALL_ALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, false, false);
+			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(true, true));
+			case FALL_ITEM_STRAIGHT -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.straightDown(true, true));
+			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(false, true));
+			case FALL_ALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(false, false));
 			case SHIFT_DOWN -> ShiftDownTreeBreakingHandler.getInstance(mod);
 		};
 	}
@@ -140,8 +142,8 @@ public class TreeHandler{
 		try{
 			return speedMultiplicand <= 0 ? null :
 					mod.getTreeBuilder().getTree(player, player.getLevel(), pos, blockState, null)
-							.map(tree -> new CacheSpeed(pos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
-							.orElse(null);
+					.map(tree -> new CacheSpeed(pos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
+					.orElse(null);
 		}
 		catch(TreeTooBigException e){
 			return null;
