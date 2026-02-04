@@ -12,12 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -74,34 +70,6 @@ public class LevelWrapper implements ILevel{
 	@Override
 	public void setBlock(@NonNull IBlockPos blockPos, @NonNull IBlockState blockState){
 		raw.setBlock((BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), 1);
-	}
-	
-	@Override
-	public void fallBlock(@NonNull IBlockPos logBlockPos, boolean drop, double dx, double dy, double dz, double vx, double vy, double vz){
-		var entity = createFallingEntity(logBlockPos, dx, dy, dz);
-		if(!drop){
-			entity.disableDrop();
-		}
-		entity.setDeltaMovement(vx, vy, vz);
-		raw.addFreshEntity(entity);
-	}
-	
-	@NonNull
-	private FallingBlockEntity createFallingEntity(@NonNull IBlockPos logBlockPos, double dx, double dy, double dz){
-		var x = (double) logBlockPos.getX() + dx;
-		var y = (double) logBlockPos.getY() + dy;
-		var z = (double) logBlockPos.getZ() + dz;
-		var blockState = (BlockState) getBlockState(logBlockPos).getRaw();
-		var newBlockState = blockState.hasProperty(BlockStateProperties.WATERLOGGED) ? blockState.setValue(BlockStateProperties.WATERLOGGED, false) : blockState;
-		
-		var entity = new FallingBlockEntity(EntityType.FALLING_BLOCK, (Level) raw);
-		entity.blocksBuilding = true;
-		entity.setPos(x, y, z);
-		entity.xo = x;
-		entity.yo = y;
-		entity.zo = z;
-		entity.blockState = newBlockState;
-		return entity;
 	}
 	
 	@Override

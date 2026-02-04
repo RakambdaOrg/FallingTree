@@ -1,27 +1,55 @@
 package fr.rakambda.fallingtree.common.tree.breaking;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.common.tree.AbortedResult;
 import fr.rakambda.fallingtree.common.tree.IBreakAttemptResult;
 import fr.rakambda.fallingtree.common.tree.SuccessResult;
 import fr.rakambda.fallingtree.common.tree.Tree;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
-import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
+import fr.rakambda.fallingtree.common.wrapper.IRandomSource;
+import fr.rakambda.fallingtree.common.wrapper.IServerLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jspecify.annotations.NonNull;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 @Log4j2
 @RequiredArgsConstructor
 public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler{
-	private final static Map<Map.Entry<Boolean, Boolean>, FallingAnimationTreeBreakingHandler> INSTANCE = new ConcurrentHashMap<>();
+	public record FallingAnimationTreeBreakingConfig(
+			boolean dropLogsAsItems,
+			boolean dropLeavesAsItems,
+			Function<IRandomSource, Double> vx, Function<IRandomSource, Double> vy, Function<IRandomSource, Double> vz
+	){
+		public static FallingAnimationTreeBreakingConfig withRandomSpread(boolean dropLogsAsItems, boolean dropLeavesAsItems){
+			return new FallingAnimationTreeBreakingConfig(
+					dropLogsAsItems,
+					dropLeavesAsItems,
+					rng -> (rng.nextDouble() - 0.5) * 0.4,
+					rng -> 0D,
+					rng -> (rng.nextDouble() - 0.5) * 0.4
+			);
+		}
+		
+		public static FallingAnimationTreeBreakingConfig straightDown(boolean dropLogsAsItems, boolean dropLeavesAsItems){
+			return new FallingAnimationTreeBreakingConfig(
+					dropLogsAsItems,
+					dropLeavesAsItems,
+					rng -> 0D,
+					rng -> 0D,
+					rng -> 0D
+			);
+		}
+	}
+	
+	private final static Map<FallingAnimationTreeBreakingConfig, FallingAnimationTreeBreakingHandler> INSTANCE = new ConcurrentHashMap<>();
 	
 	private final FallingTreeCommon<?> mod;
-	private final boolean dropLogsAsItems;
-	private final boolean dropLeavesAsItems;
+	private final FallingAnimationTreeBreakingConfig config;
 	private final LeafForceBreaker leafForceBreaker;
 	
 	@Override
@@ -29,6 +57,9 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var level = tree.getLevel();
+		if(!(level instanceof IServerLevel serverLevel)){
+			return AbortedResult.NOT_SERVER;
+		}
 		var toolHandler = new ToolDamageHandler(tool,
 				mod.getConfiguration().getTools().getDamageMultiplicand(),
 				mod.getConfiguration().getTools().getDurabilityMode(),
@@ -59,24 +90,27 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 					}
 					
 					player.awardItemUsed(tool.getItem());
-					if(dropLogsAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
+					if(config.dropLogsAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
 						logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool, !part.treePartType().isIncludeInTree() || lootHandler.breakNewTrunk());
 					}
 					
-					level.fallBlock(logBlockPos, !dropLogsAsItems,
-							0, 0.5, 0,
-							(level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
+					var random = level.getRandom();
+					serverLevel.fallBlock(
+							logBlockPos,
+							!config.dropLogsAsItems,
+							config.vx.apply(random),
+							config.vy.apply(random),
+							config.vx.apply(random)
+					);
 					
-					fallLeaf(scannedLeaves, player, level, 5, logBlockPos.below());
-					fallLeaf(scannedLeaves, player, level, 5, logBlockPos.north());
-					fallLeaf(scannedLeaves, player, level, 5, logBlockPos.east());
-					fallLeaf(scannedLeaves, player, level, 5, logBlockPos.south());
-					fallLeaf(scannedLeaves, player, level, 5, logBlockPos.west());
-					fallLeaf(scannedLeaves, player, level, 5, logBlockPos.above());
+					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.below());
+					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.north());
+					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.east());
+					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.south());
+					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.west());
+					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.above());
 					
-					var isRemoved = level.removeBlock(logBlockPos, false);
-					
-					return part.treePartType().isBreakable() && isRemoved ? 1 : 0;
+					return part.treePartType().isBreakable() ? 1 : 0;
 				})
 				.sum();
 		
@@ -94,7 +128,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		return SuccessResult.DO_NOT_CANCEL;
 	}
 	
-	private void fallLeaf(LinkedList<IBlockPos> scannedLeaves, @NonNull IPlayer player, @NonNull ILevel level, int distance, @NonNull IBlockPos blockPos){
+	private void fallLeaf(LinkedList<IBlockPos> scannedLeaves, @NonNull IPlayer player, @NonNull IServerLevel serverLevel, int distance, @NonNull IBlockPos blockPos){
 		if(!mod.getConfiguration().getTrees().isLeavesBreaking()){
 			return;
 		}
@@ -102,36 +136,39 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 			return;
 		}
 		
-		fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.below());
+		fallLeaf(scannedLeaves, player, serverLevel, distance - 1, blockPos.below());
 		
 		if(scannedLeaves.contains(blockPos)){
 			return;
 		}
 		scannedLeaves.add(blockPos);
 		
-		var blockState = level.getBlockState(blockPos);
+		var blockState = serverLevel.getBlockState(blockPos);
 		if(!mod.isLeafBlock(blockState.getBlock())){
 			return;
 		}
 		
-		if(dropLeavesAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
-			blockState.getBlock().playerDestroy(level, player, blockPos, blockState, level.getBlockEntity(blockPos), mod.getEmptyItemStack(), true);
+		if(config.dropLeavesAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
+			blockState.getBlock().playerDestroy(serverLevel, player, blockPos, blockState, serverLevel.getBlockEntity(blockPos), mod.getEmptyItemStack(), true);
 		}
-		level.fallBlock(blockPos, !dropLeavesAsItems,
-				0, 0.5, 0,
-				(level.getRandom().nextDouble() - 0.5) * 0.4, 0, (level.getRandom().nextDouble() - 0.5) * 0.4);
-		level.removeBlock(blockPos, false);
+		var random = serverLevel.getRandom();
+		serverLevel.fallBlock(
+				blockPos,
+				!config.dropLeavesAsItems,
+				config.vx.apply(random),
+				config.vy.apply(random),
+				config.vx.apply(random)
+		);
 		
-		fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.north());
-		fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.east());
-		fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.south());
-		fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.west());
-		
-		fallLeaf(scannedLeaves, player, level, distance - 1, blockPos.above());
+		fallLeaf(scannedLeaves, player, serverLevel, distance - 1, blockPos.north());
+		fallLeaf(scannedLeaves, player, serverLevel, distance - 1, blockPos.east());
+		fallLeaf(scannedLeaves, player, serverLevel, distance - 1, blockPos.south());
+		fallLeaf(scannedLeaves, player, serverLevel, distance - 1, blockPos.west());
+		fallLeaf(scannedLeaves, player, serverLevel, distance - 1, blockPos.above());
 	}
 	
 	@NonNull
-	public static FallingAnimationTreeBreakingHandler getInstance(@NonNull FallingTreeCommon<?> mod, boolean dropLogsAsItems, boolean dropLeavesAsItems){
-		return INSTANCE.computeIfAbsent(Map.entry(dropLogsAsItems, dropLeavesAsItems), key -> new FallingAnimationTreeBreakingHandler(mod, key.getKey(), key.getValue(), new LeafForceBreaker(mod)));
+	public static FallingAnimationTreeBreakingHandler getInstance(@NonNull FallingTreeCommon<?> mod, FallingAnimationTreeBreakingConfig config){
+		return INSTANCE.computeIfAbsent(config, key -> new FallingAnimationTreeBreakingHandler(mod, config, new LeafForceBreaker(mod)));
 	}
 }
