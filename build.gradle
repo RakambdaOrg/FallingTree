@@ -22,11 +22,18 @@ allprojects {
     apply plugin: "java"
     apply plugin: "idea"
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(25)
-
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
         options.compilerArgs = ["-Xlint:deprecation"]
+        options.deprecation = true
+        options.release.set(25)
+
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
+
+        javaToolchains {
+            version = JavaLanguageVersion.of(25)
+        }
     }
 
     dependencies {

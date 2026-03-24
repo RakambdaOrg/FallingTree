@@ -1,15 +1,17 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "fr.rakambda.fallingtree.fabric.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
+  "required" : true,
+  "package" : "fr.rakambda.fallingtree.fabric.mixin",
+  "compatibilityLevel" : "JAVA_25",
+  "mixins" : [
     "AbstractBlockMixin",
     "LevelMixin"
   ],
-  "client": [],
-  "server": [],
-  "injectors": {
-    "defaultRequire": 1
+  "client" : [],
+  "server" : [],
+  "injectors" : {
+    "defaultRequire" : 1
+  },
+  "overwrites" : {
+    "requireAnnotations" : true
   }
 }

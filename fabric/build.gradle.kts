@@ -31,12 +31,6 @@ tasks {
             expand(project.properties)
         }
     }
-
-    compileJava {
-        options.encoding = "UTF-8"
-        options.isDeprecation = true
-        options.release.set(25)
-    }
 }
 
 loom {
@@ -45,7 +39,7 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        create("fallingtree") {
+        register("fallingtree") {
             sourceSet(sourceSets["main"])
             sourceSet(sourceSets["client"])
         }
