@@ -194,6 +194,7 @@ tasks.register('curseforge', net.darkhax.curseforgegradle.TaskPublishCurseForge)
     }
     mainFile.addOptional("cloth-config")
 
+    mainFile.addEnvironment("Client")
     mainFile.addEnvironment("Server")
     mainFile.addJavaVersion("Java 25")
 
