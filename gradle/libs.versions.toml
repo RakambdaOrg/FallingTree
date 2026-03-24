@@ -12,7 +12,7 @@ fabric-loader-version = "0.18.4"
 fabric-api-version = "0.144.0+26.1"
 forge-version = "1.21.11-61.0.7"
 forgeEventbusValidator-version = "7.0-beta.12"
-neoforgeVersion = "21.11.0-beta"
+neoforgeVersion = "26.1.0.1-beta"
 
 # Mod dependencies
 modmenu-version = "18.0.0-alpha.6"
@@ -20,7 +20,7 @@ clothConfigVersion = "20.0.149"
 
 fabric-loom-version = "1.15-SNAPSHOT"
 forge-plugin-version = "[6.0.46,6.2)"
-neoforge-plugin-version = "2.0.140"
+neoforge-plugin-version = "2.0.141"
 curse-version = "1.1.28"
 modrinth-version = "2.9.0"
 names-version = "0.53.0"
