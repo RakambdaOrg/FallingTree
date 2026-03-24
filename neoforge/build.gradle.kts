@@ -7,7 +7,6 @@ neoForge {
     val modId: String by project
 
     version = libs.versions.neoforgeVersion.get()
-    accessTransformers.from(project.files("src/main/resources/META-INF/neoforge.accesstransformer.cfg"))
 
     runs {
         configureEach {
@@ -60,7 +59,7 @@ configurations.runtimeClasspath {
 dependencies {
     implementation(project(":common"))
 
-    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${libs.versions.clothConfigVersion.get()}")
+//    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${libs.versions.clothConfigVersion.get()}")
 }
 
 tasks {

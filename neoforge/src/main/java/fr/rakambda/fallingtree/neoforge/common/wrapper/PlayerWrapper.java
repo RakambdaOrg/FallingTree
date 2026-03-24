@@ -36,7 +36,7 @@ public class PlayerWrapper implements IPlayer{
 			}
 		}
 		else{
-			raw.displayClientMessage(text, true);
+			raw.sendOverlayMessage(text);
 		}
 	}
 	
@@ -76,7 +76,7 @@ public class PlayerWrapper implements IPlayer{
 	@Override
 	@NonNull
 	public Set<String> getTags(){
-		return raw.getTags();
+		return raw.entityTags();
 	}
 	
 	@Override
