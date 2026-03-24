@@ -30,12 +30,11 @@
   "mixins": [
     "fallingtree.mixins.json"
   ],
-  "accessWidener" : "fallingtree.accesswidener",
   "depends": {
-    "fabricloader": ">=0.18.2",
+    "fabricloader": ">=0.18.4",
     "fabric-lifecycle-events-v1": "*",
-    "fabric-api": ">=0.91",
-    "java": ">=21"
+    "fabric-api": ">=0.144",
+    "java": ">=25"
   },
   "suggests": {
     "modmenu": "*",

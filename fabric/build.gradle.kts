@@ -4,22 +4,21 @@ plugins {
 
 dependencies {
     minecraft(libs.minecraft)
-    mappings(loom.officialMojangMappings())
 
-    modImplementation(libs.bundles.fabric) {
+    implementation(libs.bundles.fabric) {
         exclude(module = "fabric-api-deprecated")
     }
 
     implementation(project(":common"))
 
-    modImplementation(libs.modmenu) {
+    api(libs.modmenu) {
         exclude(group = "net.fabricmc.fabric-api")
     }
 
-    modImplementation(libs.clothConfigFabric) {
-        exclude(group = "net.fabricmc.fabric-api")
-        exclude(module = "modmenu")
-    }
+//    modImplementation(libs.clothConfigFabric) {
+//        exclude(group = "net.fabricmc.fabric-api")
+//        exclude(module = "modmenu")
+//    }
 }
 
 tasks {
@@ -32,12 +31,6 @@ tasks {
             expand(project.properties)
         }
     }
-
-    compileJava {
-        options.encoding = "UTF-8"
-        options.isDeprecation = true
-        options.release.set(21)
-    }
 }
 
 loom {
@@ -46,7 +39,7 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        create("fallingtree") {
+        register("fallingtree") {
             sourceSet(sourceSets["main"])
             sourceSet(sourceSets["client"])
         }
@@ -55,8 +48,6 @@ loom {
     mixin {
         defaultRefmapName.set("fabric.${modId}.refmap.json")
     }
-
-    accessWidenerPath.set(file("src/main/resources/fallingtree.accesswidener"))
 
     runs {
         create("FTFabricClient") {

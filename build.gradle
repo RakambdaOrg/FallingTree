@@ -22,15 +22,22 @@ allprojects {
     apply plugin: "java"
     apply plugin: "idea"
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
         options.compilerArgs = ["-Xlint:deprecation"]
+        options.deprecation = true
+        options.release.set(25)
+
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
+
+        javaToolchains {
+            version = JavaLanguageVersion.of(25)
+        }
     }
 
     dependencies {
-        implementation("org.jspecify:jspecify:1.0.0") //TODO Use version catalog
+        implementation(libs.jspecify)
         compileOnly(libs.lombok)
         annotationProcessor(libs.lombok)
     }
@@ -106,7 +113,7 @@ def isAlpha = false
 if (version.contains("b")) {
     relType = "beta"
 }
-if (version.contains("a") || version.contains("dev")) {
+if (version.contains("a") || version.contains("dev") || version.contains("snapshot")) {
     relType = "alpha"
     isAlpha = true
 }
@@ -182,7 +189,7 @@ curseforge {
             addGameVersion(minecraftVersion)
         }
 
-        addGameVersion("Java 21")
+        addGameVersion("Java 25")
         if (project.includeFabric.toBoolean()) {
             addGameVersion("Fabric")
         }

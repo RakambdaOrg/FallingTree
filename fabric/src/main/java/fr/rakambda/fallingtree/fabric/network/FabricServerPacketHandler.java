@@ -14,7 +14,7 @@ public class FabricServerPacketHandler implements ServerPacketHandler{
 	
 	@Override
 	public void registerServer(){
-		PayloadTypeRegistry.configurationS2C().register(FallingTreeConfigPacket.TYPE, FallingTreeConfigPacket.CODEC);
+		PayloadTypeRegistry.clientboundConfiguration().register(FallingTreeConfigPacket.TYPE, FallingTreeConfigPacket.CODEC);
 		ServerConfigurationConnectionEvents.CONFIGURE.register(((handler, server) -> {
 			var packet = ConfigurationPacket.get(server.isDedicatedServer(), mod.getConfiguration());
 			ServerConfigurationNetworking.send(handler, new FallingTreeConfigPacket(packet));
