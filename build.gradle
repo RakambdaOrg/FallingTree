@@ -174,54 +174,46 @@ static def extractMainVersion(String ver) {
     return null;
 }
 
-curseforge {
-    apiKey = "${project.findProperty("curseforgeApiKey")}"
-    project {
-        id = "${project.curseforge_project_id}"
-        changelogType = "markdown"
+tasks.register('curseforge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    group("Modding")
+    dependsOn("buildJar")
 
-        if (isAlpha) {
-            def extracted = extractMainVersion(minecraftVersion)
-            if (extracted != null) {
-                addGameVersion(extracted + "-Snapshot")
-            }
-        } else {
-            addGameVersion(minecraftVersion)
-        }
+    apiToken = "${project.findProperty("curseforgeApiKey")}"
+    disableVersionDetection()
 
-        addGameVersion("Java 25")
-        if (project.includeFabric.toBoolean()) {
-            addGameVersion("Fabric")
-        }
-        if (project.includeForge.toBoolean()) {
-            addGameVersion("Forge")
-        }
-        if (project.includeNeoForge.toBoolean()) {
-            addGameVersion("NeoForge")
-        }
-        changelog = getFTChangelog() ?: "No changelog provided"
-        releaseType = relType
-        mainArtifact(jar) {
-            displayName = "${minecraftVersion}-${project.version}"
-        }
-        relations {
-            if (project.includeFabric.toBoolean()) {
-                optionalDependency("fabric-api") //It's actually required
-                optionalDependency("modmenu")
-                optionalDependency("cloth-config")
-            }
+    def mainFile = upload(project.curseforge_project_id, jar)
+    mainFile.changelog = getFTChangelog() ?: "No changelog provided"
+    mainFile.changelogType = "markdown"
+    mainFile.displayName = "${minecraftVersion}-${project.version}"
+    mainFile.releaseType = relType
 
-            optionalDependency("cloth-config")
-        }
+    if (project.includeFabric.toBoolean()) {
+        mainFile.addOptional("fabric-api") //It's actually required
+        mainFile.addOptional("modmenu")
+        mainFile.addOptional("cloth-config")
     }
-    options {
-        javaVersionAutoDetect = false
-        javaIntegration = false
-        forgeGradleIntegration = false
+    mainFile.addOptional("cloth-config")
+
+    mainFile.addEnvironment("Server")
+    mainFile.addJavaVersion("Java 25")
+
+    if (isAlpha) {
+        def extracted = extractMainVersion(minecraftVersion)
+        if (extracted != null) {
+            mainFile.addGameVersion(extracted + "-Snapshot")
+        }
+    } else {
+        mainFile.addGameVersion(minecraftVersion)
     }
 
-    afterEvaluate {
-        tasks.named("curseforge${project.curseforge_project_id}").get().dependsOn("buildJar")
+    if (project.includeFabric.toBoolean()) {
+        mainFile.addModLoader("Fabric")
+    }
+    if (project.includeForge.toBoolean()) {
+        mainFile.addModLoader("Forge")
+    }
+    if (project.includeNeoForge.toBoolean()) {
+        mainFile.addModLoader("NeoForge")
     }
 }
 
