@@ -31,7 +31,7 @@ public class PlayerJoinListener{
 				log.info("Player connected to a local world, not setting up proxy config");
 			}
 			
-			if(ModList.get().isLoaded("veinminer")){
+			if(ModList.isLoaded("veinminer")){
 				new PlayerWrapper(event.getEntity()).sendMessage(mod.translate("chat.fallingtree.veinminer_incompatibility"), NotificationMode.CHAT);
 			}
 		}

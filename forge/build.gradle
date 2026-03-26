@@ -4,41 +4,41 @@ plugins {
 
 minecraft {
     mappings channel: "official", version: "${libs.versions.minecraftVersion.get()}"
-    copyIdeResources = true
-    reobf = false
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformers.from(layout.projectDirectory.file('src/main/resources/META-INF/accesstransformer.cfg'))
 
     runs {
         configureEach {
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "error"
-            property "eventbus.api.strictRuntimeChecks", "true"
+            systemProperty "forge.enabledGameTestNamespaces", "fallingtree"
+            systemProperty "forge.logging.markers", "REGISTRIES"
+            systemProperty "forge.logging.console.level", "error"
+            systemProperty "eventbus.api.strictRuntimeChecks", "true"
         }
 
         client {
-            taskName "runFTForgeClient"
-            workingDirectory project.file("./run/client")
+            workingDir = layout.projectDirectory.dir("./run/client")
         }
 
         server {
-            taskName "runFTForgeServer"
-            workingDirectory project.file("./run/server")
+            workingDir = layout.projectDirectory.dir("./run/server")
             args "--nogui"
         }
 
         gameTestServer {
-            taskName "runFTForgeTestServer"
-            workingDirectory project.file("./run/test")
-            property "forge.enabledGameTestNamespaces", "fallingtree"
+            workingDir = layout.projectDirectory.dir("./run/test")
         }
 
         data {
-            taskName "runFTForgeData"
-            workingDirectory project.file("./run/data")
-            args '--mod', 'fallingtree', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+            workingDir = layout.projectDirectory.dir("./run/data")
+            args '--mod', 'fallingtree', '--all', '--output', layout.projectDirectory.dir('src/generated/resources/'), '--existing', layout.projectDirectory.dir('src/main/resources/')
         }
     }
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
 }
 
 configurations {
@@ -46,22 +46,13 @@ configurations {
     implementation.extendsFrom library
 }
 
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
-
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft(libs.forge)
+    implementation(minecraft.dependency(libs.forge))
     library(project(":common"))
 
 //    implementation("me.shedaniel.cloth:cloth-config-forge:${libs.versions.clothConfigVersion.get()}")
-
-    // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transitive dependencies request 6.0+
-    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 
     annotationProcessor(libs.forgeEventbusValidator)
 }

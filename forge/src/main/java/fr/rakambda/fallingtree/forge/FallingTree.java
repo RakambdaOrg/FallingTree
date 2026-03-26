@@ -28,7 +28,7 @@ public class FallingTree{
 		// 	}
 		// }
 		
-		if(ModList.get().isLoaded("veinminer")){
+		if(ModList.isLoaded("veinminer")){
 			log.warn("VeinMiner is present, this may lead to incompatibilities. It is recommended to run the following command: /veinminer groups remove Wood");
 		}
 		

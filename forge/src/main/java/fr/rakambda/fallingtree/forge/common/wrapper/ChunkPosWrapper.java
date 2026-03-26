@@ -16,11 +16,11 @@ public class ChunkPosWrapper implements IChunkPos{
 	
 	@Override
 	public int getX(){
-		return raw.x;
+		return raw.x();
 	}
 	
 	@Override
 	public int getZ(){
-		return raw.z;
+		return raw.z();
 	}
 }

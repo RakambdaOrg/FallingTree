@@ -87,6 +87,12 @@ allprojects {
         }
     }
 
+    pluginManager.withPlugin("idea") {
+        if (tasks.findByName("idePostSync") == null) {
+            tasks.register("idePostSync")
+        }
+    }
+
     if (version == null || version == "unspecified") {
         try {
             def details = versionDetails()
