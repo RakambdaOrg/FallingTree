@@ -8,18 +8,18 @@ log4j2-version = "2.25.3"
 
 # Minecraft / Loaders
 minecraftVersion = "26.1"
-fabric-loader-version = "0.18.4"
-fabric-api-version = "0.144.0+26.1"
-forge-version = "1.21.11-61.0.7"
-forgeEventbusValidator-version = "7.0-beta.12"
-neoforgeVersion = "26.1.0.1-beta"
+fabric-loader-version = "0.18.5"
+fabric-api-version = "0.144.3+26.1"
+forge-version = "26.1-62.0.3"
+forgeEventbusValidator-version = "7.0.1"
+neoforgeVersion = "26.1.0.5-beta"
 
 # Mod dependencies
-modmenu-version = "18.0.0-alpha.6"
-clothConfigVersion = "20.0.149"
+modmenu-version = "18.0.0-alpha.8"
+clothConfigVersion = "26.1.154"
 
 fabric-loom-version = "1.15-SNAPSHOT"
-forge-plugin-version = "[6.0.46,6.2)"
+forge-plugin-version = "[7.0.17,8)"
 neoforge-plugin-version = "2.0.141"
 curse-version = "1.1.28"
 modrinth-version = "2.9.0"

@@ -15,10 +15,10 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
     }
 
-//    modImplementation(libs.clothConfigFabric) {
-//        exclude(group = "net.fabricmc.fabric-api")
-//        exclude(module = "modmenu")
-//    }
+    implementation(libs.clothConfigFabric) {
+        exclude(group = "net.fabricmc.fabric-api")
+        exclude(module = "modmenu")
+    }
 }
 
 tasks {
