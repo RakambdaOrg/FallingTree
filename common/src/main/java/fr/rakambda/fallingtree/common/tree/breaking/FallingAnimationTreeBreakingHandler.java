@@ -5,6 +5,7 @@ import fr.rakambda.fallingtree.common.tree.AbortedResult;
 import fr.rakambda.fallingtree.common.tree.IBreakAttemptResult;
 import fr.rakambda.fallingtree.common.tree.SuccessResult;
 import fr.rakambda.fallingtree.common.tree.Tree;
+import fr.rakambda.fallingtree.common.tree.TreePartType;
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.IPlayer;
 import fr.rakambda.fallingtree.common.wrapper.IRandomSource;
@@ -78,41 +79,52 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		var scannedLeaves = new LinkedList<IBlockPos>();
 		var wantToBreakCount = Math.min(tree.getBreakableCount(), toolHandler.getMaxBreakCount());
 		var lootHandler = new LootHandler(wantToBreakCount, mod.getConfiguration().getTrees().getTrunkLootPercentage());
-		var brokenCount = tree.getParts().stream()
-				.sorted(mod.getConfiguration().getTrees().getBreakOrder().getComparator())
-				.limit(wantToBreakCount)
-				.mapToInt(part -> {
-					var logBlockPos = part.blockPos();
-					var logState = level.getBlockState(logBlockPos);
-					
-					if(!tree.getHitPos().equals(logBlockPos) && !mod.checkCanBreakBlock(level, logBlockPos, logState, player)){
-						return 0;
-					}
-					
-					player.awardItemUsed(tool.getItem());
-					if(config.dropLogsAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
-						logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool, !part.treePartType().isIncludeInTree() || lootHandler.breakNewTrunk());
-					}
-					
-					var random = level.getRandom();
-					serverLevel.fallBlock(
-							logBlockPos,
-							!config.dropLogsAsItems,
-							config.vx.apply(random),
-							config.vy.apply(random),
-							config.vx.apply(random)
-					);
-					
-					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.below());
-					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.north());
-					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.east());
-					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.south());
-					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.west());
-					fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.above());
-					
-					return part.treePartType().isBreakable() ? 1 : 0;
-				})
-				.sum();
+		var brokenCount = 0;
+		var breakablePartsLeft = wantToBreakCount;
+        var breakableParts = tree.getParts().stream().sorted(mod.getConfiguration().getTrees().getBreakOrder().getComparator()).toList();
+		for(var part : breakableParts){
+			if(part.treePartType().isBreakable()){
+				if(breakablePartsLeft == 0){
+					break;
+				}
+				breakablePartsLeft--;
+			}
+			else if(part.treePartType() != TreePartType.LOG_START || breakablePartsLeft == 0){
+				continue;
+			}
+			
+			var logBlockPos = part.blockPos();
+			var logState = level.getBlockState(logBlockPos);
+			
+			if(!tree.getHitPos().equals(logBlockPos) && !mod.checkCanBreakBlock(level, logBlockPos, logState, player)){
+				continue;
+			}
+			
+			player.awardItemUsed(tool.getItem());
+			if(config.dropLogsAsItems && (!player.isCreative() || mod.getConfiguration().isLootInCreative())){
+				logState.getBlock().playerDestroy(level, player, logBlockPos, logState, level.getBlockEntity(logBlockPos), tool, !part.treePartType().isIncludeInTree() || lootHandler.breakNewTrunk());
+			}
+			
+			var random = level.getRandom();
+			serverLevel.fallBlock(
+					logBlockPos,
+					!config.dropLogsAsItems,
+					config.vx.apply(random),
+					config.vy.apply(random),
+					config.vx.apply(random)
+			);
+			
+			fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.below());
+			fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.north());
+			fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.east());
+			fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.south());
+			fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.west());
+			fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.above());
+			
+			if(part.treePartType().isBreakable()){
+				brokenCount++;
+			}
+		}
 		
 		var toolDamage = toolHandler.getActualDamage(brokenCount) - 1;
 		if(toolDamage > 0){
