@@ -46,6 +46,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import org.jspecify.annotations.NonNull;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -68,7 +69,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	private final TagKey<Enchantment> chopperEnchantmentTag;
 	@Getter
 	private final Map<BreakMode, TagKey<Enchantment>> breakModeChopperEnchantmentTag;
-	private final List<BlockEvent.BreakEvent> breakEvents;
+	private final List<BreakBlockEvent> breakEvents;
 	
 	private final Map<IBlock, Boolean> isLogBlockCache;
 	private final Map<IBlock, Boolean> isLeafBlockCache;
@@ -226,9 +227,9 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	
 	@Override
 	public boolean isOwnEvent(@NonNull IBlockBreakEvent event){
-		var result = breakEvents.contains((BlockEvent.BreakEvent) event.getRaw()) || event instanceof FallingTreeBlockBreakEvent;
+		var result = breakEvents.contains((BreakBlockEvent) event.getRaw()) || event instanceof FallingTreeBlockBreakEvent;
 		if(result){
-			breakEvents.remove((BlockEvent.BreakEvent) event.getRaw());
+			breakEvents.remove((BreakBlockEvent) event.getRaw());
 		}
 		return result;
 	}
