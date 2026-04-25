@@ -12,7 +12,7 @@ fabric-loader-version = "0.19.2"
 fabric-api-version = "0.145.4+26.1.2"
 forge-version = "26.1.2-64.0.5"
 forgeEventbusValidator-version = "7.0.5"
-neoforgeVersion = "26.1.2.1-beta"
+neoforgeVersion = "26.1.2.29-beta"
 
 # Mod dependencies
 modmenu-version = "18.0.0-alpha.8"

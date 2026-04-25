@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import org.jspecify.annotations.NonNull;
 import javax.annotation.Nonnull;
 
@@ -44,7 +45,7 @@ public class BlockBreakListener{
 	}
 	
 	@SubscribeEvent
-	public void onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
+	public void onBlockBreakEvent(@Nonnull BreakBlockEvent event){
 		if(event.isCanceled()){
 			return;
 		}

@@ -20,8 +20,6 @@ import fr.rakambda.fallingtree.common.config.real.cloth.ClothHookBase;
 import fr.rakambda.fallingtree.common.wrapper.IComponent;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.network.chat.Component;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.jspecify.annotations.NonNull;
@@ -52,7 +50,6 @@ public class ClothConfigHook extends ClothHookBase{
 		});
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	public void fillConfigScreen(@NonNull ConfigBuilder builder, @NonNull Configuration config){
 		var reverseSneakingEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName(null, "sneakMode")), SneakMode.class, config.getSneakMode())
@@ -91,7 +88,6 @@ public class ClothConfigHook extends ClothHookBase{
 		fillEnchantmentConfigScreen(builder, config.getEnchantment());
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	private void fillTreesConfigScreen(@NonNull ConfigBuilder builder, @NonNull TreeConfiguration config){
 		var breakModeEntry = builder.entryBuilder()
 				.startEnumSelector(translatable(getFieldName("trees", "breakMode")), BreakMode.class, config.getBreakMode())
@@ -294,7 +290,6 @@ public class ClothConfigHook extends ClothHookBase{
 		trees.addEntry(trunkLootPercentageEntry);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	private void fillToolsConfigScreen(@NonNull ConfigBuilder builder, @NonNull ToolConfiguration config){
 		var ignoreToolsEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("tools", "ignoreTools")), config.isIgnoreTools())
@@ -362,7 +357,6 @@ public class ClothConfigHook extends ClothHookBase{
 		tools.addEntry(forceToolUsageEntry);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	private void fillPlayerConfigScreen(@NonNull ConfigBuilder builder, @NonNull PlayerConfiguration config){
 		var allowedTagsEntry = builder.entryBuilder()
 				.startStrList(translatable(getFieldName("player", "allowedTags")), config.getAllowedTags())
@@ -375,7 +369,6 @@ public class ClothConfigHook extends ClothHookBase{
 		tools.addEntry(allowedTagsEntry);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	private void fillEnchantmentConfigScreen(@NonNull ConfigBuilder builder, @NonNull EnchantmentConfiguration config){
 		var requireEnchantmentEntry = builder.entryBuilder()
 				.startBooleanToggle(translatable(getFieldName("enchantment", "requireEnchantment")), config.isRequireEnchantment())
