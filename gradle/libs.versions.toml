@@ -4,7 +4,7 @@
 lombok-version = "1.18.46"
 jspecify-version = "1.0.0"
 gson-version = "2.14.0"
-log4j2-version = "2.25.4"
+log4j2-version = "2.26.0"
 
 # Minecraft / Loaders
 minecraftVersion = "26.1.2"
