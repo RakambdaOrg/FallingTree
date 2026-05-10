@@ -15,7 +15,7 @@ forgeEventbusValidator-version = "7.0.5"
 neoforgeVersion = "26.1.2.29-beta"
 
 # Mod dependencies
-modmenu-version = "18.0.0-alpha.8"
+modmenu-version = "19.0.0-alpha.1"
 clothConfigVersion = "26.1.154"
 
 fabric-loom-version = "1.16.1"
