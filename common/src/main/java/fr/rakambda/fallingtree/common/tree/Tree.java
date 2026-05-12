@@ -5,6 +5,7 @@ import fr.rakambda.fallingtree.common.wrapper.ILevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -27,6 +28,7 @@ public class Tree{
 	@Getter
 	private final Set<TreePart> parts = new LinkedHashSet<>();
 	private final Map<TreePartType, Integer> partCounts = new LinkedHashMap<>();
+	private final ExtremumBlocks extremumBlocks = new ExtremumBlocks();
 	
 	public void addPart(@NonNull TreePart treePart){
 		parts.add(treePart);
@@ -36,6 +38,7 @@ public class Tree{
 			}
 			return value + 1;
 		});
+		extremumBlocks.update(treePart);
 	}
 	
 	public void removePartsHigherThan(int y, @NonNull TreePartType partType){
@@ -99,18 +102,78 @@ public class Tree{
 		return getPartCount(TreePartType.LOG);
 	}
 	
+	private static class ExtremumBlocks {
+		
+		@Nullable
+		private TreePart topMostLog;
+		
+		@Nullable
+		private TreePart bottomMostLog;
+		
+		@Nullable
+		private TreePart logStart;
+		
+		private void updateTopMostLog(@NonNull TreePart candidate){
+			if(this.topMostLog == null){
+				this.topMostLog = candidate;
+				return;
+			}
+			
+			if(candidate.treePartType().isBreakable()
+					&& candidate.treePartType().isLog()
+					&& candidate.blockPos().getY() > this.topMostLog.blockPos().getY()){
+				this.topMostLog = candidate;
+			}
+		}
+		
+		private void updateBottomMostLog(@NonNull TreePart candidate){
+			if(this.bottomMostLog == null){
+				this.bottomMostLog = candidate;
+				return;
+			}
+			
+			if(candidate.treePartType().isBreakable()
+					&& candidate.treePartType().isLog()
+					&& candidate.blockPos().getY() < this.bottomMostLog.blockPos().getY()){
+				this.bottomMostLog = candidate;
+			}
+		}
+		
+		private void updateLogStart(@NonNull TreePart candidate) {
+			if(this.logStart == null && candidate.treePartType() == TreePartType.LOG_START){
+				this.logStart = candidate;
+			}
+		}
+		
+		protected void update(@NonNull TreePart candidate){
+			updateLogStart(candidate);
+			updateTopMostLog(candidate);
+			updateBottomMostLog(candidate);
+		}
+		
+		public Optional<TreePart> getTopMostLog(){
+			return Optional.ofNullable(topMostLog);
+		}
+		
+		public Optional<TreePart> getBottomMostLog(){
+			return Optional.ofNullable(bottomMostLog);
+		}
+		
+		public Optional<TreePart> getLogStart(){
+			return Optional.ofNullable(logStart);
+		}
+	}
+	
 	@NonNull
 	public Optional<IBlockPos> getTopMostLog(){
-		return getBreakableLogs().stream()
-				.map(TreePart::blockPos)
-				.max(comparingInt(IBlockPos::getY));
+		return extremumBlocks.getTopMostLog()
+				.map(TreePart::blockPos);
 	}
 	
 	@NonNull
 	public Optional<IBlockPos> getBottomMostLog(){
-		return getBreakableLogs().stream()
-				.map(TreePart::blockPos)
-				.min(comparingInt(IBlockPos::getY));
+		return extremumBlocks.getBottomMostLog()
+				.map(TreePart::blockPos);
 	}
 	
 	@NonNull
@@ -136,8 +199,6 @@ public class Tree{
 	
 	@NonNull
 	public Optional<TreePart> getStart(){
-		return getParts().stream()
-				.filter(part -> part.treePartType() == TreePartType.LOG_START)
-				.findFirst();
+		return extremumBlocks.getLogStart();
 	}
 }
