@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import org.jspecify.annotations.NonNull;
 import javax.annotation.Nonnull;
@@ -36,7 +35,7 @@ public class BlockBreakListener{
 		var wrappedPos = new BlockPosWrapper(optionalPos.get());
 		var wrappedState = new BlockStateWrapper(event.getState());
 		
-		var result = mod.getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, wrappedState, event.getNewSpeed());
+		var result = mod.getTreeHandler().create(wrappedPlayer.getLevel(), wrappedPlayer, wrappedPos, wrappedState).getBreakSpeed(event.getNewSpeed());
 		if(result.isEmpty()){
 			return;
 		}
@@ -59,12 +58,14 @@ public class BlockBreakListener{
 		var wrappedState = new BlockStateWrapper(event.getState());
 		var wrappedEntity = wrappedLevel.getBlockEntity(wrappedPos);
 		
-		if(mod.getTreeHandler().shouldCancelEvent(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity)){
+		final var treeHandler = mod.getTreeHandler().create(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		
+		if(treeHandler.shouldCancelEvent()){
 			event.setCanceled(true);
 			return;
 		}
 		
-		var result = mod.getTreeHandler().breakTree(true, wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		var result = treeHandler.breakTree(true);
 		if(result.shouldCancel()){
 			event.setCanceled(true);
 		}
