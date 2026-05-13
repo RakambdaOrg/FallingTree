@@ -48,7 +48,7 @@ public class TreeBuilder{
 		var maxScanSize = mod.getConfiguration().getTrees().getMaxScanSize();
 		var toAnalyzePos = new PriorityQueue<ToAnalyzePos>();
 		var analyzedPos = new HashSet<ToAnalyzePos>();
-		var tree = new Tree(level, originPos);
+		var tree = new MutableTree(level, originPos);
 		var detectionMode = getDetectionMode(level, originPos);
 		var firstPositionFetcher = getFirstPositionFetcher(detectionMode);
 		toAnalyzePos.add(new ToAnalyzePos(firstPositionFetcher, originPos, originBlock, originPos, originBlock, originState, originEntity, TreePartType.LOG_START, 0, 0));
@@ -106,7 +106,7 @@ public class TreeBuilder{
 		return Optional.of(tree);
 	}
 	
-	private static void postProcess(@NonNull Tree tree){
+	private static void postProcess(@NonNull MutableTree tree){
 		tree.getTopMostLog().ifPresent(topMostLog -> tree.removePartsHigherThan(topMostLog.getY() + 1, TreePartType.NETHER_WART));
 	}
 	
