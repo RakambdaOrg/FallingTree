@@ -35,7 +35,7 @@ public class BlockBreakListener{
 		var wrappedPos = new BlockPosWrapper(optionalPos.get());
 		var wrappedState = new BlockStateWrapper(event.getState());
 		
-		var result = mod.getTreeHandler().create(wrappedPlayer.getLevel(), wrappedPlayer, wrappedPos, wrappedState).getBreakSpeed(event.getNewSpeed());
+		var result = mod.getTreeHandler(wrappedPlayer.getLevel(), wrappedPlayer, wrappedPos, wrappedState, null).getBreakSpeed(event.getNewSpeed());
 		if(result.isEmpty()){
 			return;
 		}
@@ -58,7 +58,7 @@ public class BlockBreakListener{
 		var wrappedState = new BlockStateWrapper(event.getState());
 		var wrappedEntity = wrappedLevel.getBlockEntity(wrappedPos);
 		
-		final var treeHandler = mod.getTreeHandler().create(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		final var treeHandler = mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
 		
 		if(treeHandler.shouldCancelEvent()){
 			event.setCanceled(true);

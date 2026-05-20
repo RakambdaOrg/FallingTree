@@ -22,9 +22,9 @@ import lombok.extern.log4j.Log4j2;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import static java.util.Objects.isNull;
 
 @Log4j2
@@ -32,129 +32,121 @@ import static java.util.Objects.isNull;
 public class TreeHandler{
 	@NonNull
 	private final FallingTreeCommon<?> mod;
-	private final Map<UUID, CacheSpeed> speedCache = new ConcurrentHashMap<>();
+	@NonNull
+	private final Map<UUID, CacheSpeed> speedCache;
 	
-	public class TreeHandlerState{
-		@NonNull
-		private final IPlayer player;
-		@NonNull
-		private final ILevel level;
-		@NonNull
-		private final IBlockPos originPos;
-		@NonNull
-		private final IBlockState originState;
-		@Nullable
-		private final IBlockEntity originEntity;
-		
-		@Nullable
-		private Tree treeCache = null;
-		
-		public TreeHandlerState(@NonNull IPlayer player, @NonNull ILevel level, @NonNull IBlockPos originPos, @NonNull IBlockState originState, @Nullable IBlockEntity originEntity){
-			this.player = player;
-			this.level = level;
-			this.originPos = originPos;
-			this.originState = originState;
-			this.originEntity = originEntity;
+	@NonNull
+	private final IPlayer player;
+	@NonNull
+	private final ILevel level;
+	@NonNull
+	private final IBlockPos originPos;
+	@NonNull
+	private final IBlockState originState;
+	@Nullable
+	private final IBlockEntity originEntity;
+	
+	@Nullable
+	private Tree cachedTree = null;
+	
+	@Nullable
+	public Tree getTree() throws TreeTooBigException{
+		if(Objects.isNull(cachedTree)){
+			cachedTree = mod.getTreeBuilder().getTree(player, level, originPos, originState, originEntity).orElse(null);
 		}
-		
-		public Tree getTree() throws TreeTooBigException{
-			if(this.treeCache == null){
-				this.treeCache = mod.getTreeBuilder().getTree(player, level, originPos, originState, originEntity).orElse(null);
-			}
-			
-			return this.treeCache;
-		}
-		
-		public boolean shouldCancelEvent(){
-			if(!mod.isPlayerInRightState(player)){
-				return false;
-			}
-			if(shouldPreserveTool(player)){
-				return true;
-			}
-			try{
-				this.getTree();
-			}
-			catch(TreeTooBigException e){
-				return false;
-			}
+		return cachedTree;
+	}
+	
+	public boolean shouldCancelEvent(){
+		if(!mod.isPlayerInRightState(player)){
 			return false;
 		}
-		
-		@NonNull
-		public IBreakAttemptResult breakTree(boolean isCancellable){
-			if(!level.isServer()){
-				return AbortedResult.NOT_SERVER;
-			}
-			if(!mod.getConfiguration().getTrees().isTreeBreaking()){
-				return AbortedResult.NOT_ENABLED;
-			}
-			
-			if(!mod.checkForceToolUsage(player, level, originPos)){
-				mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
-				return AbortedResult.REQUIRED_TOOL_ABSENT;
-			}
-			
-			if(!mod.isPlayerInRightState(player)){
-				return AbortedResult.INVALID_PLAYER_STATE;
-			}
-			
-			try{
-				var tree = this.getTree();
-				if(tree == null){
-					return AbortedResult.NO_SUCH_TREE;
-				}
-				
-				var breakMode = getBreakMode(player.getMainHandItem());
-				return getBreakingHandler(breakMode).breakTree(isCancellable, player, tree);
-			}
-			catch(TreeTooBigException e){
-				mod.notifyPlayer(player, mod.translate("chat.fallingtree.tree_too_big", mod.getConfiguration().getTrees().getMaxScanSize()));
-				return AbortedResult.TREE_TOO_BIG_SCAN;
-			}
-			catch(BreakTreeTooSmallException e){
-				// mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_small", mod.getConfiguration().getTrees().getMinSize()));
-				return AbortedResult.TREE_TOO_SMALL_BREAK;
-			}
-			catch(BreakTreeTooBigException e){
-				mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_big", mod.getConfiguration().getTrees().getMaxSize()));
-				return AbortedResult.TREE_TOO_BIG_BREAK;
-			}
+		if(shouldPreserveTool(player)){
+			return true;
+		}
+		try{
+			getTree();
+		}
+		catch(TreeTooBigException e){
+			return false;
+		}
+		return false;
+	}
+	
+	@NonNull
+	public IBreakAttemptResult breakTree(boolean isCancellable){
+		if(!level.isServer()){
+			return AbortedResult.NOT_SERVER;
+		}
+		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
+			return AbortedResult.NOT_ENABLED;
 		}
 		
-		@NonNull
-		public Optional<Float> getBreakSpeed(float originalSpeed){
-			if(!mod.getConfiguration().getTrees().isTreeBreaking()){
-				return Optional.empty();
-			}
-			if(!getBreakMode(player.getMainHandItem()).isApplySpeedMultiplier()){
-				return Optional.empty();
-			}
-			if(!mod.isPlayerInRightState(player)){
-				return Optional.empty();
-			}
-			
-			var cacheSpeed = speedCache.compute(player.getUUID(), (uuid, speed) -> {
-				if(isNull(speed) || !speed.isValid(originPos)){
-					speed = getSpeed(originalSpeed);
-				}
-				return speed;
-			});
-			return Optional.ofNullable(cacheSpeed).map(CacheSpeed::getSpeed);
+		if(!mod.checkForceToolUsage(player, level, originPos)){
+			mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
+			return AbortedResult.REQUIRED_TOOL_ABSENT;
 		}
 		
-		@Nullable
-		private CacheSpeed getSpeed(float originalSpeed){
-			var speedMultiplicand = mod.getConfiguration().getTools().getSpeedMultiplicand();
-			try{
-				return speedMultiplicand <= 0 ? null :
-						Optional.ofNullable(this.getTree())
-						.map(tree -> new CacheSpeed(originPos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
-						.orElse(null);
+		if(!mod.isPlayerInRightState(player)){
+			return AbortedResult.INVALID_PLAYER_STATE;
+		}
+		
+		try{
+			var tree = getTree();
+			if(tree == null){
+				return AbortedResult.NO_SUCH_TREE;
 			}
-			catch(TreeTooBigException e){
-				return null;
+			
+			var breakMode = getBreakMode(player.getMainHandItem());
+			return getBreakingHandler(breakMode).breakTree(isCancellable, player, tree);
+		}
+		catch(TreeTooBigException e){
+			mod.notifyPlayer(player, mod.translate("chat.fallingtree.tree_too_big", mod.getConfiguration().getTrees().getMaxScanSize()));
+			return AbortedResult.TREE_TOO_BIG_SCAN;
+		}
+		catch(BreakTreeTooSmallException e){
+			// mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_small", mod.getConfiguration().getTrees().getMinSize()));
+			return AbortedResult.TREE_TOO_SMALL_BREAK;
+		}
+		catch(BreakTreeTooBigException e){
+			mod.notifyPlayer(player, mod.translate("chat.fallingtree.break_tree_too_big", mod.getConfiguration().getTrees().getMaxSize()));
+			return AbortedResult.TREE_TOO_BIG_BREAK;
+		}
+	}
+	
+	@NonNull
+	public Optional<Float> getBreakSpeed(float originalSpeed){
+		if(!mod.getConfiguration().getTrees().isTreeBreaking()){
+			return Optional.empty();
+		}
+		if(!getBreakMode(player.getMainHandItem()).isApplySpeedMultiplier()){
+			return Optional.empty();
+		}
+		if(!mod.isPlayerInRightState(player)){
+			return Optional.empty();
+		}
+		
+		var cacheSpeed = speedCache.compute(player.getUUID(), (uuid, speed) -> {
+			if(isNull(speed) || !speed.isValid(originPos)){
+				speed = getSpeed(originalSpeed);
 			}
+			return speed;
+		});
+		return Optional.ofNullable(cacheSpeed).map(CacheSpeed::getSpeed);
+	}
+	
+	@Nullable
+	private CacheSpeed getSpeed(float originalSpeed){
+		var speedMultiplicand = mod.getConfiguration().getTools().getSpeedMultiplicand();
+		try{
+			return speedMultiplicand <= 0
+					? null
+					: Optional.ofNullable(getTree())
+					.map(tree -> new CacheSpeed(originPos, originalSpeed / ((float) speedMultiplicand * tree.getLogCount())))
+					.orElse(null);
+		}
+		catch(TreeTooBigException e){
+			return null;
 		}
 	}
 	
@@ -162,21 +154,10 @@ public class TreeHandler{
 		var handItem = player.getMainHandItem();
 		return mod.getConfiguration().getTools().getDurabilityMode().shouldPreserve(handItem.getDurability());
 	}
-	@NonNull
-	public TreeHandlerState create(@NonNull ILevel level, @NonNull IPlayer player, @NonNull IBlockPos originPos, @NonNull IBlockState originState) {
-		return create(level, player, originPos, originState, null);
-	}
-	
-	
-	@NonNull
-	public TreeHandlerState create(@NonNull ILevel level, @NonNull IPlayer player, @NonNull IBlockPos originPos, @NonNull IBlockState originState, @Nullable IBlockEntity originEntity) {
-		return new TreeHandlerState(player, level, originPos, originState, originEntity);
-	}
 	
 	@NonNull
 	private BreakMode getBreakMode(@NonNull IItemStack itemStack){
-		return itemStack.getBreakModeFromEnchant()
-				.orElseGet(() -> mod.getConfiguration().getTrees().getBreakMode());
+		return itemStack.getBreakModeFromEnchant().orElseGet(() -> mod.getConfiguration().getTrees().getBreakMode());
 	}
 	
 	@NonNull

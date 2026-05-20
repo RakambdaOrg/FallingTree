@@ -103,7 +103,7 @@ public class TreeBuilder{
 			}
 		}
 		
-		return Optional.of(tree);
+		return Optional.of(tree.asImmutableTree());
 	}
 	
 	private static void postProcess(@NonNull MutableTree tree){
