@@ -39,7 +39,7 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before, Player
 			return true;
 		}
 		
-		return !mod.getTreeHandler().shouldCancelEvent(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		return !mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity).shouldCancelEvent();
 	}
 	
 	@Override
@@ -50,6 +50,6 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before, Player
 		var wrappedState = new BlockStateWrapper(blockState);
 		var wrappedEntity = Optional.ofNullable(blockEntity).map(BlockEntityWrapper::new).orElse(null);
 		
-		mod.getTreeHandler().breakTree(false, wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity).breakTree(false);
 	}
 }

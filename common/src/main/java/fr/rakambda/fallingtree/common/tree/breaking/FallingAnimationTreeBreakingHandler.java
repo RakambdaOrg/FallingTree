@@ -81,7 +81,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 		var lootHandler = new LootHandler(wantToBreakCount, mod.getConfiguration().getTrees().getTrunkLootPercentage());
 		var brokenCount = 0;
 		var breakablePartsLeft = wantToBreakCount;
-        var breakableParts = tree.getParts().stream().sorted(mod.getConfiguration().getTrees().getBreakOrder().getComparator()).toList();
+		var breakableParts = tree.getPartsStream().sorted(mod.getConfiguration().getTrees().getBreakOrder().getComparator()).toList();
 		for(var part : breakableParts){
 			if(part.treePartType().isBreakable()){
 				if(breakablePartsLeft == 0){

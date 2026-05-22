@@ -22,7 +22,7 @@ public abstract class AbstractBlockMixin{
 		var wrappedPos = new BlockPosWrapper(blockPos);
 		var wrappedState = new BlockStateWrapper(blockState);
 		
-		var result = FallingTree.getMod().getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, wrappedState, callbackInfoReturnable.getReturnValue());
+		var result = FallingTree.getMod().getTreeHandler(wrappedPlayer.getLevel(), wrappedPlayer, wrappedPos, wrappedState, null).getBreakSpeed(callbackInfoReturnable.getReturnValue());
 		if(result.isEmpty()){
 			return;
 		}

@@ -29,7 +29,7 @@ public class BlockBreakListener{
 		var wrappedPos = new BlockPosWrapper(optionalPos.get());
 		var wrappedState = new BlockStateWrapper(event.getState());
 		
-		var result = mod.getTreeHandler().getBreakSpeed(wrappedPlayer, wrappedPos, wrappedState, event.getNewSpeed());
+		var result = mod.getTreeHandler(wrappedPlayer.getLevel(), wrappedPlayer, wrappedPos, wrappedState, null).getBreakSpeed(event.getNewSpeed());
 		if(result.isEmpty()){
 			return;
 		}
@@ -48,11 +48,13 @@ public class BlockBreakListener{
 		var wrappedState = new BlockStateWrapper(event.getState());
 		var wrappedEntity = wrappedLevel.getBlockEntity(wrappedPos);
 		
-		if(mod.getTreeHandler().shouldCancelEvent(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity)){
+		var treeHandler = mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		
+		if(treeHandler.shouldCancelEvent()){
 			return true;
 		}
 		
-		var result = mod.getTreeHandler().breakTree(true, wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		var result = treeHandler.breakTree(true);
 		return result.shouldCancel();
 	}
 }

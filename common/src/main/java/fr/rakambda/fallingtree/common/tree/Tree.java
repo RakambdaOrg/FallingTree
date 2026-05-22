@@ -2,142 +2,41 @@ package fr.rakambda.fallingtree.common.tree;
 
 import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
 import fr.rakambda.fallingtree.common.wrapper.ILevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import static java.util.Comparator.comparingInt;
-import static java.util.Objects.isNull;
-import static java.util.stream.Collectors.toSet;
+import java.util.stream.Stream;
 
-@RequiredArgsConstructor
-public class Tree{
-	@Getter
-	@NonNull
-	private final ILevel level;
-	@Getter
-	@NonNull
-	private final IBlockPos hitPos;
-	@Getter
-	private final Set<TreePart> parts = new LinkedHashSet<>();
-	private final Map<TreePartType, Integer> partCounts = new LinkedHashMap<>();
+public interface Tree{
 	
-	public void addPart(@NonNull TreePart treePart){
-		parts.add(treePart);
-		partCounts.compute(treePart.treePartType(), (key, value) -> {
-			if(isNull(value)){
-				return 1;
-			}
-			return value + 1;
-		});
-	}
+	int getBreakableCount();
 	
-	public void removePartsHigherThan(int y, @NonNull TreePartType partType){
-		parts.removeIf(part -> {
-			if(part.treePartType() == partType && part.blockPos().getY() > y){
-				decrementPartCount(partType);
-				return true;
-			}
-			return false;
-		});
-	}
+	@NonNull Optional<TreePart> getLastSequencePart();
 	
-	public int getBreakableCount(){
-		return Arrays.stream(TreePartType.getValues())
-				.filter(TreePartType::isBreakable)
-				.mapToInt(this::getPartCount)
-				.sum();
-	}
+	@NonNull Optional<TreePart> getLastSequenceLogPart();
 	
-	private int getPartCount(@NonNull TreePartType treePartType){
-		return partCounts.computeIfAbsent(treePartType, key -> 0);
-	}
+	@NonNull Collection<TreePart> getBreakableLogs();
 	
-	public int getSize(){
-		return partCounts.values().stream().mapToInt(i -> i).sum();
-	}
+	@NonNull Collection<TreePart> getBreakableParts();
 	
-	private void decrementPartCount(@NonNull TreePartType partType){
-		partCounts.computeIfPresent(partType, (type, count) -> Math.max(0, count - 1));
-	}
+	int getLogCount();
 	
-	@NonNull
-	public Optional<TreePart> getLastSequencePart(){
-		return getParts().stream()
-				.max(comparingInt(TreePart::sequence));
-	}
+	@NonNull Optional<IBlockPos> getTopMostLog();
 	
-	@NonNull
-	public Optional<TreePart> getLastSequenceLogPart(){
-		return getParts().stream()
-				.filter(part -> part.treePartType().isLog())
-				.max(comparingInt(TreePart::sequence));
-	}
+	@NonNull Optional<IBlockPos> getBottomMostLog();
 	
-	@NonNull
-	public Collection<TreePart> getBreakableLogs(){
-		return getParts().stream()
-				.filter(part -> part.treePartType().isLog())
-				.filter(part -> part.treePartType().isBreakable())
-				.collect(toSet());
-	}
+	@NonNull Optional<IBlockPos> getTopMostPart();
 	
-	@NonNull
-	public Collection<TreePart> getBreakableParts(){
-		return getParts().stream()
-				.filter(part -> part.treePartType().isBreakable())
-				.collect(toSet());
-	}
+	@NonNull Collection<TreePart> getNetherWarts();
 	
-	public int getLogCount(){
-		return getPartCount(TreePartType.LOG);
-	}
+	@NonNull Collection<TreePart> getMangroveRoots();
 	
-	@NonNull
-	public Optional<IBlockPos> getTopMostLog(){
-		return getBreakableLogs().stream()
-				.map(TreePart::blockPos)
-				.max(comparingInt(IBlockPos::getY));
-	}
+	@NonNull Optional<TreePart> getStart();
 	
-	@NonNull
-	public Optional<IBlockPos> getBottomMostLog(){
-		return getBreakableLogs().stream()
-				.map(TreePart::blockPos)
-				.min(comparingInt(IBlockPos::getY));
-	}
+	@NonNull Stream<TreePart> getPartsStream();
 	
-	@NonNull
-	private Optional<IBlockPos> getTopMostPart(){
-		return getParts().stream()
-				.map(TreePart::blockPos)
-				.max(comparingInt(IBlockPos::getY));
-	}
+	ILevel getLevel();
 	
-	@NonNull
-	public Collection<TreePart> getNetherWarts(){
-		return getParts().stream()
-				.filter(part -> part.treePartType() == TreePartType.NETHER_WART)
-				.collect(toSet());
-	}
-	
-	@NonNull
-	public Collection<TreePart> getMangroveRoots(){
-		return getParts().stream()
-				.filter(part -> part.treePartType() == TreePartType.MANGROVE_ROOTS)
-				.collect(toSet());
-	}
-	
-	@NonNull
-	public Optional<TreePart> getStart(){
-		return getParts().stream()
-				.filter(part -> part.treePartType() == TreePartType.LOG_START)
-				.findFirst();
-	}
+	IBlockPos getHitPos();
 }
+
