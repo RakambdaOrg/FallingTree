@@ -7,15 +7,15 @@ gson-version = "2.14.0"
 log4j2-version = "2.26.0"
 
 # Minecraft / Loaders
-minecraftVersion = "26.1.2"
+minecraftVersion = "26.2"
 fabric-loader-version = "0.19.3"
-fabric-api-version = "0.145.4+26.1.2"
+fabric-api-version = "0.152.1+26.2"
 forge-version = "26.1.2-64.0.9"
 forgeEventbusValidator-version = "7.0.5"
-neoforgeVersion = "26.1.2.29-beta"
+neoforgeVersion = "26.2.0.0-beta"
 
 # Mod dependencies
-modmenu-version = "18.0.0-alpha.8"
+modmenu-version = "20.0.0-beta.2"
 clothConfigVersion = "26.1.154"
 
 fabric-loom-version = "1.17.11"
