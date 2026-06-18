@@ -15,7 +15,7 @@ authors = "Rakambda"
 [[dependencies.fallingtree]]
 modId = "forge"
 mandatory = true
-versionRange = "[64,)"
+versionRange = "[65,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.fallingtree]]
