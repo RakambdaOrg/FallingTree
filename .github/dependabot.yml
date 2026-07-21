@@ -10,6 +10,8 @@ updates:
       timezone: Europe/Paris
     pull-request-branch-name:
       separator: '-'
+      word-separator: '-'
+      branch-name-case: lowercase
     groups:
       docker:
         patterns:
@@ -24,6 +26,8 @@ updates:
       timezone: Europe/Paris
     pull-request-branch-name:
       separator: '-'
+      word-separator: '-'
+      branch-name-case: lowercase
     groups:
       log4j:
         patterns:
