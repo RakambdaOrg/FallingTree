@@ -58,13 +58,17 @@ allprojects {
             name = 'CurseForge'
             url = 'https://minecraft.curseforge.com/api/maven'
         }
-        maven {
-            name = "ModMenu"
-            url = "https://maven.terraformersmc.com/releases/"
-        }
+        // maven {
+        //     name = "ModMenu"
+        //     url = "https://maven.terraformersmc.com/releases/"
+        // }
         maven {
             name = "Cloth Config"
             url = "https://maven.shedaniel.me/"
+        }
+        maven {
+            name = "GnomeCraft"
+            url = "https://maven.gnomecraft.net/releases"
         }
         exclusiveContent {
             forRepository {
