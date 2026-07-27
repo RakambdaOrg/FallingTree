@@ -46,3 +46,9 @@ updates:
       kotlin:
         patterns:
           - org.jetbrains.kotlin.*
+      jackson:
+        patterns:
+          - tools.jackson.core:*
+          - tools.jackson.dataformat:*
+          - tools.jackson.datatype:*
+          - tools.jackson.module:*
