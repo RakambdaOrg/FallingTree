@@ -6,7 +6,7 @@ import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import net.minecraft.world.item.AxeItem;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,7 +22,7 @@ public class ItemWrapper implements IItem{
 	
 	@Override
 	public boolean isAxe(){
-		return raw instanceof AxeItem;
+		return raw.getDefaultInstance().is(ItemTags.AXES);
 	}
 	
 	@Override

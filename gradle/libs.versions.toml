@@ -7,9 +7,9 @@ gson-version = "2.14.0"
 log4j2-version = "2.26.1"
 
 # Minecraft / Loaders
-minecraftVersion = "26.2"
+minecraftVersion = "26.3-snapshot-6"
 fabric-loader-version = "0.19.3"
-fabric-api-version = "0.152.2+"
+fabric-api-version = "0.156.1+"
 forge-version = "26.2-65.1.0"
 forgeEventbusValidator-version = "7.0.5"
 neoforgeVersion = "26.2.0.0-beta"
