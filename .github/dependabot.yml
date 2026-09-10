@@ -52,3 +52,6 @@ updates:
           - tools.jackson.dataformat:*
           - tools.jackson.datatype:*
           - tools.jackson.module:*
+      imageio:
+        patterns:
+          - com.twelvemonkeys.imageio:*
