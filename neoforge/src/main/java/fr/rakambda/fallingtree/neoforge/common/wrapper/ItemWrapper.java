@@ -6,7 +6,6 @@ import fr.rakambda.fallingtree.common.wrapper.IItemStack;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -19,11 +18,6 @@ public class ItemWrapper implements IItem{
 	@NonNull
 	@Getter
 	private final Item raw;
-	
-	@Override
-	public boolean isAxe(){
-		return raw instanceof AxeItem;
-	}
 	
 	@Override
 	public boolean isAir(){

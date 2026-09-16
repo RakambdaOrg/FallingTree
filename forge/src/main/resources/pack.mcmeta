@@ -1,10 +1,10 @@
 {
   "pack" : {
     "description" : "FallingTree resources",
-    "max_format" : 107,
+    "max_format" : 121,
     "min_format" : [
-      107,
-      1
+      121,
+      0
     ]
   }
 }

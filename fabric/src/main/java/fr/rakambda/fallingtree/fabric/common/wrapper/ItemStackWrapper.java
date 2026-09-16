@@ -1,6 +1,5 @@
 package fr.rakambda.fallingtree.fabric.common.wrapper;
 
-import java.util.Optional;
 import fr.rakambda.fallingtree.common.config.enums.BreakMode;
 import fr.rakambda.fallingtree.common.wrapper.IItem;
 import fr.rakambda.fallingtree.common.wrapper.IItemStack;
@@ -9,12 +8,14 @@ import fr.rakambda.fallingtree.fabric.FallingTree;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Blocks;
 import org.jspecify.annotations.NonNull;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @ToString
@@ -76,5 +77,10 @@ public class ItemStackWrapper implements IItemStack{
 	@Override
 	public boolean canPerformAxeAction(){
 		return raw.isCorrectToolForDrops(Blocks.OAK_LOG.defaultBlockState());
+	}
+	
+	@Override
+	public boolean isAxe(){
+		return raw.is(ItemTags.AXES);
 	}
 }
