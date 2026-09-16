@@ -6,7 +6,7 @@ version = "${version}"
 displayName = "${modName}"
 description = '''Change the way you cut trees.'''
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/falling-tree"
-logoFile = "logo.png"
+iconFile = "logo.png"
 authors = "Rakambda"
 
 [[accessTransformers]]
