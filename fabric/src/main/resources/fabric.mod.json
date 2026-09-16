@@ -31,9 +31,9 @@
     "fallingtree.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.18.4",
+    "fabricloader": ">=0.19.5",
     "fabric-lifecycle-events-v1": "*",
-    "fabric-api": ">=0.144",
+    "fabric-api": ">=0.160",
     "java": ">=25"
   },
   "suggests": {
