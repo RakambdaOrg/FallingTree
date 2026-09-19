@@ -9,11 +9,12 @@ import fr.rakambda.fallingtree.forge.compat.TetraCompat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraftforge.common.ToolActions;
+import net.minecraft.world.level.block.Blocks;
 import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
@@ -78,6 +79,11 @@ public class ItemStackWrapper implements IItemStack{
 	
 	@Override
 	public boolean canPerformAxeAction(){
-		return raw.canPerformAction(ToolActions.AXE_DIG);
+		return raw.isCorrectToolForDrops(Blocks.OAK_LOG.defaultBlockState());
+	}
+	
+	@Override
+	public boolean isAxe(){
+		return raw.is(ItemTags.AXES);
 	}
 }
