@@ -13,6 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import org.jspecify.annotations.NonNull;
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class BlockBreakListener{
@@ -20,13 +21,12 @@ public class BlockBreakListener{
 	private final FallingTreeCommon<?> mod;
 	
 	public void onBreakSpeed(@Nonnull PlayerEvent.BreakSpeed event){
-		var optionalPos = event.getPosition();
-		if(optionalPos.isEmpty()){
+		if(Objects.isNull(event.getPosition())){
 			return;
 		}
 		
 		var wrappedPlayer = new PlayerWrapper(event.getEntity());
-		var wrappedPos = new BlockPosWrapper(optionalPos.get());
+		var wrappedPos = new BlockPosWrapper(event.getPosition());
 		var wrappedState = new BlockStateWrapper(event.getState());
 		
 		var result = mod.getTreeHandler(wrappedPlayer.getLevel(), wrappedPlayer, wrappedPos, wrappedState, null).getBreakSpeed(event.getNewSpeed());
