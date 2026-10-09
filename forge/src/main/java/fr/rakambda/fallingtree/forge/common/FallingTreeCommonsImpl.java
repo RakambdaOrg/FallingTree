@@ -225,7 +225,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	public boolean checkCanBreakBlock(@NonNull ILevel level, @NonNull IBlockPos blockPos, @NonNull IBlockState blockState, @NonNull IPlayer player){
 		var event = new BlockEvent.BreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw(), Result.DEFAULT);
 		breakEvents.add(event);
-		return !BlockEvent.BreakEvent.BUS.post(event);
+		var cancelled = BlockEvent.BreakEvent.BUS.post(event);
+		return !cancelled && !event.getResult().isDenied();
 	}
 	
 	@Override
