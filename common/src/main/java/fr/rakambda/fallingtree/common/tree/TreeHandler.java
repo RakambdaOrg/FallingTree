@@ -58,6 +58,9 @@ public class TreeHandler{
 	}
 	
 	public boolean shouldCancelEvent(){
+		if(isRequiredToolAbsent()){
+			return true;
+		}
 		if(!mod.isPlayerInRightState(player)){
 			return false;
 		}
@@ -73,6 +76,22 @@ public class TreeHandler{
 		return false;
 	}
 	
+	/**
+	 * Checked before the block is broken, as some loaders (Fabric) can only prevent the break at that time.
+	 *
+	 * @return true if tool usage is forced and the player doesn't hold a valid tool to break this log (notifying the player).
+	 */
+	private boolean isRequiredToolAbsent(){
+		if(!level.isServer() || !mod.getConfiguration().getTrees().isTreeBreaking()){
+			return false;
+		}
+		if(mod.checkForceToolUsage(player, level, originPos)){
+			return false;
+		}
+		mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
+		return true;
+	}
+
 	@NonNull
 	public IBreakAttemptResult breakTree(boolean isCancellable){
 		if(!level.isServer()){
@@ -82,8 +101,7 @@ public class TreeHandler{
 			return AbortedResult.NOT_ENABLED;
 		}
 		
-		if(!mod.checkForceToolUsage(player, level, originPos)){
-			mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
+		if(isRequiredToolAbsent()){
 			return AbortedResult.REQUIRED_TOOL_ABSENT;
 		}
 		
