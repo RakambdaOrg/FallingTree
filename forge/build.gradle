@@ -64,6 +64,11 @@ configurations {
 
 apply from: rootProject.file('gametest/gametest.gradle')
 
+// Run the game tests as part of "check" (and therefore "build")
+tasks.named('check') {
+    dependsOn('runGametestGameTestServer')
+}
+
 dependencies {
     implementation(minecraft.dependency(libs.forge))
     library(project(":common"))

@@ -94,3 +94,8 @@ tasks {
         }
     }
 }
+
+// Run the game tests as part of "check" (and therefore "build")
+tasks.named("check") {
+    dependsOn("runGameTestServer")
+}
