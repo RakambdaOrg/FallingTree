@@ -182,10 +182,10 @@ public class TreeHandler{
 	private ITreeBreakingHandler getBreakingHandler(@NonNull BreakMode breakMode){
 		return switch(breakMode){
 			case INSTANTANEOUS -> InstantaneousTreeBreakingHandler.getInstance(mod);
-			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(true, true));
-			case FALL_ITEM_STRAIGHT -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.straightDown(true, true));
-			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(false, true));
-			case FALL_ALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(false, false));
+			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_ITEM);
+			case FALL_ITEM_STRAIGHT -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_ITEM_STRAIGHT);
+			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_BLOCK);
+			case FALL_ALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_ALL_BLOCK);
 			case SHIFT_DOWN -> ShiftDownTreeBreakingHandler.getInstance(mod);
 		};
 	}

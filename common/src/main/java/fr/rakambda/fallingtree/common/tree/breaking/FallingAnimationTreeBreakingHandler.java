@@ -26,6 +26,12 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 			boolean dropLeavesAsItems,
 			Function<IRandomSource, Double> vx, Function<IRandomSource, Double> vy, Function<IRandomSource, Double> vz
 	){
+		// Shared instances: configs are used as handler cache keys, and records holding lambdas are only equal to themselves
+		public static final FallingAnimationTreeBreakingConfig FALL_ITEM = withRandomSpread(true, true);
+		public static final FallingAnimationTreeBreakingConfig FALL_ITEM_STRAIGHT = straightDown(true, true);
+		public static final FallingAnimationTreeBreakingConfig FALL_BLOCK = withRandomSpread(false, true);
+		public static final FallingAnimationTreeBreakingConfig FALL_ALL_BLOCK = withRandomSpread(false, false);
+		
 		public static FallingAnimationTreeBreakingConfig withRandomSpread(boolean dropLogsAsItems, boolean dropLeavesAsItems){
 			return new FallingAnimationTreeBreakingConfig(
 					dropLogsAsItems,
@@ -111,7 +117,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 					!config.dropLogsAsItems,
 					config.vx.apply(random),
 					config.vy.apply(random),
-					config.vx.apply(random)
+					config.vz.apply(random)
 			);
 			
 			fallLeaf(scannedLeaves, player, serverLevel, 5, logBlockPos.below());
@@ -169,7 +175,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 				!config.dropLeavesAsItems,
 				config.vx.apply(random),
 				config.vy.apply(random),
-				config.vx.apply(random)
+				config.vz.apply(random)
 		);
 		
 		fallLeaf(scannedLeaves, player, serverLevel, distance - 1, blockPos.north());
