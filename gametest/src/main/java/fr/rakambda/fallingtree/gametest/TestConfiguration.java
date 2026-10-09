@@ -38,6 +38,7 @@ public final class TestConfiguration{
 		mod.getProxyConfiguration().reset();
 		// Clears the log/leaf classification caches, which depend on the allowed/denied lists
 		mod.onConfigUpdate();
+		ProtectionSimulator.reset();
 	}
 
 	@NonNull

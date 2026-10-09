@@ -19,37 +19,33 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
+/**
+ * The tree is broken before the vanilla break of the hit block (which can still be cancelled), as on the other loaders.
+ */
 @RequiredArgsConstructor
-public class BlockBreakListener implements PlayerBlockBreakEvents.Before, PlayerBlockBreakEvents.After{
+public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 	@NonNull
 	private final FallingTreeCommon<?> mod;
-	
+
 	/**
 	 * @return true if event is handled successful (not cancelling it), false otherwise (cancelling event)
 	 */
 	@Override
 	public boolean beforeBlockBreak(Level level, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
-		var wrappedPlayer = new PlayerWrapper(player);
-		var wrappedLevel = level instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(level);
-		var wrappedPos = new BlockPosWrapper(blockPos);
-		var wrappedState = new BlockStateWrapper(blockState);
-		var wrappedEntity = Optional.ofNullable(blockEntity).map(BlockEntityWrapper::new).orElse(null);
-		
 		if(mod.isOwnEvent(new BlockBreakEventWrapper(blockPos))){
 			return true;
 		}
-		
-		return !mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity).shouldCancelEvent();
-	}
-	
-	@Override
-	public void afterBlockBreak(Level level, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity){
+
 		var wrappedPlayer = new PlayerWrapper(player);
 		var wrappedLevel = level instanceof ServerLevel serverLevel ? new ServerLevelWrapper(serverLevel) : new LevelWrapper(level);
 		var wrappedPos = new BlockPosWrapper(blockPos);
 		var wrappedState = new BlockStateWrapper(blockState);
 		var wrappedEntity = Optional.ofNullable(blockEntity).map(BlockEntityWrapper::new).orElse(null);
-		
-		mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity).breakTree(false);
+
+		var treeHandler = mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
+		if(treeHandler.shouldCancelEvent()){
+			return false;
+		}
+		return !treeHandler.breakTree(true).shouldCancel();
 	}
 }

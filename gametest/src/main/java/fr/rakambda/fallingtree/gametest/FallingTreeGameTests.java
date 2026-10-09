@@ -8,6 +8,7 @@ import fr.rakambda.fallingtree.gametest.scenario.LeafScenarios;
 import fr.rakambda.fallingtree.gametest.scenario.LootScenarios;
 import fr.rakambda.fallingtree.gametest.scenario.MetaScenarios;
 import fr.rakambda.fallingtree.gametest.scenario.PlayerScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.ProtectionScenarios;
 import fr.rakambda.fallingtree.gametest.scenario.SpecialTreeScenarios;
 import fr.rakambda.fallingtree.gametest.scenario.ToolScenarios;
 import fr.rakambda.fallingtree.gametest.scenario.TreeBreakingScenarios;
@@ -48,7 +49,8 @@ public final class FallingTreeGameTests{
 			TreeShapeScenarios.class,
 			LeafScenarios.class,
 			LootScenarios.class,
-			SpecialTreeScenarios.class
+			SpecialTreeScenarios.class,
+			ProtectionScenarios.class
 	);
 
 	private FallingTreeGameTests(){

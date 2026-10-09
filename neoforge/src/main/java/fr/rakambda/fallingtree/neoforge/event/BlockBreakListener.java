@@ -9,6 +9,7 @@ import fr.rakambda.fallingtree.neoforge.common.wrapper.PlayerWrapper;
 import fr.rakambda.fallingtree.neoforge.common.wrapper.ServerLevelWrapper;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.level.ServerLevel;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
@@ -43,7 +44,10 @@ public class BlockBreakListener{
 		event.setNewSpeed(result.get());
 	}
 	
-	@SubscribeEvent
+	/**
+	 * Low priority so that other mods (e.g. claims) can cancel the break before the tree is cut.
+	 */
+	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onBlockBreakEvent(@Nonnull BreakBlockEvent event){
 		if(event.isCanceled()){
 			return;

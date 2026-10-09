@@ -14,6 +14,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.function.Consumer;
 import static fr.rakambda.fallingtree.gametest.GameTestUtils.TREE_BASE;
 import static fr.rakambda.fallingtree.gametest.GameTestUtils.TREE_HEIGHT;
+import static fr.rakambda.fallingtree.gametest.GameTestUtils.assertColumn;
 import static fr.rakambda.fallingtree.gametest.GameTestUtils.assertDamage;
 import static fr.rakambda.fallingtree.gametest.GameTestUtils.assertOnlyBottomLogBroken;
 import static fr.rakambda.fallingtree.gametest.GameTestUtils.assertTrunkCut;
@@ -153,17 +154,16 @@ public final class DurabilityScenarios{
 	}
 
 	/**
-	 * Cuts part of the tree (furthest logs first) but never breaks the tool.
+	 * Cuts part of the tree (furthest logs first) but keeps 1 durability: 3 durability breaks the hit log and the 2 top ones.
 	 */
 	@GameTestCase
 	public static void saveModeKeepsTheTool(@NonNull GameTestHelper helper, @NonNull FallingTreeCommon<?> mod){
 		var player = chopWithDurability(helper, mod, DurabilityMode.SAVE, 3);
 		helper.succeedWhen(() -> {
 			helper.assertBlockNotPresent(Blocks.OAK_LOG, TREE_BASE);
-			helper.assertBlockPresent(Blocks.OAK_LOG, TREE_BASE.above());
-			helper.assertBlockNotPresent(Blocks.OAK_LOG, TREE_BASE.above(TREE_HEIGHT - 1));
-			helper.assertFalse(player.getMainHandItem().isEmpty(), "tool should not be broken");
-			helper.assertTrue(remainingDurability(player) >= 1, "tool should keep at least 1 durability");
+			assertColumn(helper, Blocks.OAK_LOG, TREE_BASE.above(), 2, true);
+			assertColumn(helper, Blocks.OAK_LOG, TREE_BASE.above(3), 2, false);
+			assertRemainingDurability(helper, player, 1);
 		});
 	}
 
@@ -177,15 +177,37 @@ public final class DurabilityScenarios{
 	}
 
 	/**
-	 * Cuts as many logs as the durability allows (furthest first).
+	 * Cuts as many logs as the durability allows (furthest first), using the tool up: 3 durability breaks the hit log and the 3 top ones.
 	 */
 	@GameTestCase
 	public static void normalModeCutsPartOfTreeWithLowDurability(@NonNull GameTestHelper helper, @NonNull FallingTreeCommon<?> mod){
-		chopWithDurability(helper, mod, DurabilityMode.NORMAL, 3);
+		var player = chopWithDurability(helper, mod, DurabilityMode.NORMAL, 3);
 		helper.succeedWhen(() -> {
 			helper.assertBlockNotPresent(Blocks.OAK_LOG, TREE_BASE);
 			helper.assertBlockPresent(Blocks.OAK_LOG, TREE_BASE.above());
-			helper.assertBlockNotPresent(Blocks.OAK_LOG, TREE_BASE.above(TREE_HEIGHT - 1));
+			assertColumn(helper, Blocks.OAK_LOG, TREE_BASE.above(2), 3, false);
+			helper.assertTrue(player.getMainHandItem().isEmpty(), "tool should be broken");
+		});
+	}
+
+	/**
+	 * Exactly enough durability for the whole tree: everything is cut and the tool breaks on the last log.
+	 */
+	@GameTestCase
+	public static void normalModeExactDurability(@NonNull GameTestHelper helper, @NonNull FallingTreeCommon<?> mod){
+		var player = chopWithDurability(helper, mod, DurabilityMode.NORMAL, TREE_HEIGHT);
+		helper.succeedWhen(() -> {
+			assertTrunkCut(helper);
+			helper.assertTrue(player.getMainHandItem().isEmpty(), "tool should be broken");
+		});
+	}
+
+	@GameTestCase
+	public static void normalModeOneSpareDurability(@NonNull GameTestHelper helper, @NonNull FallingTreeCommon<?> mod){
+		var player = chopWithDurability(helper, mod, DurabilityMode.NORMAL, TREE_HEIGHT + 1);
+		helper.succeedWhen(() -> {
+			assertTrunkCut(helper);
+			assertRemainingDurability(helper, player, 1);
 		});
 	}
 
