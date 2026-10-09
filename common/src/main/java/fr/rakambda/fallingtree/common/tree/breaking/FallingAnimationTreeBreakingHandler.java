@@ -61,7 +61,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 	
 	@Override
 	@NonNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	public IBreakAttemptResult breakTree(@NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var level = tree.getLevel();
 		if(!(level instanceof IServerLevel serverLevel)){

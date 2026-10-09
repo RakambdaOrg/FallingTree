@@ -21,7 +21,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	@Override
 	@NonNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	public IBreakAttemptResult breakTree(@NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var level = tree.getLevel();
 		var toolHandler = new ToolDamageHandler(tool,

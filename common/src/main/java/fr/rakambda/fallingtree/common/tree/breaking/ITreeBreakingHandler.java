@@ -7,5 +7,5 @@ import org.jspecify.annotations.NonNull;
 
 public interface ITreeBreakingHandler{
 	@NonNull
-	IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException;
+	IBreakAttemptResult breakTree(@NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException;
 }

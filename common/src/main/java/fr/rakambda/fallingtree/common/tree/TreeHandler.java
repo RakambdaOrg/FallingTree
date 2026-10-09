@@ -93,7 +93,7 @@ public class TreeHandler{
 	}
 
 	@NonNull
-	public IBreakAttemptResult breakTree(boolean isCancellable){
+	public IBreakAttemptResult breakTree(){
 		if(!level.isServer()){
 			return AbortedResult.NOT_SERVER;
 		}
@@ -116,7 +116,7 @@ public class TreeHandler{
 			}
 			
 			var breakMode = getBreakMode(player.getMainHandItem());
-			return getBreakingHandler(breakMode).breakTree(isCancellable, player, tree);
+			return getBreakingHandler(breakMode).breakTree(player, tree);
 		}
 		catch(TreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.tree_too_big", mod.getConfiguration().getTrees().getMaxScanSize()));

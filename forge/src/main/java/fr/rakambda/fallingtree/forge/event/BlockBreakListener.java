@@ -62,7 +62,7 @@ public class BlockBreakListener{
 			return deny(event);
 		}
 		
-		var result = treeHandler.breakTree(true);
+		var result = treeHandler.breakTree();
 		if(result.shouldCancel()){
 			return deny(event);
 		}

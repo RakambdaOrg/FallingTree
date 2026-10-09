@@ -46,6 +46,6 @@ public class BlockBreakListener implements PlayerBlockBreakEvents.Before{
 		if(treeHandler.shouldCancelEvent()){
 			return false;
 		}
-		return !treeHandler.breakTree(true).shouldCancel();
+		return !treeHandler.breakTree().shouldCancel();
 	}
 }
