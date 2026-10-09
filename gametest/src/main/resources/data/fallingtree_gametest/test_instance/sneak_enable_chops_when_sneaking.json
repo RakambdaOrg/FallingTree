@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:function",
+  "function": "fallingtree_gametest:sneak_enable_chops_when_sneaking",
+  "environment": "fallingtree_gametest:sneak_enable",
+  "structure": "fallingtree_gametest:empty",
+  "max_ticks": 40
+}

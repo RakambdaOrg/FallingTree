@@ -175,6 +175,20 @@ tasks.register('buildJar', Jar) {
 }
 assemble.finalizedBy("buildJar")
 
+tasks.register('gameTest') {
+    group("Modding")
+    description = "Runs the in-game GameTests on every enabled loader (use --continue to run all loaders even if one fails)"
+    if (project.includeFabric.toBoolean()) {
+        dependsOn(":fabric:runGameTest")
+    }
+    if (project.includeForge.toBoolean()) {
+        dependsOn(":forge:runGametestGameTestServer")
+    }
+    if (project.includeNeoForge.toBoolean()) {
+        dependsOn(":neoforge:runGameTestServer")
+    }
+}
+
 static def extractMainVersion(String ver) {
     def match = Pattern.compile("(\\d+\\.\\d+(\\.\\d+)?)(-.*)?").matcher(ver)
     if (match.matches()) {

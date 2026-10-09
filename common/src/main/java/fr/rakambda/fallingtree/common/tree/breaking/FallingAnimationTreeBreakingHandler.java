@@ -126,7 +126,7 @@ public class FallingAnimationTreeBreakingHandler implements ITreeBreakingHandler
 			}
 		}
 		
-		var toolDamage = toolHandler.getActualDamage(brokenCount) - 1;
+		var toolDamage = toolHandler.getAdditionalDamage(brokenCount);
 		if(toolDamage > 0){
 			tool.damage(toolDamage, player);
 		}

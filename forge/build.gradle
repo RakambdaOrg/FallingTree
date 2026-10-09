@@ -48,6 +48,20 @@ configurations {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+sourceSets {
+    gametest {
+        // Loader independent scenarios, shared with Fabric and NeoForge
+        java.srcDir '../gametest/src/main/java'
+        resources.srcDir '../gametest/src/main/resources'
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+
+configurations {
+    gametestImplementation.extendsFrom implementation
+}
+
 dependencies {
     implementation(minecraft.dependency(libs.forge))
     library(project(":common"))

@@ -1,0 +1,16 @@
+modLoader = "javafml"
+loaderVersion = "[66,)"
+license = "LGPL-3.0"
+
+[[mods]]
+modId = "fallingtree_gametest"
+version = "1.0.0"
+displayName = "FallingTree GameTests"
+description = '''GameTests for FallingTree, only used in development.'''
+
+[[dependencies.fallingtree_gametest]]
+modId = "fallingtree"
+mandatory = true
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"

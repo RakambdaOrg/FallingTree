@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:function",
+  "function": "fallingtree_gametest:fall_item_chop",
+  "environment": "fallingtree_gametest:fall_item",
+  "structure": "fallingtree_gametest:empty",
+  "max_ticks": 40
+}

@@ -69,7 +69,7 @@ public class InstantaneousTreeBreakingHandler implements ITreeBreakingHandler{
 				})
 				.sum();
 		
-		var toolDamage = toolHandler.getActualDamage(brokenCount) - 1;
+		var toolDamage = toolHandler.getAdditionalDamage(brokenCount);
 		if(toolDamage > 0){
 			tool.damage(toolDamage, player);
 		}

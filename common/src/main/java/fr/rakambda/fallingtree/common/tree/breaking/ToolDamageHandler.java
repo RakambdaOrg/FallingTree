@@ -80,4 +80,13 @@ public class ToolDamageHandler{
 		}
 		return 0;
 	}
+
+	/**
+	 * Damage to apply on top of the vanilla break of the block hit by the player.
+	 *
+	 * @param brokenCount The number of blocks broken by the mod, not including the block hit by the player (which is broken by vanilla, already costing 1 durability).
+	 */
+	public int getAdditionalDamage(int brokenCount){
+		return Math.max(0, getActualDamage(Math.min(brokenCount + 1, maxBreakCount)) - 1);
+	}
 }
