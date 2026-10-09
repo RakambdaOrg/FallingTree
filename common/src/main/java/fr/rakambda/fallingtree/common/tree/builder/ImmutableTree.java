@@ -20,6 +20,11 @@ import static java.util.stream.Collectors.toSet;
 import static lombok.AccessLevel.PROTECTED;
 
 public class ImmutableTree implements Tree{
+	/**
+	 * Includes the log that was hit (LOG_START), which can be the top or bottom-most one.
+	 */
+	private static final Set<TreePartType> ALL_LOGS = Set.of(TreePartType.LOG, TreePartType.LOG_START);
+	
 	@Getter
 	@NonNull
 	private final ILevel level;
@@ -43,9 +48,9 @@ public class ImmutableTree implements Tree{
 		this(
 				level, hitPos, parts,
 				new LinkedHashMap<>(),
-				new PartOfInterestCache(TreePartType.LOG, parts, s -> s.max(Comparator.comparing(treePart -> treePart.blockPos().getY()))),
-				new PartOfInterestCache(TreePartType.LOG, parts, s -> s.min(Comparator.comparing(treePart -> treePart.blockPos().getY()))),
-				new PartOfInterestCache(TreePartType.LOG_START, parts, Stream::findFirst)
+				new PartOfInterestCache(ALL_LOGS, parts, s -> s.max(Comparator.comparing(treePart -> treePart.blockPos().getY()))),
+				new PartOfInterestCache(ALL_LOGS, parts, s -> s.min(Comparator.comparing(treePart -> treePart.blockPos().getY()))),
+				new PartOfInterestCache(Set.of(TreePartType.LOG_START), parts, Stream::findFirst)
 		);
 	}
 	
