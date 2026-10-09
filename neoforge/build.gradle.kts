@@ -16,6 +16,8 @@ sourceSets {
     }
 }
 
+apply(from = rootProject.file("gametest/gametest.gradle"))
+
 configurations.named("gametestImplementation") {
     extendsFrom(configurations.implementation.get())
 }

@@ -36,6 +36,8 @@ public final class TestConfiguration{
 		configuration.getTools().reset();
 		configuration.getPlayer().reset();
 		mod.getProxyConfiguration().reset();
+		// Clears the log/leaf classification caches, which depend on the allowed/denied lists
+		mod.onConfigUpdate();
 	}
 
 	@NonNull

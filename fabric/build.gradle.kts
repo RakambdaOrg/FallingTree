@@ -82,6 +82,8 @@ sourceSets.named("gametest") {
     resources.srcDir("../gametest/src/main/resources")
 }
 
+apply(from = rootProject.file("gametest/gametest.gradle"))
+
 // Game tests are run on every loader through the root "gameTest" task rather than as part of "check"
 tasks.named("check") {
     setDependsOn(dependsOn.filterNot { it == "runGameTest" })

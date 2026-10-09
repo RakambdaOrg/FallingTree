@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:function",
-  "function": "fallingtree_gametest:non_axe_does_not_chop",
-  "environment": "minecraft:default",
-  "structure": "fallingtree_gametest:empty",
-  "max_ticks": 40
-}

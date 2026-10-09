@@ -62,6 +62,8 @@ configurations {
     gametestImplementation.extendsFrom implementation
 }
 
+apply from: rootProject.file('gametest/gametest.gradle')
+
 dependencies {
     implementation(minecraft.dependency(libs.forge))
     library(project(":common"))

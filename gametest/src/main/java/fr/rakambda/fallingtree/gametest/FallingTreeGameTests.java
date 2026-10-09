@@ -1,11 +1,27 @@
 package fr.rakambda.fallingtree.gametest;
 
 import fr.rakambda.fallingtree.common.FallingTreeCommon;
+import fr.rakambda.fallingtree.gametest.scenario.BreakModeScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.DetectionScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.DurabilityScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.LeafScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.LootScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.MetaScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.PlayerScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.SpecialTreeScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.ToolScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.TreeBreakingScenarios;
+import fr.rakambda.fallingtree.gametest.scenario.TreeShapeScenarios;
 import net.minecraft.gametest.framework.GameTestHelper;
 import org.jspecify.annotations.NonNull;
-import java.util.LinkedHashMap;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -13,28 +29,70 @@ import java.util.function.Supplier;
  * Test functions shared by every loader.
  * <p>
  * Each loader only registers these functions in {@link net.minecraft.core.registries.Registries#TEST_FUNCTION} under {@link #NAMESPACE}. The tests themselves (structure,
- * environment, timeout) are data driven and live in the shared datapack: {@code data/fallingtree_gametest/test_instance/<name>.json}.
+ * environment, timeout) are data generated from the {@link GameTestCase} annotations, see {@code gametest/gametest.gradle}.
  */
 public final class FallingTreeGameTests{
 	public static final String NAMESPACE = "fallingtree_gametest";
+
+	/**
+	 * Classes holding {@link GameTestCase} methods.
+	 */
+	public static final List<Class<?>> SCENARIO_CLASSES = List.of(
+			MetaScenarios.class,
+			TreeBreakingScenarios.class,
+			ToolScenarios.class,
+			DurabilityScenarios.class,
+			PlayerScenarios.class,
+			BreakModeScenarios.class,
+			DetectionScenarios.class,
+			TreeShapeScenarios.class,
+			LeafScenarios.class,
+			LootScenarios.class,
+			SpecialTreeScenarios.class
+	);
 
 	private FallingTreeGameTests(){
 	}
 
 	@NonNull
 	public static Map<String, Consumer<GameTestHelper>> testFunctions(@NonNull Supplier<FallingTreeCommon<?>> mod){
-		var functions = new LinkedHashMap<String, Consumer<GameTestHelper>>();
-		add(functions, mod, "basic_chop", TreeBreakingScenarios::basicChop);
-		add(functions, mod, "sneaking_disables_chop", TreeBreakingScenarios::sneakingDisablesChop);
-		add(functions, mod, "non_axe_does_not_chop", TreeBreakingScenarios::nonAxeDoesNotChop);
-		add(functions, mod, "sneak_enable_chops_when_sneaking", TreeBreakingScenarios::sneakEnableChopsWhenSneaking);
-		add(functions, mod, "sneak_enable_ignores_standing", TreeBreakingScenarios::sneakEnableIgnoresStanding);
-		add(functions, mod, "damage_multiplicand_zero_costs_one", TreeBreakingScenarios::damageMultiplicandZeroCostsOne);
-		add(functions, mod, "fall_item_chop", TreeBreakingScenarios::fallItemChop);
+		var functions = new TreeMap<String, Consumer<GameTestHelper>>();
+		for(var scenarioClass : SCENARIO_CLASSES){
+			Arrays.stream(scenarioClass.getDeclaredMethods())
+					.filter(method -> method.isAnnotationPresent(GameTestCase.class))
+					.forEach(method -> {
+						var name = testName(method);
+						if(functions.put(name, helper -> invoke(method, helper, mod.get())) != null){
+							throw new IllegalStateException("Duplicate game test name " + name);
+						}
+					});
+		}
 		return functions;
 	}
 
-	private static void add(@NonNull Map<String, Consumer<GameTestHelper>> functions, @NonNull Supplier<FallingTreeCommon<?>> mod, @NonNull String name, @NonNull BiConsumer<GameTestHelper, FallingTreeCommon<?>> scenario){
-		functions.put(name, helper -> scenario.accept(helper, mod.get()));
+	/**
+	 * Must give the same name as {@code gametest/gametest.gradle}.
+	 */
+	@NonNull
+	public static String testName(@NonNull Method method){
+		return method.getName().replaceAll("([a-z0-9])([A-Z])", "$1_$2").toLowerCase(Locale.ROOT);
+	}
+
+	private static void invoke(@NonNull Method method, @NonNull GameTestHelper helper, @NonNull FallingTreeCommon<?> mod){
+		if(!Modifier.isStatic(method.getModifiers())){
+			throw new IllegalStateException("Game test " + method + " must be static");
+		}
+		try{
+			method.invoke(null, helper, mod);
+		}
+		catch(InvocationTargetException e){
+			if(e.getCause() instanceof RuntimeException runtimeException){
+				throw runtimeException;
+			}
+			throw new IllegalStateException(e.getCause());
+		}
+		catch(IllegalAccessException e){
+			throw new IllegalStateException("Game test " + method + " must be public", e);
+		}
 	}
 }
