@@ -9,6 +9,7 @@ import fr.rakambda.fallingtree.forge.common.wrapper.PlayerWrapper;
 import fr.rakambda.fallingtree.forge.common.wrapper.ServerLevelWrapper;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.common.util.Result;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import org.jspecify.annotations.NonNull;
@@ -37,8 +38,15 @@ public class BlockBreakListener{
 		event.setNewSpeed(result.get());
 	}
 	
+	/**
+	 * @return true to stop the event from reaching other listeners. Preventing the block from being broken is done by denying the event.
+	 */
 	public boolean onBlockBreakEvent(@Nonnull BlockEvent.BreakEvent event){
 		if(mod.isOwnEvent(new BlockBreakEventWrapper(event))){
+			return false;
+		}
+		// Already prevented, e.g. adventure mode or another mod
+		if(event.getResult().isDenied()){
 			return false;
 		}
 		
@@ -51,10 +59,18 @@ public class BlockBreakListener{
 		var treeHandler = mod.getTreeHandler(wrappedLevel, wrappedPlayer, wrappedPos, wrappedState, wrappedEntity);
 		
 		if(treeHandler.shouldCancelEvent()){
-			return true;
+			return deny(event);
 		}
 		
-		var result = treeHandler.breakTree(true);
-		return result.shouldCancel();
+		var result = treeHandler.breakTree();
+		if(result.shouldCancel()){
+			return deny(event);
+		}
+		return false;
+	}
+	
+	private static boolean deny(@Nonnull BlockEvent.BreakEvent event){
+		event.setResult(Result.DENY);
+		return true;
 	}
 }

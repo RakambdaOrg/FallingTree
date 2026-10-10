@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "fallingtree_gametest",
+  "version": "1.0.0",
+  "name": "FallingTree GameTests",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "fr.rakambda.fallingtree.fabric.gametest.FabricGameTests"
+    ]
+  },
+  "depends": {
+    "fallingtree": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}

@@ -1,0 +1,68 @@
+// Shared by the Fabric, Forge and NeoForge builds, which each declare a "gametest" source set.
+//
+// Generates a test_instance and a dedicated test_environment for every @GameTestCase method of the shared scenarios, so that a test only has to be written once
+// (see GameTestCase.java). Every test has its own environment so that tests run in separate batches: the mod configuration is global and tests change it.
+
+def scenarioSources = rootProject.fileTree("gametest/src/main/java") { include "**/*.java" }
+def generatedDir = layout.buildDirectory.dir("generated/gametest-data")
+
+def generateGameTestData = tasks.register("generateGameTestData") {
+    group = "verification"
+    description = "Generates the GameTest data (test instances and environments) from @GameTestCase methods"
+    inputs.files(scenarioSources)
+    outputs.dir(generatedDir)
+
+    def outputDir = generatedDir.get().asFile
+    doLast {
+        def namespace = "fallingtree_gametest"
+        def defaultMaxTicks = 40 // GameTestCase.DEFAULT_MAX_TICKS
+        def pattern = ~/@GameTestCase(?:\(([^)]*)\))?\s+public\s+static\s+void\s+(\w+)\s*\(/
+
+        def tests = new TreeMap<String, Integer>()
+        scenarioSources.files.each { file ->
+            def matcher = file.text =~ pattern
+            matcher.each { match ->
+                def name = match[2].replaceAll(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase(Locale.ROOT)
+                def maxTicksMatcher = (match[1] ?: "") =~ /maxTicks\s*=\s*(\d+)/
+                def maxTicks = maxTicksMatcher.find() ? maxTicksMatcher.group(1) as Integer : defaultMaxTicks
+                if (tests.containsKey(name)) {
+                    throw new GradleException("Duplicate game test name '${name}' (in ${file.name})")
+                }
+                tests[name] = maxTicks
+            }
+        }
+        if (tests.isEmpty()) {
+            throw new GradleException("No @GameTestCase method found in ${scenarioSources.dir}")
+        }
+
+        outputDir.deleteDir()
+        def dataDir = new File(outputDir, "data/${namespace}")
+        def environmentDir = new File(dataDir, "test_environment")
+        def instanceDir = new File(dataDir, "test_instance")
+        environmentDir.mkdirs()
+        instanceDir.mkdirs()
+
+        tests.each { name, maxTicks ->
+            new File(environmentDir, "${name}.json").text = """{
+  "type": "minecraft:game_rules",
+  "rules": {
+    "minecraft:random_tick_speed": 0
+  }
+}
+"""
+            new File(instanceDir, "${name}.json").text = """{
+  "type": "minecraft:function",
+  "function": "${namespace}:${name}",
+  "environment": "${namespace}:${name}",
+  "structure": "${namespace}:empty",
+  "max_ticks": ${maxTicks}
+}
+"""
+        }
+        logger.lifecycle("Generated GameTest data for ${tests.size()} tests")
+    }
+}
+
+sourceSets.named("gametest") {
+    resources.srcDir(generateGameTestData)
+}

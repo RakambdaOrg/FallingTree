@@ -8,6 +8,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
 public class PartOfInterestCache{
 	@NonNull
 	@Getter
-	private final TreePartType treePartType;
+	private final Set<TreePartType> treePartTypes;
 	@NonNull
 	private final Collection<TreePart> parts;
 	@NonNull
@@ -30,7 +31,7 @@ public class PartOfInterestCache{
 			return Optional.of(cached);
 		}
 		
-		cached = selector.apply(parts.stream().filter(treePart -> treePart.treePartType() == treePartType)).orElse(null);
+		cached = selector.apply(parts.stream().filter(treePart -> treePartTypes.contains(treePart.treePartType()))).orElse(null);
 		return Optional.ofNullable(cached);
 	}
 	

@@ -3,10 +3,40 @@ plugins {
     alias(libs.plugins.neoforge)
 }
 
+sourceSets {
+    main {
+        resources.srcDir("src/generated/resources")
+    }
+    create("gametest") {
+        // Loader independent scenarios, shared with Fabric and Forge
+        java.srcDir("../gametest/src/main/java")
+        resources.srcDir("../gametest/src/main/resources")
+        compileClasspath += main.get().output
+        runtimeClasspath += main.get().output
+    }
+}
+
+apply(from = rootProject.file("gametest/gametest.gradle"))
+
+configurations.named("gametestImplementation") {
+    extendsFrom(configurations.implementation.get())
+}
+
 neoForge {
     val modId: String by project
 
     version = libs.versions.neoforgeVersion.get()
+
+    addModdingDependenciesTo(sourceSets["gametest"])
+
+    mods {
+        create(modId) {
+            sourceSet(sourceSets.main.get())
+        }
+        create("fallingtree_gametest") {
+            sourceSet(sourceSets["gametest"])
+        }
+    }
 
     runs {
         configureEach {
@@ -19,6 +49,7 @@ neoForge {
             client()
             ideName = "runFTNeoForgeClient"
             gameDirectory = project.file("./run/client")
+            loadedMods = setOf(mods[modId])
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
@@ -27,6 +58,7 @@ neoForge {
             ideName = "runFTNeoForgeServer"
             gameDirectory = project.file("./run/server")
             programArgument("--nogui")
+            loadedMods = setOf(mods[modId])
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
         }
 
@@ -34,20 +66,9 @@ neoForge {
             type = "gameTestServer"
             ideName = "runFTNeoForgeTestServer"
             gameDirectory = project.file("./run/test")
-            systemProperty("forge.enabledGameTestNamespaces", modId)
+            sourceSet = sourceSets["gametest"]
+            loadedMods = setOf(mods[modId], mods["fallingtree_gametest"])
         }
-    }
-
-    mods {
-        create(modId) {
-            sourceSet(sourceSets.main.get())
-        }
-    }
-}
-
-sourceSets {
-    main {
-        resources.srcDir("src/generated/resources")
     }
 }
 

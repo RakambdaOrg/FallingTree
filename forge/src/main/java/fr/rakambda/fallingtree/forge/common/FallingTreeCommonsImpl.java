@@ -50,6 +50,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.listener.Priority;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jspecify.annotations.NonNull;
@@ -225,7 +226,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 	public boolean checkCanBreakBlock(@NonNull ILevel level, @NonNull IBlockPos blockPos, @NonNull IBlockState blockState, @NonNull IPlayer player){
 		var event = new BlockEvent.BreakEvent((Level) level.getRaw(), (BlockPos) blockPos.getRaw(), (BlockState) blockState.getRaw(), (Player) player.getRaw(), Result.DEFAULT);
 		breakEvents.add(event);
-		return !BlockEvent.BreakEvent.BUS.post(event);
+		var cancelled = BlockEvent.BreakEvent.BUS.post(event);
+		return !cancelled && !event.getResult().isDenied();
 	}
 	
 	@Override
@@ -269,7 +271,8 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		getServerPacketHandler().registerServer();
 		
 		var blockBreakListener = new BlockBreakListener(this);
-		BlockEvent.BreakEvent.BUS.addListener(blockBreakListener::onBlockBreakEvent);
+		// Low priority so that other mods (e.g. claims) can deny the break before the tree is cut
+		BlockEvent.BreakEvent.BUS.addListener(Priority.LOW, blockBreakListener::onBlockBreakEvent);
 		PlayerEvent.BreakSpeed.BUS.addListener(blockBreakListener::onBreakSpeed);
 		
 		var leafBreakingListener = new LeafBreakingListener(this);

@@ -2,6 +2,9 @@ name: Build
 
 on:
   push:
+    branches:
+      - "minecraft/**"
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -12,3 +15,10 @@ jobs:
     uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-build.yml@main
     with:
       java-version: ${{ vars.JAVA_VERSION }}
+      # Game tests are slow: only run them on pull requests
+      game-tests: ${{ github.event_name == 'pull_request' }}
+      game-tests-report-path: |
+        fabric/build/gametest/junit.xml
+        fabric/build/run/gameTest/logs/
+        forge/run/test/logs/
+        neoforge/run/test/logs/

@@ -67,3 +67,29 @@ loom {
         }
     }
 }
+
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = "fallingtree_gametest"
+        enableClientGameTests = false
+    }
+}
+
+sourceSets.named("gametest") {
+    // Loader independent scenarios, shared with Forge and NeoForge
+    java.srcDir("../gametest/src/main/java")
+    resources.srcDir("../gametest/src/main/resources")
+}
+
+apply(from = rootProject.file("gametest/gametest.gradle"))
+
+// Game tests are run on every loader through the root "gameTest" task rather than as part of "check"
+tasks.named("check") {
+    setDependsOn(dependsOn.filterNot { it == "runGameTest" })
+}
+
+loom.runs.named("gameTest") {
+    property("fabric-api.gametest.report-file", layout.buildDirectory.file("gametest/junit.xml").get().asFile.absolutePath)
+    vmArg("-XX:+ShowCodeDetailsInExceptionMessages")
+}

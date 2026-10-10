@@ -1,14 +1,12 @@
 package fr.rakambda.fallingtree.common.tree;
 
-import fr.rakambda.fallingtree.common.wrapper.IBlockPos;
-import fr.rakambda.fallingtree.common.wrapper.ILevel;
-import fr.rakambda.fallingtree.common.wrapper.IPlayer;
-
 /**
- * The result of a {@link TreeHandler#breakTree(ILevel, IPlayer, IBlockPos)}, whether it succeeded or not.
- * Failures are generally instances of {@link AbortedResult}, where are succeeded attempts are instances of
- * {@link BreakTreeResult}.
+ * The result of a {@link TreeHandler#breakTree()}, whether it succeeded or not.
+ * Failures are instances of {@link AbortedResult}, where succeeded attempts are instances of {@link SuccessResult}.
  */
 public sealed interface IBreakAttemptResult permits SuccessResult, AbortedResult{
+	/**
+	 * @return true if the break of the block hit by the player should be cancelled.
+	 */
 	boolean shouldCancel();
 }

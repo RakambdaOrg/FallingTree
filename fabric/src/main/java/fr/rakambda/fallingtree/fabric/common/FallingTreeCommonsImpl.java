@@ -26,6 +26,7 @@ import fr.rakambda.fallingtree.fabric.event.ServerCommandRegistrationListener;
 import fr.rakambda.fallingtree.fabric.network.FabricServerPacketHandler;
 import lombok.Getter;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -61,6 +62,8 @@ import static fr.rakambda.fallingtree.fabric.FallingTreeUtils.idExternal;
 import static java.util.stream.Stream.empty;
 
 public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
+	private static final Identifier LATE_EVENT_PHASE = id("late");
+	
 	@Getter
 	private final LeafBreakingHandler leafBreakingHandler;
 	@Getter
@@ -264,8 +267,9 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction>{
 		
 		ServerTickEvents.END_SERVER_TICK.register(new LeafBreakingListener(this));
 		ServerLevelEvents.UNLOAD.register(new LeafBreakingListener(this));
-		PlayerBlockBreakEvents.BEFORE.register(new BlockBreakListener(this));
-		PlayerBlockBreakEvents.AFTER.register(new BlockBreakListener(this));
+		// Run after the listeners of the default phase, so that other mods (e.g. claims) can veto the break before the tree is cut
+		PlayerBlockBreakEvents.BEFORE.addPhaseOrdering(Event.DEFAULT_PHASE, LATE_EVENT_PHASE);
+		PlayerBlockBreakEvents.BEFORE.register(LATE_EVENT_PHASE, new BlockBreakListener(this));
 		
 		CommandRegistrationCallback.EVENT.register(new ServerCommandRegistrationListener(this));
 	}

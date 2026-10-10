@@ -158,18 +158,18 @@ public class TreeConfiguration implements ITreeConfiguration, IResettable{
 	
 	@NonNull
 	public Collection<IBlock> getAllAllowedAdjacentBlockBlocks(@NonNull FallingTreeCommon<?> common){
-		if(isNull(allowedAdjacentBlocksCache)){
-			allowedAdjacentBlocksCache = new HashSet<>();
-			common.getBlock("minecraft:air").forEach(allowedAdjacentBlocksCache::add);
-			common.getBlock("#minecraft:leaves").forEach(allowedAdjacentBlocksCache::add);
-			allowedAdjacentBlocksCache.addAll(getDefaultLogsBlocks(common));
-			allowedAdjacentBlocksCache.addAll(getAllowedLogBlocks(common));
-			allowedAdjacentBlocksCache.addAll(getAllowedLeaveBlocks(common));
-			allowedAdjacentBlocksCache.addAll(getAllowedNonDecayLeaveBlocks(common));
-			allowedAdjacentBlocksCache.removeAll(getDeniedLogBlocks(common));
-			allowedAdjacentBlocksCache.removeAll(getDeniedLeaveBlocks(common));
+		if(isNull(adjacentBlocksBaseCache)){
+			adjacentBlocksBaseCache = new HashSet<>();
+			common.getBlock("minecraft:air").forEach(adjacentBlocksBaseCache::add);
+			common.getBlock("#minecraft:leaves").forEach(adjacentBlocksBaseCache::add);
+			adjacentBlocksBaseCache.addAll(getDefaultLogsBlocks(common));
+			adjacentBlocksBaseCache.addAll(getAllowedLogBlocks(common));
+			adjacentBlocksBaseCache.addAll(getAllowedLeaveBlocks(common));
+			adjacentBlocksBaseCache.addAll(getAllowedNonDecayLeaveBlocks(common));
+			adjacentBlocksBaseCache.removeAll(getDeniedLogBlocks(common));
+			adjacentBlocksBaseCache.removeAll(getDeniedLeaveBlocks(common));
 		}
-		return allowedAdjacentBlocksCache;
+		return adjacentBlocksBaseCache;
 	}
 	
 	public void reset(){

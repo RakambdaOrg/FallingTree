@@ -12,6 +12,6 @@ public class AdjacentAbortSearchException extends AbortSearchException{
 	
 	public AdjacentAbortSearchException(@NonNull IBlock block, @NonNull FallingTreeCommon<?> common){
 		super("Found block " + block.getRaw() + " that isn't allowed in the adjacent blocks");
-		component = common.translate("chat.fallingtree.search_aborted.adjacent", block);
+		component = common.translate("chat.fallingtree.search_aborted.adjacent", block.getAsComponent());
 	}
 }

@@ -28,7 +28,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 	
 	@Override
 	@NonNull
-	public IBreakAttemptResult breakTree(boolean isCancellable, @NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	public IBreakAttemptResult breakTree(@NonNull IPlayer player, @NonNull Tree tree) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var tool = player.getMainHandItem();
 		var treePartOptional = tree.getLastSequencePart();
 		var treePartLogOptional = tree.getLastSequenceLogPart();
@@ -40,18 +40,18 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		var treePartLog = treePartLogOptional.get();
 		var level = tree.getLevel();
 		if(treePart.treePartType() == NETHER_WART && mod.getConfiguration().getTrees().isBreakNetherTreeWarts()){
-			return breakElements(isCancellable, tree, level, player, tool, treePartLog, tree.getNetherWarts());
+			return breakElements(tree, level, player, tool, treePartLog, tree.getNetherWarts());
 		}
 		else if(treePart.treePartType() == MANGROVE_ROOTS && mod.getConfiguration().getTrees().isBreakMangroveRoots()){
-			return breakElements(isCancellable, tree, level, player, tool, treePartLog, tree.getMangroveRoots());
+			return breakElements(tree, level, player, tool, treePartLog, tree.getMangroveRoots());
 		}
 		else{
-			return breakElements(isCancellable, tree, level, player, tool, treePartLog, List.of());
+			return breakElements(tree, level, player, tool, treePartLog, List.of());
 		}
 	}
 	
 	@NonNull
-	private IBreakAttemptResult breakElements(boolean isCancellable, @NonNull Tree tree, @NonNull ILevel level, @NonNull IPlayer player, @NonNull IItemStack tool, @NonNull TreePart logPart, @NonNull Collection<TreePart> leaves) throws BreakTreeTooBigException, BreakTreeTooSmallException{
+	private IBreakAttemptResult breakElements(@NonNull Tree tree, @NonNull ILevel level, @NonNull IPlayer player, @NonNull IItemStack tool, @NonNull TreePart logPart, @NonNull Collection<TreePart> leaves) throws BreakTreeTooBigException, BreakTreeTooSmallException{
 		var count = leaves.size();
 		var damageMultiplicand = mod.getConfiguration().getTools().getDamageMultiplicand();
 		var toolHandler = new ToolDamageHandler(tool,
@@ -71,12 +71,12 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		
 		var breakCount = leaves.stream()
 				.limit(toolHandler.getMaxBreakCount())
-				.mapToInt(part -> breakPart(tree, part, level, player, tool, true))
+				.mapToInt(part -> breakPart(tree, part, level, player, tool))
 				.sum()
 				+
-				breakPart(tree, logPart, level, player, tool, isCancellable);
+				breakPart(tree, logPart, level, player, tool);
 		
-		var damage = toolHandler.getActualDamage(breakCount - (isCancellable ? 0 : 1));
+		var damage = toolHandler.getActualDamage(breakCount);
 		if(damage > 0){
 			tool.damage(damage, player);
 		}
@@ -91,14 +91,11 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		if(level instanceof IServerLevel serverLevel){
 			serverLevel.spawnParticle(tree.getHitPos(), level.getBlockState(tree.getHitPos()), 10, 1, 1, 1, 5);
 		}
-		if(isCancellable){
-			return SuccessResult.CANCEL;
-		}
-		tree.getStart().ifPresent(part -> level.setBlock(part.blockPos(), part.blockState()));
-		return SuccessResult.DO_NOT_CANCEL;
+		// The hit log stays in place, the tree shifts down
+		return SuccessResult.CANCEL;
 	}
 	
-	private int breakPart(@NonNull Tree tree, @NonNull TreePart treePart, @NonNull ILevel level, @NonNull IPlayer player, @NonNull IItemStack tool, boolean spawnLoot){
+	private int breakPart(@NonNull Tree tree, @NonNull TreePart treePart, @NonNull ILevel level, @NonNull IPlayer player, @NonNull IItemStack tool){
 		var blockPos = treePart.blockPos();
 		var logState = level.getBlockState(blockPos);
 		
@@ -110,7 +107,7 @@ public class ShiftDownTreeBreakingHandler implements ITreeBreakingHandler{
 		}
 		
 		player.awardItemUsed(tool.getItem());
-		if((!player.isCreative() && spawnLoot) || (player.isCreative() && mod.getConfiguration().isLootInCreative())){
+		if(!player.isCreative() || mod.getConfiguration().isLootInCreative()){
 			logState.getBlock().playerDestroy(level, player, tree.getHitPos(), logState, level.getBlockEntity(blockPos), tool, true);
 		}
 		level.removeBlock(blockPos, false);

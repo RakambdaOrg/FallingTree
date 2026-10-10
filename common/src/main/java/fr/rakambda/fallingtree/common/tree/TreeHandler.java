@@ -58,6 +58,9 @@ public class TreeHandler{
 	}
 	
 	public boolean shouldCancelEvent(){
+		if(isRequiredToolAbsent()){
+			return true;
+		}
 		if(!mod.isPlayerInRightState(player)){
 			return false;
 		}
@@ -73,8 +76,24 @@ public class TreeHandler{
 		return false;
 	}
 	
+	/**
+	 * Checked before the block is broken, as some loaders (Fabric) can only prevent the break at that time.
+	 *
+	 * @return true if tool usage is forced and the player doesn't hold a valid tool to break this log (notifying the player).
+	 */
+	private boolean isRequiredToolAbsent(){
+		if(!level.isServer() || !mod.getConfiguration().getTrees().isTreeBreaking()){
+			return false;
+		}
+		if(mod.checkForceToolUsage(player, level, originPos)){
+			return false;
+		}
+		mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
+		return true;
+	}
+
 	@NonNull
-	public IBreakAttemptResult breakTree(boolean isCancellable){
+	public IBreakAttemptResult breakTree(){
 		if(!level.isServer()){
 			return AbortedResult.NOT_SERVER;
 		}
@@ -82,8 +101,7 @@ public class TreeHandler{
 			return AbortedResult.NOT_ENABLED;
 		}
 		
-		if(!mod.checkForceToolUsage(player, level, originPos)){
-			mod.notifyPlayer(player, mod.translate("chat.fallingtree.force_tool_usage", mod.getConfiguration().getTrees().getMaxScanSize()));
+		if(isRequiredToolAbsent()){
 			return AbortedResult.REQUIRED_TOOL_ABSENT;
 		}
 		
@@ -98,7 +116,7 @@ public class TreeHandler{
 			}
 			
 			var breakMode = getBreakMode(player.getMainHandItem());
-			return getBreakingHandler(breakMode).breakTree(isCancellable, player, tree);
+			return getBreakingHandler(breakMode).breakTree(player, tree);
 		}
 		catch(TreeTooBigException e){
 			mod.notifyPlayer(player, mod.translate("chat.fallingtree.tree_too_big", mod.getConfiguration().getTrees().getMaxScanSize()));
@@ -164,10 +182,10 @@ public class TreeHandler{
 	private ITreeBreakingHandler getBreakingHandler(@NonNull BreakMode breakMode){
 		return switch(breakMode){
 			case INSTANTANEOUS -> InstantaneousTreeBreakingHandler.getInstance(mod);
-			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(true, true));
-			case FALL_ITEM_STRAIGHT -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.straightDown(true, true));
-			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(false, true));
-			case FALL_ALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.withRandomSpread(false, false));
+			case FALL_ITEM -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_ITEM);
+			case FALL_ITEM_STRAIGHT -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_ITEM_STRAIGHT);
+			case FALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_BLOCK);
+			case FALL_ALL_BLOCK -> FallingAnimationTreeBreakingHandler.getInstance(mod, FallingAnimationTreeBreakingConfig.FALL_ALL_BLOCK);
 			case SHIFT_DOWN -> ShiftDownTreeBreakingHandler.getInstance(mod);
 		};
 	}
