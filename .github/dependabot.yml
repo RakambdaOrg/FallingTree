@@ -16,6 +16,9 @@ updates:
       docker:
         patterns:
           - docker/*
+      actions:
+        patterns:
+          - actions/*
   - package-ecosystem: gradle
     directory: /
     assignees:
