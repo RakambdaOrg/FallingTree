@@ -3,6 +3,7 @@ changelog:
     labels:
       - "type: 📚 dependencies"
       - "sync"
+      - "dependencies"
   categories:
   - title: "⚠ Breaking"
     labels:
