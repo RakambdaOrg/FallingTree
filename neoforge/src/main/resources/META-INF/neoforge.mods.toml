@@ -9,9 +9,6 @@ displayURL = "https://www.curseforge.com/minecraft/mc-mods/falling-tree"
 logoFile = "logo.png"
 authors = "Rakambda"
 
-[[accessTransformers]]
-file="META-INF/neoforge.accesstransformer.cfg"
-
 [[dependencies.fallingtree]]
 modId="neoforge"
 type="required"
