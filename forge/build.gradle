@@ -1,5 +1,3 @@
-import net.minecraftforge.gradle.common.tasks.SignJar
-
 plugins {
     alias(libs.plugins.forge)
 }
@@ -103,20 +101,3 @@ processResources {
 }
 
 jar.finalizedBy('reobfJar')
-
-task signJar(type: SignJar, dependsOn: rootProject.buildJar, group: "modding") {
-    onlyIf {
-        project.hasProperty("forgeKeyStore")
-                && project.hasProperty("forgeKeyStoreAlias")
-                && project.hasProperty("forgeKeyStorePass")
-                && project.hasProperty("forgeKeyStoreKeyPass")
-                && rootProject.file(project.findProperty("forgeKeyStore")).exists()
-    }
-
-    keyStore = project.findProperty("forgeKeyStore") == null ? null : rootProject.file(project.findProperty("forgeKeyStore")).absolutePath
-    alias = project.findProperty("forgeKeyStoreAlias")
-    storePass = project.findProperty("forgeKeyStorePass")
-    keyPass = project.findProperty("forgeKeyStoreKeyPass")
-    inputFile = rootProject.jar.getArchiveFile()
-    outputFile = rootProject.jar.getArchiveFile()
-}
