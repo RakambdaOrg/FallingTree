@@ -11,4 +11,4 @@ jobs:
   build:
     uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-build.yml@main
     with:
-      java-version: ${{ vars.JAVA_VERSION }}
+      java-version: "21"
