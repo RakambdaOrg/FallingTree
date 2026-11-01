@@ -92,10 +92,6 @@ task buildJar(type: Jar, group: "modding") {
         dependsOn(":forge:build")
     }
 
-    if (project.includeForge.toBoolean()) {
-        finalizedBy(":forge:signJar")
-    }
-
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
         zipTree("common/build/libs/common-${project.version}.jar")
