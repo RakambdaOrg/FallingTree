@@ -11,7 +11,7 @@ jobs:
   publish-curseforge:
     uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish-curseforge.yml@main
     with:
-      java-version: ${{ vars.JAVA_VERSION }}
+      java-version: "21"
       environment: MinecraftCurseforge
     secrets:
       curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
@@ -19,7 +19,7 @@ jobs:
   publish-modrinth:
     uses: RakambdaOrg/rakambda-github-workflows/.github/workflows/gradle-minecraft-publish-modrinth.yml@main
     with:
-      java-version: ${{ vars.JAVA_VERSION }}
+      java-version: "21"
       environment: MinecraftModrinth
     secrets:
       modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
