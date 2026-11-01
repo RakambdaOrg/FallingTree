@@ -16,6 +16,7 @@ import fr.rakambda.fallingtree.fabric.network.FabricServerPacketHandler;
 import lombok.Getter;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.core.Direction;
@@ -228,6 +229,7 @@ public class FallingTreeCommonsImpl extends FallingTreeCommon<Direction> {
         getServerPacketHandler().registerServer();
 
         ServerTickEvents.END_SERVER_TICK.register(new LeafBreakingListener(this));
+        ServerWorldEvents.UNLOAD.register(new LeafBreakingListener(this));
         PlayerBlockBreakEvents.BEFORE.register(new BlockBreakListener(this));
         ServerPlayConnectionEvents.JOIN.register(new PlayerJoinListener(this));
 
